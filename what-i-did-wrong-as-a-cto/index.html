@@ -158,13 +158,13 @@ tend to stick with you for the rest of the project.</p>
 <h1 id="the-stack">The stack</h1>
 
 <p>Our project was a SaaS management application. We wanted our users to have a great experience to distinguish ourselves
-from the competition and improve their productivity.</p>
+from the competition, and improve their productivity.</p>
 
 <p>We used Kotlin and Spring Boot on the backend, React and Typescript on the frontend.</p>
 
 <p>I&rsquo;m really comfortable with those technologies and that&rsquo;s why I chose them.</p>
 
-<p>Even if you&rsquo;re only using parts of our stack, I hope that at least some parts of the things I learned will be useful too you.</p>
+<p>Even if you&rsquo;re only using parts of our stack, I think that some of the things I learned will be useful too you.</p>
 
 <h1 id="it-felt-right-would-do-again-in-my-next-project">It felt right (would do again in my next project)</h1>
 
@@ -179,7 +179,7 @@ but for the past few months I can say without reserve that Kotlin has been nothi
 <p>Kotlin is Java, had it been designed in the past few years instead of having 20 years of legacy.
 Kotlin is Scala, had it been designed to be a productivity powerhouse instead of an academic language.</p>
 
-<p>It is pragmatic, elegant and with a very few footguns. It would be really painful for me to start a new project with
+<p>It is pragmatic, elegant, and with very few footguns. It would be really painful for me to start a new project with
 Java instead of Kotlin.</p>
 
 <h2 id="postgres">Postgres</h2>
@@ -280,17 +280,17 @@ to get the simplest features working.</p>
 <p>On the other side of the spectrum, we have Mobx. You feel really powerful when you design your first stores, because
 it just works.</p>
 
-<p>On the other hand, edge cases are rough. Some libraries like react-table just would not behave.</p>
+<p>On the other hand, edge cases are rough. Some libraries like react-table would just not behave.</p>
 
 <p>After using it for a year, I can probably list a few rules of thumbs:</p>
 
 <ul>
-<li>Create wrappers using <code>&lt;Observer /&gt;</code> for libraries using <code>shouldComponentUpdate</code> aggressively because they will mess up
+<li>Create wrappers using <code>&lt;Observer /&gt;</code> for libraries using <code>shouldComponentUpdate</code> aggressively, because they will mess up
 with the expectations of the developers</li>
 <li>Come up with strategies for serialization and deserialization early in the project with libraries like <a href="https://github.com/mobxjs/serializr" target="_blank">serilizr</a>.</li>
 </ul>
 
-<p>But it has a cost in terms of code and has a somewhat hidden learning curve that make it difficult to grasp for junior
+<p>But all of this has a cost in terms of code and has a somewhat hidden learning curve that make it difficult to grasp for junior
 developers.</p>
 
 <p>We also tried <a href="https://github.com/mobxjs/mobx-state-tree/" target="_blank">mobx-state-tree</a> and I love the ideas behind the library.
@@ -322,10 +322,10 @@ Remember there are no silver bullet and be careful when you design your frontend
 <p>Creating a good REST API is definitely something you should strive for and take the time to get right, if your business
 model requires it.</p>
 
-<p>Otherwise, I would go straight for GraphQL. It requires some design too, of course.</p>
+<p>Otherwise, I would go straight for GraphQL.</p>
 
-<p>I just feel that thinking your API in term of a cluster of objects comes more naturally to developers.
-It favors emergent design and it forces your developers and your business to get together and figure out the
+<p>I feel that thinking your API in term of a cluster of objects comes more naturally to developers.
+It favors emergent design and it encourages your developers and your business to get together and figure out the
 <a href="https://www.martinfowler.com/bliki/DDD_Aggregate.html" target="_blank">aggregates</a> in your model.</p>
 
 <p>If you want to go down this road early on and not even bother writing a fully-fledged backend server I would review
@@ -338,8 +338,8 @@ to make the most of it.
 We started the project without strict checks and it was a significant endeavor to change it, so we never had the time
 to do it.</p>
 
-<p>Every time we got an &ldquo;X is undefined&rdquo; error in the frontend, I regretted not imposing <code>strict: true</code> at the start of
-the project.</p>
+<p>Every time we got an &ldquo;X is undefined&rdquo; error in the frontend, I regretted not adding <code>strict: true</code> to the typescript
+configuration at the start of the project.</p>
 
 <h1 id="it-felt-wrong-would-never-do-again">It felt wrong (would never do again)</h1>
 
@@ -349,16 +349,16 @@ the project.</p>
 
 <p>We had too many errors that we could only see after deploying the product to production.</p>
 
-<p>Fortunately, most of them are easy to fix.
+<p>Fortunately, most of them were easy to fix.
 The errors we saw the most were differences in ordering and grouping between the two DBMS.</p>
 
 <p>Hence the rule: &ldquo;every SQL query shall have an ORDER BY clause&rdquo;.</p>
 
 <p>You can probably overcome those inconsistencies by setting up a CI build where your tests run against Postgres.</p>
 
-<p>But more importantly, we were not able to take full advantages of features like
+<p>But more importantly, we were not able to take full advantage of features like
 <a href="https://blog.jooq.org/2013/11/03/probably-the-coolest-sql-feature-window-functions/" target="_blank">window functions</a> or
-<a href="https://www.compose.com/articles/is-postgresql-your-next-json-database/" target="_blank">JSON data types</a> to name a few.</p>
+<a href="https://www.compose.com/articles/is-postgresql-your-next-json-database/" target="_blank">JSON data types</a>, to name a few.</p>
 
 <p>The next time I&rsquo;m starting a project I will use the same DBMS in development and in production.</p>
 
@@ -402,7 +402,7 @@ Moreover, you can only use the <code>internal</code> <a href="https://kotlinlang
 in Kotlin by splitting your code in modules.</p>
 
 <p>You can also split the service layer into smaller modules, as you would if you were designing micro-services,
-but still use them in your monolith.</p>
+and still use them in your monolith.</p>
 
 <h1 id="conclusion">Conclusion</h1>
 
