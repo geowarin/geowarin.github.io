@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://geowarin.github.io/what-i-did-wrong-as-a-cto/</loc>
+    <lastmod>2018-02-25T11:33:45+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://geowarin.github.io/archive/</loc>
     <lastmod>2018-02-22T18:12:49+01:00</lastmod>
   </url>
@@ -298,7 +303,7 @@
   
   <url>
     <loc>https://geowarin.github.io/</loc>
-    <lastmod>2018-02-22T18:12:49+01:00</lastmod>
+    <lastmod>2018-02-25T11:33:45+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -477,7 +482,7 @@
   
   <url>
     <loc>https://geowarin.github.io/post/</loc>
-    <lastmod>2016-04-12T00:00:00+00:00</lastmod>
+    <lastmod>2018-02-25T11:33:45+01:00</lastmod>
     <priority>0</priority>
   </url>
   

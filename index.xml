@@ -5,10 +5,22 @@
     <link>https://geowarin.github.io/</link>
     <description>Recent content on Geowarin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 22 Feb 2018 18:12:49 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 25 Feb 2018 11:33:45 +0100</lastBuildDate>
     
 	<atom:link href="https://geowarin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>What I Did Wrong as a CTO</title>
+      <link>https://geowarin.github.io/what-i-did-wrong-as-a-cto/</link>
+      <pubDate>Sun, 25 Feb 2018 11:33:45 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/what-i-did-wrong-as-a-cto/</guid>
+      <description>Being a CTO in a startup is much more than the technical side.
+However, the technical decisions you make early with software, especially in a timed-constraint environment like a startup, tend to stick with you for the rest of the project.
+In this article, I will be listing a few of the technical decisions I made.
+Some of them felt right at all time, some of them I hope not to make again.</description>
+    </item>
     
     <item>
       <title>Archive</title>
