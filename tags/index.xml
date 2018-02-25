@@ -20,6 +20,15 @@
     </item>
     
     <item>
+      <title>Architecture</title>
+      <link>https://geowarin.github.io/tags/architecture/</link>
+      <pubDate>Sun, 25 Feb 2018 11:33:45 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/tags/architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Async</title>
       <link>https://geowarin.github.io/tags/async/</link>
       <pubDate>Fri, 12 Jun 2015 00:00:00 +0000</pubDate>
@@ -272,6 +281,15 @@
     </item>
     
     <item>
+      <title>Kotlin</title>
+      <link>https://geowarin.github.io/tags/kotlin/</link>
+      <pubDate>Sun, 25 Feb 2018 11:33:45 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Login</title>
       <link>https://geowarin.github.io/tags/login/</link>
       <pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate>
@@ -310,7 +328,7 @@
     <item>
       <title>React</title>
       <link>https://geowarin.github.io/tags/react/</link>
-      <pubDate>Tue, 12 Apr 2016 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 25 Feb 2018 11:33:45 +0100</pubDate>
       
       <guid>https://geowarin.github.io/tags/react/</guid>
       <description></description>
@@ -322,6 +340,15 @@
       <pubDate>Tue, 12 Apr 2016 00:00:00 +0000</pubDate>
       
       <guid>https://geowarin.github.io/tags/redux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rest</title>
+      <link>https://geowarin.github.io/tags/rest/</link>
+      <pubDate>Sun, 25 Feb 2018 11:33:45 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/tags/rest/</guid>
       <description></description>
     </item>
     
