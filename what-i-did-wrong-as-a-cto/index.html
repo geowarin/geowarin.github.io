@@ -206,11 +206,12 @@ All of a sudden it was a world with window functions, views, schemas, users, and
 
 <h2 id="typescript-and-react">Typescript and React</h2>
 
-<p>I&rsquo;ve worked all my life with type-safe languages. I am 100% certain that it makes me more productive.
+<p>For most of my career, I&rsquo;ve worked with type-safe languages. I am 100% certain that they make me more productive.
 I can refactor my code and I have tremendous tools that empower me.</p>
 
-<p>I have worked on a JS project without types for 2 years. It was a successful project with a lot of javascript and a great UX,
-but it was hard to crank up new features or change old code.</p>
+<p>On the other hand, I have worked on a JS project without types for 2 years.
+It was a successful project with a lot of javascript and a great UX, but it was hard to crank up new features or
+change old code.</p>
 
 <p>I will never start a new project without typescript or flow. My heart tells me typescript is the right tool for me, but
 choosing any of the type-safe languages that compile to JS will make you more productive.</p>
@@ -253,7 +254,7 @@ I had to use or write custom plugins just to overcome the shortcomings of the to
 I want something like spring-boot, with good defaults, and I want it to be fast out-of-the-box.</p>
 
 <p>We used <a href="https://fuse-box.org/" target="_blank">fuse-box</a>, a very good bundler with an efficient cache.
-It is written in typescript and supports this language out-of-the box. Two decisive reasons for me.</p>
+It is written in typescript and readily supports this language. Two decisive reasons for me.</p>
 
 <p>I never regretted trusting the fuse-box team, they&rsquo;re doing a awesome job and they really listen to their community.</p>
 
@@ -313,7 +314,7 @@ Remember there are no silver bullets and be careful when you design your fronten
 
 <ul>
 <li>Should I add attributes to an existing REST resource? (overfetching)</li>
-<li>Should I add a new REST resources? (duplication)</li>
+<li>Should I add a new REST resource? (duplication)</li>
 <li>Should aggregate resources on the backend or the frontend? (inconsistency)</li>
 </ul>
 
@@ -328,7 +329,7 @@ model requires it.</p>
 It favors emergent design and it encourages your developers and your business to get together and figure out the
 <a href="https://www.martinfowler.com/bliki/DDD_Aggregate.html" target="_blank">aggregates</a> in your model.</p>
 
-<p>If you want to go down this road early on and not even bother writing a fully-fledged backend server I would review
+<p>If you want to go down this road early on and not even bother writing a fully-fledged backend server, I would review
 <a href="https://github.com/graphile/postgraphile" target="_blank">postgraphile</a> and <a href="https://www.graph.cool" target="_blank">graphcool</a> as great starting points.</p>
 
 <h2 id="not-using-strict-true-with-typescript">Not using &ldquo;strict: true&rdquo; with typescript</h2>
@@ -393,7 +394,7 @@ the project with multiple people working on the code.</p>
 <ul>
 <li><code>model</code>: mapping with your database and helpers</li>
 <li><code>services</code>: fetching and updating your database, only exports higher-level functions like Graphql endpoints</li>
-<li><code>web-backend</code>: things that depends on HTTP libraries</li>
+<li><code>web-backend</code>: things that depend on HTTP libraries</li>
 <li><code>web-frontend</code>: JS stuff</li>
 </ul>
 
