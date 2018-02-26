@@ -96,7 +96,7 @@ ga('send', 'pageview');
   <polyline points="12 6 12 12 15 15"/>
   
 </svg>
-10 mins read
+11 mins read
 </span>
 
 
@@ -323,7 +323,9 @@ Remember there are no silver bullets and be careful when you design your fronten
 <p>Creating a good REST API is definitely something you should strive for and take the time to get right, if your business
 model requires it.</p>
 
-<p>Otherwise, I would go straight for GraphQL.</p>
+<p>Otherwise, I would consider <a href="http://graphql.org/" target="_blank">GraphQL</a> very seriously.</p>
+
+<p>In our case, our model looked like a tree and not like small separated entities. That&rsquo;s also something to consider.</p>
 
 <p>I feel that thinking your API in terms of a cluster of objects comes more naturally to developers.
 It favors emergent design and it encourages your developers and your business to get together and figure out the
@@ -374,14 +376,30 @@ start of the day to boot it, and having a slightly worst developer experience is
 
 <h2 id="server-side-rendering">Server-Side Rendering</h2>
 
+<p>When building a Single Page App, you depend on your javascript to create the HTML that the user will interact with.</p>
+
+<p>With this approach, you ask the server to run the javascript for the page that was requested, and send the resulting
+HTML directly to your clients.</p>
+
+<p>It is believed that your users will have a better experience with this technique, especially on lower-end devices that
+will struggle to execute a big javascript files.</p>
+
+<p>It is also believed that this wields better SEO results, as it easier for crawlers to parse HTML than execute javascript.</p>
+
 <p>At the beginning of the project, I was sure I could take advantage of SSR.
 I had set up a few projects in JS that leveraged SSR in the past, and studied libraries like
 <a href="https://zeit.co/blog/next" target="_blank">nextjs</a> carefully.</p>
 
 <p>On the JVM, it is a bit less common, but I managed to pull something off using <a href="https://github.com/eclipsesource/J2V8/" target="_blank">J2V8</a>.</p>
 
-<p>The truth is SSR is a trade-off and I think most of web applications don&rsquo;t need to invest precious time in server-rendered
+<p>The truth is SSR is a trade-off and I think most of web applications don&rsquo;t need to invest time in server-rendered
 javascript.</p>
+
+<p>Besides, measuring the benefits of SSR is really tricky. You have to consider different metrics than the &ldquo;time to render&rdquo;.
+Take, for example, <a href="https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive" target="_blank">time to interactive</a>.</p>
+
+<p>It is a fascinating subject but it was foolish to spend time on this matter as SEO and slow processors were clearly
+not a priority for the business.</p>
 
 <p>Removing Server-Side Rendering was a good call, and reduced the overall complexity of the server code.</p>
 
@@ -408,8 +426,13 @@ the project with multiple people working on the code.</p>
 Moreover, you can only use the <code>internal</code> <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html" target="_blank">keyword</a>
 in Kotlin by splitting your code into modules.</p>
 
-<p>You can also split the service layer into smaller modules, as you would if you were designing micro-services,
-and still use them in your monolith.</p>
+<p>Later in the project, when you figure out cluster of domain objects that work together well, you should also split the service
+layer into smaller modules.</p>
+
+<p>Good examples might be the &ldquo;order module&rdquo;, the &ldquo;transaction module&rdquo;, or the &ldquo;security module&rdquo; depending on your domain.</p>
+
+<p>I like to thing of this approach as a stepping stone towards &ldquo;micro-services&rdquo;, without the complexity of deploying them
+as separate network entities.</p>
 
 <h1 id="conclusion">Conclusion</h1>
 
