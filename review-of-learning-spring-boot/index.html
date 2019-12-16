@@ -1,46 +1,122 @@
 <!DOCTYPE html>
-<html lang='en'>
-
-<head>
+<html lang='en'><head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <meta name='description' content='Review of the book Learning Spring Boot by Greg L. Turnquist'>
+<meta name='theme-color' content='#ffcd00'>
 
 <meta property='og:title' content='Review of Learning Spring Boot • Geowarin'>
 <meta property='og:description' content='Review of the book Learning Spring Boot by Greg L. Turnquist'>
 <meta property='og:url' content='https://geowarin.github.io/review-of-learning-spring-boot/'>
 <meta property='og:site_name' content='Geowarin'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='spring-boot'><meta property='article:tag' content='book'><meta property='article:tag' content='review'><meta property='article:published_time' content='2015-02-19T00:00:00Z'/><meta property='article:modified_time' content='2015-02-19T00:00:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@geowarin'>
+<meta property='og:type' content='article'><meta property='article:section' content='post'><meta property='article:tag' content='spring-boot'><meta property='article:tag' content='book'><meta property='article:tag' content='review'><meta property='article:published_time' content='2015-02-19T00:00:00Z'/><meta property='article:modified_time' content='2015-02-19T00:00:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@geowarin'>
 
-<meta name="generator" content="Hugo 0.36.1" />
+<meta name="generator" content="Hugo 0.61.0" />
 
   <title>Review of Learning Spring Boot • Geowarin</title>
   <link rel='canonical' href='https://geowarin.github.io/review-of-learning-spring-boot/'>
   
   
   <link rel='icon' href='/favicon.ico'>
-<link rel='stylesheet' href='/assets/css/main.9efb8af6.css'><link rel='stylesheet' href='/css/custom.css'>
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-46024908-1', 'auto');
-ga('send', 'pageview');
+<link rel='stylesheet' href='/assets/css/main.6a060eb7.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffcd00;}
+</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-46024908-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+  
 
 </head>
+<body class='page type-post has-sidebar'>
 
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
 
-<body class='page type-post'>
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      Geowarin
+      </a>
+    </h2>
+    <div class='desc'>
+    Web developer
+    </div>
+  </header>
 
-  <div class='site'>
+</section>
+<section class='widget widget-social_menu sep-after'><header>
+    <h4 class='title widget-title'>Social</h4>
+  </header><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='https://github.com/geowarin' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com/geowarin' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/geowarin' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section></div>
 
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><nav id='main-menu' class='menu main-menu' aria-label='Main Menu'>
+  <div class='container'>
     <a class='screen-reader-text' href='#content'>Skip to Content</a>
 
-    <div class='main'>
-
-      <nav id='main-menu' class='main-menu' aria-label='Main Menu'>
-  <div class='container'>
-    
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button>
     <ul><li class='item'>
         <a href='/'>Blog</a>
       </li><li class='item'>
@@ -51,8 +127,16 @@ ga('send', 'pageview');
         <a href='https://github.com/geowarin/blog-src'>Repo</a>
       </li></ul>
   </div>
-</nav>
-
+</nav><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Geowarin</a></li><li><a href='/post/'>Posts</a></li><li><span>Review of Learning Spring Boot</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
 
       <header id='header' class='header site-header'>
         <div class='container sep-after'>
@@ -74,8 +158,7 @@ ga('send', 'pageview');
 
 
     </div>
-    
-<div class='entry-meta'>
+    <div class='entry-meta'>
   <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
   
   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -110,18 +193,12 @@ ga('send', 'pageview');
   
 
   <div class='container entry-content'>
-  
-
-<p>Today, I&rsquo;ll be reviewing the first book ever written on Spring Boot, <a href="https://www.packtpub.com/application-development/learning-spring-boot" target="_blank">Learning Spring Boot</a>, by Greg L. Turnquist.
-Packt Publishing, the editor, contacted me to review it during its writing but I&rsquo;ll remain as unbiased as possible.</p>
-
-<p>It&rsquo;s a good book, well worth reading if you want to learn how spring boot works but more globally, it will
+  <p>Today, I'll be reviewing the first book ever written on Spring Boot, <a href="https://www.packtpub.com/application-development/learning-spring-boot">Learning Spring Boot</a>, by Greg L. Turnquist.
+Packt Publishing, the editor, contacted me to review it during its writing but I'll remain as unbiased as possible.</p>
+<p>It's a good book, well worth reading if you want to learn how spring boot works but more globally, it will
 give you good insights and tips on the capabilities of Spring and its integration with other technologies.</p>
-
 <h2 id="summary">Summary</h2>
-
 <p>The book has five chapters:</p>
-
 <ol>
 <li>Quick Start with Groovy</li>
 <li>Quick Start with java</li>
@@ -129,55 +206,38 @@ give you good insights and tips on the capabilities of Spring and its integratio
 <li>Data Access with Spring boot</li>
 <li>Securing your App with Spring Boot</li>
 </ol>
-
 <p>Each chapter is one big tutorial that you can follow along by coding. I guess you will be better off with the e-book version
-for copy-paste even if the entire code is <a href="https://github.com/learning-spring-boot/learning-spring-boot-code" target="_blank">available on github</a>.</p>
-
+for copy-paste even if the entire code is <a href="https://github.com/learning-spring-boot/learning-spring-boot-code">available on github</a>.</p>
 <p>It will be a better experience for mac users, as the author gives some instructions on how to install the dependencies (like Active MQ)
 with brew. I guess you can achieve the same results with a small effort on other platforms as well.</p>
-
 <h2 id="the-topics">The topics</h2>
-
 <h3 id="quick-start-with-groovy">Quick Start with Groovy</h3>
-
-<p>In the first chapter you will get started fast, using <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/cli-using-the-cli.html" target="_blank">Spring Boot&rsquo;s CLI</a> and groovy.
-I dig groovy so it&rsquo;s a nice start.</p>
-
-<p>You will get some basic notions of testing with <a href="https://code.google.com/p/spock/" target="_blank">spock</a>, manage javascript dependencies
-with WebJars and bower and learn how to use <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-remote-shell.html" target="_blank">CRaSH</a> to consult and monitor
+<p>In the first chapter you will get started fast, using <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/cli-using-the-cli.html">Spring Boot's CLI</a> and groovy.
+I dig groovy so it's a nice start.</p>
+<p>You will get some basic notions of testing with <a href="https://code.google.com/p/spock/">spock</a>, manage javascript dependencies
+with WebJars and bower and learn how to use <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-remote-shell.html">CRaSH</a> to consult and monitor
 your app through a remote shell which is amazing.</p>
-
 <h3 id="quick-start-with-java">Quick Start with java</h3>
-
 <p>In this chapter, you will build a classic java application with Spring Boot.
-But you&rsquo;ll also use the <a href="https://github.com/spring-projects/spring-social-github" target="_blank">Spring Social Github</a>, consume its API and leverage <a href="http://projects.spring.io/spring-mobile/" target="_blank">Spring Mobile</a> and jQuery mobile to
+But you'll also use the <a href="https://github.com/spring-projects/spring-social-github">Spring Social Github</a>, consume its API and leverage <a href="http://projects.spring.io/spring-mobile/">Spring Mobile</a> and jQuery mobile to
 develop a simple application working on mobile devices.</p>
-
 <h3 id="debugging-and-managing-your-app">Debugging and Managing Your App</h3>
-
-<p>This chapter is about <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-messaging.html" target="_blank">JMS integration</a> with either an in memory broker or with ActiveMQ.
+<p>This chapter is about <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-messaging.html">JMS integration</a> with either an in memory broker or with ActiveMQ.
 You will also add health checks, custom CRaSH commands and connect to your app with JMX to monitor your queue.</p>
-
 <h3 id="data-access-with-spring-boot">Data Access with Spring Boot</h3>
-
-<p>In this chapter, you will use Spring Data and <a href="http://projects.spring.io/spring-data-rest/" target="_blank">Spring Data Rest</a> with either H2 and MySQL or Mongo
+<p>In this chapter, you will use Spring Data and <a href="http://projects.spring.io/spring-data-rest/">Spring Data Rest</a> with either H2 and MySQL or Mongo
 and produce a RESTful, discoverable json API.
 You will use profiles to use different configuration in development and in production.</p>
-
 <h3 id="securing-your-app-with-spring-boot">Securing Your App with Spring Boot</h3>
-
-<p>In this chapter you will get dig into <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html" target="_blank">Spring Security</a>
+<p>In this chapter you will get dig into <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html">Spring Security</a>
 with basic http auth, in memory authentication and create a real in database security model.
-You will also learn how to configure your Tomcat to be more secure <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/howto-embedded-servlet-containers.html#howto-configure-ssl" target="_blank">using SSL</a>.</p>
-
+You will also learn how to configure your Tomcat to be more secure <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/howto-embedded-servlet-containers.html#howto-configure-ssl">using SSL</a>.</p>
 <h2 id="conclusion">Conclusion</h2>
-
 <p>Whatever are your current skills with Spring, you will undoubtedly learn some new things reading the book.
 I did and I enjoyed the experience. The topics addressed by Greg L. Turnquist are diverse and interesting
 and the book is easy to follow.</p>
-
 <p>If you work with Spring often, you have to understand how Spring Boot works.
-It&rsquo;s an amazing tool for fast prototyping and a wonderful way to dig deeper into the framework by small increments.</p>
+It's an amazing tool for fast prototyping and a wonderful way to dig deeper into the framework by small increments.</p>
 
 </div>
 
@@ -221,23 +281,19 @@ It&rsquo;s an amazing tool for fast prototyping and a wonderful way to dig deepe
 
     </div>
     <div class='container sep-before'>
-        <div class='categories'>
-  <span class='taxonomy-icon'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+        <div class='categories'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
   
   <path d="M22,19a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V5A2,2,0,0,1,4,3H9l2,3h9a2,2,0,0,1,2,2Z"/>
   
 </svg>
-</span>
-  <span class='screen-reader-text'>Categories: </span><a class='category' href='/categories/spring-boot'>Spring-boot</a></div>
-<div class='tags'>
-  <span class='taxonomy-icon'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+<span class='screen-reader-text'>Categories: </span><a class='category' href='/categories/spring-boot/'>spring-boot</a></div>
+<div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
   
   <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
   <line x1="7" y1="7" x2="7" y2="7"/>
   
 </svg>
-</span>
-  <span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/spring-boot'>Spring-boot</a>, <a class='tag' href='/tags/book'>Book</a>, <a class='tag' href='/tags/review'>Review</a></div>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/spring-boot/'>spring-boot</a>, <a class='tag' href='/tags/book/'>book</a>, <a class='tag' href='/tags/review/'>review</a></div>
 
     </div>
 </footer>
@@ -270,78 +326,24 @@ It&rsquo;s an amazing tool for fast prototyping and a wonderful way to dig deepe
 </nav>
 
 
-<section class='comments'>
-  <div class='container sep-before'>
-    <div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "geowarin" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-  </div>
-</section>
 
 
       </main>
 
       <footer id='footer' class='footer'>
-        <div class='container sep-before'>
-          <section class='widget widget-social_menu sep-after'><header>
-    <h4 class='title widget-title'>Social</h4>
-  </header><nav aria-label='Social Menu'>
-    <ul><li>
-        <a href='https://github.com/geowarin' target='_blank' rel='noopener'>
-          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-  
-</svg>
-</a>
-      </li><li>
-        <a href='https://twitter.com/geowarin' target='_blank' rel='noopener'>
-          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
-  
-</svg>
-</a>
-      </li><li>
-        <a href='https://linkedin.com/in/geowarin' target='_blank' rel='noopener'>
-          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-  <rect x="2" y="9" width="4" height="12"/>
-  <circle cx="4" cy="4" r="2"/>
-  
-</svg>
-</a>
-      </li></ul>
-  </nav>
-</section>
-
-          <div class='copyright'>
-  <p> &copy; 2017-2018 geowarin </p>
+        <div class='container sep-before'><div class='copyright'>
+  <p> &copy; 2017-2019 geowarin </p>
 </div>
 
         </div>
       </footer>
 
     </div>
-  </div><script src='/assets/js/main.89545a27.js'></script></body>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.67d669ac.js'></script>
+
+</body>
 
 </html>
 
