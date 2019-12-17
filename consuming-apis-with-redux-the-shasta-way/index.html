@@ -301,7 +301,7 @@ according to a glob expression.</p>
 <p>Here is a quick glance at the Root component of our application.
 It is very classic, just note that Shasta adds support for additional PropTypes
 like routes or immutable types.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;react&#34;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;react&#34;</span>;
 <span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">Provider</span>, <span style="color:#a6e22e">Component</span>, <span style="color:#a6e22e">PropTypes</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;shasta&#34;</span>;
 <span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">Router</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;shasta-router&#34;</span>;
 
@@ -316,11 +316,11 @@ like routes or immutable types.</p>
   <span style="color:#a6e22e">render</span> () {
     <span style="color:#66d9ef">const</span> {<span style="color:#a6e22e">store</span>, <span style="color:#a6e22e">history</span>, <span style="color:#a6e22e">routes</span>} <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">props</span>;
     <span style="color:#66d9ef">return</span> (
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Provider</span> <span style="color:#a6e22e">store</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">store</span>}<span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Router</span> <span style="color:#a6e22e">history</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">history</span>}<span style="color:#f92672">&gt;</span>
+      &lt;<span style="color:#f92672">Provider</span> <span style="color:#a6e22e">store</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">store</span>}&gt;
+        &lt;<span style="color:#f92672">Router</span> <span style="color:#a6e22e">history</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">history</span>}&gt;
           {<span style="color:#a6e22e">routes</span>}
-        <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">R</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">P</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+        &lt;/<span style="color:#f92672">Router</span>&gt;
+      &lt;/<span style="color:#f92672">Provider</span>&gt;
     )
   }
 }
@@ -342,7 +342,7 @@ Just to show the ideas behind Shasta, here is the reducer for our sacred counter
 </code></pre></div><p>Here, you see a very straightforward implementation of a reducer.
 It leverages the ImmutableJS API to create those nice little one-liners.</p>
 <p>Here is how to use those reducers as actions in your views:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;react&#34;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;react&#34;</span>;
 <span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">connect</span>, <span style="color:#a6e22e">Component</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;shasta&#34;</span>;
 <span style="color:#66d9ef">import</span> <span style="color:#a6e22e">actions</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;../core/actions&#34;</span>;
 
@@ -352,21 +352,21 @@ It leverages the ImmutableJS API to create those nice little one-liners.</p>
 <span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Counter</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Component</span> {
 
   <span style="color:#a6e22e">render</span>() {
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h2</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Counter</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">2</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+    <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">div</span>&gt;
+      &lt;<span style="color:#f92672">h2</span>&gt;<span style="color:#a6e22e">Counter</span>&lt;/<span style="color:#f92672">h2</span>&gt;
 
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">p</span><span style="color:#f92672">&gt;</span>{<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">count</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+      &lt;<span style="color:#f92672">p</span>&gt;{<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">count</span>}&lt;/<span style="color:#f92672">p</span>&gt;
 
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">actions</span>.<span style="color:#a6e22e">counter</span>.<span style="color:#a6e22e">increment</span>()}<span style="color:#f92672">&gt;</span>
+      &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">actions</span>.<span style="color:#a6e22e">counter</span>.<span style="color:#a6e22e">increment</span>()}&gt;
         <span style="color:#a6e22e">Increment</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">actions</span>.<span style="color:#a6e22e">counter</span>.<span style="color:#a6e22e">decrement</span>()}<span style="color:#f92672">&gt;</span>
+      &lt;/<span style="color:#f92672">button</span>&gt;
+      &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">actions</span>.<span style="color:#a6e22e">counter</span>.<span style="color:#a6e22e">decrement</span>()}&gt;
         <span style="color:#a6e22e">Decrement</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">actions</span>.<span style="color:#a6e22e">counter</span>.<span style="color:#a6e22e">reset</span>()}<span style="color:#f92672">&gt;</span>
+      &lt;/<span style="color:#f92672">button</span>&gt;
+      &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">actions</span>.<span style="color:#a6e22e">counter</span>.<span style="color:#a6e22e">reset</span>()}&gt;
         <span style="color:#a6e22e">Reset</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
-    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+      &lt;/<span style="color:#f92672">button</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
   }
 }
 </code></pre></div><p>With our lookup file setup, there is nothing else to do.
@@ -390,7 +390,7 @@ work seamlessly with immutable data types.</p>
 This will help us store our entities in a normalized way as we will see in a moment.</p>
 <p>Under the hood, Tahoe uses superagent to make HTTP requests.</p>
 <p>Let's see how to use this in a view:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;react&#34;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;react&#34;</span>;
 <span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">connect</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;shasta&#34;</span>;
 <span style="color:#66d9ef">import</span> <span style="color:#a6e22e">actions</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;../core/actions&#34;</span>;
 <span style="color:#66d9ef">import</span> <span style="color:#a6e22e">DataComponent</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;shasta-data-view&#34;</span>;
@@ -408,26 +408,26 @@ This will help us store our entities in a normalized way as we will see in a mom
 
   <span style="color:#a6e22e">renderLoader</span> () {
     <span style="color:#66d9ef">return</span> (
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+      &lt;<span style="color:#f92672">div</span>&gt;
         <span style="color:#a6e22e">Loading</span>...
-      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+      &lt;/<span style="color:#f92672">div</span>&gt;
     )
   }
 
   <span style="color:#a6e22e">renderData</span> ({<span style="color:#a6e22e">joke</span>}) {
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h2</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Chuck</span> <span style="color:#a6e22e">Norris</span> <span style="color:#a6e22e">Fact</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">2</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+    <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">div</span>&gt;
+      &lt;<span style="color:#f92672">h2</span>&gt;<span style="color:#a6e22e">Chuck</span> <span style="color:#a6e22e">Norris</span> <span style="color:#a6e22e">Fact</span>&lt;/<span style="color:#f92672">h2</span>&gt;
 
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">p</span><span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">joke</span>.<span style="color:#a6e22e">getIn</span>([<span style="color:#e6db74">&#39;value&#39;</span>, <span style="color:#e6db74">&#39;joke&#39;</span>])}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
-    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+      &lt;<span style="color:#f92672">p</span>&gt;{<span style="color:#a6e22e">joke</span>.<span style="color:#a6e22e">getIn</span>([<span style="color:#e6db74">&#39;value&#39;</span>, <span style="color:#e6db74">&#39;joke&#39;</span>])}&lt;/<span style="color:#f92672">p</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
   }
 
   <span style="color:#a6e22e">renderErrors</span> (<span style="color:#a6e22e">errors</span>) {
     <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">errors</span>);
     <span style="color:#66d9ef">return</span> (
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+      &lt;<span style="color:#f92672">div</span>&gt;
         <span style="color:#a6e22e">There</span> <span style="color:#a6e22e">was</span> <span style="color:#a6e22e">an</span> <span style="color:#a6e22e">error</span> <span style="color:#a6e22e">fetching</span> <span style="color:#a6e22e">Chuck</span> <span style="color:#a6e22e">Norris</span> <span style="color:#a6e22e">facts</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+      &lt;/<span style="color:#f92672">div</span>&gt;
     )
   }
 }
@@ -460,26 +460,25 @@ in our JSON response is actually an entity.</p>
 });
 </code></pre></div><p>Normalizr will create a map of jokes indexed by ids and store it in <code>api.entities.jokes</code>.
 Which allows us to write something like so:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">connect</span>({
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">connect</span>({
   <span style="color:#a6e22e">jokes</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;api.entities.jokes&#39;</span>
 })
 <span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ChuckFact</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">DataComponent</span> {
 
   <span style="color:#a6e22e">renderData</span> ({<span style="color:#a6e22e">jokes</span>}) {
     <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">jokesEl</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">jokes</span>.<span style="color:#a6e22e">valueSeq</span>().<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">joke</span>, <span style="color:#a6e22e">id</span>) =&gt; {
-      <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span> <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">id</span>}<span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">joke</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;joke&#39;</span>)}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+      <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">id</span>}&gt;{<span style="color:#a6e22e">joke</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;joke&#39;</span>)}&lt;/<span style="color:#f92672">div</span>&gt;
     });
 
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h2</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Chuck</span> <span style="color:#a6e22e">Norris</span> <span style="color:#a6e22e">Fact</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">2</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+    <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">div</span>&gt;
+      &lt;<span style="color:#f92672">h2</span>&gt;<span style="color:#a6e22e">Chuck</span> <span style="color:#a6e22e">Norris</span> <span style="color:#a6e22e">Fact</span>&lt;/<span style="color:#f92672">h2</span>&gt;
 
       {<span style="color:#a6e22e">jokesEl</span>}
-    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+    &lt;/<span style="color:#f92672">div</span>&gt;
   }
 }
 </code></pre></div><p>We can also use a function in the <code>@connect</code> decorator:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">getFirstJoke</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">store</span>) =&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">getFirstJoke</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">store</span>) =&gt; {
   <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">getIn</span>([<span style="color:#e6db74">&#39;api&#39;</span>, <span style="color:#e6db74">&#39;subsets&#39;</span>, <span style="color:#e6db74">&#39;myJoke&#39;</span>, <span style="color:#e6db74">&#39;data&#39;</span>, <span style="color:#e6db74">&#39;value&#39;</span>, <span style="color:#e6db74">&#39;joke&#39;</span>]);
 };
 
@@ -495,14 +494,13 @@ Which allows us to write something like so:</p>
   }
 
   <span style="color:#a6e22e">renderData</span> ({<span style="color:#a6e22e">joke</span>}) {
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h2</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Chuck</span> <span style="color:#a6e22e">Norris</span> <span style="color:#a6e22e">Fact</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">2</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+    <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">div</span>&gt;
+      &lt;<span style="color:#f92672">h2</span>&gt;<span style="color:#a6e22e">Chuck</span> <span style="color:#a6e22e">Norris</span> <span style="color:#a6e22e">Fact</span>&lt;/<span style="color:#f92672">h2</span>&gt;
 
       {<span style="color:#a6e22e">joke</span>}
-    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+    &lt;/<span style="color:#f92672">div</span>&gt;
   }
 }
-
 </code></pre></div><h2 id="conclusion">Conclusion</h2>
 <p>I'm very excited about Shasta.
 It solves a long-standing problem in the React community with an unmatched elegance.</p>
