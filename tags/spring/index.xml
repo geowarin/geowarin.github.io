@@ -21,7 +21,8 @@ But if you add this dependency :
 testImplementation(&amp;#34;io.projectreactor:reactor-tools&amp;#34;) And click on this little funnel:
 You get this:
 Much better!
-Sources: Intellij blog</description>
+Sources:
+ Intellij blog  </description>
     </item>
     
     <item>
