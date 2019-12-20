@@ -24,6 +24,10 @@
     color: #dd4b39
 }
 
+.article-share.buffer {
+    color: #37474f;
+}
+
 .article-share.comments {
     color: #3b5998
 }
