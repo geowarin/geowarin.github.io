@@ -5,10 +5,24 @@
     <link>https://geowarin.github.io/post/</link>
     <description>Recent content in Posts on Geowarin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 25 Feb 2018 11:33:45 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 20 Dec 2019 21:04:54 +0100</lastBuildDate>
     
 	<atom:link href="https://geowarin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Debugging Webflux with IntelliJ</title>
+      <link>https://geowarin.github.io/debugging-webflux-with-intellij/</link>
+      <pubDate>Fri, 20 Dec 2019 21:04:54 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/debugging-webflux-with-intellij/</guid>
+      <description>By default, when you try to debug project reactor calls, you get something like this:
+But if you add this dependency :
+testImplementation(&amp;#34;io.projectreactor:reactor-tools&amp;#34;) And click on this little funnel:
+You get this:
+Much better!
+Sources: Intellij blog</description>
+    </item>
     
     <item>
       <title>What I Did Wrong as a CTO</title>

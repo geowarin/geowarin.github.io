@@ -5,10 +5,19 @@
     <link>https://geowarin.github.io/categories/</link>
     <description>Recent content in Categories on Geowarin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 25 Feb 2018 11:33:45 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 20 Dec 2019 21:04:54 +0100</lastBuildDate>
     
 	<atom:link href="https://geowarin.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>webflux</title>
+      <link>https://geowarin.github.io/categories/webflux/</link>
+      <pubDate>Fri, 20 Dec 2019 21:04:54 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/categories/webflux/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>architecture</title>

@@ -5,10 +5,19 @@
     <link>https://geowarin.github.io/tags/</link>
     <description>Recent content in Tags on Geowarin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 25 Feb 2018 11:33:45 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 20 Dec 2019 21:04:54 +0100</lastBuildDate>
     
 	<atom:link href="https://geowarin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>spring</title>
+      <link>https://geowarin.github.io/tags/spring/</link>
+      <pubDate>Fri, 20 Dec 2019 21:04:54 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/tags/spring/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>architecture</title>
@@ -88,15 +97,6 @@
       <pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://geowarin.github.io/tags/social/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>spring</title>
-      <link>https://geowarin.github.io/tags/spring/</link>
-      <pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://geowarin.github.io/tags/spring/</guid>
       <description></description>
     </item>
     
