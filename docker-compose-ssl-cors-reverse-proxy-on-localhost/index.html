@@ -214,7 +214,7 @@ On the repo, the authors give instructions to run the tool, a nodejs application
         <span style="color:#a6e22e">data-ackee-domain-id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;67bfa855-7569-4d29-a0a3-a2f4ceae2ea3&#34;</span>
         <span style="color:#a6e22e">data-ackee-opts</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{ &#34;ignoreLocalhost&#34;: false }&#39;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
 </code></pre></div><p>The problem is that <code>localhost:1313</code>, where my blog runs locally, cannot send json requests to <code>https:localhost</code>
-or whichever host ackee is running on, if they differ in name/port, etc.</p>
+or whichever host Ackee is running on, if they differ in name/port, etc.</p>
 <p>This is a browser built-in protection know as <em>CORS</em>.</p>
 <p>To allow the browser to make a certain type of requests (like json request) to another host, this host must explicitly
 allow it by responding with the following headers to a preflight request (with the OPTION http verb):</p>
@@ -232,7 +232,7 @@ More info can be found in the <a href="https://fetch.spec.whatwg.org/#http-cors-
 <li>You should use a properly signed certificate in production</li>
 </ul>
 <p>However, I thought it would be a good occasion to learn something new.
-And I really wanted ackee to work locally.</p>
+And I really wanted Ackee to work locally.</p>
 <h1 id="the-solution">The solution</h1>
 <p>Credits to Nickolas Kraus who wrote a <a href="https://nickolaskraus.org/articles/how-to-create-a-self-signed-certificate-for-nginx-on-macos/">very good article</a>
 on how to run nginx with self-signed certificates.</p>
@@ -364,7 +364,7 @@ services:
     restart: always
     volumes:
       - ./data:/data/db
-</code></pre></div><p>Note the <code>depends_on</code> line which will make the ackee container available inside the docker network on http://ackee.</p>
+</code></pre></div><p>Note the <code>depends_on</code> line which will make the Ackee container available inside the docker network on http://ackee.</p>
 <p>With that, we have a nodeJS application running behind nginx with HTTPS and CORS enabled!</p>
 <p><img src="/assets/images/articles/2019/2019-12-21-success.png" alt="It works"></p>
 <p>Resources:</p>
