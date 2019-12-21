@@ -240,9 +240,10 @@ on how to run nginx with self-signed certificates.</p>
 <p>I just added docker-compose and CORS headers into the mix.</p>
 <h2 id="generating-the-cerficates">Generating the cerficates</h2>
 <p>Here is a shell script that will create <code>self-signed.crt</code>, <code>self-signed.key</code> and <code>dhparam.pem</code>, your self-signed certificates.
-It will also add it to the macOS trustore.</p>
-<p>For other platforms, <a href="https://github.com/Busindre/How-to-Add-trusted-root-certificates">see here</a>.
+It will also add it to the macOS trust store.</p>
+<p>This will work immediately with Chrome.
 Firefox has its own store and you will have to manually add the certificate upon the first connection.</p>
+<p>For other platforms, <a href="https://github.com/Busindre/How-to-Add-trusted-root-certificates">see here</a>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/usr/bin/env bash
 </span><span style="color:#75715e"></span>
 mkdir -p nginx
