@@ -18,11 +18,6 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/docker-compose-ssl-cors-reverse-proxy-on-localhost/</loc>
-    <lastmod>2019-12-21T00:24:53+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://geowarin.github.io/</loc>
     <lastmod>2019-12-21T00:24:53+01:00</lastmod>
   </url>
@@ -34,6 +29,11 @@
   
   <url>
     <loc>https://geowarin.github.io/post/</loc>
+    <lastmod>2019-12-21T00:24:53+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geowarin.github.io/reverse-proxy-on-docker-compose-with-cors-and-ssl/</loc>
     <lastmod>2019-12-21T00:24:53+01:00</lastmod>
   </url>
   
@@ -198,12 +198,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/groovy/</loc>
+    <loc>https://geowarin.github.io/categories/groovy/</loc>
     <lastmod>2016-01-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/groovy/</loc>
+    <loc>https://geowarin.github.io/tags/groovy/</loc>
     <lastmod>2016-01-20T00:00:00+00:00</lastmod>
   </url>
   
@@ -213,12 +213,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/testing/</loc>
+    <loc>https://geowarin.github.io/categories/testing/</loc>
     <lastmod>2016-01-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/testing/</loc>
+    <loc>https://geowarin.github.io/tags/testing/</loc>
     <lastmod>2016-01-20T00:00:00+00:00</lastmod>
   </url>
   
@@ -233,12 +233,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/12-factors/</loc>
+    <loc>https://geowarin.github.io/tags/12-factors/</loc>
     <lastmod>2016-01-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/12-factors/</loc>
+    <loc>https://geowarin.github.io/categories/12-factors/</loc>
     <lastmod>2016-01-11T00:00:00+00:00</lastmod>
   </url>
   
@@ -608,12 +608,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/eclipse/</loc>
+    <loc>https://geowarin.github.io/categories/eclipse/</loc>
     <lastmod>2013-01-18T04:20:19+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/eclipse/</loc>
+    <loc>https://geowarin.github.io/tags/eclipse/</loc>
     <lastmod>2013-01-18T04:20:19+00:00</lastmod>
   </url>
   
