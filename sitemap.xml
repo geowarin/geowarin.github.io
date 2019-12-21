@@ -18,7 +18,7 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/docker-compose-ssl/cors-reverse-proxy-on-localhost/</loc>
+    <loc>https://geowarin.github.io/docker-compose-ssl-cors-reverse-proxy-on-localhost/</loc>
     <lastmod>2019-12-21T00:24:53+01:00</lastmod>
   </url>
   
@@ -103,12 +103,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/redux/</loc>
+    <loc>https://geowarin.github.io/tags/redux/</loc>
     <lastmod>2016-04-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/redux/</loc>
+    <loc>https://geowarin.github.io/categories/redux/</loc>
     <lastmod>2016-04-12T00:00:00+00:00</lastmod>
   </url>
   
@@ -483,12 +483,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/xpath/</loc>
+    <loc>https://geowarin.github.io/categories/xpath/</loc>
     <lastmod>2014-01-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/xpath/</loc>
+    <loc>https://geowarin.github.io/tags/xpath/</loc>
     <lastmod>2014-01-30T00:00:00+00:00</lastmod>
   </url>
   
@@ -548,12 +548,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/hibernate/</loc>
+    <loc>https://geowarin.github.io/categories/hibernate/</loc>
     <lastmod>2013-01-21T23:44:07+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/hibernate/</loc>
+    <loc>https://geowarin.github.io/tags/hibernate/</loc>
     <lastmod>2013-01-21T23:44:07+00:00</lastmod>
   </url>
   
