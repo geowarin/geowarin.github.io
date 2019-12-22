@@ -19,6 +19,7 @@
       <description>By default, when you try to debug project reactor calls, you get something like this:
 But if you add this dependency :
 testImplementation(&amp;#34;io.projectreactor:reactor-tools&amp;#34;) And click on this little funnel:
+Also ensure that you have the reactor plugin and that its properly configured.
 You get this:
 Much better!
 Sources:
