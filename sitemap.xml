@@ -3,12 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://geowarin.github.io/categories/architecture/</loc>
-    <lastmod>2019-12-21T00:24:53+01:00</lastmod>
+    <loc>https://geowarin.github.io/categories/</loc>
+    <lastmod>2019-12-22T01:47:32+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/</loc>
+    <loc>https://geowarin.github.io/categories/dev/</loc>
+    <lastmod>2019-12-22T01:47:32+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geowarin.github.io/</loc>
+    <lastmod>2019-12-22T01:47:32+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geowarin.github.io/tags/git/</loc>
+    <lastmod>2019-12-22T01:47:32+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geowarin.github.io/tags/intellij/</loc>
+    <lastmod>2019-12-22T01:47:32+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geowarin.github.io/post/</loc>
+    <lastmod>2019-12-22T01:47:32+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geowarin.github.io/share-intellij-run-configurations-with-git/</loc>
+    <lastmod>2019-12-22T01:47:32+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geowarin.github.io/tags/</loc>
+    <lastmod>2019-12-22T01:47:32+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geowarin.github.io/categories/architecture/</loc>
     <lastmod>2019-12-21T00:24:53+01:00</lastmod>
   </url>
   
@@ -18,27 +53,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/</loc>
-    <lastmod>2019-12-21T00:24:53+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://geowarin.github.io/tags/nginx/</loc>
     <lastmod>2019-12-21T00:24:53+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/post/</loc>
-    <lastmod>2019-12-21T00:24:53+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://geowarin.github.io/reverse-proxy-on-docker-compose-with-cors-and-ssl/</loc>
-    <lastmod>2019-12-21T00:24:53+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geowarin.github.io/tags/</loc>
     <lastmod>2019-12-21T00:24:53+01:00</lastmod>
   </url>
   
@@ -103,12 +123,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/redux/</loc>
+    <loc>https://geowarin.github.io/tags/redux/</loc>
     <lastmod>2016-04-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/redux/</loc>
+    <loc>https://geowarin.github.io/categories/redux/</loc>
     <lastmod>2016-04-12T00:00:00+00:00</lastmod>
   </url>
   
@@ -483,12 +503,12 @@
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/categories/xpath/</loc>
+    <loc>https://geowarin.github.io/tags/xpath/</loc>
     <lastmod>2014-01-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geowarin.github.io/tags/xpath/</loc>
+    <loc>https://geowarin.github.io/categories/xpath/</loc>
     <lastmod>2014-01-30T00:00:00+00:00</lastmod>
   </url>
   

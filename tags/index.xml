@@ -5,10 +5,28 @@
     <link>https://geowarin.github.io/tags/</link>
     <description>Recent content in Tags on Geowarin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 21 Dec 2019 00:24:53 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 22 Dec 2019 01:47:32 +0100</lastBuildDate>
     
 	<atom:link href="https://geowarin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>git</title>
+      <link>https://geowarin.github.io/tags/git/</link>
+      <pubDate>Sun, 22 Dec 2019 01:47:32 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>intellij</title>
+      <link>https://geowarin.github.io/tags/intellij/</link>
+      <pubDate>Sun, 22 Dec 2019 01:47:32 +0100</pubDate>
+      
+      <guid>https://geowarin.github.io/tags/intellij/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>docker</title>
