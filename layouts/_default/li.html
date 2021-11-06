@@ -1,0 +1,15 @@
+<li class='item'>
+  <div class='meta'>
+    {{ partial "list/date" . }}
+  </div>
+  <header class='item-header'>
+    <h3 class='item-title'>
+      <a href='{{ .Permalink | relURL }}'>
+        {{- .Title -}}
+      </a>
+      <p class="desc" style="margin-top: 0.5em; font-size: 0.9em">
+        {{ .Description }}
+      </p>
+    </h3>
+  </header>
+</li>
