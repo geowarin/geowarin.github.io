@@ -1,0 +1,473 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="The perfect setup for Spring boot and React hot loader">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Spring Boot and React hot loader • Geowarin">
+<meta property="og:description" content="The perfect setup for Spring boot and React hot loader">
+<meta property="og:url" content="https://geowarin.github.io/spring-boot-and-react-hot-loader/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="spring"><meta property="article:tag" content="spring-boot"><meta property="article:tag" content="react"><meta property="article:tag" content="javascript"><meta property="article:tag" content="hot-reload"><meta property="article:tag" content="groovy"><meta property="article:tag" content="featured"><meta property="article:published_time" content="2015-08-05T00:00:00Z"><meta property="article:modified_time" content="2015-08-05T00:00:00Z"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Spring Boot and React hot loader • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/spring-boot-and-react-hot-loader/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Spring Boot and React hot loader</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Spring Boot and React hot loader</h1>
+<p class=desc>The perfect setup for Spring boot and React hot loader</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2015-08-05T00:00:00Z>2015, Aug 05</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+7 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>When I develop web applications, I love using React.
+I&rsquo;m also a Spring and groovy addict.</p>
+<p>Those two stacks make me more productive.
+Can we have the best of both worlds?</p>
+<p>I will show you step by step how I created
+<a href=https://github.com/geowarin/boot-react>this project</a>.
+Feel free to fiddle with it and give me your feedback.</p>
+<h2 id=goal>Goal</h2>
+<p>My perfect stack on the backend is to use Spring boot and groovy.
+With the latest version of Spring boot, there is a new tool called
+<a href=https://spring.io/blog/2015/06/17/devtools-in-spring-boot-1-3>dev-tools</a> that
+will automatically reload the embedded server when you recompile your project.</p>
+<p>On the frontend, most React developers use <a href=http://webpack.github.io/>webpack</a>.
+React has awesome support for hot reloading with <a href=https://github.com/gaearon/react-hot-loader>react-hot-loader</a>.
+It will magically update your views without requiring you to refresh your browser.
+Because React encourages your to have a unidirectional data flow, your whole
+application can use hot reloading every time you save.
+For this to work, we have to launch a <a href=http://webpack.github.io/docs/webpack-dev-server.html>webpack dev server</a>.</p>
+<p>The problem when you launch your Spring boot server on the port 8080 and the
+dev server on the port 3000 is that you will get cross origin requests preventing
+the two servers from interacting.</p>
+<p>We also want to isolate the two projects and make separate gradle modules.</p>
+<p>This blog post will show a solution to this problem and will provide an
+enjoyable dev environment.</p>
+<p>This might not be the perfect solution and I&rsquo;d love any feedback from
+both communities to help me improve it.</p>
+<h2 id=the-backend>The backend</h2>
+<p>We will generate the backend. To do that, you can go on <a href=http://start.spring.io/>http://start.spring.io/</a>
+and create a <strong>gradle project</strong> using <strong>groovy</strong>, <strong>java 8</strong> and the latest Spring boot
+(<strong>1.3.0 M2</strong> at the time of writing).</p>
+<p>For the dependencies tick <strong>DevTools</strong> and <strong>Web</strong>.</p>
+<p>If you want to do it command line style just type the following in your console:</p>
+<pre tabindex=0><code>curl https://start.spring.io/starter.tgz \
+-d name=boot-react  \
+-d bootVersion=1.3.0.M2 \
+-d dependencies=devtools,web \
+-d language=groovy \
+-d JavaVersion=1.8 \
+-d type=gradle-project \
+-d packageName=react \
+-d packaging=jar \
+-d artifactId=boot-react \
+-d baseDir=boot-react | tar -xzvf -
+</code></pre><p>This will create a base project with the latest spring boot, the devtools, groovy
+and gradle.</p>
+<p>Don&rsquo;t forget to generate the gradle wrapper:</p>
+<pre tabindex=0><code>gradle wrapper
+</code></pre><p>See the <a href=https://github.com/geowarin/boot-react/commit/c290269a9e105688b38dcc6cc0b3293ec85199e6>commit</a></p>
+<p>Great so now we have tomcat embedded, hot reloading and supernatural groovy
+strength. The usual.</p>
+<p>We will create a simple REST resource that we would like our frontend to consume:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy><span style=color:#a6e22e>@RestController</span>
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SimpleResource</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#a6e22e>@RequestMapping</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;/api/simple&#39;</span><span style=color:#f92672>)</span>
+    Map <span style=color:#a6e22e>resource</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#f92672>[</span>simple: <span style=color:#e6db74>&#39;resource&#39;</span><span style=color:#f92672>]</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h2 id=the-frontend>The frontend</h2>
+<p>As mentioned before, we want the frontend to be a separated project.
+We will create a gradle module for that.</p>
+<p>At the root of your project add a <code>settings.gradle</code> file with the following
+content:</p>
+<pre tabindex=0><code>include 'frontend'
+</code></pre><p>Now, create a <code>frontend</code> directory under the project root and add a build.gradle
+file in it:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>plugins <span style=color:#f92672>{</span>
+    id <span style=color:#e6db74>&#34;com.moowork.node&#34;</span> version <span style=color:#e6db74>&#34;0.10&#34;</span>
+<span style=color:#f92672>}</span>
+
+version <span style=color:#e6db74>&#39;0.0.1&#39;</span>
+
+task <span style=color:#a6e22e>bundle</span><span style=color:#f92672>(</span>type: NpmTask<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    args <span style=color:#f92672>=</span> <span style=color:#f92672>[</span><span style=color:#e6db74>&#39;run&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;bundle&#39;</span><span style=color:#f92672>]</span>
+<span style=color:#f92672>}</span>
+
+task <span style=color:#a6e22e>start</span><span style=color:#f92672>(</span>type: NpmTask<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    args <span style=color:#f92672>=</span> <span style=color:#f92672>[</span><span style=color:#e6db74>&#39;start&#39;</span><span style=color:#f92672>]</span>
+<span style=color:#f92672>}</span>
+
+start<span style=color:#f92672>.</span><span style=color:#a6e22e>dependsOn</span><span style=color:#f92672>(</span>npm_install<span style=color:#f92672>)</span>
+bundle<span style=color:#f92672>.</span><span style=color:#a6e22e>dependsOn</span><span style=color:#f92672>(</span>npm_install<span style=color:#f92672>)</span>
+</code></pre></div><p>See the <a href=https://github.com/geowarin/boot-react/commit/6788e068c9071d0368879bee8188b7aeb194388e>commit</a></p>
+<p>We will use the <a href=https://github.com/srs/gradle-node-plugin>gradle node plugin</a>
+to call the two main tasks in our application:</p>
+<ul>
+<li><code>npm run bundle</code> will create the minified app in the <code>dist</code> directory</li>
+<li><code>npm start</code> will start our dev server</li>
+</ul>
+<p>We can call them from the gradle build with <code>./gradlew frontend:start</code> and
+<code>./gradlew frontend:bundle</code></p>
+<p>The content of the project will basically be the same as
+<a href=https://github.com/gaearon/react-hot-boilerplate>react-hot-boilerplate</a></p>
+<p>Let&rsquo;s get the sources of this project as a zip file from github and unzip them into the
+frontend directory.
+With bash, type the following command at the root of your project:</p>
+<pre tabindex=0><code>wget -qO- -O tmp.zip https://github.com/gaearon/react-hot-boilerplate/archive/master.zip &amp;&amp; unzip tmp.zip &amp;&amp; mv react-hot-boilerplate-master/* frontend &amp;&amp; rm -rf react-hot-boilerplate-master &amp;&amp; rm tmp.zip
+</code></pre><p>See the <a href=https://github.com/geowarin/boot-react/commit/a3de637d0d94f48d1cdd0379038115e5b98b79d3>commit</a></p>
+<p>If everything goes well, typing <code>./gradlew fronted:start</code>, will start the react
+application at <code>http://localhost:3000</code>.</p>
+<p>The first problem arises when you <code>ctrl+c</code> out of the gradle build,
+the server will still hang. You can kill it with <code>killall node</code>.
+This is a problem I&rsquo;d like help solving, if you have a solution, please tell me.</p>
+<p>In the rest of the article I will use <code>npm start</code> directly, which presupposes that
+you have <code>npm</code> available on your development machine.
+The whole build will only require Java.</p>
+<p>We will use the <a href=https://github.com/ampedandwired/html-webpack-plugin>webpack-html-plugin</a>
+to automatically generate the index.html page.</p>
+<pre tabindex=0><code>npm install --save-dev html-webpack-plugin
+</code></pre><p>Since using the document body as a root for our application is a bad practice,
+we need to tweak the default html template.</p>
+<p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
+It will serve as a template to generate our <code>index.html</code> file:</p>
+<p></p>
+<p>As you can see, it contains a div with the id <code>root</code>.</p>
+<p>Let&rsquo;s tweak the dev server a little bit to <a href=http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server>combine it with another server</a>.</p>
+<p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>path</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;path&#39;</span>);
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>webpack</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;webpack&#39;</span>);
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>HtmlWebpackPlugin</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;html-webpack-plugin&#39;</span>);
+
+<span style=color:#a6e22e>module</span>.<span style=color:#a6e22e>exports</span> <span style=color:#f92672>=</span> {
+  <span style=color:#a6e22e>devtool</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;eval&#39;</span>,
+  <span style=color:#a6e22e>entry</span><span style=color:#f92672>:</span> [
+    <span style=color:#e6db74>&#39;webpack-dev-server/client?http://localhost:3000&#39;</span>,
+    <span style=color:#e6db74>&#39;webpack/hot/only-dev-server&#39;</span>,
+    <span style=color:#e6db74>&#39;./src/index&#39;</span>
+  ],
+  <span style=color:#a6e22e>output</span><span style=color:#f92672>:</span> {
+    <span style=color:#a6e22e>path</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>path</span>.<span style=color:#a6e22e>join</span>(<span style=color:#a6e22e>__dirname</span>, <span style=color:#e6db74>&#39;dist&#39;</span>),
+    <span style=color:#a6e22e>filename</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;bundle.js&#39;</span>,
+    <span style=color:#a6e22e>publicPath</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;http://localhost:3000/&#39;</span>
+  },
+  <span style=color:#a6e22e>plugins</span><span style=color:#f92672>:</span> [
+    <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>webpack</span>.<span style=color:#a6e22e>HotModuleReplacementPlugin</span>(),
+    <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>webpack</span>.<span style=color:#a6e22e>NoErrorsPlugin</span>(),
+    <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>HtmlWebpackPlugin</span>({
+      <span style=color:#a6e22e>title</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;Boot React&#39;</span>,
+      <span style=color:#a6e22e>template</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>path</span>.<span style=color:#a6e22e>join</span>(<span style=color:#a6e22e>__dirname</span>, <span style=color:#e6db74>&#39;assets/index-template.html&#39;</span>)
+    })
+  ],
+  <span style=color:#a6e22e>resolve</span><span style=color:#f92672>:</span> {
+    <span style=color:#a6e22e>extensions</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#39;&#39;</span>, <span style=color:#e6db74>&#39;.js&#39;</span>]
+  },
+  <span style=color:#a6e22e>module</span><span style=color:#f92672>:</span> {
+    <span style=color:#a6e22e>loaders</span><span style=color:#f92672>:</span> [{
+      <span style=color:#a6e22e>test</span><span style=color:#f92672>:</span> <span style=color:#e6db74>/\.js$/</span>,
+      <span style=color:#a6e22e>loaders</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#39;react-hot&#39;</span>, <span style=color:#e6db74>&#39;babel&#39;</span>],
+      <span style=color:#a6e22e>include</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>path</span>.<span style=color:#a6e22e>join</span>(<span style=color:#a6e22e>__dirname</span>, <span style=color:#e6db74>&#39;src&#39;</span>)
+    }]
+  }
+};
+</code></pre></div><p>We changed the <code>publicPath</code> to point directly at our dev server and included the
+<code>HtmlWebpackPlugin</code>.</p>
+<p>Now we can get rid of the old index.html and start our dev server with <code>npm start</code>.
+The index will be automatically generated for us.</p>
+<p>See the <a href=https://github.com/geowarin/boot-react/commit/10e3fdae8ac53bea40c585076363a4cc54ed9d9e>commit</a></p>
+<h2 id=include-the-frontend-in-the-boot-jar>Include the frontend in the boot jar</h2>
+<p>We have to create the npm <code>bundle</code> task, which will generate an optimized
+web application in the <code>dist</code> directory.</p>
+<p>In the <code>package.json</code> file, update the <code>scripts</code>:</p>
+<pre tabindex=0><code>&quot;scripts&quot;: {
+  &quot;start&quot;: &quot;node server.js&quot;,
+  &quot;bundle&quot;: &quot;webpack --optimize-minimize --optimize-dedupe --output-public-path ''&quot;
+}
+</code></pre><p>Now if you launch <code>./gradlew frontend:bundle</code>, it will generate an optimized
+<code>bundle.js</code> file and the <code>index.html</code> in the <code>dist</code> directory.</p>
+<p>The last step is to include this <code>dist</code> directory in our application&rsquo;s jar as
+static assets.
+Add the following task to our main gradle build:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>jar <span style=color:#f92672>{</span>
+  from<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;frontend/dist&#39;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    into <span style=color:#e6db74>&#39;static&#39;</span>
+  <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+
+processResources<span style=color:#f92672>.</span><span style=color:#a6e22e>dependsOn</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;frontend:bundle&#39;</span><span style=color:#f92672>)</span>
+</code></pre></div><p>If you generate your jar with <code>./gradlew assemble</code>, you will see that the
+built jar includes the frontend resources.</p>
+<p>If you run the jar (<code>java -jar build/libs/boot-react-0.0.1-SNAPSHOT.jar</code>), you should
+see the React hello world on <code>localhost:8080</code></p>
+<p>See the <a href=https://github.com/geowarin/boot-react/commit/99b89a19200fe847bc0740346a0c4e5668b4e3c2>commit</a></p>
+<h2 id=launch-it-in-dev>Launch it in dev</h2>
+<p>When working on our application, it would be nice if:</p>
+<ol>
+<li>Launching the spring boot server in dev launched the webpack dev server</li>
+<li>Our dev-server proxied the request to <code>localhost:8080</code> so we can access
+the application on <code>localhost:3000</code> and not get cross-origin requests</li>
+</ol>
+<p>Add the following <code>WebpackLauncher</code> to the project:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy><span style=color:#a6e22e>@Configuration</span>
+<span style=color:#a6e22e>@Profile</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;dev&#39;</span><span style=color:#f92672>)</span>
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>WebpackLauncher</span> <span style=color:#f92672>{</span>
+
+  <span style=color:#a6e22e>@Bean</span>
+  WebpackRunner <span style=color:#a6e22e>frontRunner</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>WebpackRunner</span><span style=color:#f92672>()</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>WebpackRunner</span> <span style=color:#66d9ef>implements</span> InitializingBean <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String WEBPACK_SERVER_PROPERTY <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;webpack-server-loaded&#39;</span>
+
+    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>isWindows</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+      System<span style=color:#f92672>.</span><span style=color:#a6e22e>getProperty</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;os.name&#39;</span><span style=color:#f92672>).</span><span style=color:#a6e22e>toLowerCase</span><span style=color:#f92672>().</span><span style=color:#a6e22e>contains</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;windows&#39;</span><span style=color:#f92672>)</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#a6e22e>@Override</span>
+    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>afterPropertiesSet</span><span style=color:#f92672>()</span> <span style=color:#66d9ef>throws</span> Exception <span style=color:#f92672>{</span>
+      <span style=color:#66d9ef>if</span> <span style=color:#f92672>(!</span>System<span style=color:#f92672>.</span><span style=color:#a6e22e>getProperty</span><span style=color:#f92672>(</span>WEBPACK_SERVER_PROPERTY<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+        startWebpackDevServer<span style=color:#f92672>()</span>
+      <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>startWebpackDevServer</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+      String cmd <span style=color:#f92672>=</span> isWindows<span style=color:#f92672>()</span> <span style=color:#f92672>?</span> <span style=color:#e6db74>&#39;cmd /c npm start&#39;</span> <span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;npm start&#39;</span>
+      cmd<span style=color:#f92672>.</span><span style=color:#a6e22e>execute</span><span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>,</span> <span style=color:#66d9ef>new</span> File<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;frontend&#39;</span><span style=color:#f92672>)).</span><span style=color:#a6e22e>consumeProcessOutput</span><span style=color:#f92672>(</span>System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>,</span> System<span style=color:#f92672>.</span><span style=color:#a6e22e>err</span><span style=color:#f92672>)</span>
+      System<span style=color:#f92672>.</span><span style=color:#a6e22e>setProperty</span><span style=color:#f92672>(</span>WEBPACK_SERVER_PROPERTY<span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;true&#39;</span><span style=color:#f92672>)</span>
+    <span style=color:#f92672>}</span>
+  <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>This will take care of the first task by launching <code>npm start</code> when our server starts.
+I used a system property to make sure the dev-tools will not reload the frontend
+when we make a change in the backend code.
+This class will be available when we start the application with the <code>dev</code>
+<a href=http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html>profile</a></p>
+<p>We can make a simple proxy with webpack-dev-server.
+Change the <code>server.js</code> file:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>webpack</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;webpack&#39;</span>);
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>WebpackDevServer</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;webpack-dev-server&#39;</span>);
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>config</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;./webpack.dev.config&#39;</span>);
+
+<span style=color:#66d9ef>new</span> <span style=color:#a6e22e>WebpackDevServer</span>(<span style=color:#a6e22e>webpack</span>(<span style=color:#a6e22e>config</span>), {
+  <span style=color:#a6e22e>publicPath</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>config</span>.<span style=color:#a6e22e>output</span>.<span style=color:#a6e22e>publicPath</span>,
+  <span style=color:#a6e22e>hot</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>true</span>,
+  <span style=color:#a6e22e>historyApiFallback</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>true</span>,
+  <span style=color:#a6e22e>proxy</span><span style=color:#f92672>:</span> {
+    <span style=color:#e6db74>&#34;*&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;http://localhost:8080&#34;</span>
+  }
+}).<span style=color:#a6e22e>listen</span>(<span style=color:#ae81ff>3000</span>, <span style=color:#e6db74>&#39;localhost&#39;</span>, <span style=color:#66d9ef>function</span> (<span style=color:#a6e22e>err</span>, <span style=color:#a6e22e>result</span>) {
+  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>err</span>) {
+    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>err</span>);
+  }
+
+  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#39;Listening at localhost:3000&#39;</span>);
+});
+</code></pre></div><p>Launch your application with the <code>--spring.profiles.active=dev</code> flag.</p>
+<p>You should be able see the react hello world on <a href=http://localhost:3000>http://localhost:3000</a>. If you make some changes to it,
+it will automatically reload.</p>
+<p>See the old commit <a href=https://github.com/geowarin/boot-react/commit/af66c4b2f9798ad50f4e6be30ba5fb6c5f56f79f>commit</a></p>
+<p>And the new <a href=https://github.com/geowarin/boot-react/commit/2eb6460812c2f2022b49e04f8ed4034dda402c2c>commit</a></p>
+<h2 id=fetch-the-resource>Fetch the resource</h2>
+<p>We can check that we do not get cross-origin errors using <a href=https://github.com/mzabriskie/axios>axios</a>,
+a simple library to do http requests. It supports promises and automatically
+handles json.</p>
+<pre tabindex=0><code>npm i -S axios
+</code></pre><p>Let&rsquo;s amend our <code>App.js</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>React</span>, { <span style=color:#a6e22e>Component</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;react&#39;</span>;
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>axios</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;axios&#39;</span>;
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>App</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Component</span> {
+
+  <span style=color:#a6e22e>componentDidMount</span>() {
+    <span style=color:#a6e22e>axios</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#39;/api/simple&#39;</span>)
+      .<span style=color:#a6e22e>then</span>(<span style=color:#a6e22e>res</span> =&gt; <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>data</span>))
+      .<span style=color:#66d9ef>catch</span>(<span style=color:#a6e22e>err</span> =&gt; <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>error</span>(<span style=color:#a6e22e>err</span>))
+  }
+
+  <span style=color:#a6e22e>render</span>() {
+    <span style=color:#66d9ef>return</span> (
+      <span style=color:#f92672>&lt;</span><span style=color:#a6e22e>h1</span><span style=color:#f92672>&gt;</span><span style=color:#a6e22e>Hello</span>, <span style=color:#a6e22e>guys</span>.<span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>/h1&gt;</span>
+    );
+  }
+}
+</code></pre></div><p>See the <a href=https://github.com/geowarin/boot-react/blob/079f0c8afcd8266355b77a094941c8cdbe1349fd/frontend/src/App.js>commit</a></p>
+<h2 id=better-optimization-of-the-javascript-assets>Better optimization of the javascript assets</h2>
+<p>We can further improve the compression of the javascript assets by separating our dev
+webpack configuration from our production configuration.</p>
+<p>In the production configuration, we can use the DefinePlugin to set the NODE_ENV
+variable to production. This will allow webpack to automatically remove all the
+code intended for development purposes in our libraries:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>new</span> <span style=color:#a6e22e>webpack</span>.<span style=color:#a6e22e>DefinePlugin</span>({
+  <span style=color:#e6db74>&#34;process.env&#34;</span><span style=color:#f92672>:</span> {
+    <span style=color:#a6e22e>NODE_ENV</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>stringify</span>(<span style=color:#e6db74>&#34;production&#34;</span>)
+  }
+})
+</code></pre></div><p>See the <a href=https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1>commit</a></p>
+<h2 id=feedback-needed>Feedback needed</h2>
+<p>Well, this works pretty well!</p>
+<p><img src=/assets/images/articles/2015-08-hot-reload.gif alt="Hot hot reload" title="Hot reload"></p>
+<p>What do you think? Care to comment and help me make something better?
+Your feedback is welcome!</p>
+<p>The project is available <a href=https://github.com/geowarin/boot-react>on github</a>.
+Pull requests and issues are gladly accepted.</p>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2fspring-boot-and-react-hot-loader%2f&via=geowarin&text=Spring%20Boot%20and%20React%20hot%20loader" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2fspring-boot-and-react-hot-loader%2f&title=Spring%20Boot%20and%20React%20hot%20loader" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2fspring-boot-and-react-hot-loader%2f&t=Spring%20Boot%20and%20React%20hot%20loader" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2fspring-boot-and-react-hot-loader%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2fspring-boot-and-react-hot-loader%2f&text=Spring%20Boot%20and%20React%20hot%20loader" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/spring/>spring</a>, <a class=category href=/categories/react/>react</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/spring/>spring</a>, <a class=tag href=/tags/spring-boot/>spring-boot</a>, <a class=tag href=/tags/react/>react</a>, <a class=tag href=/tags/javascript/>javascript</a>, <a class=tag href=/tags/hot-reload/>hot-reload</a>, <a class=tag href=/tags/groovy/>groovy</a>, <a class=tag href=/tags/featured/>featured</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/completable-futures-with-spring-async/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>Completable futures with Spring async</a>
+</div><div class="next-entry sep-before">
+<a href=/the-modern-java-developer/>
+<span class=screen-reader-text>Next post: </span>The modern java developer<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

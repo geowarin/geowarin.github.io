@@ -1,0 +1,324 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="With Gradle, you can create a Docker image of your Spring Boot application and ship it instead of shipping a jar">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Build a Docker image of your Spring Boot app • Geowarin">
+<meta property="og:description" content="With Gradle, you can create a Docker image of your Spring Boot application and ship it instead of shipping a jar">
+<meta property="og:url" content="https://geowarin.github.io/build-a-docker-image-of-your-spring-boot-app/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="spring-boot"><meta property="article:published_time" content="2016-01-12T00:00:00Z"><meta property="article:modified_time" content="2016-01-12T00:00:00Z"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Build a Docker image of your Spring Boot app • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/build-a-docker-image-of-your-spring-boot-app/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Build a Docker image of your Spring Boot app</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Build a Docker image of your Spring Boot app</h1>
+<p class=desc>With Gradle, you can create a Docker image of your Spring Boot application and ship it instead of shipping a jar</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2016-01-12T00:00:00Z>2016, Jan 12</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+4 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>If you like having a self-contained application as a deliverable
+for your project, the idea of putting your Spring applications in a Docker
+container might be appealing to you.</p>
+<p>In this article, I will show you a simple way to make a docker image the output
+of your Gradle build, thanks to the <a href=https://github.com/Transmode/gradle-docker>gradle-docker</a> plugin.</p>
+<p>The code that we will build is a simple console application powered by Spring Boot
+that will periodically write Chuck Norris facts to the standard output.
+It is <a href=https://github.com/geowarin/sout-chuck-norris>available on github</a> and on <a href=https://hub.docker.com/r/geowarin/sout-chuck-norris/>Docker Hub</a>.</p>
+<h2 id=take-a-spring-boot-application>Take a Spring boot application</h2>
+<p>You can easily generate a starter project with <a href=http://start.spring.io/>start.spring.io</a>
+or with <a href=https://www.jetbrains.com/idea/help/creating-spring-boot-projects.html>IntelliJ</a>.
+We will create a gradle/groovy application with no Spring Boot starter to keep the code very simple.</p>
+<p>Click on <a href="https://start.spring.io/#!type=gradle-project&language=groovy&groupId=com.github.geowarin&artifactId=sout-chuck-norris">this link</a> to generate the project!</p>
+<p>Unzip it and open it in your favorite IDE.
+Since the application is going to loop forever, you can remove the generated test, which
+would loop forever too.</p>
+<p>Add the following dependency to your <code>build.gradle</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#e6db74>&#39;org.codehaus.groovy.modules.http-builder:http-builder:0.7.1&#39;</span>
+</code></pre></div><p>Since we will use the JSONSlurper, the idiomatic way to parse JSON in groovy, we will need
+to the change the groovy dependency to <code>groovy-all</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#e6db74>&#39;org.codehaus.groovy:groovy-all&#39;</span>
+</code></pre></div><h2 id=the-code>The code</h2>
+<p>The code is really simple:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy><span style=color:#f92672>package</span> com<span style=color:#f92672>.</span><span style=color:#a6e22e>github</span><span style=color:#f92672>.</span><span style=color:#a6e22e>geowarin</span>
+
+<span style=color:#f92672>import</span> groovy.util.logging.Log4j
+<span style=color:#f92672>import</span> groovyx.net.http.RESTClient
+<span style=color:#f92672>import</span> org.apache.log4j.Level
+<span style=color:#f92672>import</span> org.springframework.boot.CommandLineRunner
+<span style=color:#f92672>import</span> org.springframework.stereotype.Component
+
+<span style=color:#a6e22e>@Component</span>
+<span style=color:#a6e22e>@Log4j</span>
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MainRunner</span> <span style=color:#66d9ef>implements</span> CommandLineRunner <span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> Random random <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Random<span style=color:#f92672>();</span>
+
+    <span style=color:#a6e22e>@Override</span>
+    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>run</span><span style=color:#f92672>(</span>String<span style=color:#f92672>...</span> args<span style=color:#f92672>)</span> <span style=color:#66d9ef>throws</span> Exception <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>while</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            log<span style=color:#f92672>.</span><span style=color:#a6e22e>log</span><span style=color:#f92672>(</span>randomLevel<span style=color:#f92672>(),</span> randomMessage<span style=color:#f92672>())</span>
+            sleep <span style=color:#ae81ff>3000</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> Level <span style=color:#a6e22e>randomLevel</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>switch</span> <span style=color:#f92672>(</span>random<span style=color:#f92672>.</span><span style=color:#a6e22e>nextInt</span><span style=color:#f92672>(</span><span style=color:#ae81ff>3</span><span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>:</span>
+                <span style=color:#66d9ef>return</span> Level<span style=color:#f92672>.</span><span style=color:#a6e22e>DEBUG</span><span style=color:#f92672>;</span>
+            <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span>
+                <span style=color:#66d9ef>return</span> Level<span style=color:#f92672>.</span><span style=color:#a6e22e>INFO</span><span style=color:#f92672>;</span>
+            <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>2</span><span style=color:#f92672>:</span>
+                <span style=color:#66d9ef>return</span> Level<span style=color:#f92672>.</span><span style=color:#a6e22e>ERROR</span><span style=color:#f92672>;</span>
+            <span style=color:#66d9ef>default</span><span style=color:#f92672>:</span>
+                <span style=color:#66d9ef>return</span> Level<span style=color:#f92672>.</span><span style=color:#a6e22e>INFO</span><span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> String <span style=color:#a6e22e>randomMessage</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>def</span> client <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> RESTClient<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;http://api.icndb.com/jokes/&#39;</span><span style=color:#f92672>)</span>
+        <span style=color:#66d9ef>def</span> response <span style=color:#f92672>=</span> client<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>path: <span style=color:#e6db74>&#39;random&#39;</span><span style=color:#f92672>)</span>
+        response<span style=color:#f92672>.</span><span style=color:#a6e22e>data</span><span style=color:#f92672>.</span><span style=color:#a6e22e>value</span><span style=color:#f92672>.</span><span style=color:#a6e22e>joke</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h2 id=build-the-docker-image>Build the docker image</h2>
+<p>Add the plugin repository to find the Docker plugin:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>buildscript <span style=color:#f92672>{</span>
+  ext <span style=color:#f92672>{</span>
+    springBootVersion <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;1.3.0.RELEASE&#39;</span>
+  <span style=color:#f92672>}</span>
+  repositories <span style=color:#f92672>{</span>
+    mavenCentral<span style=color:#f92672>()</span>
+  <span style=color:#f92672>}</span>
+  dependencies <span style=color:#f92672>{</span>
+    classpath<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}&#34;</span><span style=color:#f92672>)</span>
+    classpath <span style=color:#e6db74>&#34;se.transmode.gradle:gradle-docker:1.2&#34;</span> <span style=color:#75715e>// &lt;- Here
+</span><span style=color:#75715e></span>  <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Apply the Docker plugin:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>apply plugin: <span style=color:#e6db74>&#39;docker&#39;</span>
+</code></pre></div><p>Finally, add the buildDocker task:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>task <span style=color:#a6e22e>buildDocker</span><span style=color:#f92672>(</span>type: Docker<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+  baseImage <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;develar/java:latest&#39;</span>
+  push <span style=color:#f92672>=</span> project<span style=color:#f92672>.</span><span style=color:#a6e22e>hasProperty</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;push&#39;</span><span style=color:#f92672>)</span>
+  tag <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;geowarin/sout-chuck-norris&#39;</span>
+  addFile <span style=color:#f92672>{</span>
+    from jar
+    rename <span style=color:#f92672>{</span><span style=color:#e6db74>&#39;app.jar&#39;</span><span style=color:#f92672>}</span>
+  <span style=color:#f92672>}</span>
+  entryPoint<span style=color:#f92672>([</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;-Djava.security.egd=file:/dev/./urandom&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;-jar&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;/app.jar&#39;</span><span style=color:#f92672>])</span>
+  <span style=color:#75715e>// exposePort(8080)
+</span><span style=color:#75715e></span><span style=color:#f92672>}</span>
+
+buildDocker<span style=color:#f92672>.</span><span style=color:#a6e22e>dependsOn</span><span style=color:#f92672>(</span>build<span style=color:#f92672>)</span>
+</code></pre></div><p>With this Docker plugin, every Docker instruction is available in the Gradle build
+so you don&rsquo;t even have to write a Dockerfile.</p>
+<p>In this task, we create an image called <code>geowarin/sout-chuck-norris</code> (change geowarin to
+your user name).
+It will contain only the jar produced by our build, which will be renamed to <code>app.jar</code>.
+Then, the entry point of the container is simply <code>java -jar app.jar</code>.</p>
+<p>The advantage of using an entry point instead of a <code>CMD</code> is that we can append command
+line arguments to the <code>docker run ...</code> command and those will be passed to our application.</p>
+<p>The downside is you cannot use <code>docker exec ... bash</code> to attach to the container.</p>
+<p>We use Develar&rsquo;s java 8 image. It is built on top of Alpine and weights less than
+120MB.</p>
+<p>You can now run <code>./gradlew buildDocker</code> to create the docker image containing
+our project.</p>
+<pre tabindex=0><code>REPOSITORY                   TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+geowarin/sout-chuck-norris   latest              85ff1a728670        4 seconds ago       135.9 MB
+
+</code></pre><h2 id=publish-the-image-to-the-docker-hub>Publish the image to the Docker hub</h2>
+<p>Create an account on <a href=https://hub.docker.com/>the docker hub</a> then use
+<code>docker login</code> to authenticate your client.</p>
+<p>You can now run <code>./gradlew buildDocker -Ppush</code> to publish your image to docker
+hub.</p>
+<p>Once it is published, anyone can run you application.
+If the image is not available on their machine, it will be pulled from the docker hub.</p>
+<pre tabindex=0><code>$&gt; docker run geowarin/sout-chuck-norris
+Unable to find image 'geowarin/sout-chuck-norris:latest' locally
+latest: Pulling from geowarin/sout-chuck-norris
+09ef480f93cc: Verifying Checksum
+a6fb0a3c9260: Download complete
+Pulling repository docker.io/geowarin/sout-chuck-norris
+914b85281644: Pulling dependent layers
+914b85281644: Download complete
+Status: Downloaded newer image for geowarin/sout-chuck-norris:latest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.3.1.RELEASE)
+
+2016-01-12 16:54:19.089  INFO 1 --- [           main] c.g.geowarin.SoutChuckNorrisApplication  : Starting SoutChuckNorrisApplication on 05d1fedaba4d with PID 1 (/app.jar started by root in /)
+2016-01-12 16:54:19.093  INFO 1 --- [           main] c.g.geowarin.SoutChuckNorrisApplication  : No active profile set, falling back to default profiles: default
+2016-01-12 16:54:19.205  INFO 1 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@4533542a: startup date [Tue Jan 12 16:54:19 GMT 2016]; root of context hierarchy
+2016-01-12 16:54:20.609  INFO 1 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2016-01-12 16:54:21.456  INFO 1 --- [           main] com.github.geowarin.MainRunner           : Chuck Norris can download emails with his pick-up.
+</code></pre><h2 id=conclusion>Conclusion</h2>
+<p>Spring boot producing runnable jars, it is fairly easy to embed them inside
+of a container.</p>
+<p>As usual, do not hesitate to give me your feedback and to checkout the code
+<a href=https://github.com/geowarin/sout-chuck-norris>on github</a>!</p>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2fbuild-a-docker-image-of-your-spring-boot-app%2f&via=geowarin&text=Build%20a%20Docker%20image%20of%20your%20Spring%20Boot%20app" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2fbuild-a-docker-image-of-your-spring-boot-app%2f&title=Build%20a%20Docker%20image%20of%20your%20Spring%20Boot%20app" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2fbuild-a-docker-image-of-your-spring-boot-app%2f&t=Build%20a%20Docker%20image%20of%20your%20Spring%20Boot%20app" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2fbuild-a-docker-image-of-your-spring-boot-app%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2fbuild-a-docker-image-of-your-spring-boot-app%2f&text=Build%20a%20Docker%20image%20of%20your%20Spring%20Boot%20app" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/docker/>docker</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/spring-boot/>spring-boot</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/spring-boot-logs-in-elastic-search-with-fluentd/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>Spring boot logs in Elastic Search with fluentd</a>
+</div><div class="next-entry sep-before">
+<a href=/test-your-java-application-with-groovy/>
+<span class=screen-reader-text>Next post: </span>Test your Java application with Groovy<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

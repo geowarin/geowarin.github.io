@@ -1,0 +1,384 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Demonstration of how to set up spring data JPA in java SE and test with dbUnit">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Using Spring Data JPA in a Java SE environment and run tests with dbUnit • Geowarin">
+<meta property="og:description" content="Demonstration of how to set up spring data JPA in java SE and test with dbUnit">
+<meta property="og:url" content="https://geowarin.github.io/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="hibernate"><meta property="article:tag" content="java SE"><meta property="article:tag" content="spring"><meta property="article:tag" content="spring-data"><meta property="article:tag" content="spring-java-config"><meta property="article:tag" content="spring-test"><meta property="article:published_time" content="2013-01-21T15:25:11Z"><meta property="article:modified_time" content="2013-01-21T15:25:11Z"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Using Spring Data JPA in a Java SE environment and run tests with dbUnit • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Using Spring Data JPA in a Java SE environment and run tests with dbUnit</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Using Spring Data JPA in a Java SE environment and run tests with dbUnit</h1>
+<p class=desc>Demonstration of how to set up spring data JPA in java SE and test with dbUnit</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2013-01-21T15:25:11Z>2013, Jan 21</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+5 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>This blog post follows my previous articles on using <a href=http://geowarin.wordpress.com/2013/01/20/using-hibernate-as-a-jpa-provider-in-a-java-se-environment-and-run-tests-with-dbunit/>hibernate as a standalone JPA provider</a> and how to use <a href=http://geowarin.wordpress.com/2013/01/20/using-spring-in-a-java-se-environment-and-implementing-the-chain-of-responsibility-pattern/>spring in a Java SE</a> environment.</p>
+<p>In this post, I will show you how to use <a href=http://geowarin.wordpress.com/2013/01/21/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/>Spring Data JPA</a>, a great project which improves your productivity by generating all CRUD operations for you. Then we will use <a href=http://springtestdbunit.github.com/spring-test-dbunit/>springtestdbunit</a> to run some very clean tests on our database with spring and <a href=http://www.dbunit.org/>dbUnit</a>.</p>
+<p>The code source of this example is available on github : <a href=https://github.com/geowarin/hibernate-examples/tree/master/standalone-data-jpa>https://github.com/geowarin/hibernate-examples/tree/master/standalone-data-jpa</a></p>
+<h2 id=what-is-spring-data-jpa>What is Spring Data JPA?</h2>
+<p>Are you tired of always implementing the findOne(long id), findAll(), save()&mldr; methods on your repositories? Having to come up with clever tricks to generate a generic DAO?</p>
+<p>Then give Spring Data JPA a try ! This project lets you implement a very simple interface for your repositories and takes care of all the rest, allowing you to focus on your real queries.</p>
+<h2 id=the-configuration>The configuration</h2>
+<p>The configuration we will set up here is pretty similar to the one we used in the <a href=http://geowarin.wordpress.com/2013/01/20/using-spring-in-a-java-se-environment-and-implementing-the-chain-of-responsibility-pattern/>spring standalone article.</a> We will just add a bunch of classes to make use of spring data jpa :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Configuration</span>
+<span style=color:#a6e22e>@EnableJpaRepositories</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;com.geowarin.standalonedatajpa.repository&#34;</span><span style=color:#f92672>)</span>
+<span style=color:#a6e22e>@EnableTransactionManagement</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>StandaloneDataJpaConfig</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Bean</span>
+	<span style=color:#66d9ef>public</span> DataSource <span style=color:#a6e22e>dataSource</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>new</span> EmbeddedDatabaseBuilder<span style=color:#f92672>().</span><span style=color:#a6e22e>setType</span><span style=color:#f92672>(</span>EmbeddedDatabaseType<span style=color:#f92672>.</span><span style=color:#a6e22e>HSQL</span><span style=color:#f92672>)</span>
+				<span style=color:#f92672>.</span><span style=color:#a6e22e>addScript</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;classpath:sql/schema.sql&#34;</span><span style=color:#f92672>)</span>
+				<span style=color:#f92672>.</span><span style=color:#a6e22e>addScript</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;classpath:sql/import-users.sql&#34;</span><span style=color:#f92672>)</span>
+				<span style=color:#f92672>.</span><span style=color:#a6e22e>build</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Bean</span>
+	<span style=color:#66d9ef>public</span> PlatformTransactionManager <span style=color:#a6e22e>transactionManager</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+
+		JpaTransactionManager txManager <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> JpaTransactionManager<span style=color:#f92672>();</span>
+		txManager<span style=color:#f92672>.</span><span style=color:#a6e22e>setEntityManagerFactory</span><span style=color:#f92672>(</span>entityManagerFactory<span style=color:#f92672>());</span>
+		<span style=color:#66d9ef>return</span> txManager<span style=color:#f92672>;</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Bean</span>
+	<span style=color:#66d9ef>public</span> HibernateExceptionTranslator <span style=color:#a6e22e>hibernateExceptionTranslator</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>new</span> HibernateExceptionTranslator<span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Bean</span>
+	<span style=color:#66d9ef>public</span> EntityManagerFactory <span style=color:#a6e22e>entityManagerFactory</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+
+		<span style=color:#75715e>// will set the provider to &#39;org.hibernate.ejb.HibernatePersistence&#39;
+</span><span style=color:#75715e></span>		HibernateJpaVendorAdapter vendorAdapter <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> HibernateJpaVendorAdapter<span style=color:#f92672>();</span>
+		<span style=color:#75715e>// will set hibernate.show_sql to &#39;true&#39;
+</span><span style=color:#75715e></span>		vendorAdapter<span style=color:#f92672>.</span><span style=color:#a6e22e>setShowSql</span><span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>);</span>
+		<span style=color:#75715e>// if set to true, will set hibernate.hbm2ddl.auto to &#39;update&#39;
+</span><span style=color:#75715e></span>		vendorAdapter<span style=color:#f92672>.</span><span style=color:#a6e22e>setGenerateDdl</span><span style=color:#f92672>(</span><span style=color:#66d9ef>false</span><span style=color:#f92672>);</span>
+
+		LocalContainerEntityManagerFactoryBean factory <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> LocalContainerEntityManagerFactoryBean<span style=color:#f92672>();</span>
+		factory<span style=color:#f92672>.</span><span style=color:#a6e22e>setJpaVendorAdapter</span><span style=color:#f92672>(</span>vendorAdapter<span style=color:#f92672>);</span>
+		factory<span style=color:#f92672>.</span><span style=color:#a6e22e>setPackagesToScan</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;com.geowarin.standalonedatajpa.model&#34;</span><span style=color:#f92672>);</span>
+		factory<span style=color:#f92672>.</span><span style=color:#a6e22e>setDataSource</span><span style=color:#f92672>(</span>dataSource<span style=color:#f92672>());</span>
+
+		<span style=color:#75715e>// This will trigger the creation of the entity manager factory
+</span><span style=color:#75715e></span>		factory<span style=color:#f92672>.</span><span style=color:#a6e22e>afterPropertiesSet</span><span style=color:#f92672>();</span>
+
+		<span style=color:#66d9ef>return</span> factory<span style=color:#f92672>.</span><span style=color:#a6e22e>getObject</span><span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Bean</span>
+	<span style=color:#66d9ef>public</span> MainBean <span style=color:#a6e22e>mainBean</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>new</span> MainBean<span style=color:#f92672>();</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>With this configuration, you won&rsquo;t even need a <em>persistence.xml</em> file ! Compared to our <a href=http://geowarin.wordpress.com/2013/01/20/using-hibernate-as-a-jpa-provider-in-a-java-se-environment-and-run-tests-with-dbunit/>previous example</a> however, one cannot make use of <em>hibernate.hbm2ddl.import_files</em> property to import SQL scripts with hibernate because <em>hibernate.hbm2ddl.auto</em> must be set to either <em>create</em> or <em>create-drop</em>.</p>
+<p>That&rsquo;s ok we will generate some very tiny scripts to set up the schema and the data in our database (and make our DBA happy, a thing that is never to be disregarded :))</p>
+<hr>
+<p><strong>Hint</strong> : If this is a real blocker for you, you could setGenrateDdl to false and maintain a simple <strong>hibernate.properties</strong> file like this one</p>
+<pre tabindex=0><code class=language-properties data-lang=properties>hibernate.hbm2ddl.auto=create
+hibernate.hbm2ddl.import_files=sql/import-users.sql
+hibernate.format_sql=true
+</code></pre><p>That&rsquo;s because hibernate will always look for a <a href=http://docs.jboss.org/hibernate/core/4.1/manual/en-US/html/ch03.html#configuration-optional-properties>hibernate.properties</a> file in the classpath to override you persistence properties.</p>
+<hr>
+<p>Note the use of <strong>@EnableJpaRepositories</strong> that will tell spring data in which packages our repositories can be found.</p>
+<p><strong>@EnableTransactionManagement</strong> is a replacement of the tag <code>&lt;tx:annotation-driven /></code>.</p>
+<p>We can set up the <a href=http://static.springsource.org/spring-framework/docs/3.2.0.RC1/api/org/springframework/orm/jpa/LocalContainerEntityManagerFactoryBean.html>LocalContainerEntityManagerFactoryBean </a>to use a package to scan our entities for us, no need to list them all.</p>
+<p>The rest is pretty straight forward I believe.</p>
+<p>Note that by default, spring data JPA will try to locate your <em>persistence.xml</em> so the two approaches are completely compatible, for this example however we will go for a full xml-less configuration.</p>
+<h2 id=one-entity-one-interface-and-we-are-ready>One entity, one interface and we are ready</h2>
+<p>We have one very simple entity :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Table</span><span style=color:#f92672>(</span>name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;users&#34;</span><span style=color:#f92672>)</span>
+<span style=color:#a6e22e>@Entity</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>User</span> <span style=color:#66d9ef>implements</span> Serializable <span style=color:#f92672>{</span>
+
+	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>long</span> serialVersionUID <span style=color:#f92672>=</span> 1L<span style=color:#f92672>;</span>
+
+	<span style=color:#a6e22e>@Id</span>
+	<span style=color:#a6e22e>@GeneratedValue</span><span style=color:#f92672>(</span>strategy<span style=color:#f92672>=</span>GenerationType<span style=color:#f92672>.</span><span style=color:#a6e22e>AUTO</span><span style=color:#f92672>)</span>
+	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>long</span> id<span style=color:#f92672>;</span>
+
+	<span style=color:#a6e22e>@Column</span><span style=color:#f92672>(</span>name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;name&#34;</span><span style=color:#f92672>,</span> nullable <span style=color:#f92672>=</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>,</span> unique<span style=color:#f92672>=</span><span style=color:#66d9ef>true</span><span style=color:#f92672>,</span> length<span style=color:#f92672>=</span>50<span style=color:#f92672>)</span>
+	<span style=color:#66d9ef>private</span> String name<span style=color:#f92672>;</span>
+
+	<span style=color:#75715e>// getters and setters omitted
+</span><span style=color:#75715e></span><span style=color:#f92672>}</span>
+</code></pre></div><p>Now let&rsquo;s use spring data to generate a repository for us :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>UserRepository</span>  <span style=color:#66d9ef>extends</span> JpaRepository<span style=color:#f92672>&lt;</span>User<span style=color:#f92672>,</span> Long<span style=color:#f92672>&gt;</span> <span style=color:#f92672>{</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Tadaa! Is that it? Yes, you can now use your repository in our <strong>MainBean</strong> :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MainBean</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Autowired</span>
+	<span style=color:#66d9ef>private</span> UserRepository userRepository<span style=color:#f92672>;</span>
+
+	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> Logger log <span style=color:#f92672>=</span> LoggerFactory<span style=color:#f92672>.</span><span style=color:#a6e22e>getLogger</span><span style=color:#f92672>(</span>MainBean<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>start</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+
+		<span style=color:#75715e>// Spring Data JPA CRUD operations are transactionnal by default !
+</span><span style=color:#75715e></span>		<span style=color:#75715e>// http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#transactions
+</span><span style=color:#75715e></span>		User newUser <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> User<span style=color:#f92672>();</span>
+		newUser<span style=color:#f92672>.</span><span style=color:#a6e22e>setName</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;inserted&#34;</span><span style=color:#f92672>);</span>
+		userRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>save</span><span style=color:#f92672>(</span>newUser<span style=color:#f92672>);</span>
+
+		List all <span style=color:#f92672>=</span> userRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>findAll</span><span style=color:#f92672>();</span>
+		log<span style=color:#f92672>.</span><span style=color:#a6e22e>info</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;users=&#34;</span> <span style=color:#f92672>+</span> all<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Pretty sweet. But that&rsquo;s not all. You now have three different ways of writing new queries with Spring data :</p>
+<ol>
+<li>
+<p>Use <a href=https://blogs.oracle.com/JPQL01/entry/named_query_in_java_persistence>named queries</a></p>
+</li>
+<li>
+<p><a href=http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#jpa.query-methods.at-query>Use the @Query annotation</a> to write your own JPQL queries</p>
+</li>
+<li>
+<p>Use the awesome <a href=http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#jpa.query-methods.query-creation>query creation by method name</a></p>
+</li>
+</ol>
+<p>Let&rsquo;s review the last two options (I don&rsquo;t really like named queries but have a look a the <a href=http://static.springsource.org/spring-data/jpa/docs/1.2.0.RELEASE/reference/html/#jpa.query-methods.named-queries>documentation</a> if you want)</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>UserRepository</span>  <span style=color:#66d9ef>extends</span> JpaRepository<span style=color:#f92672>&lt;</span>User<span style=color:#f92672>,</span> Long<span style=color:#f92672>&gt;</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#75715e>// Demonstrate query creation by method name
+</span><span style=color:#75715e></span>	<span style=color:#75715e>// http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#jpa.query-methods.query-creation
+</span><span style=color:#75715e></span>	User <span style=color:#a6e22e>findByName</span><span style=color:#f92672>(</span>String name<span style=color:#f92672>);</span>
+
+	<span style=color:#75715e>// Demonstrate the use of a simple JPQL query
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>@Query</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;from User u where upper(u.name) = upper(:name)&#34;</span><span style=color:#f92672>)</span>
+	User <span style=color:#a6e22e>findByNameIgnoreCase</span><span style=color:#f92672>(</span><span style=color:#a6e22e>@Param</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;name&#34;</span><span style=color:#f92672>)</span> String name<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h2 id=ok-lets-test-it>Ok let&rsquo;s test it</h2>
+<p>Have a look at the unit test for our repository :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@RunWith</span><span style=color:#f92672>(</span>SpringJUnit4ClassRunner<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span>
+<span style=color:#a6e22e>@ContextConfiguration</span><span style=color:#f92672>(</span>classes <span style=color:#f92672>=</span> <span style=color:#f92672>{</span> StandaloneDataJpaConfig<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span> <span style=color:#f92672>})</span>
+<span style=color:#a6e22e>@TestExecutionListeners</span><span style=color:#f92672>({</span> DependencyInjectionTestExecutionListener<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>,</span>
+	DbUnitTestExecutionListener<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span> <span style=color:#f92672>})</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>UserRepositoryTest</span> <span style=color:#f92672>{</span>
+
+	<span style=color:#a6e22e>@Autowired</span>
+	<span style=color:#66d9ef>private</span> UserRepository userRepository<span style=color:#f92672>;</span>
+
+	<span style=color:#a6e22e>@Test</span>
+	<span style=color:#a6e22e>@DatabaseSetup</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;userAdminData.xml&#34;</span><span style=color:#f92672>)</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testFindAdmin</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+
+		User admin <span style=color:#f92672>=</span> userRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>findOne</span><span style=color:#f92672>(</span>1L<span style=color:#f92672>);</span>
+		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertNotNull</span><span style=color:#f92672>(</span>admin<span style=color:#f92672>);</span>
+		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertEquals</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;admin&#34;</span><span style=color:#f92672>,</span> admin<span style=color:#f92672>.</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>());</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Test</span>
+	<span style=color:#a6e22e>@DatabaseSetup</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;userAdminData.xml&#34;</span><span style=color:#f92672>)</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testFindByName</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+
+		User admin <span style=color:#f92672>=</span> userRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>findByName</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;admin&#34;</span><span style=color:#f92672>);</span>
+		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertNotNull</span><span style=color:#f92672>(</span>admin<span style=color:#f92672>);</span>
+		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertEquals</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;admin&#34;</span><span style=color:#f92672>,</span> admin<span style=color:#f92672>.</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>());</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Test</span>
+	<span style=color:#a6e22e>@DatabaseSetup</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;userAdminData.xml&#34;</span><span style=color:#f92672>)</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testFindByNameIgnoreCase</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+
+		User admin <span style=color:#f92672>=</span> userRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>findByNameIgnoreCase</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;AdMIn&#34;</span><span style=color:#f92672>);</span>
+		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertNotNull</span><span style=color:#f92672>(</span>admin<span style=color:#f92672>);</span>
+		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertEquals</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;admin&#34;</span><span style=color:#f92672>,</span> admin<span style=color:#f92672>.</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>());</span>
+	<span style=color:#f92672>}</span>
+
+	<span style=color:#a6e22e>@Test</span>
+	<span style=color:#a6e22e>@DatabaseSetup</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;userAdminData.xml&#34;</span><span style=color:#f92672>)</span>
+	<span style=color:#a6e22e>@ExpectedDatabase</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;afterInsert.xml&#34;</span><span style=color:#f92672>)</span>
+	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testInsertUser</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+
+		User newUser <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> User<span style=color:#f92672>();</span>
+		newUser<span style=color:#f92672>.</span><span style=color:#a6e22e>setName</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;inserted&#34;</span><span style=color:#f92672>);</span>
+		userRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>save</span><span style=color:#f92672>(</span>newUser<span style=color:#f92672>);</span>
+	<span style=color:#f92672>}</span>
+
+<span style=color:#f92672>}</span>
+</code></pre></div><p>We use springtestdbunit to be able to use annotations to set up and verify the database state after each test. Here are our two datasets.</p>
+<p>userAdminData.xml :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#75715e>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style=color:#f92672>&lt;dataset&gt;</span>
+	<span style=color:#f92672>&lt;users</span> <span style=color:#a6e22e>id=</span><span style=color:#e6db74>&#34;1&#34;</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;admin&#34;</span> <span style=color:#f92672>/&gt;</span>
+<span style=color:#f92672>&lt;/dataset&gt;</span>
+</code></pre></div><p>afterInsert.xml :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#75715e>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style=color:#f92672>&lt;dataset&gt;</span>
+	<span style=color:#f92672>&lt;users</span> <span style=color:#a6e22e>id=</span><span style=color:#e6db74>&#34;1&#34;</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;admin&#34;</span> <span style=color:#f92672>/&gt;</span>
+	<span style=color:#f92672>&lt;users</span> <span style=color:#a6e22e>id=</span><span style=color:#e6db74>&#34;2&#34;</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;inserted&#34;</span> <span style=color:#f92672>/&gt;</span>
+<span style=color:#f92672>&lt;/dataset&gt;</span>
+</code></pre></div><p>Using the <strong>@ExpectedDatabase</strong> annotation is really awesome, dbUnit will generate very informative messages if your test failed.</p>
+<h2 id=conclusion>Conclusion</h2>
+<p>Spring Data JPA is really a good piece of software. We did not go into too much details but know that it will handle pagination, type-safe queries, is compatible with <a href=http://www.querydsl.com/>query-dsl</a> and much more.
+It is suitable for a Java SE environment which can come in handy if we want to run some quick tests on our database.</p>
+<p>Finally, springtestdbunit is a very nice-to-have feature which will make your repository unit tests a real breeze to write.</p>
+<p>Lastly, I will point out that making use of the <a href=http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#transactions>transational behaviour of spring data</a> CRUD operation is not really a good practice but we did it all the same for the sake of simplicity.
+A better approach would be to use <strong>@Service</strong> spring beans to encapsulate one or several operations.</p>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2fusing-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit%2f&via=geowarin&text=Using%20Spring%20Data%20JPA%20in%20a%20Java%20SE%20environment%20and%20run%20tests%20with%20dbUnit" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2fusing-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit%2f&title=Using%20Spring%20Data%20JPA%20in%20a%20Java%20SE%20environment%20and%20run%20tests%20with%20dbUnit" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2fusing-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit%2f&t=Using%20Spring%20Data%20JPA%20in%20a%20Java%20SE%20environment%20and%20run%20tests%20with%20dbUnit" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2fusing-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2fusing-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit%2f&text=Using%20Spring%20Data%20JPA%20in%20a%20Java%20SE%20environment%20and%20run%20tests%20with%20dbUnit" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/jpa/>JPA</a>, <a class=category href=/categories/java/>java</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/hibernate/>Hibernate</a>, <a class=tag href=/tags/java-se/>java SE</a>, <a class=tag href=/tags/spring/>spring</a>, <a class=tag href=/tags/spring-data/>spring-data</a>, <a class=tag href=/tags/spring-java-config/>spring-java-config</a>, <a class=tag href=/tags/spring-test/>spring-test</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/using-spring-in-a-java-se-environment-and-implementing-the-chain-of-responsibility-pattern/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>Using spring in a Java SE environment and implementing the chain of responsibility pattern</a>
+</div><div class="next-entry sep-before">
+<a href=/generate-ddl-with-hibernate/>
+<span class=screen-reader-text>Next post: </span>Generate DDL with hibernate<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

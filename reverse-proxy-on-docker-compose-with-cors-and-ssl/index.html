@@ -1,0 +1,350 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Reverse proxy on docker-compose with CORS and SSL • Geowarin">
+<meta property="og:description" content="How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.">
+<meta property="og:url" content="https://geowarin.github.io/reverse-proxy-on-docker-compose-with-cors-and-ssl/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="docker"><meta property="article:tag" content="nginx"><meta property="article:published_time" content="2019-12-21T00:24:53+01:00"><meta property="article:modified_time" content="2019-12-21T00:24:53+01:00"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Reverse proxy on docker-compose with CORS and SSL • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/reverse-proxy-on-docker-compose-with-cors-and-ssl/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Reverse proxy on docker-compose with CORS and SSL</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Reverse proxy on docker-compose with CORS and SSL</h1>
+<p class=desc>How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2019-12-21T00:24:53+01:00>2019, Dec 21</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+4 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<h1 id=the-problem>The problem</h1>
+<p><a href=https://github.com/electerious/Ackee>Ackee</a> is a neat self-hosted analytics solution for simple needs (e.g. a blog).
+On the repo, the authors give instructions to run the tool, a node application, via docker-compose.</p>
+<p>On the other hand, the website whose analytics will be tracked needs to include a script that will look like this:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>async</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://unpkg.com/ackee-tracker@3.2.2/dist/ackee-tracker.min.js&#34;</span>
+        <span style=color:#a6e22e>data-ackee-server</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://ackee.com&#34;</span>
+        <span style=color:#a6e22e>data-ackee-domain-id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;67bfa855-7569-4d29-a0a3-a2f4ceae2ea3&#34;</span>
+        <span style=color:#a6e22e>data-ackee-opts</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{ &#34;ignoreLocalhost&#34;: false }&#39;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><p>The problem is that <code>localhost:1313</code>, where my blog runs locally, cannot send json requests to <code>https:localhost</code>
+or whichever host Ackee is running on, if they differ in name/port, etc.</p>
+<p>This is a browser built-in protection known as <em>CORS</em>.</p>
+<p>To allow the browser to make a certain type of requests (like json request) to another host, this host must explicitly
+allow it by responding with the following headers to a preflight request (with the OPTION http verb):</p>
+<pre tabindex=0><code>Access-Control-Allow-Origin  &quot;*&quot;
+Access-Control-Allow-Methods &quot;GET, POST, PATCH, OPTIONS&quot;
+Access-Control-Allow-Headers &quot;Content-Type&quot;
+</code></pre><p>The example above allows whichever host (*) to send GET, POST, PATCH, and OPTIONS requests with the <code>Content-Type</code>
+header.
+More info can be found in the <a href=https://fetch.spec.whatwg.org/#http-cors-protocol>fetch specification</a></p>
+<p>This is a good use-case for a <a href=https://medium.com/intrinsic/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca>reverse-proxy</a>.</p>
+<p>We&rsquo;ll use nginx and a self-signed certificate for SSL.</p>
+<p>Please note:</p>
+<ul>
+<li>You should avoid using wild-card in CORS headers in production</li>
+<li>SSL is not required to allow CORS</li>
+<li>You should use a properly signed certificate in production</li>
+</ul>
+<p>However, I thought it would be a good occasion to learn something new.
+And I really wanted Ackee to work locally.</p>
+<h1 id=the-solution>The solution</h1>
+<p>Credits to Nickolas Kraus who wrote a <a href=https://nickolaskraus.org/articles/how-to-create-a-self-signed-certificate-for-nginx-on-macos/>very good article</a>
+on how to run nginx with self-signed certificates.</p>
+<p>I just added docker-compose and CORS headers into the mix.</p>
+<h2 id=generating-the-cerficates>Generating the cerficates</h2>
+<p>Here is a shell script that will create <code>self-signed.crt</code>, <code>self-signed.key</code> and <code>dhparam.pem</code>, your self-signed certificates.
+It will also add it to the macOS trust store.</p>
+<p>This will work immediately with Chrome.
+Firefox has its own store and you will have to manually add the certificate upon the first connection.</p>
+<p>For other platforms, <a href=https://github.com/Busindre/How-to-Add-trusted-root-certificates>see here</a>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e>#!/usr/bin/env bash
+</span><span style=color:#75715e></span>
+mkdir -p nginx
+
+rm -f nginx/dhparam.pem nginx/self-signed.crt nginx/self-signed.key
+
+<span style=color:#75715e># create a ssl certificate</span>
+sudo openssl req <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span> -x509 -nodes -days <span style=color:#ae81ff>365</span> -newkey rsa:2048 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span> -subj <span style=color:#e6db74>&#34;/CN=localhost&#34;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span> -config nginx/openssl.cnf <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span> -keyout nginx/self-signed.key <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span> -out nginx/self-signed.crt
+
+<span style=color:#75715e># create a Diffie-Hellman key pair</span>
+sudo openssl dhparam -out nginx/dhparam.pem <span style=color:#ae81ff>128</span>
+
+<span style=color:#75715e># add certificate to the trusted root store</span>
+sudo security add-trusted-cert <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span> -d -r trustRoot <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span> -k /Library/Keychains/System.keychain nginx/self-signed.crt
+
+<span style=color:#75715e># to remove</span>
+
+<span style=color:#75715e># sudo security delete-certificate -c &#34;&lt;name of existing certificate&gt;&#34;</span>
+</code></pre></div><h2 id=nginx-conf>Nginx conf</h2>
+<p><strong>nginx.conf</strong></p>
+<pre tabindex=0><code>worker_processes  1;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+  include       mime.types;
+  default_type  application/octet-stream;
+
+  sendfile           on;
+  keepalive_timeout  65;
+  proxy_http_version 1.1;
+
+  # configure nginx server to redirect to HTTPS
+  server {
+    listen       80;
+    server_name  localhost;
+    return 302 https://$server_name:443;
+  }
+
+  # configure nginx server with ssl
+  server {
+    listen       443 ssl http2;
+    server_name  localhost;
+    include self-signed.conf;
+    include ssl-params.conf;
+
+    # route requests to the local development server
+    location / {
+      add_header   Access-Control-Allow-Origin &quot;*&quot; always;
+      add_header   Access-Control-Allow-Methods &quot;GET, POST, PATCH, OPTIONS&quot; always;
+      add_header   Access-Control-Allow-Headers &quot;Content-Type&quot; always;
+      add_header   Strict-Transport-Security &quot;max-age=31536000&quot; always;
+      add_header   X-Frame-Options deny;
+      proxy_pass   http://ackee:3000/;
+    }
+  }
+
+  include servers/*;
+}
+</code></pre><p>Note the <code>proxy_pass</code> line that will reference the site we reverse-proxy.
+With docker-compose the hostname will be the name of the container listed in <code>docker-compose.yml</code>.</p>
+<p>We know that the node server runs on port 3000.</p>
+<p>You can also see that nginx will automatically add the CORS headers we previously discussed.</p>
+<p>You can see two includes:</p>
+<p><strong>ssl-params.conf</strong></p>
+<pre tabindex=0><code>ssl_protocols TLSv1.1 TLSv1.2;
+ssl_prefer_server_ciphers on;
+ssl_ciphers &quot;EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH&quot;;
+ssl_ecdh_curve secp384r1;
+ssl_session_cache shared:SSL:10m;
+ssl_session_tickets off;
+ssl_stapling on;
+ssl_stapling_verify on;
+resolver 8.8.8.8 8.8.4.4 valid=300s;
+resolver_timeout 5s;
+add_header Strict-Transport-Security &quot;max-age=63072000; includeSubdomains&quot;;
+add_header X-Frame-Options DENY;
+add_header X-Content-Type-Options nosniff;
+ssl_dhparam dhparam.pem;
+</code></pre><p><strong>self-signed.conf</strong></p>
+<pre tabindex=0><code>ssl_certificate self-signed.crt;
+ssl_certificate_key self-signed.key;
+</code></pre><h2 id=docker-compose>docker-compose</h2>
+<p><strong>docker-compose.yml</strong></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3&#34;</span>
+<span style=color:#f92672>services</span>:
+  <span style=color:#f92672>nginx</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:latest</span>
+    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>pnginx</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>./nginx/:/etc/nginx/</span>
+    <span style=color:#f92672>ports</span>:
+      - <span style=color:#ae81ff>80</span>:<span style=color:#ae81ff>80</span>
+      - <span style=color:#ae81ff>443</span>:<span style=color:#ae81ff>443</span>
+    <span style=color:#f92672>depends_on</span>:
+      - <span style=color:#ae81ff>ackee</span>
+  <span style=color:#f92672>ackee</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>electerious/ackee</span>
+    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>ackee</span>
+    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+    <span style=color:#f92672>environment</span>:
+      - <span style=color:#ae81ff>WAIT_HOSTS=mongo:27017</span>
+      - <span style=color:#ae81ff>ACKEE_MONGODB=mongodb://mongo:27017/ackee</span>
+    <span style=color:#f92672>env_file</span>:
+      - <span style=color:#ae81ff>.env</span>
+    <span style=color:#f92672>depends_on</span>:
+      - <span style=color:#ae81ff>mongo</span>
+  <span style=color:#f92672>mongo</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>mongo</span>
+    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>mongo</span>
+    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>./data:/data/db</span>
+</code></pre></div><p>Note the <code>depends_on</code> line which will make the Ackee container available inside the docker network on http://ackee.</p>
+<p>With that, we have a node application running behind nginx with HTTPS and CORS enabled!</p>
+<p><img src=/assets/images/articles/2019/2019-12-21-success.png alt="It works"></p>
+<p>Resources:</p>
+<ul>
+<li><a href=https://github.com/geowarin/docker-compose-nginx>Github repository</a></li>
+<li><a href=https://nickolaskraus.org/articles/how-to-create-a-self-signed-certificate-for-nginx-on-macos/>Original article</a></li>
+<li><a href=https://medium.com/intrinsic/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca>Why should I use a Reverse Proxy if Node.js is Production-Ready?</a></li>
+<li><a href=https://github.com/Busindre/How-to-Add-trusted-root-certificates>How-to: Adding trusted root certificates</a></li>
+</ul>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2freverse-proxy-on-docker-compose-with-cors-and-ssl%2f&via=geowarin&text=Reverse%20proxy%20on%20docker-compose%20with%20CORS%20and%20SSL" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2freverse-proxy-on-docker-compose-with-cors-and-ssl%2f&title=Reverse%20proxy%20on%20docker-compose%20with%20CORS%20and%20SSL" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2freverse-proxy-on-docker-compose-with-cors-and-ssl%2f&t=Reverse%20proxy%20on%20docker-compose%20with%20CORS%20and%20SSL" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2freverse-proxy-on-docker-compose-with-cors-and-ssl%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2freverse-proxy-on-docker-compose-with-cors-and-ssl%2f&text=Reverse%20proxy%20on%20docker-compose%20with%20CORS%20and%20SSL" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/architecture/>architecture</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/docker/>docker</a>, <a class=tag href=/tags/nginx/>nginx</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/debugging-webflux-with-intellij/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>Debugging Webflux with IntelliJ</a>
+</div><div class="next-entry sep-before">
+<a href=/share-intellij-run-configurations-with-git/>
+<span class=screen-reader-text>Next post: </span>Share IntelliJ run configurations with git<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

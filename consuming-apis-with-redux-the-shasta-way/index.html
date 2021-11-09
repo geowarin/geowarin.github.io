@@ -1,0 +1,478 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Connecting your REST API to Redux used to be hard... But that was before Shasta!">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Consuming APIs with Redux, the Shasta way • Geowarin">
+<meta property="og:description" content="Connecting your REST API to Redux used to be hard... But that was before Shasta!">
+<meta property="og:url" content="https://geowarin.github.io/consuming-apis-with-redux-the-shasta-way/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="react"><meta property="article:tag" content="redux"><meta property="article:tag" content="shasta"><meta property="article:published_time" content="2016-04-12T00:00:00Z"><meta property="article:modified_time" content="2016-04-12T00:00:00Z"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Consuming APIs with Redux, the Shasta way • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/consuming-apis-with-redux-the-shasta-way/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Consuming APIs with Redux, the Shasta way</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Consuming APIs with Redux, the Shasta way</h1>
+<p class=desc>Connecting your REST API to Redux used to be hard... But that was before Shasta!</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2016-04-12T00:00:00Z>2016, Apr 12</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+7 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>Since React is just the view layer of your front-end stack, the community had to
+provide the solutions for the remaining problems.</p>
+<p>Right now there seems to be a consensus for the best libraries. The recommended stack is:</p>
+<ul>
+<li>Building: <code>Webpack</code> and <code>babel</code></li>
+<li>Managing your UI state: <code>Redux</code> and <code>ImmutableJS</code></li>
+<li>Routing: <code>React-router</code> (<a href=https://github.com/taion/rrtr>ahem!</a>)</li>
+</ul>
+<p>But there seems to be <a href=https://blog.boldlisting.com/connecting-redux-to-your-api-eac51ad9ff89#.s83cs4um8>lots of options</a>
+to connect Redux to your API.</p>
+<p>Yesterday, I decided to see what <a href=http://shasta.tools/>Shasta</a> had in store for
+us. I have to say that I was more than happy with what I saw!</p>
+<p>Check out my demo project <a href=https://github.com/geowarin/shasta-preview>on github</a>.</p>
+<h2 id=what-is-shasta>What is Shasta?</h2>
+<p>Shasta is the latest project of <a href=https://github.com/contra>@Contra (Eric Schoffstall)</a>,
+previously known for Gulp.</p>
+<p>The idea is to take the best practices and libraries used by the React community
+and stitch them together with nice helpers.</p>
+<p>It is an <a href=http://shasta.tools/shasta/docs/Opinions.html>opinionated library</a>.</p>
+<p>Without surprise, you will find support for all the libraries cited above.</p>
+<p>Shasta is very ambitious and aims to help you solve Server Side Rendering, manage
+security and user sessions, etc.</p>
+<p>Check the <a href=https://github.com/shastajs/boilerplate>shasta-boilerplate</a> for a more comprehensive example.</p>
+<p>In this article I will focus on <a href=https://github.com/shastajs/tahoe>Tahoe</a> and
+the <a href=https://github.com/shastajs/shasta-data-view>shasta data view</a>.</p>
+<p>I think that those two things alone are well worth a blog post!</p>
+<h2 id=a-word-of-warning>A word of warning!</h2>
+<p>Shasta is under development. All the dependencies in the demo are pointing to the
+github repositories. There are no npm releases yet!</p>
+<p>Likewise, the documentation <a href=http://shasta.tools/shasta/index.html>is very sparse</a> at
+the moment.</p>
+<p>Thinks are likely to change or break. You have been warned.</p>
+<p>Your best bet to learn more about Shasta right now is to listen to the Javascript Jabber podcast
+<a href=https://devchat.tv/js-jabber/205-jsj-shasta-with-eric-schoffstall>episode on Shasta</a>.</p>
+<h2 id=the-store>The store</h2>
+<p>The central element in Shasta is the store.
+It is very similar to Redux&rsquo;s store but it adds the notion of plugins.</p>
+<p>To get started quickly, I created a project [using nwb]({% post_url 2016-02-18-react-freshness %}).</p>
+<p>Here is what the project looks like after setting up Shasta with the router and
+Tahoe:</p>
+<p>Let&rsquo;s dig into the core package.</p>
+<p><code>store.js</code> allows you to reference the store as a singleton. This is also where
+you register the plugins you use:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>createStore</span>, <span style=color:#a6e22e>createReducer</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;shasta&#39;</span>;
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>localReducers</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;../reducers/.lookup&#39;</span>;
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>plugins</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./plugins&#39;</span>;
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#a6e22e>createStore</span>({
+  <span style=color:#a6e22e>plugins</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>plugins</span>,
+  <span style=color:#a6e22e>reducers</span><span style=color:#f92672>:</span> [
+    <span style=color:#a6e22e>createReducer</span>(<span style=color:#a6e22e>localReducers</span>)
+  ]
+})
+</code></pre></div><p><code>plugins.js</code> is very simple. In this example, I use two plugins, Tahoe and shasta-router:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>router</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;shasta-router&#39;</span>
+<span style=color:#66d9ef>import</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>api</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;tahoe&#39;</span>;
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> [
+  <span style=color:#a6e22e>api</span>,
+  <span style=color:#a6e22e>router</span>
+]
+</code></pre></div><p>Finally, the <code>actions.js</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>actions</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>routeActions</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;shasta-router&#39;</span>
+<span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>createActions</span>, <span style=color:#a6e22e>createReducerActions</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;shasta&#39;</span>;
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>store</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./store&#39;</span>
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>localActions</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;../api/.lookup&#39;</span>
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>localReducers</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;../reducers/.lookup&#39;</span>;
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#a6e22e>createActions</span>({
+  ...<span style=color:#a6e22e>localActions</span>,
+  ...<span style=color:#a6e22e>routeActions</span>,
+  ...<span style=color:#a6e22e>createReducerActions</span>(<span style=color:#a6e22e>localReducers</span>)
+}, <span style=color:#a6e22e>store</span>.<span style=color:#a6e22e>dispatch</span>)
+</code></pre></div><h3 id=plugins>Plugins</h3>
+<p>What are those plugins? Shasta defines multiple extension points.
+Most notably, your plugin can export reducers and middlewares which dramatically
+help reducing the boilerplate.</p>
+<p>With the example above, you will get your routes stored in Redux with <code>react-router-redux</code>,
+and the setup for the <a href="https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en">Redux Devtools chrome extension</a>.</p>
+<p>Tahoe also adds a bunch of reducers to handle our API calls.</p>
+<h3 id=what-about-the-lookup-file>What about the .lookup file?</h3>
+<p>The <code>.lookup</code> files are a really nice idea, they use the <a href=https://github.com/contra/glob-loader>glob-loader</a> to re-export all the js files
+according to a glob expression.</p>
+<p>This avoids writing repetitive and error prone-code like:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>reducer1</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./reducer1&#39;</span>
+<span style=color:#66d9ef>import</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>reducer2</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./reducer2&#39;</span>
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+  <span style=color:#a6e22e>reducer1</span>,
+  <span style=color:#a6e22e>reducer2</span>
+}
+</code></pre></div><h2 id=the-root-component>The Root Component</h2>
+<p>Here is a quick glance at the Root component of our application.
+It is very classic, just note that Shasta adds support for additional PropTypes
+like routes or immutable types.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>React</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;react&#34;</span>;
+<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>Provider</span>, <span style=color:#a6e22e>Component</span>, <span style=color:#a6e22e>PropTypes</span>} <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta&#34;</span>;
+<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>Router</span>} <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta-router&#34;</span>;
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RootView</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Component</span> {
+  <span style=color:#66d9ef>static</span> <span style=color:#a6e22e>displayName</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;RootView&#39;</span>;
+  <span style=color:#66d9ef>static</span> <span style=color:#a6e22e>propTypes</span> <span style=color:#f92672>=</span> {
+    <span style=color:#a6e22e>history</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>PropTypes</span>.<span style=color:#a6e22e>object</span>.<span style=color:#a6e22e>isRequired</span>,
+    <span style=color:#a6e22e>store</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>PropTypes</span>.<span style=color:#a6e22e>object</span>.<span style=color:#a6e22e>isRequired</span>,
+    <span style=color:#a6e22e>routes</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>PropTypes</span>.<span style=color:#a6e22e>node</span>.<span style=color:#a6e22e>isRequired</span>
+  };
+
+  <span style=color:#a6e22e>render</span> () {
+    <span style=color:#66d9ef>const</span> {<span style=color:#a6e22e>store</span>, <span style=color:#a6e22e>history</span>, <span style=color:#a6e22e>routes</span>} <span style=color:#f92672>=</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>props</span>;
+    <span style=color:#66d9ef>return</span> (
+      &lt;<span style=color:#f92672>Provider</span> <span style=color:#a6e22e>store</span><span style=color:#f92672>=</span>{<span style=color:#a6e22e>store</span>}&gt;
+        &lt;<span style=color:#f92672>Router</span> <span style=color:#a6e22e>history</span><span style=color:#f92672>=</span>{<span style=color:#a6e22e>history</span>}&gt;
+          {<span style=color:#a6e22e>routes</span>}
+        &lt;/<span style=color:#f92672>Router</span>&gt;
+      &lt;/<span style=color:#f92672>Provider</span>&gt;
+    )
+  }
+}
+</code></pre></div><h2 id=our-first-reducer-the-counter>Our first reducer: the counter!</h2>
+<p>This one took you by surprise, didn&rsquo;t it?
+Just to show the ideas behind Shasta, here is the reducer for our sacred counter example.</p>
+<p><code>reducers/counter.js</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>Map</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;immutable&#39;</span>;
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>initialState</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Map</span>({ <span style=color:#a6e22e>count</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span> });
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>increment</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>state</span>, { <span style=color:#a6e22e>payload</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> }) =&gt;
+  <span style=color:#a6e22e>state</span>.<span style=color:#a6e22e>update</span>(<span style=color:#e6db74>&#39;count&#39;</span>, <span style=color:#a6e22e>c</span> =&gt; <span style=color:#a6e22e>c</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>payload</span>);
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>decrement</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>state</span>, { <span style=color:#a6e22e>payload</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> }) =&gt;
+  <span style=color:#a6e22e>state</span>.<span style=color:#a6e22e>update</span>(<span style=color:#e6db74>&#39;count&#39;</span>, <span style=color:#a6e22e>c</span> =&gt; <span style=color:#a6e22e>c</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>payload</span>);
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>reset</span> <span style=color:#f92672>=</span> () =&gt; <span style=color:#a6e22e>initialState</span>;
+</code></pre></div><p>Here, you see a very straightforward implementation of a reducer.
+It leverages the ImmutableJS API to create those nice little one-liners.</p>
+<p>Here is how to use those reducers as actions in your views:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>React</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;react&#34;</span>;
+<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>connect</span>, <span style=color:#a6e22e>Component</span>} <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta&#34;</span>;
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>actions</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;../core/actions&#34;</span>;
+
+<span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>connect</span>({
+  <span style=color:#a6e22e>count</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;counter.count&#39;</span>
+})
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Counter</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Component</span> {
+
+  <span style=color:#a6e22e>render</span>() {
+    <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span>&gt;
+      &lt;<span style=color:#f92672>h2</span>&gt;<span style=color:#a6e22e>Counter</span>&lt;/<span style=color:#f92672>h2</span>&gt;
+
+      &lt;<span style=color:#f92672>p</span>&gt;{<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>count</span>}&lt;/<span style=color:#f92672>p</span>&gt;
+
+      &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>onClick</span><span style=color:#f92672>=</span>{() =&gt; <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>counter</span>.<span style=color:#a6e22e>increment</span>()}&gt;
+        <span style=color:#a6e22e>Increment</span>
+      &lt;/<span style=color:#f92672>button</span>&gt;
+      &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>onClick</span><span style=color:#f92672>=</span>{() =&gt; <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>counter</span>.<span style=color:#a6e22e>decrement</span>()}&gt;
+        <span style=color:#a6e22e>Decrement</span>
+      &lt;/<span style=color:#f92672>button</span>&gt;
+      &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>onClick</span><span style=color:#f92672>=</span>{() =&gt; <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>counter</span>.<span style=color:#a6e22e>reset</span>()}&gt;
+        <span style=color:#a6e22e>Reset</span>
+      &lt;/<span style=color:#f92672>button</span>&gt;
+    &lt;/<span style=color:#f92672>div</span>&gt;
+  }
+}
+</code></pre></div><p>With our lookup file setup, there is nothing else to do.
+Your actions will automatically be available from all components in the
+<code>actions.counter</code> namespace.</p>
+<p>The <code>@connect</code> annotation reminds a lot of Redux but it has been modified to
+work seamlessly with immutable data types.</p>
+<h2 id=lets-fetch-data>Let&rsquo;s fetch data!</h2>
+<p>Let&rsquo;s create a <code>api/chuck.js</code> file:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>createAction</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;tahoe&#39;</span>;
+<span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>Schema</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;normalizr&#39;</span>;
+
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>response</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Schema</span>(<span style=color:#e6db74>&#39;some-response&#39;</span>);
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>getRandomFact</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createAction</span>({
+  <span style=color:#a6e22e>endpoint</span><span style=color:#f92672>:</span> () =&gt; <span style=color:#e6db74>`http://api.icndb.com/jokes/random`</span>,
+  <span style=color:#a6e22e>method</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;GET&#39;</span>,
+  <span style=color:#a6e22e>model</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>response</span>
+});
+</code></pre></div><p>Shasta has direct support for <a href=https://github.com/gaearon/normalizr>normalizr</a>.
+This will help us store our entities in a normalized way as we will see in a moment.</p>
+<p>Under the hood, Tahoe uses superagent to make HTTP requests.</p>
+<p>Let&rsquo;s see how to use this in a view:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>React</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;react&#34;</span>;
+<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>connect</span>} <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta&#34;</span>;
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>actions</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;../core/actions&#34;</span>;
+<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>DataComponent</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta-data-view&#34;</span>;
+
+<span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>connect</span>({
+  <span style=color:#a6e22e>joke</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;api.subsets.joke&#39;</span>
+})
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ChuckFact</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>DataComponent</span> {
+
+  <span style=color:#a6e22e>resolveData</span> () {
+    <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>chuck</span>.<span style=color:#a6e22e>getRandomFact</span>({
+      <span style=color:#a6e22e>subset</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;joke&#39;</span>
+    });
+  }
+
+  <span style=color:#a6e22e>renderLoader</span> () {
+    <span style=color:#66d9ef>return</span> (
+      &lt;<span style=color:#f92672>div</span>&gt;
+        <span style=color:#a6e22e>Loading</span>...
+      &lt;/<span style=color:#f92672>div</span>&gt;
+    )
+  }
+
+  <span style=color:#a6e22e>renderData</span> ({<span style=color:#a6e22e>joke</span>}) {
+    <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span>&gt;
+      &lt;<span style=color:#f92672>h2</span>&gt;<span style=color:#a6e22e>Chuck</span> <span style=color:#a6e22e>Norris</span> <span style=color:#a6e22e>Fact</span>&lt;/<span style=color:#f92672>h2</span>&gt;
+
+      &lt;<span style=color:#f92672>p</span>&gt;{<span style=color:#a6e22e>joke</span>.<span style=color:#a6e22e>getIn</span>([<span style=color:#e6db74>&#39;value&#39;</span>, <span style=color:#e6db74>&#39;joke&#39;</span>])}&lt;/<span style=color:#f92672>p</span>&gt;
+    &lt;/<span style=color:#f92672>div</span>&gt;
+  }
+
+  <span style=color:#a6e22e>renderErrors</span> (<span style=color:#a6e22e>errors</span>) {
+    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>error</span>(<span style=color:#a6e22e>errors</span>);
+    <span style=color:#66d9ef>return</span> (
+      &lt;<span style=color:#f92672>div</span>&gt;
+        <span style=color:#a6e22e>There</span> <span style=color:#a6e22e>was</span> <span style=color:#a6e22e>an</span> <span style=color:#a6e22e>error</span> <span style=color:#a6e22e>fetching</span> <span style=color:#a6e22e>Chuck</span> <span style=color:#a6e22e>Norris</span> <span style=color:#a6e22e>facts</span>
+      &lt;/<span style=color:#f92672>div</span>&gt;
+    )
+  }
+}
+</code></pre></div><p>Shasta has a <code>DataComponent</code> class that will help you manage the pattern of displaying
+a loading message while fetching the data, and errors if the request fail.</p>
+<p>When using a Tahoe action, you can optionally specify a subset in which the fetched
+data will end up.</p>
+<p>This is great to scope your fetch requests to a component.
+Here, our request ends up in the <code>api.subsets.joke</code> namespace.</p>
+<p>Here is the JSON returned by our API so you can understand the <code>getIn</code> call:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;success&#34;</span>,
+  <span style=color:#f92672>&#34;value&#34;</span>: {
+    <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>459</span>,
+    <span style=color:#f92672>&#34;joke&#34;</span>: <span style=color:#e6db74>&#34;Chuck Norris can solve the Towers of Hanoi in one move.&#34;</span>,
+    <span style=color:#f92672>&#34;categories&#34;</span>: [
+        <span style=color:#e6db74>&#34;nerdy&#34;</span>
+    ]
+  }
+}
+</code></pre></div><h2 id=using-normalizr>Using normalizr</h2>
+<p>If we use a schema for the API call, we can tell normalizr that the <code>value</code> field
+in our JSON response is actually an entity.</p>
+<p>As such, we will be able to retrieve it in the <code>api.entities</code> namespace.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>response</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Schema</span>(<span style=color:#e6db74>&#39;response&#39;</span>);
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>joke</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Schema</span>(<span style=color:#e6db74>&#39;jokes&#39;</span>);
+
+<span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>define</span>({
+  <span style=color:#a6e22e>value</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>joke</span>
+});
+</code></pre></div><p>Normalizr will create a map of jokes indexed by ids and store it in <code>api.entities.jokes</code>.
+Which allows us to write something like so:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>connect</span>({
+  <span style=color:#a6e22e>jokes</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;api.entities.jokes&#39;</span>
+})
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ChuckFact</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>DataComponent</span> {
+
+  <span style=color:#a6e22e>renderData</span> ({<span style=color:#a6e22e>jokes</span>}) {
+    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>jokesEl</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>jokes</span>.<span style=color:#a6e22e>valueSeq</span>().<span style=color:#a6e22e>map</span>((<span style=color:#a6e22e>joke</span>, <span style=color:#a6e22e>id</span>) =&gt; {
+      <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>key</span><span style=color:#f92672>=</span>{<span style=color:#a6e22e>id</span>}&gt;{<span style=color:#a6e22e>joke</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#39;joke&#39;</span>)}&lt;/<span style=color:#f92672>div</span>&gt;
+    });
+
+    <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span>&gt;
+      &lt;<span style=color:#f92672>h2</span>&gt;<span style=color:#a6e22e>Chuck</span> <span style=color:#a6e22e>Norris</span> <span style=color:#a6e22e>Fact</span>&lt;/<span style=color:#f92672>h2</span>&gt;
+
+      {<span style=color:#a6e22e>jokesEl</span>}
+    &lt;/<span style=color:#f92672>div</span>&gt;
+  }
+}
+</code></pre></div><p>We can also use a function in the <code>@connect</code> decorator:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>getFirstJoke</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>store</span>) =&gt; {
+  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>store</span>.<span style=color:#a6e22e>getIn</span>([<span style=color:#e6db74>&#39;api&#39;</span>, <span style=color:#e6db74>&#39;subsets&#39;</span>, <span style=color:#e6db74>&#39;myJoke&#39;</span>, <span style=color:#e6db74>&#39;data&#39;</span>, <span style=color:#e6db74>&#39;value&#39;</span>, <span style=color:#e6db74>&#39;joke&#39;</span>]);
+};
+
+<span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>connect</span>({
+  <span style=color:#a6e22e>joke</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>getFirstJoke</span>
+})
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ChuckFact</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>DataComponent</span> {
+
+  <span style=color:#a6e22e>resolveData</span> () {
+    <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>chuck</span>.<span style=color:#a6e22e>getRandomFact</span>({
+      <span style=color:#a6e22e>subset</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;myJoke&#39;</span>
+    });
+  }
+
+  <span style=color:#a6e22e>renderData</span> ({<span style=color:#a6e22e>joke</span>}) {
+    <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span>&gt;
+      &lt;<span style=color:#f92672>h2</span>&gt;<span style=color:#a6e22e>Chuck</span> <span style=color:#a6e22e>Norris</span> <span style=color:#a6e22e>Fact</span>&lt;/<span style=color:#f92672>h2</span>&gt;
+
+      {<span style=color:#a6e22e>joke</span>}
+    &lt;/<span style=color:#f92672>div</span>&gt;
+  }
+}
+</code></pre></div><h2 id=conclusion>Conclusion</h2>
+<p>I&rsquo;m very excited about Shasta.
+It solves a long-standing problem in the React community with an unmatched elegance.</p>
+<p>It might be that piece that a lot of us have been missing in our projects.</p>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2fconsuming-apis-with-redux-the-shasta-way%2f&via=geowarin&text=Consuming%20APIs%20with%20Redux%2c%20the%20Shasta%20way" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2fconsuming-apis-with-redux-the-shasta-way%2f&title=Consuming%20APIs%20with%20Redux%2c%20the%20Shasta%20way" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2fconsuming-apis-with-redux-the-shasta-way%2f&t=Consuming%20APIs%20with%20Redux%2c%20the%20Shasta%20way" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2fconsuming-apis-with-redux-the-shasta-way%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2fconsuming-apis-with-redux-the-shasta-way%2f&text=Consuming%20APIs%20with%20Redux%2c%20the%20Shasta%20way" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/react/>react</a>, <a class=category href=/categories/redux/>redux</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/react/>react</a>, <a class=tag href=/tags/redux/>redux</a>, <a class=tag href=/tags/shasta/>shasta</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/react-freshness/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>React freshness</a>
+</div><div class="next-entry sep-before">
+<a href=/what-i-did-wrong-as-a-cto/>
+<span class=screen-reader-text>Next post: </span>What I Did Wrong as a CTO<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

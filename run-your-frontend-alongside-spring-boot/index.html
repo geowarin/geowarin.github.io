@@ -1,0 +1,342 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Run your frontend alongside spring boot • Geowarin">
+<meta property="og:description" content="Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.">
+<meta property="og:url" content="https://geowarin.github.io/run-your-frontend-alongside-spring-boot/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="javascript"><meta property="article:published_time" content="2019-12-23T01:20:59+01:00"><meta property="article:modified_time" content="2019-12-23T01:20:59+01:00"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Run your frontend alongside spring boot • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/run-your-frontend-alongside-spring-boot/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Run your frontend alongside spring boot</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Run your frontend alongside spring boot</h1>
+<p class=desc>Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2019-12-23T01:20:59+01:00>2019, Dec 23</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+3 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>Assumptions:</p>
+<ul>
+<li>Your backend serves the API (REST, graphQL)</li>
+<li>You build your javascript with a separate bundler (parcel, webpack)</li>
+<li>Your frontend uses a push state (HTML 5 history) router</li>
+<li>You want hot module reloading (HMR) for the best developer experience</li>
+</ul>
+<h2 id=tldr>TLDR;</h2>
+<p>The <a href=https://github.com/geowarin/boot-js>github repository</a> shows four different solutions.</p>
+<h2 id=1-cors>1. CORS</h2>
+<p>The most obvious solution is to set up the backend to allow <a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS>Cross-Origin Resource Sharing</a> (CORS)
+with the frontend, which runs on the development web server.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=color:#a6e22e>@Bean</span>
+<span style=color:#a6e22e>@ConditionalOnProperty</span>(name = [<span style=color:#e6db74>&#34;com.geowarin.cors.allowedOrigin&#34;</span>])
+<span style=color:#66d9ef>fun</span> <span style=color:#a6e22e>corsFilter</span>(corsProperties: CorsProperties): CorsWebFilter {
+    <span style=color:#66d9ef>val</span> source = UrlBasedCorsConfigurationSource().apply {
+      registerCorsConfiguration(<span style=color:#e6db74>&#34;/api/**&#34;</span>, CorsConfiguration().apply {
+        addAllowedOrigin(corsProperties.allowedOrigin<span style=color:#f92672>!!</span>)
+        addAllowedHeader(<span style=color:#e6db74>&#34;*&#34;</span>)
+        addAllowedMethod(<span style=color:#e6db74>&#34;*&#34;</span>)
+      })
+    }
+    <span style=color:#66d9ef>return</span> CorsWebFilter(source)
+}
+</code></pre></div><p>We run the frontend with its included web server on <code>localhost:1234</code>.
+The spring backend runs on <code>localhost:8080</code>.</p>
+<p>Navigating on <code>localhost:1234</code>, you will see that the frontend is able to call web services because the backend allows
+CORS from that origin.</p>
+<p>Pros:</p>
+<ul>
+<li>Close to a production environment</li>
+<li>Simple enough</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>CORS?</li>
+</ul>
+<h2 id=2-embed-javascript-into-the-backend>2. Embed javascript into the backend</h2>
+<p>Another solution is to embed the frontend resources directly inside the spring server, as static resources.
+The advantage is that we have only one web server and everything is on the same host.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=color:#66d9ef>val</span> acceptsHtmlOnly: RequestPredicate = RequestPredicate { request <span style=color:#f92672>-&gt;</span>
+  request.headers().accept().contains(MediaType.TEXT_HTML) <span style=color:#f92672>&amp;&amp;</span>
+      !request.headers().accept().contains(MediaType.ALL)
+}
+
+<span style=color:#a6e22e>@Configuration</span>
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RouterConfig</span> {
+  <span style=color:#a6e22e>@Bean</span>
+  <span style=color:#66d9ef>fun</span> <span style=color:#a6e22e>indexRoutes</span>(props: EmbeddedProperties) = router {
+    (GET(<span style=color:#e6db74>&#34;*&#34;</span>) and acceptsHtmlOnly) {
+      <span style=color:#66d9ef>val</span> indexHtml = DefaultResourceLoader().getResource(props.frontendDirectory)
+      <span style=color:#66d9ef>val</span> indexHtml = frontendDirectory.createRelative(<span style=color:#e6db74>&#34;index.html&#34;</span>)
+      ServerResponse.ok().contentType(MediaType.TEXT_HTML).bodyValue(indexHtml)
+    }
+  }
+}
+
+<span style=color:#a6e22e>@Configuration</span>
+<span style=color:#a6e22e>@EnableWebFlux</span>
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>WebConfig</span>(<span style=color:#66d9ef>val</span> props: EmbeddedProperties) : WebFluxConfigurer {
+  <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>fun</span> <span style=color:#a6e22e>addResourceHandlers</span>(registry: ResourceHandlerRegistry) {
+    registry.addResourceHandler(<span style=color:#e6db74>&#34;/**&#34;</span>)
+      .addResourceLocations(props.frontendDirectory)
+      .setCacheControl(props.cacheControl)
+  }
+}
+</code></pre></div><p>Navigating on <code>locahost:8080</code> you will see that the react application is able to call web services because they
+both run on the same host.</p>
+<p>This configuration might have some occasional problems with HMR not fully reloaded so it&rsquo;s not my favourite.</p>
+<p><img src=/assets/images/articles/2019-12-23-javascript-framework-with-spring-backend/hmr-errors.png alt=Oups></p>
+<p>However, by generating the result of the frontend build in <code>src/main/resources/static</code> we both have a very simple
+way to distribute the full web application, as well as a dev environment that is very similar to the production environment.</p>
+<p>Pros:</p>
+<ul>
+<li>Simple to distribute</li>
+<li>No CORS</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>A bit of code to handle frontend routing on the backend</li>
+<li>Clunky hot reloading</li>
+<li>We cannot scale the backend and the frontend independently</li>
+</ul>
+<h2 id=3-javascript-proxy>3. Javascript proxy</h2>
+<p>You might do the opposite, run an express web server which includes your bundler and proxies requests to <code>localhost:8080</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>Bundler</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;parcel&#39;</span>);
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>express</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;express&#39;</span>);
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>proxy</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;http-proxy-middleware&#39;</span>);
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>history</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;connect-history-api-fallback&#39;</span>);
+
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>bundler</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Bundler</span>(<span style=color:#e6db74>&#39;src/index.html&#39;</span>);
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>app</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>express</span>();
+
+<span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>use</span>(<span style=color:#a6e22e>history</span>());
+<span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>use</span>(<span style=color:#a6e22e>proxy</span>(<span style=color:#e6db74>&#39;/api&#39;</span>, {<span style=color:#a6e22e>target</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;http://localhost:8080&#39;</span>, <span style=color:#a6e22e>changeOrigin</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>true</span>}));
+
+<span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>use</span>(<span style=color:#a6e22e>bundler</span>.<span style=color:#a6e22e>middleware</span>());
+
+<span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>listen</span>(<span style=color:#ae81ff>3000</span>, <span style=color:#e6db74>&#39;localhost&#39;</span>, (<span style=color:#a6e22e>err</span>) =&gt; {
+    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>err</span>) {
+        <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>err</span>);
+        <span style=color:#66d9ef>return</span>;
+    }
+
+    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#39;Listening at http://localhost:3000&#39;</span>);
+});
+</code></pre></div><p>So going to <code>localhost:3000</code> we can see that the frontend is able to make web requests as if it is running on the
+same host as the backend.</p>
+<p>Pros:</p>
+<ul>
+<li>No CORS</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>Not a production solution (needs to be complemented with another solution)</li>
+</ul>
+<h2 id=4-reverse-proxy>4. Reverse proxy</h2>
+<p>We can run a third web server that routes both to our frontend and backend.
+This is simple enough thanks to <code>docker-compose</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3&#34;</span>
+<span style=color:#f92672>services</span>:
+  <span style=color:#f92672>nginx</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:latest</span>
+    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>brginx</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>./server.conf:/etc/nginx/conf.d/default.conf</span>
+      - <span style=color:#ae81ff>../frontend/dist:/usr/share/nginx/html</span>
+    <span style=color:#f92672>ports</span>:
+      - <span style=color:#ae81ff>8081</span>:<span style=color:#ae81ff>8081</span>
+</code></pre></div><p>Here is the nginx configuration:</p>
+<pre tabindex=0><code>server {
+    listen       8081;
+    server_name  localhost;
+
+    location /api {
+        proxy_pass   http://host.docker.internal:8080;
+    }
+
+    location / {
+        root /usr/share/nginx/html;
+        set $fallback_file /index.html;
+        if ($http_accept !~ text/html) {
+            set $fallback_file /null;
+        }
+        try_files $uri $fallback_file;
+    }
+}
+</code></pre><p>So navigating to the nginx server on <code>localhost:8081</code>, we can see that the backend and the frontend appear to be on the
+same host.</p>
+<p>Pros:</p>
+<ul>
+<li>Close to a production environment</li>
+<li>Flexible</li>
+<li>Can scale with a load balancer</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>3 processes</li>
+</ul>
+<h2 id=conclusion>Conclusion</h2>
+<p>Depending on how you wish to deploy your application, you might choose one of the approaches above or even mix them to
+reach developer nirvana.</p>
+<p>What about you? How do you develop your full stack application?</p>
+<p>I&rsquo;d love to have your input!</p>
+<p>Sources:</p>
+<ul>
+<li><a href=https://github.com/geowarin/boot-js>Github repository</a></li>
+</ul>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2frun-your-frontend-alongside-spring-boot%2f&via=geowarin&text=Run%20your%20frontend%20alongside%20spring%20boot" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2frun-your-frontend-alongside-spring-boot%2f&title=Run%20your%20frontend%20alongside%20spring%20boot" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2frun-your-frontend-alongside-spring-boot%2f&t=Run%20your%20frontend%20alongside%20spring%20boot" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2frun-your-frontend-alongside-spring-boot%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2frun-your-frontend-alongside-spring-boot%2f&text=Run%20your%20frontend%20alongside%20spring%20boot" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/spring/>spring</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/javascript/>javascript</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/share-intellij-run-configurations-with-git/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>Share IntelliJ run configurations with git</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

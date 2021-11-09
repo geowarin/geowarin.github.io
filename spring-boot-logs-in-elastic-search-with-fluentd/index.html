@@ -1,0 +1,293 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Redirect your Spring boot logs to Elastic Search with a simple logback appender">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Spring boot logs in Elastic Search with fluentd • Geowarin">
+<meta property="og:description" content="Redirect your Spring boot logs to Elastic Search with a simple logback appender">
+<meta property="og:url" content="https://geowarin.github.io/spring-boot-logs-in-elastic-search-with-fluentd/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="12-factors"><meta property="article:tag" content="logs"><meta property="article:tag" content="elasticsearch"><meta property="article:published_time" content="2016-01-11T00:00:00Z"><meta property="article:modified_time" content="2016-01-11T00:00:00Z"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Spring boot logs in Elastic Search with fluentd • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/spring-boot-logs-in-elastic-search-with-fluentd/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Spring boot logs in Elastic Search with fluentd</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Spring boot logs in Elastic Search with fluentd</h1>
+<p class=desc>Redirect your Spring boot logs to Elastic Search with a simple logback appender</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2016-01-11T00:00:00Z>2016, Jan 11</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+3 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>If you deploy a lot of micro-services with Spring Boot (or any other technology),
+you will have a hard time collecting and making sense of the all logs of your different
+applications.</p>
+<p>In this article, I will show you a simple way to redirect your logs to Elastic Search
+with a Logback appender.</p>
+<p>The demo project is <a href=https://github.com/geowarin/fluentd-boot>available on github</a>.</p>
+<p>While this approach requires very little configuration, the <a href=http://12factor.net/logs>12 factors app manifesto</a> actually recommends logging to stdout.</p>
+<p>We will see how we can leverage docker to do that in the conclusion.</p>
+<h2 id=the-efk-stack>The EFK stack</h2>
+<p>A lot of people refer to the triptych Elastic Search + Logstash + Kibana as the ELK
+stack.</p>
+<p>In this stack, <a href=https://www.elastic.co/products/logstash>Logstash</a> is the log collector. Its role will be to redirect our
+logs to Elastic Search.
+Your app can either send its logs directly to Logstash/Fluentd as we will see in this example,
+or write them to a file that Logstash will regularly process.</p>
+<p><a href=https://www.elastic.co/products/elasticsearch>Elastic Search</a> is used to store and process a large amount of logs.</p>
+<p>We can then use <a href=https://www.elastic.co/products/kibana>Kibana</a> as a dashboard to analyze them:</p>
+<p><img src=/assets/images/articles/2016-01-kibana.png alt=Kibana title=Kibana></p>
+<p>Instead of Logstash, we will use <a href=http://www.fluentd.org/>Fluentd</a>, an alternative log collector which is really
+easy to set up.</p>
+<h2 id=docker-compose-to-run-your-efk>Docker compose to run your EFK</h2>
+<p>With docker-compose, setting up the EFK stack is really straightforward:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>es</span>:
+  <span style=color:#f92672>image</span>: <span style=color:#ae81ff>elasticsearch:2</span>
+<span style=color:#75715e># The following will store es data in your boot2docker vm</span>
+  <span style=color:#f92672>volumes</span>:
+    - <span style=color:#ae81ff>/srv/docker/es:/usr/share/elasticsearch/data</span>
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#ae81ff>9200</span>:<span style=color:#ae81ff>9200</span>
+    - <span style=color:#ae81ff>9300</span>:<span style=color:#ae81ff>9300</span>
+
+<span style=color:#f92672>kibana</span>:
+  <span style=color:#f92672>image</span>: <span style=color:#ae81ff>kibana</span>
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#ae81ff>5601</span>:<span style=color:#ae81ff>5601</span>
+  <span style=color:#f92672>links</span>:
+    - <span style=color:#ae81ff>es:elasticsearch</span>
+
+<span style=color:#f92672>fluentd</span>:
+  <span style=color:#f92672>build</span>: <span style=color:#ae81ff>fluent-es/</span>
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#ae81ff>24224</span>:<span style=color:#ae81ff>24224</span>
+  <span style=color:#f92672>links</span>:
+    - <span style=color:#ae81ff>es:es</span>
+</code></pre></div><p>If you are running docker inside a VM, like me on my Mac, you cannot easily use volumes to
+persist Elastic Search data because the owner of the directory must be <code>elasticsearch</code>.
+So above is a little trick to easily overcome this.</p>
+<p>To delete this directory, connect to your boot2docker vm with <code>docker-machine ssh default</code>.</p>
+<p>The fluentd part points to a custom docker image in which I installed the Elastic
+Search plugin as well as redefined the fluentd config to look like this:</p>
+<pre tabindex=0><code>&lt;source&gt;
+type forward
+port 24224
+bind 0.0.0.0
+&lt;/source&gt;
+
+
+&lt;match **&gt;
+type elasticsearch
+logstash_format true
+host &quot;#{ENV['ES_PORT_9200_TCP_ADDR']}&quot; # dynamically configured to use Docker's link feature
+port 9200
+flush_interval 5s
+&lt;/match&gt;
+</code></pre><p>In this config, we use the environment variable that docker-compose <a href=https://docs.docker.com/compose/env/>automatically
+sets</a> when we use links to find the Elastic
+Search host.</p>
+<h2 id=configure-logback-to-send-logs-to-fluentd>Configure logback to send logs to fluentd</h2>
+<p>Add the following dependencies to you build configuration:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#e6db74>&#39;org.fluentd:fluent-logger:0.3.2&#39;</span>
+compile <span style=color:#e6db74>&#39;com.sndyuk:logback-more-appenders:1.1.1&#39;</span>
+</code></pre></div><p>We use <a href=https://github.com/sndyuk/logback-more-appenders>logback-more-appenders</a>, which
+includes a fluentd appender.
+It&rsquo;s not available on central so you will have to add the follwing maven repo:</p>
+<pre tabindex=0><code>repositories {
+    mavenCentral()
+    maven { url 'http://sndyuk.github.com/maven' }
+}
+</code></pre><p>Here is the logback configuration:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#75715e>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style=color:#f92672>&lt;configuration&gt;</span>
+    <span style=color:#f92672>&lt;include</span> <span style=color:#a6e22e>resource=</span><span style=color:#e6db74>&#34;org/springframework/boot/logging/logback/base.xml&#34;</span><span style=color:#f92672>/&gt;</span>
+    <span style=color:#f92672>&lt;property</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;FLUENTD_HOST&#34;</span> <span style=color:#a6e22e>value=</span><span style=color:#e6db74>&#34;${FLUENTD_HOST:-${DOCKER_HOST:-localhost}}&#34;</span><span style=color:#f92672>/&gt;</span>
+    <span style=color:#f92672>&lt;property</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;FLUENTD_PORT&#34;</span> <span style=color:#a6e22e>value=</span><span style=color:#e6db74>&#34;${FLUENTD_PORT:-24224}&#34;</span><span style=color:#f92672>/&gt;</span>
+    <span style=color:#f92672>&lt;appender</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;FLUENT&#34;</span> <span style=color:#a6e22e>class=</span><span style=color:#e6db74>&#34;ch.qos.logback.more.appenders.DataFluentAppender&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;tag&gt;</span>dab<span style=color:#f92672>&lt;/tag&gt;</span>
+        <span style=color:#f92672>&lt;label&gt;</span>normal<span style=color:#f92672>&lt;/label&gt;</span>
+        <span style=color:#f92672>&lt;remoteHost&gt;</span>${FLUENTD_HOST}<span style=color:#f92672>&lt;/remoteHost&gt;</span>
+        <span style=color:#f92672>&lt;port&gt;</span>${FLUENTD_PORT}<span style=color:#f92672>&lt;/port&gt;</span>
+        <span style=color:#f92672>&lt;maxQueueSize&gt;</span>20<span style=color:#f92672>&lt;/maxQueueSize&gt;</span>
+    <span style=color:#f92672>&lt;/appender&gt;</span>
+
+    <span style=color:#f92672>&lt;logger</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;fluentd&#34;</span> <span style=color:#a6e22e>level=</span><span style=color:#e6db74>&#34;debug&#34;</span> <span style=color:#a6e22e>additivity=</span><span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;appender-ref</span> <span style=color:#a6e22e>ref=</span><span style=color:#e6db74>&#34;CONSOLE&#34;</span> <span style=color:#f92672>/&gt;</span>
+        <span style=color:#f92672>&lt;appender-ref</span> <span style=color:#a6e22e>ref=</span><span style=color:#e6db74>&#34;FILE&#34;</span> <span style=color:#f92672>/&gt;</span>
+        <span style=color:#f92672>&lt;appender-ref</span> <span style=color:#a6e22e>ref=</span><span style=color:#e6db74>&#34;FLUENT&#34;</span> <span style=color:#f92672>/&gt;</span>
+    <span style=color:#f92672>&lt;/logger&gt;</span>
+<span style=color:#f92672>&lt;/configuration&gt;</span>
+</code></pre></div><p>Note that we use the <code>FLUENTD_HOST</code> and <code>FLUENTD_PORT</code> environment variables
+to connect to Fluentd so this can be overridden in production.</p>
+<h2 id=use-docker-to-natively-redirect-logs-to-fluentd>Use docker to natively redirect logs to Fluentd</h2>
+<p>Redirecting to fluentd directly is kind of cool but, the <a href=http://12factor.net/logs>12 factors app manifesto</a>
+says we should write our logs to stdout instead.</p>
+<p>If you use docker to deploy your services, you can use a native docker feature called
+log drivers to redirect your standard output to fluentd!</p>
+<pre tabindex=0><code>docker run --log-driver=fluentd --log-opt fluentd-address=192.168.2.4:24225 ubuntu echo &quot;Hello world&quot;
+</code></pre><p>See <a href=http://www.fluentd.org/guides/recipes/docker-logging>the manual</a> for more information.</p>
+<h2 id=conclusion>Conclusion</h2>
+<p>In a cloud environment, redirecting your app&rsquo;s logs to a file is not practical.
+Sometimes, it is not even an option (no persistent filesystem available on your host).</p>
+<p>Elastic Search tends to become the de-facto standard logging solution for the
+cloud era.</p>
+<p>Don&rsquo;t forget to checkout the project <a href=https://github.com/geowarin/fluentd-boot>on github</a>
+and tell me what you think!</p>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2fspring-boot-logs-in-elastic-search-with-fluentd%2f&via=geowarin&text=Spring%20boot%20logs%20in%20Elastic%20Search%20with%20fluentd" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2fspring-boot-logs-in-elastic-search-with-fluentd%2f&title=Spring%20boot%20logs%20in%20Elastic%20Search%20with%20fluentd" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2fspring-boot-logs-in-elastic-search-with-fluentd%2f&t=Spring%20boot%20logs%20in%20Elastic%20Search%20with%20fluentd" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2fspring-boot-logs-in-elastic-search-with-fluentd%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2fspring-boot-logs-in-elastic-search-with-fluentd%2f&text=Spring%20boot%20logs%20in%20Elastic%20Search%20with%20fluentd" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/12-factors/>12-factors</a>, <a class=category href=/categories/logging/>logging</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/12-factors/>12-factors</a>, <a class=tag href=/tags/logs/>logs</a>, <a class=tag href=/tags/elasticsearch/>elasticsearch</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/integration-tests-with-a-docker-junit-rule/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>Integration tests with a Docker JUnit Rule</a>
+</div><div class="next-entry sep-before">
+<a href=/build-a-docker-image-of-your-spring-boot-app/>
+<span class=screen-reader-text>Next post: </span>Build a Docker image of your Spring Boot app<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

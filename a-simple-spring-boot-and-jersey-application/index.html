@@ -1,0 +1,352 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="How to setup a simple spring-boot and jersey application">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="A simple Spring Boot and Jersey Application • Geowarin">
+<meta property="og:description" content="How to setup a simple spring-boot and jersey application">
+<meta property="og:url" content="https://geowarin.github.io/a-simple-spring-boot-and-jersey-application/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="spring"><meta property="article:tag" content="spring-boot"><meta property="article:tag" content="jersey"><meta property="article:published_time" content="2014-01-31T00:00:00Z"><meta property="article:modified_time" content="2014-01-31T00:00:00Z"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>A simple Spring Boot and Jersey Application • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/a-simple-spring-boot-and-jersey-application/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>A simple Spring Boot and Jersey Application</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>A simple Spring Boot and Jersey Application</h1>
+<p class=desc>How to setup a simple spring-boot and jersey application</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2014-01-31T00:00:00Z>2014, Jan 31</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+4 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>Spring boot RC1 <a href=https://spring.io/blog/2014/01/22/spring-boot-1-0-0-rc1-released>is available</a>.</p>
+<p><em>Update</em> : <a href=https://spring.io/blog/2014/02/12/spring-boot-1-0-0-rc2-released>RC3 released</a> I updated the project.</p>
+<p>It takes spring development and fast prototyping to a whole new level by taking care of all the dependencies for you, auto-detecting your configuration, providing an executable jar (great for deploying in the cloud), and much more.</p>
+<p>In this post we&rsquo;ll see how to integrate spring-boot with jersey, including testing of Jersey controllers with <a href=https://jersey.java.net/documentation/latest/test-framework.html>jersey-test</a>.</p>
+<p>Of course, the source code is available <a href=https://github.com/geowarin/springboot-jersey>on my github</a>.</p>
+<h2 id=setting-up-spring-boot>Setting up spring-boot</h2>
+<p><a href=http://projects.spring.io/spring-boot/>Spring boot</a> aims towards simplicity and convention over configuration. First step is to include the necessary configuration in your pom.xml :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;parent&gt;</span>
+    <span style=color:#f92672>&lt;groupId&gt;</span>org.springframework.boot<span style=color:#f92672>&lt;/groupId&gt;</span>
+    <span style=color:#f92672>&lt;artifactId&gt;</span>spring-boot-starter-parent<span style=color:#f92672>&lt;/artifactId&gt;</span>
+    <span style=color:#f92672>&lt;version&gt;</span>1.0.0.RC3<span style=color:#f92672>&lt;/version&gt;</span>
+<span style=color:#f92672>&lt;/parent&gt;</span>
+<span style=color:#f92672>&lt;dependencies&gt;</span>
+    <span style=color:#f92672>&lt;dependency&gt;</span>
+        <span style=color:#f92672>&lt;groupId&gt;</span>org.springframework.boot<span style=color:#f92672>&lt;/groupId&gt;</span>
+        <span style=color:#f92672>&lt;artifactId&gt;</span>spring-boot-starter-web<span style=color:#f92672>&lt;/artifactId&gt;</span>
+    <span style=color:#f92672>&lt;/dependency&gt;</span>
+<span style=color:#f92672>&lt;/dependencies&gt;</span>
+<span style=color:#f92672>&lt;repositories&gt;</span>
+    <span style=color:#f92672>&lt;repository&gt;</span>
+        <span style=color:#f92672>&lt;id&gt;</span>spring-milestones<span style=color:#f92672>&lt;/id&gt;</span>
+        <span style=color:#f92672>&lt;name&gt;</span>Spring Milestones<span style=color:#f92672>&lt;/name&gt;</span>
+        <span style=color:#f92672>&lt;url&gt;</span>http://repo.spring.io/milestone<span style=color:#f92672>&lt;/url&gt;</span>
+        <span style=color:#f92672>&lt;snapshots&gt;</span>
+            <span style=color:#f92672>&lt;enabled&gt;</span>false<span style=color:#f92672>&lt;/enabled&gt;</span>
+        <span style=color:#f92672>&lt;/snapshots&gt;</span>
+    <span style=color:#f92672>&lt;/repository&gt;</span>
+<span style=color:#f92672>&lt;/repositories&gt;</span>
+</code></pre></div><p>One of the good ideas of spring boot is to provide all the &lsquo;boilerplate&rsquo; configuration for you by letting you inherit their parent configuration.</p>
+<p>Then, you&rsquo;ll select a starter, in this case, we are going to develop a web application, so starter-web is fine.</p>
+<p>Now, we&rsquo;ll create a main function for our application :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@EnableAutoConfiguration</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Application</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#66d9ef>throws</span> Exception <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>new</span> SpringApplicationBuilder<span style=color:#f92672>(</span>Application<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span>
+                <span style=color:#f92672>.</span><span style=color:#a6e22e>showBanner</span><span style=color:#f92672>(</span><span style=color:#66d9ef>false</span><span style=color:#f92672>)</span>
+                <span style=color:#f92672>.</span><span style=color:#a6e22e>run</span><span style=color:#f92672>(</span>args<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>We will just add an index.html file in the webapp directory and we should be ok.
+With this configuration, you can run the main function and you&rsquo;ll see your index file.</p>
+<p>Awesome.</p>
+<h2 id=runnable-jar>Runnable jar</h2>
+<p>Spring boot allows you to package your application as a runnable jar. Include the following in your <code>pom.xml</code> :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;build&gt;</span>
+    <span style=color:#f92672>&lt;plugins&gt;</span>
+        <span style=color:#f92672>&lt;plugin&gt;</span>
+            <span style=color:#f92672>&lt;groupId&gt;</span>org.springframework.boot<span style=color:#f92672>&lt;/groupId&gt;</span>
+            <span style=color:#f92672>&lt;artifactId&gt;</span>spring-boot-maven-plugin<span style=color:#f92672>&lt;/artifactId&gt;</span>
+        <span style=color:#f92672>&lt;/plugin&gt;</span>
+    <span style=color:#f92672>&lt;/plugins&gt;</span>
+<span style=color:#f92672>&lt;/build&gt;</span>
+
+<span style=color:#f92672>&lt;pluginRepositories&gt;</span>
+    <span style=color:#f92672>&lt;pluginRepository&gt;</span>
+        <span style=color:#f92672>&lt;id&gt;</span>spring-milestones<span style=color:#f92672>&lt;/id&gt;</span>
+        <span style=color:#f92672>&lt;url&gt;</span>http://repo.spring.io/milestone<span style=color:#f92672>&lt;/url&gt;</span>
+    <span style=color:#f92672>&lt;/pluginRepository&gt;</span>
+<span style=color:#f92672>&lt;/pluginRepositories&gt;</span>
+</code></pre></div><p>With this, when running <code>mvn package</code>, you will generate the runnable jar.
+Just <code>java -jar</code> it to launch an embedded Tomcat containing your webapp!</p>
+<h2 id=integrating-jersey>Integrating jersey</h2>
+<p>Jersey has a spring support project <a href=https://jersey.java.net/documentation/latest/spring.html>jersey-spring-3</a>. Despite what its name suggests, the project is (still?) compatible with spring 4.0 so we&rsquo;ll use it.</p>
+<p>It basically allows you to inject spring beans in your jersey controllers.</p>
+<p>To complete our configuration we&rsquo;ll add the jersey servlet to our application together with a small class to configure it.</p>
+<p>In the Application :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Bean</span>
+<span style=color:#66d9ef>public</span> ServletRegistrationBean <span style=color:#a6e22e>jerseyServlet</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    ServletRegistrationBean registration <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ServletRegistrationBean<span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> ServletContainer<span style=color:#f92672>(),</span> <span style=color:#e6db74>&#34;/rest/*&#34;</span><span style=color:#f92672>);</span>
+    <span style=color:#75715e>// our rest resources will be available in the path /rest/*
+</span><span style=color:#75715e></span>    registration<span style=color:#f92672>.</span><span style=color:#a6e22e>addInitParameter</span><span style=color:#f92672>(</span>ServletProperties<span style=color:#f92672>.</span><span style=color:#a6e22e>JAXRS_APPLICATION_CLASS</span><span style=color:#f92672>,</span> JerseyConfig<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>());</span>
+    <span style=color:#66d9ef>return</span> registration<span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>We also need to add the <code>@ComponentScan</code> annotation to find our spring services and components (including jersey)</p>
+<p>Next, we&rsquo;ll create the JerseyConfig class :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>JerseyConfig</span> <span style=color:#66d9ef>extends</span> ResourceConfig <span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>JerseyConfig</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        register<span style=color:#f92672>(</span>RequestContextFilter<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+        packages<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;com.geowarin.rest&#34;</span><span style=color:#f92672>);</span>
+        register<span style=color:#f92672>(</span>LoggingFilter<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Here we are providing the package(s) in which our rest resources are.</p>
+<p>Speaking about our rest resources, we&rsquo;ll create a simple one :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Path</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;/&#34;</span><span style=color:#f92672>)</span>
+<span style=color:#a6e22e>@Component</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RestResource</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#a6e22e>@GET</span>
+    <span style=color:#a6e22e>@Produces</span><span style=color:#f92672>(</span>MediaType<span style=color:#f92672>.</span><span style=color:#a6e22e>APPLICATION_JSON</span><span style=color:#f92672>)</span>
+    <span style=color:#a6e22e>@Path</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;/hello&#34;</span><span style=color:#f92672>)</span>
+    <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>hello</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;Hello World&#34;</span><span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>There you have it : the dreadful hello world !</p>
+<p>In the <a href=https://github.com/geowarin/springboot-jersey>complete example</a>, I show you how to generate JSON from a domain class.</p>
+<p>Basically all you have to do is provide classes with the <code>@XmlRootElement</code> annotation, add the getters and setters for the properties you want serialized and don&rsquo;t forget to provide a default constructor (see <a href=https://github.com/geowarin/springboot-jersey/blob/master/src/main/java/com/geowarin/domain/Message.java>here</a>).</p>
+<p>To show that dependency injection works, we&rsquo;ll add a simple service :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Singleton</span>
+<span style=color:#a6e22e>@Service</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MessageService</span> <span style=color:#f92672>{</span>
+    List<span style=color:#f92672>&lt;</span>Message<span style=color:#f92672>&gt;</span> messages <span style=color:#f92672>=</span> Collections<span style=color:#f92672>.</span><span style=color:#a6e22e>synchronizedList</span><span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;</span>Message<span style=color:#f92672>&gt;());</span>
+
+    <span style=color:#a6e22e>@PostConstruct</span>
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>init</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        messages<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> Message<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Joe&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Hello&#34;</span><span style=color:#f92672>));</span>
+        messages<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> Message<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Jane&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Spring boot is cool !&#34;</span><span style=color:#f92672>));</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>public</span> List<span style=color:#f92672>&lt;</span>Message<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>getMessages</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> messages<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>We can now autowire it to our Jersey controller!</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Path</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;/&#34;</span><span style=color:#f92672>)</span>
+<span style=color:#a6e22e>@Component</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RestResource</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#a6e22e>@Autowired</span>
+    <span style=color:#66d9ef>private</span> MessageService messageService<span style=color:#f92672>;</span>
+
+    <span style=color:#a6e22e>@GET</span>
+    <span style=color:#a6e22e>@Produces</span><span style=color:#f92672>(</span>MediaType<span style=color:#f92672>.</span><span style=color:#a6e22e>APPLICATION_JSON</span><span style=color:#f92672>)</span>
+    <span style=color:#a6e22e>@Path</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;/messages&#34;</span><span style=color:#f92672>)</span>
+    <span style=color:#66d9ef>public</span> List<span style=color:#f92672>&lt;</span>Message<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>message</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> messageService<span style=color:#f92672>.</span><span style=color:#a6e22e>getMessages</span><span style=color:#f92672>();</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p><a href=http://www.eclipse.org/eclipselink/moxy.php>Moxy</a> will automatically convert
+the returned result to JSON.</p>
+<h2 id=testing>Testing</h2>
+<p>Real programmers do tests. We want to test our controller right? There is a framework for that: <a href=https://jersey.java.net/documentation/latest/test-framework.html>jersey-test</a>.</p>
+<p><em>The Problem?</em> it does not (yet) support annotated configuration.</p>
+<p><em>Update</em> : I submitted a <a href=https://github.com/jersey/jersey/pull/59>pull request</a> which has been accepted by Jersey. I updated the project to use the 2.6 snapshot release of jersey which includes the modified <code>SpringComponentProvider</code>.</p>
+<p>Now the test :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RestResourceTest</span> <span style=color:#66d9ef>extends</span> JerseyTest <span style=color:#f92672>{</span>
+
+    <span style=color:#a6e22e>@Override</span>
+    <span style=color:#66d9ef>protected</span> Application <span style=color:#a6e22e>configure</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        ApplicationContext context <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> AnnotationConfigApplicationContext<span style=color:#f92672>(</span>TestConfig<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>new</span> JerseyConfig<span style=color:#f92672>()</span>
+                <span style=color:#f92672>.</span><span style=color:#a6e22e>property</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;contextConfig&#34;</span><span style=color:#f92672>,</span> context<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#a6e22e>@Test</span>
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testHello</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>final</span> String hello <span style=color:#f92672>=</span> target<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;hello&#34;</span><span style=color:#f92672>).</span><span style=color:#a6e22e>request</span><span style=color:#f92672>().</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>String<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+        assertThat<span style=color:#f92672>(</span>hello<span style=color:#f92672>).</span><span style=color:#a6e22e>isEqualTo</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Hello World&#34;</span><span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#a6e22e>@Test</span>
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testMessages</span><span style=color:#f92672>()</span> <span style=color:#66d9ef>throws</span> JSONException <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>final</span> String messages <span style=color:#f92672>=</span> target<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;messages&#34;</span><span style=color:#f92672>).</span><span style=color:#a6e22e>request</span><span style=color:#f92672>().</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>String<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+        String expected <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;[ &#34;</span> <span style=color:#f92672>+</span>
+                <span style=color:#e6db74>&#34;{ &#39;author&#39;: &#39;Joe&#39;, &#39;contents&#39;: &#39;Hello&#39;},&#34;</span> <span style=color:#f92672>+</span>
+                <span style=color:#e6db74>&#34;{ &#39;author&#39;: &#39;Jane&#39;, &#39;contents&#39;: &#39;Spring boot is cool !&#39;}&#34;</span> <span style=color:#f92672>+</span>
+                <span style=color:#e6db74>&#34;]&#34;</span><span style=color:#f92672>;</span>
+        JSONAssert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertEquals</span><span style=color:#f92672>(</span>expected<span style=color:#f92672>,</span> messages<span style=color:#f92672>,</span> JSONCompareMode<span style=color:#f92672>.</span><span style=color:#a6e22e>LENIENT</span><span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Jersey Test will automatically select a provider from your classpath, in the example I&rsquo;m using the in memory provider which I believe to be the fastest but you can also use <a href=https://grizzly.java.net/>grizzly</a> and others instead.</p>
+<p>I&rsquo;m using <a href=https://github.com/skyscreamer/JSONassert>JSONassert</a> to test json results.</p>
+<p>In the example, we are providing a simple, lighter <code>TestConfig</code> :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Configuration</span>
+<span style=color:#a6e22e>@ComponentScan</span><span style=color:#f92672>(</span>basePackageClasses <span style=color:#f92672>=</span> RestResource<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>TestConfig</span> <span style=color:#f92672>{</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h2 id=conclusion>Conclusion</h2>
+<p>Testing with Jersey Test is fast and intuitive.</p>
+<p>Spring boot is a nice addition to the spring ecosystem. Now that everything should be accessible from the cloud, so should be spring webapps !</p>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2fa-simple-spring-boot-and-jersey-application%2f&via=geowarin&text=A%20simple%20Spring%20Boot%20and%20Jersey%20Application" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2fa-simple-spring-boot-and-jersey-application%2f&title=A%20simple%20Spring%20Boot%20and%20Jersey%20Application" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2fa-simple-spring-boot-and-jersey-application%2f&t=A%20simple%20Spring%20Boot%20and%20Jersey%20Application" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2fa-simple-spring-boot-and-jersey-application%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2fa-simple-spring-boot-and-jersey-application%2f&text=A%20simple%20Spring%20Boot%20and%20Jersey%20Application" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/spring/>spring</a>, <a class=category href=/categories/spring-boot/>spring-boot</a>, <a class=category href=/categories/jersey/>jersey</a>, <a class=category href=/categories/java/>java</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/spring/>spring</a>, <a class=tag href=/tags/spring-boot/>spring-boot</a>, <a class=tag href=/tags/jersey/>jersey</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/fun-with-xpath/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>Fun with xpath</a>
+</div><div class="next-entry sep-before">
+<a href=/review-of-learning-spring-boot/>
+<span class=screen-reader-text>Next post: </span>Review of Learning Spring Boot<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

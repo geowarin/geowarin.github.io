@@ -1,0 +1,286 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="How to select nodes with xPath and keep the file structure of the original document in java with dom4j">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Fun with xpath • Geowarin">
+<meta property="og:description" content="How to select nodes with xPath and keep the file structure of the original document in java with dom4j">
+<meta property="og:url" content="https://geowarin.github.io/fun-with-xpath/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="xpath"><meta property="article:tag" content="dom4j"><meta property="article:published_time" content="2014-01-30T00:00:00Z"><meta property="article:modified_time" content="2014-01-30T00:00:00Z"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Fun with xpath • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/fun-with-xpath/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Fun with xpath</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Fun with xpath</h1>
+<p class=desc>How to select nodes with xPath and keep the file structure of the original document in java with dom4j</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2014-01-30T00:00:00Z>2014, Jan 30</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+3 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>I had fun today at work when I had to design a program that allows users to select nodes with xPath but keep the same hierarchical structure as the original xml file.</p>
+<p>The result with tests is available <a href=https://github.com/geowarin/xpath-dom4j>on github</a>.</p>
+<p>For instance, the following xPath <code>/persons/person[@age > 18]/project[@language = 'java']</code>, would select the lines highlighted in the file below :</p>
+<p></p>
+<p>Normal xPath result would be a list of nodes like that</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;project</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;dom4j&#39;</span> <span style=color:#a6e22e>language=</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>/&gt;</span>
+<span style=color:#f92672>&lt;project</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;dom4j&#39;</span> <span style=color:#a6e22e>language=</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>/&gt;</span>
+</code></pre></div><p>But the desired output should look like this :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;persons&gt;</span>
+	<span style=color:#f92672>&lt;person</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;Joe&#39;</span> <span style=color:#a6e22e>age=</span><span style=color:#e6db74>&#39;26&#39;</span><span style=color:#f92672>&gt;</span>
+		<span style=color:#f92672>&lt;project</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;dom4j&#39;</span> <span style=color:#a6e22e>language=</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>/&gt;</span>
+	<span style=color:#f92672>&lt;/person&gt;</span>
+	<span style=color:#f92672>&lt;person</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;Jane&#39;</span> <span style=color:#a6e22e>age=</span><span style=color:#e6db74>&#39;23&#39;</span><span style=color:#f92672>&gt;</span>
+		<span style=color:#f92672>&lt;project</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;dom4j&#39;</span> <span style=color:#a6e22e>language=</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>/&gt;</span>
+	<span style=color:#f92672>&lt;/person&gt;</span>
+<span style=color:#f92672>&lt;/persons&gt;</span>
+</code></pre></div><p>So I decided to write a small class to handle this use case :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>XPathFilter</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> Document xmlDocument<span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>XPathFilter</span><span style=color:#f92672>(</span>String xml<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        xmlDocument <span style=color:#f92672>=</span> readXml<span style=color:#f92672>(</span>xml<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>filter</span><span style=color:#f92672>(</span>String xPath<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        Element root <span style=color:#f92672>=</span> xmlDocument<span style=color:#f92672>.</span><span style=color:#a6e22e>getRootElement</span><span style=color:#f92672>();</span>
+        List<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> resultNodes <span style=color:#f92672>=</span> root<span style=color:#f92672>.</span><span style=color:#a6e22e>selectNodes</span><span style=color:#f92672>(</span>xPath<span style=color:#f92672>);</span>
+
+        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>resultNodes<span style=color:#f92672>.</span><span style=color:#a6e22e>isEmpty</span><span style=color:#f92672>())</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalStateException<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;No result found for xpath &#34;</span> <span style=color:#f92672>+</span> xPath<span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span>
+
+        deleteNonResultNodes<span style=color:#f92672>(</span>resultNodes<span style=color:#f92672>);</span>
+        <span style=color:#66d9ef>return</span> write<span style=color:#f92672>(</span>root<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>deleteNonResultNodes</span><span style=color:#f92672>(</span>List<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> resultNodes<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        Set<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> nodesToKeep <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> HashSet<span style=color:#f92672>&lt;&gt;(</span>resultNodes<span style=color:#f92672>);</span>
+        Set<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> parents<span style=color:#f92672>;</span>
+        <span style=color:#66d9ef>do</span> <span style=color:#f92672>{</span>
+            parents <span style=color:#f92672>=</span> getParentNodes<span style=color:#f92672>(</span>nodesToKeep<span style=color:#f92672>);</span>
+
+            <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span>Element parent <span style=color:#f92672>:</span> parents<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                List<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> children <span style=color:#f92672>=</span> parent<span style=color:#f92672>.</span><span style=color:#a6e22e>elements</span><span style=color:#f92672>();</span>
+                <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span>Element child <span style=color:#f92672>:</span> children<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(!</span>nodesToKeep<span style=color:#f92672>.</span><span style=color:#a6e22e>contains</span><span style=color:#f92672>(</span>child<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+                        parent<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>child<span style=color:#f92672>);</span>
+                    <span style=color:#f92672>}</span>
+                <span style=color:#f92672>}</span>
+            <span style=color:#f92672>}</span>
+            nodesToKeep <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> HashSet<span style=color:#f92672>&lt;&gt;(</span>parents<span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>while</span> <span style=color:#f92672>(!</span>parents<span style=color:#f92672>.</span><span style=color:#a6e22e>isEmpty</span><span style=color:#f92672>());</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> Set<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>getParentNodes</span><span style=color:#f92672>(</span>Collection<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> nodes<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        Set<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> parents <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> HashSet<span style=color:#f92672>&lt;&gt;();</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span>Element node <span style=color:#f92672>:</span> nodes<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            Element parent <span style=color:#f92672>=</span> node<span style=color:#f92672>.</span><span style=color:#a6e22e>getParent</span><span style=color:#f92672>();</span>
+            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>parent <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                parents<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>parent<span style=color:#f92672>);</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>return</span> parents<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> Document <span style=color:#a6e22e>readXml</span><span style=color:#f92672>(</span>String xml<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        Document document<span style=color:#f92672>;</span>
+        <span style=color:#66d9ef>try</span> <span style=color:#f92672>(</span>StringReader reader <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> StringReader<span style=color:#f92672>(</span>xml<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+            DocumentFactory factory <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> DocumentFactory<span style=color:#f92672>();</span>
+            SAXReader saxReader <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> SAXReader<span style=color:#f92672>();</span>
+            saxReader<span style=color:#f92672>.</span><span style=color:#a6e22e>setDocumentFactory</span><span style=color:#f92672>(</span>factory<span style=color:#f92672>);</span>
+            document <span style=color:#f92672>=</span> saxReader<span style=color:#f92672>.</span><span style=color:#a6e22e>read</span><span style=color:#f92672>(</span>reader<span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>DocumentException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalArgumentException<span style=color:#f92672>(</span>e<span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>return</span> document<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> String <span style=color:#a6e22e>write</span><span style=color:#f92672>(</span>Element rootElement<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        Document documentOut <span style=color:#f92672>=</span> DocumentHelper<span style=color:#f92672>.</span><span style=color:#a6e22e>createDocument</span><span style=color:#f92672>();</span>
+        documentOut<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>((</span>Element<span style=color:#f92672>)</span> rootElement<span style=color:#f92672>.</span><span style=color:#a6e22e>clone</span><span style=color:#f92672>());</span>
+
+        StringWriter writer <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> StringWriter<span style=color:#f92672>();</span>
+        XMLWriter xmlWriter <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> XMLWriter<span style=color:#f92672>(</span>writer<span style=color:#f92672>,</span> OutputFormat<span style=color:#f92672>.</span><span style=color:#a6e22e>createPrettyPrint</span><span style=color:#f92672>());</span>
+
+        <span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+            xmlWriter<span style=color:#f92672>.</span><span style=color:#a6e22e>write</span><span style=color:#f92672>(</span>documentOut<span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>IOException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalStateException<span style=color:#f92672>(</span>e<span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span> <span style=color:#66d9ef>finally</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+                xmlWriter<span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span>
+            <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>IOException ignored<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span>
+
+        <span style=color:#66d9ef>return</span> writer<span style=color:#f92672>.</span><span style=color:#a6e22e>toString</span><span style=color:#f92672>();</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>The <code>readXml</code> and <code>write</code> methods are just standard <em>dom4j</em> stuff.</p>
+<p>The real code lies in the <code>deleteNonResultNodes</code> function which traverses XML nodes
+from the results to the root.
+On each level, we will look at the parents of the current nodes (the selected ones at first) and delete every child which is not a result.</p>
+<p>The parents will become the current nodes and will keep on until we reach the root.
+At this point we would have kept only the xml structure that actually wrap our xPath results.</p>
+<p>That&rsquo;s all folks ! Check out the result <a href=https://github.com/geowarin/xpath-dom4j>on github</a>, unit tests included.</p>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2ffun-with-xpath%2f&via=geowarin&text=Fun%20with%20xpath" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2ffun-with-xpath%2f&title=Fun%20with%20xpath" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2ffun-with-xpath%2f&t=Fun%20with%20xpath" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2ffun-with-xpath%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2ffun-with-xpath%2f&text=Fun%20with%20xpath" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/xpath/>xpath</a>, <a class=category href=/categories/java/>java</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/xpath/>xpath</a>, <a class=tag href=/tags/dom4j/>dom4j</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/complete-example-of-a-spring-mvc-3.2-project/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>Complete example of a Spring MVC 3.2 project</a>
+</div><div class="next-entry sep-before">
+<a href=/a-simple-spring-boot-and-jersey-application/>
+<span class=screen-reader-text>Next post: </span>A simple Spring Boot and Jersey Application<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>

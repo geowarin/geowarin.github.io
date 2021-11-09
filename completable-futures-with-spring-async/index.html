@@ -1,0 +1,465 @@
+<!doctype html><html lang=en dir=auto><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Use Java 8 new CompletableFuture with Spring async">
+<meta name=theme-color content="#ffcd00">
+<meta property="og:title" content="Completable futures with Spring async • Geowarin">
+<meta property="og:description" content="Use Java 8 new CompletableFuture with Spring async">
+<meta property="og:url" content="https://geowarin.github.io/completable-futures-with-spring-async/">
+<meta property="og:site_name" content="Geowarin">
+<meta property="og:type" content="article"><meta property="article:section" content="post"><meta property="article:tag" content="spring"><meta property="article:tag" content="futures"><meta property="article:tag" content="async"><meta property="article:tag" content="featured"><meta property="article:published_time" content="2015-06-12T00:00:00Z"><meta property="article:modified_time" content="2015-06-12T00:00:00Z"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
+<meta name=generator content="Hugo 0.89.2">
+<title>Completable futures with Spring async • Geowarin</title>
+<link rel=canonical href=https://geowarin.github.io/completable-futures-with-spring-async/>
+<link rel=icon href=/favicon.ico>
+<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body class="page type-post has-sidebar">
+<div class=site><div id=sidebar class=sidebar>
+<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
+<div class=container><section class="widget widget-about sep-after">
+<header>
+<div class=logo>
+<a href=/>
+<img src=/images/logo.png>
+</a>
+</div>
+<h2 class="title site-title">
+<a href=/>
+Geowarin
+</a>
+</h2>
+<div class=desc>
+Web developer
+</div>
+</header>
+</section>
+<section class="widget widget-search sep-after">
+<header>
+<h4 class="title widget-title">Search</h4>
+</header>
+<form action=/search id=search-form class=search-form>
+<label>
+<span class=screen-reader-text>Search</span>
+<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
+</label></form>
+</section>
+<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
+<ul><li>
+<a href=https://github.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
+</a>
+</li><li>
+<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+</li><li>
+<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
+<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+</li></ul>
+</nav>
+</section></div>
+<div class=sidebar-overlay></div>
+</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
+<div class=container>
+<a class=screen-reader-text href=#content>Skip to Content</a>
+<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
+<span class=screen-reader-text>Toggle Sidebar</span>
+<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</span>
+<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</span>
+</button>
+<ul><li class=item>
+<a href=/>Blog</a>
+</li><li class=item>
+<a href=/archive/>Archive</a>
+</li><li class=item>
+<a href=/mastering-spring-mvc-4/>Book</a>
+</li><li class=item>
+<a href=https://github.com/geowarin/blog-src>Repo</a>
+</li></ul>
+</div>
+</nav><div class=header-widgets>
+<div class=container>
+<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+<section class="widget widget-breadcrumbs sep-after">
+<nav id=breadcrumbs>
+<ol><li><a href=/>Geowarin</a></li><li><a href=/post/>Posts</a></li><li><span>Completable futures with Spring async</span></li></ol>
+</nav>
+</section></div>
+</div>
+<header id=header class="header site-header">
+<div class="container sep-after">
+<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
+</div>
+</div>
+</header>
+<main id=content>
+<article lang=en class=entry>
+<header class="header entry-header">
+<div class="container sep-after">
+<div class=header-info>
+<h1 class=title>Completable futures with Spring async</h1>
+<p class=desc>Use Java 8 new CompletableFuture with Spring async</p>
+</div>
+<div class=entry-meta>
+<span class=posted-on><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span class=screen-reader-text>Posted on </span>
+<time class=entry-date datetime=2015-06-12T00:00:00Z>2015, Jun 12</time>
+</span>
+<span class=reading-time><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+6 mins read
+</span>
+</div>
+</div>
+</header>
+<div class="container entry-content">
+<p>Since version 8, java has a way better abstraction than <code>java.util.Future</code>
+called <code>CompletableFuture</code>.
+This new API along with the lambdas enables new ways of reasoning with futures
+by composing, listening and joining them.</p>
+<p>Futures are traditionally created by submitting tasks to an <code>Executor</code>.
+Spring allows declaring one or multiple executors and will submit any method
+annotated with <code>@Async</code> as tasks for those executors.</p>
+<p>The big problem is that executors still return <code>Future</code>s and not <code>CompletableFuture</code>s.</p>
+<p>We are going to create our own Executor to solve this problem.
+Then we will study a solution to handle timeouts with those futures and
+as a bonus, do a little bit of AOP to debug our threads.</p>
+<p>You can see the resulting application <a href=https://github.com/geowarin/spring-completable>on my gihtub</a>.</p>
+<h2 id=creating-an-executor-for-completablefutures>Creating an Executor for CompletableFutures</h2>
+<p>If you try to return a <code>CompletableFuture</code> from an Async method in Spring,
+you will get the following error:</p>
+<pre tabindex=0><code>Caused by: java.lang.ClassCastException: java.util.concurrent.FutureTask cannot be cast to java.util.concurrent.CompletableFuture
+</code></pre><p>The idea is to use delegation to decorate an existing instance of <code>ExecutorService</code>.
+We will implement the <code>ExecutorService</code> and use type covariance to return
+<code>CompletableFuture</code>s instead of <code>Future</code>.</p>
+<p>The following code has been greatly inspired by this <a href=http://binkley.blogspot.fr/2014/12/completablefuture-and-executorservice.html>blog post</a>. Many thanks to Brian Oxley!</p>
+<p>So the first thing we need to do is to create a decorator for an executor service
+and delegate every method to that service:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DelegatingExecutorService</span> <span style=color:#66d9ef>implements</span> ExecutorService <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>protected</span> ExecutorService delegate<span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>DelegatingExecutorService</span><span style=color:#f92672>(</span>ExecutorService executorService<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>delegate</span> <span style=color:#f92672>=</span> executorService<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#a6e22e>@Override</span> <span style=color:#66d9ef>public</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> Future<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>Callable<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> task<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> delegate<span style=color:#f92672>.</span><span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>task<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#a6e22e>@Override</span> <span style=color:#66d9ef>public</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> Future<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>Runnable task<span style=color:#f92672>,</span> T result<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> delegate<span style=color:#f92672>.</span><span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>task<span style=color:#f92672>,</span> result<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#75715e>// Override and delegate everything
+</span><span style=color:#75715e></span><span style=color:#f92672>}</span>
+</code></pre></div><p>We can create an interface that will extends <code>ExecutorService</code> and return
+<code>CompletableFuture</code>s instead of <code>Future</code>s:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#75715e>/**
+</span><span style=color:#75715e> * DelegatingCompletableExecutorService {@code ExecutorService} to covariantly return {@code
+</span><span style=color:#75715e> * CompletableFuture} in place of {@code Future}.
+</span><span style=color:#75715e> */</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>CompletableExecutorService</span> <span style=color:#66d9ef>extends</span> ExecutorService <span style=color:#f92672>{</span>
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * @return a completable future representing pending completion of the
+</span><span style=color:#75715e>     * task, never missing
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#a6e22e>@Override</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> CompletableFuture<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>Callable<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> task<span style=color:#f92672>);</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * @return a completable future representing pending completion of the
+</span><span style=color:#75715e>     * task, never missing
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#a6e22e>@Override</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> CompletableFuture<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>Runnable task<span style=color:#f92672>,</span> T result<span style=color:#f92672>);</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * @return a completable future representing pending completion of the
+</span><span style=color:#75715e>     * task, never missing
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#a6e22e>@Override</span> CompletableFuture<span style=color:#f92672>&lt;?&gt;</span> submit<span style=color:#f92672>(</span>Runnable task<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>We can then implement this new interface using our decorator as a base:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DelegatingCompletableExecutorService</span>
+    <span style=color:#66d9ef>extends</span> DelegatingExecutorService
+    <span style=color:#66d9ef>implements</span> CompletableExecutorService <span style=color:#f92672>{</span>
+
+     DelegatingCompletableExecutorService<span style=color:#f92672>(</span>ExecutorService threads<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+         <span style=color:#66d9ef>super</span><span style=color:#f92672>(</span>threads<span style=color:#f92672>);</span>
+     <span style=color:#f92672>}</span>
+
+     <span style=color:#a6e22e>@Override</span> <span style=color:#66d9ef>public</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> CompletableFuture<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>Callable<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> task<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+         <span style=color:#66d9ef>final</span> CompletableFuture<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> cf <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> CompletableFuture<span style=color:#f92672>&lt;&gt;();</span>
+         delegate<span style=color:#f92672>.</span><span style=color:#a6e22e>submit</span><span style=color:#f92672>(()</span> <span style=color:#f92672>-&gt;</span> <span style=color:#f92672>{</span>
+             <span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+                 cf<span style=color:#f92672>.</span><span style=color:#a6e22e>complete</span><span style=color:#f92672>(</span>task<span style=color:#f92672>.</span><span style=color:#a6e22e>call</span><span style=color:#f92672>());</span>
+             <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>CancellationException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                 cf<span style=color:#f92672>.</span><span style=color:#a6e22e>cancel</span><span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>);</span>
+             <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>Exception e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                 cf<span style=color:#f92672>.</span><span style=color:#a6e22e>completeExceptionally</span><span style=color:#f92672>(</span>e<span style=color:#f92672>);</span>
+             <span style=color:#f92672>}</span>
+         <span style=color:#f92672>});</span>
+         <span style=color:#66d9ef>return</span> cf<span style=color:#f92672>;</span>
+     <span style=color:#f92672>}</span>
+
+     <span style=color:#a6e22e>@Override</span> <span style=color:#66d9ef>public</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> CompletableFuture<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>Runnable task<span style=color:#f92672>,</span> T result<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+         <span style=color:#66d9ef>return</span> submit<span style=color:#f92672>(</span>callable<span style=color:#f92672>(</span>task<span style=color:#f92672>,</span> result<span style=color:#f92672>));</span>
+     <span style=color:#f92672>}</span>
+
+     <span style=color:#a6e22e>@Override</span> <span style=color:#66d9ef>public</span> CompletableFuture<span style=color:#f92672>&lt;?&gt;</span> submit<span style=color:#f92672>(</span>Runnable task<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+         <span style=color:#66d9ef>return</span> submit<span style=color:#f92672>(</span>callable<span style=color:#f92672>(</span>task<span style=color:#f92672>));</span>
+     <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>We also need to create an utility method to create a <code>CompletableExecutorService</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> CompletableExecutorService <span style=color:#a6e22e>completable</span><span style=color:#f92672>(</span>ExecutorService delegate<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>new</span> DelegatingCompletableExecutorService<span style=color:#f92672>(</span>delegate<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>See <a href=https://gist.github.com/geowarin/bc40acd46791aa114c30>this gist</a> for the final result.</p>
+<h2 id=creating-an-async-service>Creating an async service</h2>
+<p>To enable asynchronous methods in Spring, you will need this kind of configuration
+class:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Configuration</span>
+<span style=color:#a6e22e>@EnableAsync</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SpringAsyncConfig</span> <span style=color:#66d9ef>implements</span> AsyncConfigurer <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>protected</span> <span style=color:#66d9ef>final</span> Log logger <span style=color:#f92672>=</span> LogFactory<span style=color:#f92672>.</span><span style=color:#a6e22e>getLog</span><span style=color:#f92672>(</span>getClass<span style=color:#f92672>());</span>
+
+    <span style=color:#a6e22e>@Override</span>
+    <span style=color:#66d9ef>public</span> Executor <span style=color:#a6e22e>getAsyncExecutor</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        ThreadFactory threadFactory <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ThreadFactoryBuilder<span style=color:#f92672>().</span><span style=color:#a6e22e>setNameFormat</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;async-%d&#34;</span><span style=color:#f92672>).</span><span style=color:#a6e22e>build</span><span style=color:#f92672>();</span>
+        <span style=color:#66d9ef>return</span> CompletableExecutors<span style=color:#f92672>.</span><span style=color:#a6e22e>completable</span><span style=color:#f92672>(</span>Executors<span style=color:#f92672>.</span><span style=color:#a6e22e>newFixedThreadPool</span><span style=color:#f92672>(</span>10<span style=color:#f92672>,</span> threadFactory<span style=color:#f92672>));</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#a6e22e>@Override</span>
+    <span style=color:#66d9ef>public</span> AsyncUncaughtExceptionHandler <span style=color:#a6e22e>getAsyncUncaughtExceptionHandler</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#f92672>(</span>ex<span style=color:#f92672>,</span> method<span style=color:#f92672>,</span> params<span style=color:#f92672>)</span> <span style=color:#f92672>-&gt;</span> logger<span style=color:#f92672>.</span><span style=color:#a6e22e>error</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Uncaught async error&#34;</span><span style=color:#f92672>,</span> ex<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>As you can see, we can specify which executor will handle our <code>@Async</code> methods.</p>
+<p>We can now return <code>CompletableFuture</code>s from our services!</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Service</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AsyncService</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> String<span style=color:#f92672>[]</span> greetings <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> String<span style=color:#f92672>[]{</span>
+            <span style=color:#e6db74>&#34;hallo&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;hallo&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;hej&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;hej&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;bonjour&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;hola&#34;</span><span style=color:#f92672>,</span>
+            <span style=color:#e6db74>&#34;ciao&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;shalom&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;fáilte&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;kaixo&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;konnichiwa&#34;</span><span style=color:#f92672>,</span>
+            <span style=color:#e6db74>&#34;saluton&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;päivää&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;selamat pagi&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;gut de&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;olá&#34;</span>
+    <span style=color:#f92672>};</span>
+
+    <span style=color:#a6e22e>@Async</span>
+    <span style=color:#66d9ef>public</span> CompletableFuture<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>asyncGreeting</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        AsyncUtil<span style=color:#f92672>.</span><span style=color:#a6e22e>randomSleep</span><span style=color:#f92672>(</span>3000<span style=color:#f92672>,</span> TimeUnit<span style=color:#f92672>.</span><span style=color:#a6e22e>MILLISECONDS</span><span style=color:#f92672>);</span>
+        String result <span style=color:#f92672>=</span> AsyncUtil<span style=color:#f92672>.</span><span style=color:#a6e22e>getThreadName</span><span style=color:#f92672>()</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; - &#34;</span> <span style=color:#f92672>+</span> random<span style=color:#f92672>(</span>greetings<span style=color:#f92672>);</span>
+        <span style=color:#66d9ef>return</span> CompletableFuture<span style=color:#f92672>.</span><span style=color:#a6e22e>completedFuture</span><span style=color:#f92672>(</span>result<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#a6e22e>@SafeVarargs</span> <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>final</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> T <span style=color:#a6e22e>random</span><span style=color:#f92672>(</span>T<span style=color:#f92672>...</span> elements<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        LinkedList<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> greetings <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> LinkedList<span style=color:#f92672>&lt;&gt;(</span>Arrays<span style=color:#f92672>.</span><span style=color:#a6e22e>asList</span><span style=color:#f92672>(</span>elements<span style=color:#f92672>));</span>
+        Collections<span style=color:#f92672>.</span><span style=color:#a6e22e>shuffle</span><span style=color:#f92672>(</span>greetings<span style=color:#f92672>,</span> ThreadLocalRandom<span style=color:#f92672>.</span><span style=color:#a6e22e>current</span><span style=color:#f92672>());</span>
+        <span style=color:#66d9ef>return</span> greetings<span style=color:#f92672>.</span><span style=color:#a6e22e>getFirst</span><span style=color:#f92672>();</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Here is the <code>AsyncUtil</code> class in case you are wondering what&rsquo;s going on:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AsyncUtil</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>randomSleep</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> duration<span style=color:#f92672>,</span> TimeUnit timeUnit<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+            timeUnit<span style=color:#f92672>.</span><span style=color:#a6e22e>sleep</span><span style=color:#f92672>(</span>ThreadLocalRandom<span style=color:#f92672>.</span><span style=color:#a6e22e>current</span><span style=color:#f92672>().</span><span style=color:#a6e22e>nextInt</span><span style=color:#f92672>(</span>duration<span style=color:#f92672>));</span>
+        <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>InterruptedException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            Throwables<span style=color:#f92672>.</span><span style=color:#a6e22e>propagate</span><span style=color:#f92672>(</span>e<span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> String <span style=color:#a6e22e>getThreadName</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> Thread<span style=color:#f92672>.</span><span style=color:#a6e22e>currentThread</span><span style=color:#f92672>().</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>();</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Our service will say hello in a random language within 3 seconds of time.
+How do we handle the result?</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Runner</span> <span style=color:#66d9ef>implements</span> CommandLineRunner <span style=color:#f92672>{</span>
+
+    <span style=color:#a6e22e>@Autowired</span>
+    <span style=color:#66d9ef>private</span> AsyncService asyncService<span style=color:#f92672>;</span>
+
+    <span style=color:#a6e22e>@Override</span> <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>run</span><span style=color:#f92672>(</span>String<span style=color:#f92672>...</span> args<span style=color:#f92672>)</span> <span style=color:#66d9ef>throws</span> Exception <span style=color:#f92672>{</span>
+
+        IntStream<span style=color:#f92672>.</span><span style=color:#a6e22e>rangeClosed</span><span style=color:#f92672>(</span>1<span style=color:#f92672>,</span> 10<span style=color:#f92672>)</span>
+                <span style=color:#f92672>.</span><span style=color:#a6e22e>mapToObj</span><span style=color:#f92672>(</span>__ <span style=color:#f92672>-&gt;</span> asyncService<span style=color:#f92672>.</span><span style=color:#a6e22e>asyncGreeting</span><span style=color:#f92672>().</span><span style=color:#a6e22e>exceptionally</span><span style=color:#f92672>(</span>Throwable<span style=color:#f92672>::</span>getMessage<span style=color:#f92672>))</span>
+                <span style=color:#f92672>.</span><span style=color:#a6e22e>forEach</span><span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>::</span>printResult<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>printResult</span><span style=color:#f92672>(</span>CompletableFuture<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> future<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        future<span style=color:#f92672>.</span><span style=color:#a6e22e>thenRun</span><span style=color:#f92672>(()</span> <span style=color:#f92672>-&gt;</span> System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>future<span style=color:#f92672>.</span><span style=color:#a6e22e>join</span><span style=color:#f92672>()));</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>My what a beauty! In the above class, we create a stream of ten elements
+to call our async service ten times, make sure that we handle exceptions and
+print each result on the console.</p>
+<p>Please, notice that <strong>nothing is blocking</strong> in the above code.
+The <code>join()</code> method will wait for a result but since we are calling it in a
+callback after completion, we get a fully asynchronous code.</p>
+<p>This code will produce the following output, printing each lines at different
+timings:</p>
+<pre tabindex=0><code>async-7 - gut de
+async-5 - konnichiwa
+async-4 - hallo
+async-2 - hallo
+async-6 - saluton
+async-1 - fáilte
+async-9 - päivää
+async-0 - hej
+async-8 - hallo
+async-3 - saluton
+</code></pre><h2 id=handling-timeouts>Handling timeouts</h2>
+<p>An interesting question with future is how to set a timeout and cancel them
+if they run late.</p>
+<p>My solution is to create another executor like this:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>TimeOutExecutorService</span> <span style=color:#66d9ef>extends</span> CompletableExecutors<span style=color:#f92672>.</span><span style=color:#a6e22e>DelegatingCompletableExecutorService</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> Duration timeout<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> ScheduledExecutorService schedulerExecutor<span style=color:#f92672>;</span>
+
+    TimeOutExecutorService<span style=color:#f92672>(</span>ExecutorService delegate<span style=color:#f92672>,</span> Duration timeout<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>super</span><span style=color:#f92672>(</span>delegate<span style=color:#f92672>);</span>
+        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>timeout</span> <span style=color:#f92672>=</span> timeout<span style=color:#f92672>;</span>
+        schedulerExecutor <span style=color:#f92672>=</span> Executors<span style=color:#f92672>.</span><span style=color:#a6e22e>newScheduledThreadPool</span><span style=color:#f92672>(</span>1<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#a6e22e>@Override</span> <span style=color:#66d9ef>public</span> <span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> CompletableFuture<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>submit</span><span style=color:#f92672>(</span>Callable<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> task<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        CompletableFuture<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> cf <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> CompletableFuture<span style=color:#f92672>&lt;&gt;();</span>
+        Future<span style=color:#f92672>&lt;?&gt;</span> future <span style=color:#f92672>=</span> delegate<span style=color:#f92672>.</span><span style=color:#a6e22e>submit</span><span style=color:#f92672>(()</span> <span style=color:#f92672>-&gt;</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+                cf<span style=color:#f92672>.</span><span style=color:#a6e22e>complete</span><span style=color:#f92672>(</span>task<span style=color:#f92672>.</span><span style=color:#a6e22e>call</span><span style=color:#f92672>());</span>
+            <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>CancellationException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                cf<span style=color:#f92672>.</span><span style=color:#a6e22e>cancel</span><span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>);</span>
+            <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>Throwable ex<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                cf<span style=color:#f92672>.</span><span style=color:#a6e22e>completeExceptionally</span><span style=color:#f92672>(</span>ex<span style=color:#f92672>);</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>});</span>
+
+        schedulerExecutor<span style=color:#f92672>.</span><span style=color:#a6e22e>schedule</span><span style=color:#f92672>(()</span> <span style=color:#f92672>-&gt;</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(!</span>cf<span style=color:#f92672>.</span><span style=color:#a6e22e>isDone</span><span style=color:#f92672>())</span> <span style=color:#f92672>{</span>
+                cf<span style=color:#f92672>.</span><span style=color:#a6e22e>completeExceptionally</span><span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> TimeoutException<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Timeout after &#34;</span> <span style=color:#f92672>+</span> timeout<span style=color:#f92672>));</span>
+                future<span style=color:#f92672>.</span><span style=color:#a6e22e>cancel</span><span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>);</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>},</span> timeout<span style=color:#f92672>.</span><span style=color:#a6e22e>toMillis</span><span style=color:#f92672>(),</span> TimeUnit<span style=color:#f92672>.</span><span style=color:#a6e22e>MILLISECONDS</span><span style=color:#f92672>);</span>
+        <span style=color:#66d9ef>return</span> cf<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>This implementation was inspired by <a href=http://stackoverflow.com/questions/23575067/timeout-with-default-value-in-java-8-completablefuture/24457111#24457111>a discussion</a> on stackoverflow.</p>
+<p>We can now create a new executor as a Spring bean:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Bean</span><span style=color:#f92672>(</span>name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;timed&#34;</span><span style=color:#f92672>)</span>
+<span style=color:#66d9ef>public</span> Executor <span style=color:#a6e22e>timeoutExecutor</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    ThreadFactory threadFactory <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ThreadFactoryBuilder<span style=color:#f92672>().</span><span style=color:#a6e22e>setNameFormat</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;timed-%d&#34;</span><span style=color:#f92672>).</span><span style=color:#a6e22e>build</span><span style=color:#f92672>();</span>
+    <span style=color:#66d9ef>return</span> TimedCompletables<span style=color:#f92672>.</span><span style=color:#a6e22e>timed</span><span style=color:#f92672>(</span>Executors<span style=color:#f92672>.</span><span style=color:#a6e22e>newFixedThreadPool</span><span style=color:#f92672>(</span>10<span style=color:#f92672>,</span> threadFactory<span style=color:#f92672>),</span> Duration<span style=color:#f92672>.</span><span style=color:#a6e22e>ofSeconds</span><span style=color:#f92672>(</span>2<span style=color:#f92672>));</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>An use it like this:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Async</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;timed&#34;</span><span style=color:#f92672>)</span>
+<span style=color:#66d9ef>public</span> CompletableFuture<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>asyncTimeoutGreeting</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    AsyncUtil<span style=color:#f92672>.</span><span style=color:#a6e22e>randomSleep</span><span style=color:#f92672>(</span>3000<span style=color:#f92672>,</span> TimeUnit<span style=color:#f92672>.</span><span style=color:#a6e22e>MILLISECONDS</span><span style=color:#f92672>);</span>
+    String result <span style=color:#f92672>=</span> AsyncUtil<span style=color:#f92672>.</span><span style=color:#a6e22e>getThreadName</span><span style=color:#f92672>()</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; - &#34;</span> <span style=color:#f92672>+</span> random<span style=color:#f92672>(</span>greetings<span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>return</span> CompletableFuture<span style=color:#f92672>.</span><span style=color:#a6e22e>completedFuture</span><span style=color:#f92672>(</span>result<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Now if we run the application again, about one third of the tasks will time out:</p>
+<pre tabindex=0><code>timed-4 - saluton
+timed-3 - hallo
+timed-7 - saluton
+timed-8 - fáilte
+timed-1 - saluton
+timed-5 - hallo
+Timeout after PT2S
+Timeout after PT2S
+Timeout after PT2S
+Timeout after PT2S
+</code></pre><h2 id=profiling-threads-with-aop>Profiling threads with AOP</h2>
+<p>Let&rsquo;s add a dependency to <code>spring-boot-starter-aop</code> to automatically profile the
+execution of our async methods:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Aspect</span>
+<span style=color:#a6e22e>@Component</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ServiceProfiler</span> <span style=color:#f92672>{</span>
+
+   <span style=color:#a6e22e>@Pointcut</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;execution(java.util.concurrent.CompletableFuture completable.service.*.*(..))&#34;</span><span style=color:#f92672>)</span>
+   <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>serviceMethods</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+   <span style=color:#f92672>}</span>
+
+   <span style=color:#a6e22e>@Around</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;serviceMethods()&#34;</span><span style=color:#f92672>)</span>
+   <span style=color:#66d9ef>public</span> Object <span style=color:#a6e22e>profile</span><span style=color:#f92672>(</span>ProceedingJoinPoint pjp<span style=color:#f92672>)</span> <span style=color:#66d9ef>throws</span> Throwable <span style=color:#f92672>{</span>
+       StopWatch stopWatch <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> StopWatch<span style=color:#f92672>();</span>
+       stopWatch<span style=color:#f92672>.</span><span style=color:#a6e22e>start</span><span style=color:#f92672>();</span>
+       Object output <span style=color:#f92672>=</span> pjp<span style=color:#f92672>.</span><span style=color:#a6e22e>proceed</span><span style=color:#f92672>();</span>
+       stopWatch<span style=color:#f92672>.</span><span style=color:#a6e22e>stop</span><span style=color:#f92672>();</span>
+       <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>output <span style=color:#66d9ef>instanceof</span> CompletableFuture<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+           CompletableFuture future <span style=color:#f92672>=</span> <span style=color:#f92672>(</span>CompletableFuture<span style=color:#f92672>)</span> output<span style=color:#f92672>;</span>
+           String debug <span style=color:#f92672>=</span> String<span style=color:#f92672>.</span><span style=color:#a6e22e>format</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;(%d ms)&#34;</span><span style=color:#f92672>,</span> stopWatch<span style=color:#f92672>.</span><span style=color:#a6e22e>getTotalTimeMillis</span><span style=color:#f92672>());</span>
+           future<span style=color:#f92672>.</span><span style=color:#a6e22e>thenAccept</span><span style=color:#f92672>(</span>o <span style=color:#f92672>-&gt;</span> System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>o <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34; - &#34;</span> <span style=color:#f92672>+</span> debug<span style=color:#f92672>));</span>
+       <span style=color:#f92672>}</span>
+       <span style=color:#66d9ef>return</span> output<span style=color:#f92672>;</span>
+   <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>This is a bit unnecessary but I used one of the callbacks of <code>CompletableFuture</code>
+to display the profiling message :)</p>
+<h2 id=conclusion>Conclusion</h2>
+<p>Java 8 <code>CompletableFuture</code>s provide an awesome API to deal with async
+tasks. Too bad that no Executor is able to create them without a bit of code
+on our part.</p>
+<p>I&rsquo;m not a concurrency expert so please tell me what you think of this solution
+in the comments.</p>
+</div>
+<footer class=entry-footer>
+<div class="container sep-before">
+If you liked this article, please share! ❤️
+<div class=article-share-links>
+<a data-provider=twitter href="https://twitter.com/intent/tweet?url=https%3a%2f%2fgeowarin.github.io%2fcompletable-futures-with-spring-async%2f&via=geowarin&text=Completable%20futures%20with%20Spring%20async" class="article-share twitter" target=_blank title="Share on Twitter"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
+</a>
+<a data-provider=linkedIn href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.github.io%2fcompletable-futures-with-spring-async%2f&title=Completable%20futures%20with%20Spring%20async" class="article-share linkedin" target=_blank title="Share on LinkedIn"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+</a>
+<a data-provider=facebook href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.github.io%2fcompletable-futures-with-spring-async%2f&t=Completable%20futures%20with%20Spring%20async" class="article-share facebook" target=_blank title="Share on Facebook"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+</a>
+<a data-provider=google href="https://plus.google.com/share?&url=https%3a%2f%2fgeowarin.github.io%2fcompletable-futures-with-spring-async%2f" class="article-share google" target=_blank title="Share on Google+"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+</a>
+<a data-provider=buffer href="https://buffer.com/add?url=https%3a%2f%2fgeowarin.github.io%2fcompletable-futures-with-spring-async%2f&text=Completable%20futures%20with%20Spring%20async" class="article-share buffer" target=_blank title="Add to Buffer"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 15"/></svg>
+</a>
+</div>
+</div>
+<div class="container sep-before">
+<div class=categories><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5A2 2 0 014 3H9l2 3h9a2 2 0 012 2z"/></svg>
+<span class=screen-reader-text>Categories: </span><a class=category href=/categories/spring/>spring</a></div>
+<div class=tags><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2H12l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=screen-reader-text>Tags: </span><a class=tag href=/tags/spring/>spring</a>, <a class=tag href=/tags/futures/>futures</a>, <a class=tag href=/tags/async/>async</a>, <a class=tag href=/tags/featured/>featured</a></div>
+</div>
+</footer>
+</article>
+<nav class=entry-nav>
+<div class=container><div class="prev-entry sep-before">
+<a href=/the-missing-fish-shell-tutorial/>
+<span aria-hidden=true><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 18 4 12 10 6"/></svg>
+Previous</span>
+<span class=screen-reader-text>Previous post: </span>The missing fish shell tutorial</a>
+</div><div class="next-entry sep-before">
+<a href=/spring-boot-and-react-hot-loader/>
+<span class=screen-reader-text>Next post: </span>Spring Boot and React hot loader<span aria-hidden=true>Next<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+</span>
+</a>
+</div></div>
+</nav>
+<section id=comments class=comments>
+<div class="container sep-before">
+<div class=comments-area><div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//geowarin.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id=footer class=footer>
+<div class="container sep-before"><div class=copyright>
+<p> &copy; 2017-2021 geowarin </p>
+</div>
+</div>
+</footer>
+</div>
+</div><script>window.__assets_js_src="/assets/js/"</script>
+<script src=/assets/js/main.c3bcf2df.js></script>
+</body>
+</html>
