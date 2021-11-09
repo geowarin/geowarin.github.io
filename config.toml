@@ -91,7 +91,7 @@ enable = true
 platforms = ["github","facebook","twitter","instagram","email","codepen","gitlab","linkedin","telegram","google_scholar"]
 
 [params.search]
-client = "lunr"
+client = "fuse"
 
 # [params.search.algolia]
 # appId = "7DRJRSRA5B"
