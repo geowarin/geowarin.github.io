@@ -2,7 +2,7 @@
 categories:
 - spring
 date: 2015-06-12T00:00:00Z
-description: Use Java 8 new CompletableFuture with Spring async
+Summary: Use Java 8 new CompletableFuture with Spring async
 redirect_from: spring/2015/06/12/completable-futures-with-spring-async.html
 tags:
 - spring

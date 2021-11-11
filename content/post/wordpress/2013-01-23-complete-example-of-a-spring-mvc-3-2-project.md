@@ -3,7 +3,7 @@ categories:
 - spring
 - spring-mvc
 date: 2013-01-23T00:00:00Z
-description: Awesome spring mvc 3.2 starter with sitemesh, localization, UTF-8, boostrap
+Summary: Awesome spring mvc 3.2 starter with sitemesh, localization, UTF-8, boostrap
   and spring test mvc
 redirect_from: /2013/01/23/complete-example-of-a-spring-mvc-3-2-project/
 tags:

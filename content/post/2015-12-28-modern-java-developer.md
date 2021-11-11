@@ -2,7 +2,7 @@
 categories:
 - other
 date: 2015-12-28T00:00:00Z
-description: What to learn in 2016 to be a top notch Java dev?
+Summary: What to learn in 2016 to be a top notch Java dev?
 tags:
 - modern
 - java

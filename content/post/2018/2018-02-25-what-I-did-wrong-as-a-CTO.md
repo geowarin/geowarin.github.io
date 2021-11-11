@@ -1,7 +1,7 @@
 ---
 title: "What I Did Wrong as a CTO"
 date: 2018-02-25T11:33:45+01:00
-description: I spent one year as a CTO for a startup. Here are some technical decisions I came to regret
+Summary: I spent one year as a CTO for a startup. Here are some technical decisions I came to regret
     and those that I would make again in my next project
 toc: true
 tags:

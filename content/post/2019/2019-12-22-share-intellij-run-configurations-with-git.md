@@ -7,7 +7,7 @@ tags:
  - git
 categories:
  - dev
-description: Isn't it great when you checkout a project and have everything at hand to run it? 
+Summary: Isn't it great when you checkout a project and have everything at hand to run it? 
 ---
 
 This is a short note on how to share your intelliJ run configurations with git.

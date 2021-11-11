@@ -2,7 +2,7 @@
 categories:
 - testing
 date: 2016-01-06T00:00:00Z
-description: Docker can help you write better tests with a simple JUnit rule
+Summary: Docker can help you write better tests with a simple JUnit rule
 tags:
 - featured
 - test

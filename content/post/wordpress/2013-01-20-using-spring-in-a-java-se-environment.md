@@ -2,7 +2,7 @@
 categories:
 - spring
 date: 2013-01-20T19:31:56Z
-description: Demonstration of how to set up spring in java SE and inject several implementations
+Summary: Demonstration of how to set up spring in java SE and inject several implementations
   of the same interface
 redirect_from: /2013/01/20/using-spring-in-a-java-se-environment-and-implementing-the-chain-of-responsibility-pattern/
 tags:

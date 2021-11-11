@@ -3,7 +3,7 @@ categories:
 - JPA
 - java
 date: 2013-01-21T15:25:11Z
-description: Demonstration of how to set up spring data JPA in java SE and test with dbUnit
+Summary: Demonstration of how to set up spring data JPA in java SE and test with dbUnit
 redirect_from: /2013/01/21/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/
 tags:
 - hibernate

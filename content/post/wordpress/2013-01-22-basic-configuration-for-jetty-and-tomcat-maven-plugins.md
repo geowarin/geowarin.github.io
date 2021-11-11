@@ -2,7 +2,7 @@
 categories:
 - maven
 date: 2013-01-22T04:07:49Z
-description: Cheatsheet for jetty and tomcat maven plugins
+Summary: Cheatsheet for jetty and tomcat maven plugins
 redirect_from: /2013/01/22/basic-configuration-for-jetty-and-tomcat-maven-plugins/
 tags:
 - jetty

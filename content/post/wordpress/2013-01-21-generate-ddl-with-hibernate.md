@@ -3,7 +3,7 @@ categories:
 - hibernate
 - java
 date: 2013-01-21T23:44:07Z
-description: How to generate SQL schemas with hibernate built-in classes
+Summary: How to generate SQL schemas with hibernate built-in classes
 redirect_from: /2013/01/21/generate-ddl-with-hibernate/
 tags:
 - DDL

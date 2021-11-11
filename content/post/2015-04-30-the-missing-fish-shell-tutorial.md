@@ -2,7 +2,7 @@
 categories:
 - shell
 date: 2015-04-30T00:00:00Z
-description: Fish is an awesome shell but requires a bit of practice. Here are a few tips
+Summary: Fish is an awesome shell but requires a bit of practice. Here are a few tips
   I wish people gave me when I started using it.
 tags:
 - tips

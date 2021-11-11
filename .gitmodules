@@ -1,3 +1,6 @@
 [submodule "themes/minimo"]
 	path = themes/minimo
-	url = https://github.com/MunifTanjim/minimo
+	url = https://github.com/geowarin/minimo
+[submodule "themes/PaperMod"]
+	path = themes/PaperMod
+	url = https://github.com/adityatelange/hugo-PaperMod.git

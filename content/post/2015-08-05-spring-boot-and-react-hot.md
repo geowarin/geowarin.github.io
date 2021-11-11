@@ -3,7 +3,7 @@ categories:
 - spring
 - react
 date: 2015-08-05T00:00:00Z
-description: The perfect setup for Spring boot and React hot loader
+Summary: The perfect setup for Spring boot and React hot loader
 redirect_from: spring/react/2015/08/05/spring-boot-and-react-hot.html
 tags:
 - spring

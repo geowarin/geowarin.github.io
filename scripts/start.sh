@@ -2,7 +2,7 @@
 
 trap "kill 0" EXIT
 
-hugo server -w -D &
+hugo server -w -D --disableFastRender &
 firefox --new-window "http://localhost:1313" &
 
 wait

@@ -1,0 +1,71 @@
+baseURL: "https://geowarin.github.io"
+title: Geowarin
+#paginate: 5
+theme: PaperMod
+
+enableRobotsTXT: true
+googleAnalytics: UA-46024908-1
+
+#minify:
+#  disableXML: true
+#  minifyOutput: true
+
+permalinks:
+  page: "/:slug/"
+  post: "/:title/"
+
+params:
+#  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+#  title: ExampleSite
+#  description: "ExampleSite description"
+#  author: Geoffroy Warin
+#  images: ["<link or path of image for opengraph, twitter-cards>"]
+  DateFormat: "January 2, 2006"
+  defaultTheme: auto # dark, light
+#  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  disableSpecial1stPost: true
+#  disableScrollToTop: false
+  comments: true
+
+  homeInfoParams:
+    Title: "Geoffroy Warin 🤗"
+    Content: Another web developer's blog
+
+  socialIcons:
+    - name: twitter
+      url: "https://twitter.com/geowarin"
+    - name: stackoverflow
+      url: "https://stackoverflow.com/geowarin"
+    - name: github
+      url: "https://github.com/geowarin"
+    - name: linkedin
+      url: "https://linkedin.com/in/geowarin"
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+menu:
+  main:
+    - identifier: archive
+      name: Archive
+      url: /archive/
+      weight: 10
+    - name: Search
+      url: search/
+      weight: 10
+    - identifier: book
+      name: Book
+      url: /mastering-spring-mvc-4/
+      weight: 20
+#  editPost:
+#    URL: "https://github.com/geowarin/blog/content"
+#    Text: "Suggest Changes"
+#    appendFilePath: true

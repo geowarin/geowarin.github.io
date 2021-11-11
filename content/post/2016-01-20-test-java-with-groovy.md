@@ -3,7 +3,7 @@ categories:
 - testing
 - groovy
 date: 2016-01-20T00:00:00Z
-description: You can write better tests for your Java application with Spock, Groovy and
+Summary: You can write better tests for your Java application with Spock, Groovy and
   very little configuration
 tags:
 - testing

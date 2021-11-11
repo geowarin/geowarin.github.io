@@ -2,7 +2,7 @@
 categories:
 - react
 date: 2016-02-18T00:00:00Z
-description: We've heard a lot about Javascript fatigue but what if I showed you two simple
+Summary: We've heard a lot about Javascript fatigue but what if I showed you two simple
   ways to get started with React without a single line of configuration? Refresh!
 tags:
 - react

@@ -2,7 +2,7 @@
 categories:
 - eclipse
 date: 2013-01-18T04:20:19Z
-description: Tips and tricks, useful plugins and tuning for the eclipse IDE
+Summary: Tips and tricks, useful plugins and tuning for the eclipse IDE
 redirect_from: 2013/01/18/tuning-eclipse/
 tags:
 - eclipse

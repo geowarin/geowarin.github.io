@@ -2,7 +2,7 @@
 categories:
 - spring-boot
 date: 2015-02-19T00:00:00Z
-description: Review of the book Learning Spring Boot by Greg L. Turnquist
+Summary: Review of the book Learning Spring Boot by Greg L. Turnquist
 tags:
 - spring-boot
 - book

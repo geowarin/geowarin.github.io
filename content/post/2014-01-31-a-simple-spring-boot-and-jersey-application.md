@@ -5,7 +5,7 @@ categories:
 - jersey
 - java
 date: 2014-01-31T00:00:00Z
-description: How to setup a simple spring-boot and jersey application
+Summary: How to setup a simple spring-boot and jersey application
 redirect_from: /spring/spring-boot/jersey/java/2014/01/31/a-simple-spring-boot-and-jersey-application.html
 tags:
 - spring

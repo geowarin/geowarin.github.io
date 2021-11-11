@@ -3,7 +3,7 @@ categories:
 - spring
 - spring-boot
 date: 2015-03-06T00:00:00Z
-description: Wonder how spring boot's magic operates behind the scenes? You've come to
+Summary: Wonder how spring boot's magic operates behind the scenes? You've come to
   the right place!
 redirect_from: spring/spring-boot/2015/03/06/understanding-spring-boot.html
 tags:

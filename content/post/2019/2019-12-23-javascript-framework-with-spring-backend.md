@@ -6,7 +6,7 @@ tags:
  - javascript
 categories:
  - spring
-description: Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are
+Summary: Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are
     several ways to tackle this problem.
 ---
 

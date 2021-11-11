@@ -3,7 +3,7 @@ categories:
 - JPA
 - java
 date: 2013-01-20T16:28:23Z
-description: Demonstration of how to set up hibernate in a java SE application and test
+Summary: Demonstration of how to set up hibernate in a java SE application and test
   with dbUnit
 redirect_from: /2013/01/20/using-hibernate-as-a-jpa-provider-in-a-java-se-environment-and-run-tests-with-dbunit/
 tags:

@@ -3,7 +3,7 @@ categories:
 - react
 - redux
 date: 2016-04-12T00:00:00Z
-description: Connecting your REST API to Redux used to be hard... But that was before
+Summary: Connecting your REST API to Redux used to be hard... But that was before
   Shasta!
 tags:
 - react

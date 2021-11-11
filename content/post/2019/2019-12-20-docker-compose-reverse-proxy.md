@@ -7,7 +7,7 @@ tags:
  - nginx
 categories:
  - architecture
-description: How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.
+Summary: How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.
 ---
 
 # The problem

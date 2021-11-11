@@ -6,7 +6,7 @@ tags:
  - spring
 categories:
  - webflux
-description: By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!
+Summary: By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!
 ---
 
 By default, when you try to debug project reactor calls, you get something like this:

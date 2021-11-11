@@ -2,7 +2,7 @@
 categories:
 - spring
 date: 2016-02-12T00:00:00Z
-description: Log-in with your social account in your Spring application
+Summary: Log-in with your social account in your Spring application
 redirect_from: spring/2015/08/02/social-login-with-spring.html
 tags:
 - spring

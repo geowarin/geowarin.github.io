@@ -3,7 +3,7 @@ categories:
 - websocket
 - rethinkdb
 date: 2016-01-28T00:00:00Z
-description: RethinkDB is a great database engine allowing you to receive live updates
+Summary: RethinkDB is a great database engine allowing you to receive live updates
   on your data. Let's create a Spring Boot App and give it a try!
 tags:
 - chat
