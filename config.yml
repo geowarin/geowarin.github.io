@@ -5,6 +5,7 @@ theme: PaperMod
 
 enableRobotsTXT: true
 googleAnalytics: UA-46024908-1
+disqusShortname: "geowarin"
 
 #minify:
 #  disableXML: true
