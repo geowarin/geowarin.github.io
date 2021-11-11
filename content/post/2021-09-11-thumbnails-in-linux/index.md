@@ -10,9 +10,8 @@ summary:
 cover:
    image: images/cover.png
    relative: true
+   linkFullImages: true
 ---
- 
-{{< figure src="images/cover.png" title="glb files thumbnails in thunar" >}}
 
 ## Mime mapping
 
