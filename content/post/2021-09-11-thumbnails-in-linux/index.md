@@ -4,10 +4,11 @@ date: 2021-09-11T18:42:59+02:00
 tags:
  - linux
  - 3D
-description:
 summary: 
  Linux has a nice system to display thumbnails. 
  Let's try it to display GLTF files in thunar.
+cover:
+   image: cover.png
 ---
  
 {{< figure src="images/cover.png" title="glb files thumbnails in thunar" >}}
