@@ -1,3 +1,3 @@
 User-agent: *
 Disallow:
-Sitemap: https://geowarin.github.io/sitemap.xml
+Sitemap: https://geowarin.com/sitemap.xml
