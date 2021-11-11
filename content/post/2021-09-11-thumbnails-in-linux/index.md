@@ -9,6 +9,7 @@ summary:
  Let's try it to display GLTF files in thunar.
 cover:
    image: cover.png
+   relative: true
 ---
  
 {{< figure src="images/cover.png" title="glb files thumbnails in thunar" >}}
