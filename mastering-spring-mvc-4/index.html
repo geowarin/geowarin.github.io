@@ -1,114 +1,74 @@
-<!doctype html><html lang=en dir=auto><head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Web developer">
-<meta name=theme-color content="#ffcd00">
-<meta property="og:title" content="Mastering spring MVC 4 • Geowarin">
-<meta property="og:description" content="Web developer">
-<meta property="og:url" content="https://geowarin.github.io/mastering-spring-mvc-4/">
-<meta property="og:site_name" content="Geowarin">
-<meta property="og:type" content="website"><meta property="og:updated_time" content="2019-12-23T01:20:59+01:00"><meta name=twitter:card content="summary"><meta name=twitter:site content="@geowarin">
-<meta name=generator content="Hugo 0.89.2">
-<title>Mastering spring MVC 4 • Geowarin</title>
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Mastering spring MVC 4 | Geowarin</title>
+<meta name=keywords content>
+<meta name=description content="Hello, dear visitor! I think I have an idea of what you want&mldr;
+You want to learn how to create a complete Spring web application with oauth support, security, file upload and distributed sessions.
+You want to master the principles of REST and develop a clean API with top-notch exception handling and following the best practices.
+You also want to deploy it in the cloud and for it to be fully tested with both unit and end-to-end tests.">
+<meta name=author content>
 <link rel=canonical href=https://geowarin.github.io/mastering-spring-mvc-4/>
-<link href=https://geowarin.github.io/mastering-spring-mvc-4/index.xml rel=alternate type=application/rss+xml title=Geowarin>
-<link rel=icon href=/favicon.ico>
-<link rel=stylesheet href=/assets/css/main.ab98e12b.css><link rel=stylesheet href=/css/custom.css><style>:root{--color-accent:#ffcd00}</style>
-<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script>
-<script async src=https://www.google-analytics.com/analytics.js></script>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.6f60056d44d3f7eb69a4bc6c332b59960f3a995802bded244750232f33713c49.css integrity="sha256-b2AFbUTT9+tppLxsMytZlg86mVgCve0kR1AjLzNxPEk=" rel="preload stylesheet" as=style>
+<link rel=icon href=https://geowarin.github.io/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://geowarin.github.io/favicon-16x16.png>
+<link rel=icon type=image/png sizes=32x32 href=https://geowarin.github.io/favicon-32x32.png>
+<link rel=apple-touch-icon href=https://geowarin.github.io/apple-touch-icon.png>
+<link rel=mask-icon href=https://geowarin.github.io/safari-pinned-tab.svg>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.89.2">
+<link rel=alternate type=application/rss+xml href=https://geowarin.github.io/mastering-spring-mvc-4/index.xml>
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-46024908-1','auto'),ga('send','pageview'))</script><meta property="og:title" content="Mastering spring MVC 4">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://geowarin.github.io/mastering-spring-mvc-4/">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Mastering spring MVC 4">
+<meta name=twitter:description content>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Pages","item":"https://geowarin.github.io/page/"},{"@type":"ListItem","position":3,"name":"Mastering spring MVC 4","item":"https://geowarin.github.io/mastering-spring-mvc-4/"}]}</script>
 </head>
-<body class="section type-page has-sidebar">
-<div class=site><div id=sidebar class=sidebar>
-<a class=screen-reader-text href=#main-menu>Skip to Main Menu</a>
-<div class=container><section class="widget widget-about sep-after">
-<header>
-<div class=logo>
-<a href=/>
-<img src=/images/logo.png>
-</a>
-</div>
-<h2 class="title site-title">
-<a href=/>
-Geowarin
-</a>
-</h2>
-<div class=desc>
-Web developer
-</div>
-</header>
-</section>
-<section class="widget widget-search sep-after">
-<header>
-<h4 class="title widget-title">Search</h4>
-</header>
-<form action=/search id=search-form class=search-form>
-<label>
-<span class=screen-reader-text>Search</span>
-<input id=search-term class=search-term type=search name=q placeholder=Search&mldr;>
-</label></form>
-</section>
-<section class="widget widget-social_menu sep-after"><nav aria-label="Social Menu">
-<ul><li>
-<a href=https://github.com/geowarin target=_blank rel="noopener me">
-<span class=screen-reader-text>Open Github account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg>
-</a>
-</li><li>
-<a href=https://twitter.com/geowarin target=_blank rel="noopener me">
-<span class=screen-reader-text>Open Twitter account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg>
-</a>
-</li><li>
-<a href=https://linkedin.com/in/geowarin target=_blank rel="noopener me">
-<span class=screen-reader-text>Open Linkedin account in new tab</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-</a>
-</li></ul>
-</nav>
-</section></div>
-<div class=sidebar-overlay></div>
-</div><div class=main><nav id=main-menu class="menu main-menu" aria-label="Main Menu">
-<div class=container>
-<a class=screen-reader-text href=#content>Skip to Content</a>
-<button id=sidebar-toggler class=sidebar-toggler aria-controls=sidebar>
-<span class=screen-reader-text>Toggle Sidebar</span>
-<span class=open><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</span>
-<span class=close><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-</span>
-</button>
-<ul><li class=item>
-<a href=/>Blog</a>
-</li><li class=item>
-<a href=/archive/>Archive</a>
-</li><li class=item>
-<a href=/mastering-spring-mvc-4/>Book</a>
-</li><li class=item>
-<a href=https://github.com/geowarin/geowarin.github.io>Repo</a>
-</li></ul>
-</div>
-</nav><div class=header-widgets>
-<div class=container>
-<style>.widget-breadcrumbs li:after{content:'\2f '}</style>
-<section class="widget widget-breadcrumbs sep-after">
-<nav id=breadcrumbs>
-<ol><li><a href=/>Geowarin</a></li><li><span>Mastering spring MVC 4</span></li></ol>
-</nav>
-</section></div>
-</div>
-<header id=header class="header site-header">
-<div class="container sep-after">
-<div class=header-info><p class="site-title title">Geowarin</p><p class="desc site-desc">Web developer</p>
-</div>
-</div>
-</header>
-<main id=content>
+<body class=list id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
 <header class=header>
-<div class="container sep-after">
-<div class=header-info>
-<h1 class=title>Mastering spring MVC 4</h1>
+<nav class=nav>
+<div class=logo>
+<a href=https://geowarin.github.io accesskey=h title="Geowarin (Alt + H)">Geowarin</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
 </div>
-</div>
+<ul id=menu>
+<li>
+<a href=https://geowarin.github.io/archive/ title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://geowarin.github.io/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+<li>
+<a href=https://geowarin.github.io/mastering-spring-mvc-4/ title=Book>
+<span class=active>Book</span>
+</a>
+</li>
+</ul>
+</nav>
 </header>
-<div class=entry>
-<div class="container entry-content">
+<main class=main>
+<header class=page-header><div class=breadcrumbs><a href=https://geowarin.github.io>Home</a>&nbsp;»&nbsp;<a href=https://geowarin.github.io/page/>Pages</a></div>
+<h1>Mastering spring MVC 4</h1>
+</header>
+<div class=post-content>
 <p>Hello, dear visitor! I think I have an idea of what you want&mldr;</p>
 <p>You want to learn how to create a complete Spring web application with
 oauth support, security, file upload and distributed sessions.</p>
@@ -122,180 +82,156 @@ you are looking for!</p>
 its source code is available on github
 and it is deployed on heroku</p>
 </div>
-</div>
-<div class="container list-container">
-<ul class=list>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-03-01T00:00:00Z>2015, Mar 01</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html>Chapter 1 - Setting up a Spring web application in no time</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In the first chapter, you will learn how to bootstrap your application effectively and how to leverage spring boot to get started with spring MVC in a couple of minutes
-</p>
-</h3>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 1 - Setting up a Spring web application in no time
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-03-27T00:00:00Z>2015, Mar 27</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-2-mastering-the-mvc-architecture.html>Chapter 2 - Mastering the MVC Architecture</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In the second chapter, we will design a twitter search engine, learning the principles of MVC and DDD along the way.
-</p>
-</h3>
+<section class=entry-content>
+<p>I just finished writing the first chapter of Mastering Spring MVC 4. That was a lot of fun. I enjoyed sharing the tips and tricks that I use when I bootstrap a Spring application.
+In this first chapter, you will learn how to get started with spring MVC in a snap.
+Know thy tools Have you heard of Spring Tool Suite? Do you know start.spring.io? Did you know you could actually curl start....</p>
+</section>
+<footer class=entry-footer><span title="2015-03-01 00:00:00 +0000 UTC">March 1, 2015</span>&nbsp;·&nbsp;2 min</footer>
+<a class=entry-link aria-label="post link to Chapter 1 - Setting up a Spring web application in no time" href=https://geowarin.github.io/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 2 - Mastering the MVC Architecture
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-03-27T00:00:00Z>2015, Mar 27</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-3-handling-forms-and-complex-url-mapping.html>Chapter 3 - Handling forms and complex URL mapping</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In this chapter, we will create a beautiful profile form with server and client side validation
-</p>
-</h3>
+<section class=entry-content>
+<p>I was so busy writing the third chapter of Mastering Spring MVC 4, I did not take the time to write about chapter 2.
+In this outstanding chapter you will learn the principles of the MVC Architecture. We will also be discussing good practices, the basis of Domain Driven Design and the trade-offs this kind of design imply on a Spring MVC architecture.
+A good read on the subject is available on Petri Kainulainen’s blog....</p>
+</section>
+<footer class=entry-footer><span title="2015-03-27 00:00:00 +0000 UTC">March 27, 2015</span>&nbsp;·&nbsp;2 min</footer>
+<a class=entry-link aria-label="post link to Chapter 2 - Mastering the MVC Architecture" href=https://geowarin.github.io/book/chapter-2-mastering-the-mvc-architecture.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 3 - Handling forms and complex URL mapping
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-03-27T00:00:00Z>2015, Mar 27</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-4-file-upload-error-handling.html>Chapter 4 - File Upload and Error Handling</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In this chapter, we will implement file upload and see how to handle errors in Spring MVC
-</p>
-</h3>
+<section class=entry-content>
+<p>The third chapter of Mastering Spring MVC 4 is about the cornerstone of web application: forms. Oh boy, what a chapter.
+In this epic piece of literature, we will create a complete profile form like this one:
+We will discuss forms, validation, conversion and formatting.
+See the birth date field up there? That’s a java.time.LocalDate. Do you wonder how to make it work with Spring MVC?
+Our application will be available in different languages and it will be easy to switch between them....</p>
+</section>
+<footer class=entry-footer><span title="2015-03-27 00:00:00 +0000 UTC">March 27, 2015</span>&nbsp;·&nbsp;1 min</footer>
+<a class=entry-link aria-label="post link to Chapter 3 - Handling forms and complex URL mapping" href=https://geowarin.github.io/book/chapter-3-handling-forms-and-complex-url-mapping.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 4 - File Upload and Error Handling
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-06-13T00:00:00Z>2015, Jun 13</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-5-crafting-a-restful-application.html>Chapter 5 - Crafting a RESTful application</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In this chapter, we will have a look a the principles of RESTful API and learn how to craft one using Spring MVC
-</p>
-</h3>
+<section class=entry-content>
+<p>In the fourth chapter of Mastering Spring MVC 4 We will allow the user to upload his profile picture.
+The file upload component implies handling errors at two levels: I/O exceptions at the controller level and multipart exception (a file too big, for instance) at the container level.
+If your curious about this part take a look at this stackoverflow question.
+This will give us the opportunity to discuss error handling in Spring MVC and Spring boot....</p>
+</section>
+<footer class=entry-footer><span title="2015-03-27 00:00:00 +0000 UTC">March 27, 2015</span>&nbsp;·&nbsp;1 min</footer>
+<a class=entry-link aria-label="post link to Chapter 4 - File Upload and Error Handling" href=https://geowarin.github.io/book/chapter-4-file-upload-error-handling.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 5 - Crafting a RESTful application
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-06-13T00:00:00Z>2015, Jun 13</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-6-securing-your-application.html>Chapter 6 - Securing your application</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In this chapter, we’ll learn how to secure our web application and also how to cope with the security challenges of modern, distributed web applications.
-</p>
-</h3>
+<section class=entry-content>
+<p>In this chapter of Mastering Spring MVC 4, we’ll tackle main principles of a RESTful architecture. We’ll learn how to convert data to JSON and handle different media types in the application.
+We will use the JSR-310 (Java DateTime) spec from the get-go and see how to handle them properly in your MVC application.
+Forever RESTful We will see how REST works in theory: HTTP codes and verbs, API versioning, HATEOAS, etc....</p>
+</section>
+<footer class=entry-footer><span title="2015-06-13 00:00:00 +0000 UTC">June 13, 2015</span>&nbsp;·&nbsp;1 min</footer>
+<a class=entry-link aria-label="post link to Chapter 5 - Crafting a RESTful application" href=https://geowarin.github.io/book/chapter-5-crafting-a-restful-application.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 6 - Securing your application
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-06-13T00:00:00Z>2015, Jun 13</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-7-unit-and-acceptance-tests.html>Chapter 7 - Leaving nothing to luck with unit and acceptance tests</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In this chapter we will learn how to test our application with spring test and fluentlenium as well as with geb and spock.
-</p>
-</h3>
+<section class=entry-content>
+<p>In this chapter of Mastering Spring MVC 4, we’ll learn how to secure our web application and also how to cope with the security challenges of modern, distributed web applications.
+This is a parts chapter:
+First, we will set up basic HTTP authentication in a minute Then, we will design a form-based authentication for the web pages, keeping the basic authentication for the REST API We will allow the users to signup via the Twitter OAuth API Then, we will leverage Spring Session to make sure our application can scale using a distributed session mechanism Last, we will configure Tomcat to use secured connection through SSL Safe and sound At the end of this chapter you will be a security expert....</p>
+</section>
+<footer class=entry-footer><span title="2015-06-13 00:00:00 +0000 UTC">June 13, 2015</span>&nbsp;·&nbsp;2 min</footer>
+<a class=entry-link aria-label="post link to Chapter 6 - Securing your application" href=https://geowarin.github.io/book/chapter-6-securing-your-application.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 7 - Leaving nothing to luck with unit and acceptance tests
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-06-13T00:00:00Z>2015, Jun 13</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-8-optimizing-your-requests.html>Chapter 8 - Optimizing your requests</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In this chapter we will be looking at different techniques to improve our application's performances using cache, gzipping, etags, async and websockets
-</p>
-</h3>
+<section class=entry-content>
+<p>In this chapter, we will make sure our application never regresses thanks to a handful of unit tests.
+To test or not to test? Chapter 5 is by far my favorite chapter of Mastering Spring MVC 4!
+In this uplifting piece of literature, you will learn more about testing best practices: TDD, the pyramid of tests, unit tests and end-to-end tests.
+We will see the difference behind mocking and stubbing and use mockito and the power of Spring’s IOC to study both options....</p>
+</section>
+<footer class=entry-footer><span title="2015-06-13 00:00:00 +0000 UTC">June 13, 2015</span>&nbsp;·&nbsp;2 min</footer>
+<a class=entry-link aria-label="post link to Chapter 7 - Leaving nothing to luck with unit and acceptance tests" href=https://geowarin.github.io/book/chapter-7-unit-and-acceptance-tests.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 8 - Optimizing your requests
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-06-13T00:00:00Z>2015, Jun 13</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/chapter-9-deploying-to-the-cloud.html>Chapter 9 - Deploying to the cloud</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-In this chapter, we’ll take a tour of the different cloud providers, understand the challenges and benefits of a distributed architecture and we’ll deploy our web application on Heroku.
-</p>
-</h3>
+<section class=entry-content>
+<p>In this chapter of Mastering Spring MVC 4, we will implement classic ways of optimizing a web application: cache control headers and Gzipping.
+We will also use Spring’s cache abstraction and ETags.
+More threads, please You will learn how to create asynchronous services with Spring Async.
+Spring Async is a nice part of Spring, if you want to dig deeper see [this article]({% post_url 2015-06-12-completable-futures-with-spring-async %}) where we use Java 8 CompletableFutures to create a multithreaded application....</p>
+</section>
+<footer class=entry-footer><span title="2015-06-13 00:00:00 +0000 UTC">June 13, 2015</span>&nbsp;·&nbsp;1 min</footer>
+<a class=entry-link aria-label="post link to Chapter 8 - Optimizing your requests" href=https://geowarin.github.io/book/chapter-8-optimizing-your-requests.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Chapter 9 - Deploying to the cloud
+</h2>
 </header>
-</li>
-<li class=item>
-<div class=meta>
-<span>
-<span class=screen-reader-text>Posted on </span>
-<time datetime=2015-02-02T00:00:00Z>2015, Feb 02</time>
-</span>
-</div>
-<header class=item-header>
-<h3 class=item-title>
-<a href=/book/writing-a-book-on-spring-mvc-4.html>Writing a book on Spring MVC 4</a>
-<p class=desc style=margin-top:.5em;font-size:.9em>
-I'm writing a book on Spring MVC 4 called 'Mastering Spring MVC 4' for Packt Publishing
-</p>
-</h3>
+<section class=entry-content>
+<p>In this chapter of Mastering Spring MVC 4, you will deploy your application on the cloud and invite the whole world to see!
+We will see how to deploy our application on two popular PaaS: Cloud Foundry and Heroku.
+A big thank you to Wayne Lund at Pivotal who wrote the Pivotal Web Services part!
+Know your options We will have a look at the different PaaS providers, then I will guide you through the steps of deploying your application on Cloud Foundry and Heroku....</p>
+</section>
+<footer class=entry-footer><span title="2015-06-13 00:00:00 +0000 UTC">June 13, 2015</span>&nbsp;·&nbsp;1 min</footer>
+<a class=entry-link aria-label="post link to Chapter 9 - Deploying to the cloud" href=https://geowarin.github.io/book/chapter-9-deploying-to-the-cloud.html></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Writing a book on Spring MVC 4
+</h2>
 </header>
-</li>
-</ul>
-</div>
+<section class=entry-content>
+<p>Good news everyone!
+After reviewing the awesome Learning Spring Boot by Greg Lee Turnquist, Packt Publishing asked me to write a book of my own on Spring MVC 4.
+Of course I said! I just signed the contract and I’m getting ready for five months of intense writing with a publishing date somewhere around the last quarter of 2015.
+I’m glad to seize this opportunity to answer the questions you guys have been asking me after the publication of [my article on spring MVC]({% post_url 2013-01-23-complete-example-of-a-spring-mvc-3-2-project %}) last year....</p>
+</section>
+<footer class=entry-footer><span title="2015-02-02 00:00:00 +0000 UTC">February 2, 2015</span>&nbsp;·&nbsp;1 min</footer>
+<a class=entry-link aria-label="post link to Writing a book on Spring MVC 4" href=https://geowarin.github.io/book/writing-a-book-on-spring-mvc-4.html></a>
+</article>
 </main>
-<footer id=footer class=footer>
-<div class="container sep-before"><div class=copyright>
-<p> &copy; 2017-2021 geowarin </p>
-</div>
-</div>
+<footer class=footer>
+<span>&copy; 2021 <a href=https://geowarin.github.io>Geowarin</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
 </footer>
-</div>
-</div><script>window.__assets_js_src="/assets/js/"</script>
-<script src=/assets/js/main.c3bcf2df.js></script>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
 </body>
 </html>
