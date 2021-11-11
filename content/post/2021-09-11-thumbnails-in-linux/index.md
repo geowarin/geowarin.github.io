@@ -8,7 +8,7 @@ summary:
  Linux has a nice system to display thumbnails. 
  Let's try it to display GLTF files in thunar.
 cover:
-   image: cover.png
+   image: images/cover.png
    relative: true
 ---
  
