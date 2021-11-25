@@ -19,7 +19,7 @@ In my distro, there were no mimetypes declared for gltf/glb files.
 
 So I added the following mapping in `~/.local/share/mime/packages/gltf.xml`
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
   <mime-type type="model/gltf+json">
@@ -45,7 +45,7 @@ I found a nice program, written in rust, to preview gltf files:
 Let's add a desktop entry for this in
 `/home/geo/.local/share/applications/gltf_viewer.desktop`.
 
-```
+```ini
 [Desktop Entry]
 Name=GLTF Viewer
 GenericName=3D Model viewer
@@ -72,7 +72,7 @@ as input.
 
 Let's write a little script to use that. I'll put this in my path in `~/bin/gltf-thumbnailer`.
 
-```
+```bash
 #!/bin/bash
 input=$1
 output=$2
@@ -83,7 +83,7 @@ size=$3
 
 Now the final piece of the puzzle: creating a thumbnail entry in `/usr/share/thumbnailers/gltf.thumbnailer`.
 
-```
+```ini
 [Thumbnailer Entry]
 TryExec=/home/geo/bin/gltf-thumbnailer
 Exec=/home/geo/bin/gltf-thumbnailer %i %o %s

@@ -13,6 +13,13 @@ permalinks:
   page: "/:slug/"
   post: "/:title/"
 
+markup:
+  highlight:
+    style: base16-snazzy
+#    style: doom-one2
+#    noClasses: false
+#    codeFences: false
+
 params:
 #  env: production # to enable google analytics, opengraph, twitter-cards and schema.
 #  title: ExampleSite
@@ -30,6 +37,9 @@ params:
   disableSpecial1stPost: true
 #  disableScrollToTop: false
   comments: true
+
+  assets:
+    disableHLJS: true
 
   homeInfoParams:
     Title: "Geoffroy Warin 🤗"
