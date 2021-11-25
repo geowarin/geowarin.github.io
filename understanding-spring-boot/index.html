@@ -8,8 +8,7 @@
 <meta name=description content="Wonder how spring boot&rsquo;s magic operates behind the scenes? You&rsquo;ve come to the right place!">
 <meta name=author content>
 <link rel=canonical href=https://geowarin.com/understanding-spring-boot/>
-<link crossorigin=anonymous href=/assets/css/stylesheet.min.6f60056d44d3f7eb69a4bc6c332b59960f3a995802bded244750232f33713c49.css integrity="sha256-b2AFbUTT9+tppLxsMytZlg86mVgCve0kR1AjLzNxPEk=" rel="preload stylesheet" as=style>
-<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
 <link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png>
 <link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png>
@@ -82,19 +81,19 @@ on what Spring Boot finds in the classpath.</p>
 <p>A lot of Spring users already know <code>@EnableTransactionManagement</code>, which will enable declarative transaction management,
 <code>@EnableWebMvc</code>, which enables Spring MVC, or <code>@EnableScheduling</code>, which will initialize a scheduler.</p>
 <p>These annotations are in fact a simple configuration import with the <code>@Import</code> annotation.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Target</span><span style=color:#f92672>(</span>ElementType<span style=color:#f92672>.</span><span style=color:#a6e22e>TYPE</span><span style=color:#f92672>)</span>
-<span style=color:#a6e22e>@Retention</span><span style=color:#f92672>(</span>RetentionPolicy<span style=color:#f92672>.</span><span style=color:#a6e22e>RUNTIME</span><span style=color:#f92672>)</span>
-<span style=color:#a6e22e>@Documented</span>
-<span style=color:#a6e22e>@Import</span><span style=color:#f92672>({</span> EnableAutoConfigurationImportSelector<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>,</span>
-        AutoConfigurationPackages<span style=color:#f92672>.</span><span style=color:#a6e22e>Registrar</span><span style=color:#f92672>.</span><span style=color:#a6e22e>class</span> <span style=color:#f92672>})</span>
-<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>@interface</span> EnableAutoConfiguration <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@Target</span><span style=color:#ff6ac1>(</span>ElementType<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>TYPE</span><span style=color:#ff6ac1>)</span>
+<span style=color:#ff9f43>@Retention</span><span style=color:#ff6ac1>(</span>RetentionPolicy<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>RUNTIME</span><span style=color:#ff6ac1>)</span>
+<span style=color:#ff9f43>@Documented</span>
+<span style=color:#ff9f43>@Import</span><span style=color:#ff6ac1>({</span> EnableAutoConfigurationImportSelector<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>,</span>
+        AutoConfigurationPackages<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>Registrar</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span> <span style=color:#ff6ac1>})</span>
+<span style=color:#ff5c57>public</span> <span style=color:#ff9f43>@interface</span> EnableAutoConfiguration <span style=color:#ff6ac1>{</span>
 
-    <span style=color:#75715e>/**
-</span><span style=color:#75715e>     * Exclude specific auto-configuration classes such that they will never be applied.
-</span><span style=color:#75715e>     */</span>
-    Class<span style=color:#f92672>&lt;?&gt;[]</span> exclude<span style=color:#f92672>()</span> <span style=color:#66d9ef>default</span> <span style=color:#f92672>{};</span>
+    <span style=color:#78787e>/**
+</span><span style=color:#78787e>     * Exclude specific auto-configuration classes such that they will never be applied.
+</span><span style=color:#78787e>     */</span>
+    Class<span style=color:#ff6ac1>&lt;?&gt;[]</span> exclude<span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>default</span> <span style=color:#ff6ac1>{};</span>
 
-<span style=color:#f92672>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>The <code>EnableAutoConfigurationImportSelector</code> uses <code>SpringFactoriesLoader#loadFactoryNames</code> of Spring core.
 SpringFactoriesLoader will look for jars containing a file with the path <code>META-INF/spring.factories</code>.</p>
 <p>When it finds such a file, the <code>SpringFactoriesLoader</code> will look for the property named after our configuration file.
@@ -135,31 +134,31 @@ org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration,\
 org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration
 </code></pre><p>In this file, we can see a list of the Spring Boot auto-configurations.
 Let&rsquo;s take a closer look at one of those configurations, <code>MongoAutoConfiguration</code> for instance:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Configuration</span>
-<span style=color:#a6e22e>@ConditionalOnClass</span><span style=color:#f92672>(</span>Mongo<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span>
-<span style=color:#a6e22e>@EnableConfigurationProperties</span><span style=color:#f92672>(</span>MongoProperties<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span>
-<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MongoAutoConfiguration</span> <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@Configuration</span>
+<span style=color:#ff9f43>@ConditionalOnClass</span><span style=color:#ff6ac1>(</span>Mongo<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>)</span>
+<span style=color:#ff9f43>@EnableConfigurationProperties</span><span style=color:#ff6ac1>(</span>MongoProperties<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>)</span>
+<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>MongoAutoConfiguration</span> <span style=color:#ff6ac1>{</span>
 
-    <span style=color:#a6e22e>@Autowired</span>
-    <span style=color:#66d9ef>private</span> MongoProperties properties<span style=color:#f92672>;</span>
+    <span style=color:#ff9f43>@Autowired</span>
+    <span style=color:#ff5c57>private</span> MongoProperties properties<span style=color:#ff6ac1>;</span>
 
-    <span style=color:#66d9ef>private</span> Mongo mongo<span style=color:#f92672>;</span>
+    <span style=color:#ff5c57>private</span> Mongo mongo<span style=color:#ff6ac1>;</span>
 
-    <span style=color:#a6e22e>@PreDestroy</span>
-    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>close</span><span style=color:#f92672>()</span> <span style=color:#66d9ef>throws</span> UnknownHostException <span style=color:#f92672>{</span>
-        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>mongo</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-            <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>mongo</span><span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span>
-        <span style=color:#f92672>}</span>
-    <span style=color:#f92672>}</span>
+    <span style=color:#ff9f43>@PreDestroy</span>
+    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>close</span><span style=color:#ff6ac1>()</span> <span style=color:#ff5c57>throws</span> UnknownHostException <span style=color:#ff6ac1>{</span>
+        <span style=color:#ff6ac1>if</span> <span style=color:#ff6ac1>(</span><span style=color:#ff6ac1>this</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>mongo</span> <span style=color:#ff6ac1>!=</span> <span style=color:#ff6ac1>null</span><span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+            <span style=color:#ff6ac1>this</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>mongo</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>close</span><span style=color:#ff6ac1>();</span>
+        <span style=color:#ff6ac1>}</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#a6e22e>@Bean</span>
-    <span style=color:#a6e22e>@ConditionalOnMissingBean</span>
-    <span style=color:#66d9ef>public</span> Mongo <span style=color:#a6e22e>mongo</span><span style=color:#f92672>()</span> <span style=color:#66d9ef>throws</span> UnknownHostException <span style=color:#f92672>{</span>
-        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>mongo</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>properties</span><span style=color:#f92672>.</span><span style=color:#a6e22e>createMongoClient</span><span style=color:#f92672>();</span>
-        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>mongo</span><span style=color:#f92672>;</span>
-    <span style=color:#f92672>}</span>
+    <span style=color:#ff9f43>@Bean</span>
+    <span style=color:#ff9f43>@ConditionalOnMissingBean</span>
+    <span style=color:#ff5c57>public</span> Mongo <span style=color:#57c7ff>mongo</span><span style=color:#ff6ac1>()</span> <span style=color:#ff5c57>throws</span> UnknownHostException <span style=color:#ff6ac1>{</span>
+        <span style=color:#ff6ac1>this</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>mongo</span> <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>this</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>properties</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createMongoClient</span><span style=color:#ff6ac1>();</span>
+        <span style=color:#ff6ac1>return</span> <span style=color:#ff6ac1>this</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>mongo</span><span style=color:#ff6ac1>;</span>
+    <span style=color:#ff6ac1>}</span>
 
-<span style=color:#f92672>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>This simple Spring configuration class declares typical beans needed to use mongoDb.</p>
 <p>This classes, like a lot of others in Spring Boot relies heavily on Spring annotations:</p>
 <ul>
@@ -171,16 +170,16 @@ Let&rsquo;s take a closer look at one of those configurations, <code>MongoAutoCo
 <p>You can also refine the order in which those configuration classes load with <code>@AutoConfigureBefore</code> et <code>@AutoConfigureAfter</code>.</p>
 <h2 id=properties-mapping>Properties Mapping<a hidden class=anchor aria-hidden=true href=#properties-mapping>#</a></h2>
 <p>Let&rsquo;s look at <code>MongoProperties</code>, which is a classic example of Spring Boot properties mapping:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@ConfigurationProperties</span><span style=color:#f92672>(</span>prefix <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;spring.data.mongodb&#34;</span><span style=color:#f92672>)</span>
-<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MongoProperties</span> <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@ConfigurationProperties</span><span style=color:#ff6ac1>(</span>prefix <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;spring.data.mongodb&#34;</span><span style=color:#ff6ac1>)</span>
+<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>MongoProperties</span> <span style=color:#ff6ac1>{</span>
 
-    <span style=color:#66d9ef>private</span> String host<span style=color:#f92672>;</span>
-    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>int</span> port <span style=color:#f92672>=</span> DBPort<span style=color:#f92672>.</span><span style=color:#a6e22e>PORT</span><span style=color:#f92672>;</span>
-    <span style=color:#66d9ef>private</span> String uri <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;mongodb://localhost/test&#34;</span><span style=color:#f92672>;</span>
-    <span style=color:#66d9ef>private</span> String database<span style=color:#f92672>;</span>
+    <span style=color:#ff5c57>private</span> String host<span style=color:#ff6ac1>;</span>
+    <span style=color:#ff5c57>private</span> <span style=color:#9aedfe>int</span> port <span style=color:#ff6ac1>=</span> DBPort<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>PORT</span><span style=color:#ff6ac1>;</span>
+    <span style=color:#ff5c57>private</span> String uri <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;mongodb://localhost/test&#34;</span><span style=color:#ff6ac1>;</span>
+    <span style=color:#ff5c57>private</span> String database<span style=color:#ff6ac1>;</span>
 
-    <span style=color:#75715e>// ... getters/ setters omitted
-</span><span style=color:#75715e></span><span style=color:#f92672>}</span>
+    <span style=color:#78787e>// ... getters/ setters omitted
+</span><span style=color:#78787e></span><span style=color:#ff6ac1>}</span>
 </code></pre></div><p>The <code>@ConfigurationProperties</code> will associate every properties with a particular prefix to the POJO.
 For instance, the property <code>spring.data.mongodb.port</code> will be mapped to the port attribute of this class.</p>
 <p>If you&rsquo;re a Spring Boot user, I strongly encourage you to use those capabilities to remove the boiler plate code
@@ -201,34 +200,34 @@ we can do with those annotations:</p>
 <li><code>@ConditionalOnWebApplication</code></li>
 </ul>
 <p>Let&rsquo;s take a closer look at <code>@ConditionalOnExpression</code>, which allows you to write a condition in the <a href=http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html>Spring Expression language</a>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Conditional</span><span style=color:#f92672>(</span>OnExpressionCondition<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span>
-<span style=color:#a6e22e>@Retention</span><span style=color:#f92672>(</span>RetentionPolicy<span style=color:#f92672>.</span><span style=color:#a6e22e>RUNTIME</span><span style=color:#f92672>)</span>
-<span style=color:#a6e22e>@Target</span><span style=color:#f92672>({</span> ElementType<span style=color:#f92672>.</span><span style=color:#a6e22e>TYPE</span><span style=color:#f92672>,</span> ElementType<span style=color:#f92672>.</span><span style=color:#a6e22e>METHOD</span> <span style=color:#f92672>})</span>
-<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>@interface</span> ConditionalOnExpression <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@Conditional</span><span style=color:#ff6ac1>(</span>OnExpressionCondition<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>)</span>
+<span style=color:#ff9f43>@Retention</span><span style=color:#ff6ac1>(</span>RetentionPolicy<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>RUNTIME</span><span style=color:#ff6ac1>)</span>
+<span style=color:#ff9f43>@Target</span><span style=color:#ff6ac1>({</span> ElementType<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>TYPE</span><span style=color:#ff6ac1>,</span> ElementType<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>METHOD</span> <span style=color:#ff6ac1>})</span>
+<span style=color:#ff5c57>public</span> <span style=color:#ff9f43>@interface</span> ConditionalOnExpression <span style=color:#ff6ac1>{</span>
 
-    <span style=color:#75715e>/**
-</span><span style=color:#75715e>     * The SpEL expression to evaluate. Expression should return {@code true} if the
-</span><span style=color:#75715e>     * condition passes or {@code false} if it fails.
-</span><span style=color:#75715e>     */</span>
-    String <span style=color:#a6e22e>value</span><span style=color:#f92672>()</span> <span style=color:#66d9ef>default</span> <span style=color:#e6db74>&#34;true&#34;</span><span style=color:#f92672>;</span>
+    <span style=color:#78787e>/**
+</span><span style=color:#78787e>     * The SpEL expression to evaluate. Expression should return {@code true} if the
+</span><span style=color:#78787e>     * condition passes or {@code false} if it fails.
+</span><span style=color:#78787e>     */</span>
+    String <span style=color:#57c7ff>value</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>default</span> <span style=color:#5af78e>&#34;true&#34;</span><span style=color:#ff6ac1>;</span>
 
-<span style=color:#f92672>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>In this class, we indeed make use of the <code>@Conditional</code> annotation. The condition is defined in the <code>OnExpressionCondition</code> class:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>OnExpressionCondition</span> <span style=color:#66d9ef>extends</span> SpringBootCondition <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>OnExpressionCondition</span> <span style=color:#ff5c57>extends</span> SpringBootCondition <span style=color:#ff6ac1>{</span>
 
-    <span style=color:#a6e22e>@Override</span>
-    <span style=color:#66d9ef>public</span> ConditionOutcome <span style=color:#a6e22e>getMatchOutcome</span><span style=color:#f92672>(</span>ConditionContext context<span style=color:#f92672>,</span> AnnotatedTypeMetadata metadata<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-        <span style=color:#75715e>// ...
-</span><span style=color:#75715e></span>        <span style=color:#75715e>// we first get a handle on the EL context via the ConditionContext
-</span><span style=color:#75715e></span>
-        <span style=color:#66d9ef>boolean</span> result <span style=color:#f92672>=</span> <span style=color:#f92672>(</span>Boolean<span style=color:#f92672>)</span> resolver<span style=color:#f92672>.</span><span style=color:#a6e22e>evaluate</span><span style=color:#f92672>(</span>expression<span style=color:#f92672>,</span> expressionContext<span style=color:#f92672>);</span>
+    <span style=color:#ff9f43>@Override</span>
+    <span style=color:#ff5c57>public</span> ConditionOutcome <span style=color:#57c7ff>getMatchOutcome</span><span style=color:#ff6ac1>(</span>ConditionContext context<span style=color:#ff6ac1>,</span> AnnotatedTypeMetadata metadata<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+        <span style=color:#78787e>// ...
+</span><span style=color:#78787e></span>        <span style=color:#78787e>// we first get a handle on the EL context via the ConditionContext
+</span><span style=color:#78787e></span>
+        <span style=color:#9aedfe>boolean</span> result <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>(</span>Boolean<span style=color:#ff6ac1>)</span> resolver<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>evaluate</span><span style=color:#ff6ac1>(</span>expression<span style=color:#ff6ac1>,</span> expressionContext<span style=color:#ff6ac1>);</span>
 
-        <span style=color:#75715e>// ...
-</span><span style=color:#75715e></span>        <span style=color:#75715e>// here we create a message the user will see when debugging
-</span><span style=color:#75715e></span>
-        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>new</span> ConditionOutcome<span style=color:#f92672>(</span>result<span style=color:#f92672>,</span> message<span style=color:#f92672>.</span><span style=color:#a6e22e>toString</span><span style=color:#f92672>());</span>
-    <span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+        <span style=color:#78787e>// ...
+</span><span style=color:#78787e></span>        <span style=color:#78787e>// here we create a message the user will see when debugging
+</span><span style=color:#78787e></span>
+        <span style=color:#ff6ac1>return</span> <span style=color:#ff6ac1>new</span> ConditionOutcome<span style=color:#ff6ac1>(</span>result<span style=color:#ff6ac1>,</span> message<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>toString</span><span style=color:#ff6ac1>());</span>
+    <span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>In the end, the <code>@Conditional</code> are resolved to simple booleans, via the <code>ConditionOutcome.isMatch</code> method.</p>
 <h2 id=the-applicationcontextinitializers>The <code>ApplicationContextInitializer</code>s<a hidden class=anchor aria-hidden=true href=#the-applicationcontextinitializers>#</a></h2>
 <p>The second possibility that the <code>spring.factories</code> file offers, is to define application initializers.

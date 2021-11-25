@@ -8,8 +8,7 @@
 <meta name=description content="Demonstration of how to set up hibernate in a java SE application and test with dbUnit">
 <meta name=author content>
 <link rel=canonical href=https://geowarin.com/using-hibernate-as-a-jpa-provider-in-a-java-se-environment-and-run-tests-with-dbunit/>
-<link crossorigin=anonymous href=/assets/css/stylesheet.min.6f60056d44d3f7eb69a4bc6c332b59960f3a995802bded244750232f33713c49.css integrity="sha256-b2AFbUTT9+tppLxsMytZlg86mVgCve0kR1AjLzNxPEk=" rel="preload stylesheet" as=style>
-<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
 <link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png>
 <link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png>
@@ -87,130 +86,130 @@ Using Hibernate as a JPA provider in a Java SE environment and run tests with db
 </ul>
 <p>More information is available in the <a href=http://docs.jboss.org/hibernate/core/4.1/manual/en-US/html/ch03.html#configuration-optional-properties>hibernate documentation</a>.</p>
 <p>Then, we will create a simple entity :</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Table</span><span style=color:#f92672>(</span>name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;users&#34;</span><span style=color:#f92672>)</span>
-<span style=color:#a6e22e>@Entity</span>
-<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>User</span> <span style=color:#66d9ef>implements</span> Serializable <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@Table</span><span style=color:#ff6ac1>(</span>name <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;users&#34;</span><span style=color:#ff6ac1>)</span>
+<span style=color:#ff9f43>@Entity</span>
+<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>User</span> <span style=color:#ff5c57>implements</span> Serializable <span style=color:#ff6ac1>{</span>
 
-	<span style=color:#a6e22e>@Id</span>
-	<span style=color:#a6e22e>@GeneratedValue</span><span style=color:#f92672>(</span>strategy<span style=color:#f92672>=</span>GenerationType<span style=color:#f92672>.</span><span style=color:#a6e22e>AUTO</span><span style=color:#f92672>)</span>
-	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>long</span> id<span style=color:#f92672>;</span>
+	<span style=color:#ff9f43>@Id</span>
+	<span style=color:#ff9f43>@GeneratedValue</span><span style=color:#ff6ac1>(</span>strategy<span style=color:#ff6ac1>=</span>GenerationType<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>AUTO</span><span style=color:#ff6ac1>)</span>
+	<span style=color:#ff5c57>private</span> <span style=color:#9aedfe>long</span> id<span style=color:#ff6ac1>;</span>
 
-	<span style=color:#a6e22e>@Column</span><span style=color:#f92672>(</span>name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;name&#34;</span><span style=color:#f92672>,</span> nullable <span style=color:#f92672>=</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>,</span> unique<span style=color:#f92672>=</span><span style=color:#66d9ef>true</span><span style=color:#f92672>,</span> length<span style=color:#f92672>=</span>50<span style=color:#f92672>)</span>
-	<span style=color:#66d9ef>private</span> String name<span style=color:#f92672>;</span>
+	<span style=color:#ff9f43>@Column</span><span style=color:#ff6ac1>(</span>name <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#34;name&#34;</span><span style=color:#ff6ac1>,</span> nullable <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>false</span><span style=color:#ff6ac1>,</span> unique<span style=color:#ff6ac1>=</span><span style=color:#ff6ac1>true</span><span style=color:#ff6ac1>,</span> length<span style=color:#ff6ac1>=</span>50<span style=color:#ff6ac1>)</span>
+	<span style=color:#ff5c57>private</span> String name<span style=color:#ff6ac1>;</span>
 
-	<span style=color:#75715e>// Getters and setters omitted
-</span><span style=color:#75715e></span>
-<span style=color:#f92672>}</span>
+	<span style=color:#78787e>// Getters and setters omitted
+</span><span style=color:#78787e></span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>Notice the <a href=http://docs.oracle.com/javaee/5/api/javax/persistence/Table.html>@Table</a> annotation that we use to specify the name of the table we are going to store our users in. This is useful information for our SQL scripts for example. For table naming, you should consider having simple conventions. Here, I just use lower case name of the entity and add an s to my table.</p>
 <p>Same thing can be said about the <a href=http://docs.oracle.com/javaee/5/api/javax/persistence/Column.html>@Column</a> annotation.</p>
 <p>Now let&rsquo;s review our init script, import-users.sql :</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>INSERT</span> <span style=color:#66d9ef>INTO</span> users(id, name) <span style=color:#66d9ef>VALUES</span>(<span style=color:#ae81ff>1</span>, <span style=color:#e6db74>&#39;admin&#39;</span>);
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#ff6ac1>INSERT</span> <span style=color:#ff6ac1>INTO</span> users(id, name) <span style=color:#ff6ac1>VALUES</span>(<span style=color:#ff9f43>1</span>, <span style=color:#5af78e>&#39;admin&#39;</span>);
 </code></pre></div><p>Pretty straight forward. You just have to figure out the correct syntax from your annotations.</p>
 <p>Last is the instantiation and use of the <a href=http://docs.oracle.com/javaee/6/api/javax/persistence/EntityManager.html>entity manager</a> :</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>App</span> <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>App</span> <span style=color:#ff6ac1>{</span>
 
-	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> Logger log <span style=color:#f92672>=</span> LoggerFactory<span style=color:#f92672>.</span><span style=color:#a6e22e>getLogger</span><span style=color:#f92672>(</span>App<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+	<span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> Logger log <span style=color:#ff6ac1>=</span> LoggerFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getLogger</span><span style=color:#ff6ac1>(</span>App<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>);</span>
 
-	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+	<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>static</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>main</span><span style=color:#ff6ac1>(</span>String<span style=color:#ff6ac1>[]</span> args<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
 
-		EntityManagerFactory entityManagerFactory <span style=color:#f92672>=</span> Persistence<span style=color:#f92672>.</span><span style=color:#a6e22e>createEntityManagerFactory</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;persistence&#34;</span><span style=color:#f92672>);</span>
-		EntityManager entityManager <span style=color:#f92672>=</span> entityManagerFactory<span style=color:#f92672>.</span><span style=color:#a6e22e>createEntityManager</span><span style=color:#f92672>();</span>
+		EntityManagerFactory entityManagerFactory <span style=color:#ff6ac1>=</span> Persistence<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createEntityManagerFactory</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;persistence&#34;</span><span style=color:#ff6ac1>);</span>
+		EntityManager entityManager <span style=color:#ff6ac1>=</span> entityManagerFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createEntityManager</span><span style=color:#ff6ac1>();</span>
 
-		User found <span style=color:#f92672>=</span> entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>find</span><span style=color:#f92672>(</span>User<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>,</span> 1L<span style=color:#f92672>);</span>
-		log<span style=color:#f92672>.</span><span style=color:#a6e22e>info</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;found=&#34;</span> <span style=color:#f92672>+</span> found<span style=color:#f92672>);</span>
-	<span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+		User found <span style=color:#ff6ac1>=</span> entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>find</span><span style=color:#ff6ac1>(</span>User<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>,</span> 1L<span style=color:#ff6ac1>);</span>
+		log<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>info</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;found=&#34;</span> <span style=color:#ff6ac1>+</span> found<span style=color:#ff6ac1>);</span>
+	<span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>Here you go! Since JPA 2 you can create the entity manager factory using the <a href=http://docs.oracle.com/javaee/6/api/javax/persistence/Persistence.html>Persistence</a> class. The string passed as parameter is the name of your persistence unit declared in your persistence.xml file. Spring and others will bootstrap the entity manager factory a little bit differently but the concept is essentially the same.</p>
 <h2 id=using-dbunit>Using dbUnit<a hidden class=anchor aria-hidden=true href=#using-dbunit>#</a></h2>
 <p>DbUnit is a database testing framework which allows you to load data and verify the correctness of your DAO layer using datasets.</p>
 <p>Datasets are simple xml files which represent a database state. Here is an sample dataset :</p>
 <p></p>
 <p>We can use dbUnit in our simple project, we just have to deal with a little bit of boilerplate code. Here is the abstract class that my test will extend.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#75715e>/**
-</span><span style=color:#75715e> * Abstract unit test case class.
-</span><span style=color:#75715e> * This will load the test-data.xml dataset before each test case and will clean the database before each test
-</span><span style=color:#75715e> *
-</span><span style=color:#75715e> * @author Geoffroy Warin (https://github.com/geowarin)
-</span><span style=color:#75715e> *
-</span><span style=color:#75715e> */</span>
-<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AbstractDbUnitJpaTest</span> <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#78787e>/**
+</span><span style=color:#78787e> * Abstract unit test case class.
+</span><span style=color:#78787e> * This will load the test-data.xml dataset before each test case and will clean the database before each test
+</span><span style=color:#78787e> *
+</span><span style=color:#78787e> * @author Geoffroy Warin (https://github.com/geowarin)
+</span><span style=color:#78787e> *
+</span><span style=color:#78787e> */</span>
+<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>abstract</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>AbstractDbUnitJpaTest</span> <span style=color:#ff6ac1>{</span>
 
-	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> EntityManagerFactory entityManagerFactory<span style=color:#f92672>;</span>
-	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> IDatabaseConnection connection<span style=color:#f92672>;</span>
-	<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> IDataSet dataset<span style=color:#f92672>;</span>
-	<span style=color:#66d9ef>protected</span> <span style=color:#66d9ef>static</span> EntityManager entityManager<span style=color:#f92672>;</span>
+	<span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> EntityManagerFactory entityManagerFactory<span style=color:#ff6ac1>;</span>
+	<span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> IDatabaseConnection connection<span style=color:#ff6ac1>;</span>
+	<span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> IDataSet dataset<span style=color:#ff6ac1>;</span>
+	<span style=color:#ff5c57>protected</span> <span style=color:#ff5c57>static</span> EntityManager entityManager<span style=color:#ff6ac1>;</span>
 
-	<span style=color:#75715e>/**
-</span><span style=color:#75715e>	 * Will load test-dataset.xml before each test case
-</span><span style=color:#75715e>	 * @throws DatabaseUnitException
-</span><span style=color:#75715e>	 * @throws HibernateException
-</span><span style=color:#75715e>	 */</span>
-	<span style=color:#a6e22e>@BeforeClass</span>
-	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>initEntityManager</span><span style=color:#f92672>()</span> <span style=color:#66d9ef>throws</span> HibernateException<span style=color:#f92672>,</span> DatabaseUnitException <span style=color:#f92672>{</span>
-		entityManagerFactory <span style=color:#f92672>=</span> Persistence<span style=color:#f92672>.</span><span style=color:#a6e22e>createEntityManagerFactory</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;persistence-test&#34;</span><span style=color:#f92672>);</span>
-		entityManager <span style=color:#f92672>=</span> entityManagerFactory<span style=color:#f92672>.</span><span style=color:#a6e22e>createEntityManager</span><span style=color:#f92672>();</span>
-		connection <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> DatabaseConnection<span style=color:#f92672>(((</span>SessionImpl<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>getDelegate</span><span style=color:#f92672>())).</span><span style=color:#a6e22e>connection</span><span style=color:#f92672>());</span>
-		connection<span style=color:#f92672>.</span><span style=color:#a6e22e>getConfig</span><span style=color:#f92672>().</span><span style=color:#a6e22e>setProperty</span><span style=color:#f92672>(</span>DatabaseConfig<span style=color:#f92672>.</span><span style=color:#a6e22e>PROPERTY_DATATYPE_FACTORY</span><span style=color:#f92672>,</span> <span style=color:#66d9ef>new</span> HsqldbDataTypeFactory<span style=color:#f92672>());</span>
+	<span style=color:#78787e>/**
+</span><span style=color:#78787e>	 * Will load test-dataset.xml before each test case
+</span><span style=color:#78787e>	 * @throws DatabaseUnitException
+</span><span style=color:#78787e>	 * @throws HibernateException
+</span><span style=color:#78787e>	 */</span>
+	<span style=color:#ff9f43>@BeforeClass</span>
+	<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>static</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>initEntityManager</span><span style=color:#ff6ac1>()</span> <span style=color:#ff5c57>throws</span> HibernateException<span style=color:#ff6ac1>,</span> DatabaseUnitException <span style=color:#ff6ac1>{</span>
+		entityManagerFactory <span style=color:#ff6ac1>=</span> Persistence<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createEntityManagerFactory</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;persistence-test&#34;</span><span style=color:#ff6ac1>);</span>
+		entityManager <span style=color:#ff6ac1>=</span> entityManagerFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createEntityManager</span><span style=color:#ff6ac1>();</span>
+		connection <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> DatabaseConnection<span style=color:#ff6ac1>(((</span>SessionImpl<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>(</span>entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getDelegate</span><span style=color:#ff6ac1>())).</span><span style=color:#57c7ff>connection</span><span style=color:#ff6ac1>());</span>
+		connection<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getConfig</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>setProperty</span><span style=color:#ff6ac1>(</span>DatabaseConfig<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>PROPERTY_DATATYPE_FACTORY</span><span style=color:#ff6ac1>,</span> <span style=color:#ff6ac1>new</span> HsqldbDataTypeFactory<span style=color:#ff6ac1>());</span>
 
-		FlatXmlDataSetBuilder flatXmlDataSetBuilder <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> FlatXmlDataSetBuilder<span style=color:#f92672>();</span>
-		flatXmlDataSetBuilder<span style=color:#f92672>.</span><span style=color:#a6e22e>setColumnSensing</span><span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>);</span>
-		InputStream dataSet <span style=color:#f92672>=</span> Thread<span style=color:#f92672>.</span><span style=color:#a6e22e>currentThread</span><span style=color:#f92672>().</span><span style=color:#a6e22e>getContextClassLoader</span><span style=color:#f92672>().</span><span style=color:#a6e22e>getResourceAsStream</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;test-data.xml&#34;</span><span style=color:#f92672>);</span>
-		dataset <span style=color:#f92672>=</span> flatXmlDataSetBuilder<span style=color:#f92672>.</span><span style=color:#a6e22e>build</span><span style=color:#f92672>(</span>dataSet<span style=color:#f92672>);</span>
-	<span style=color:#f92672>}</span>
+		FlatXmlDataSetBuilder flatXmlDataSetBuilder <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> FlatXmlDataSetBuilder<span style=color:#ff6ac1>();</span>
+		flatXmlDataSetBuilder<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>setColumnSensing</span><span style=color:#ff6ac1>(</span><span style=color:#ff6ac1>true</span><span style=color:#ff6ac1>);</span>
+		InputStream dataSet <span style=color:#ff6ac1>=</span> Thread<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>currentThread</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>getContextClassLoader</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>getResourceAsStream</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;test-data.xml&#34;</span><span style=color:#ff6ac1>);</span>
+		dataset <span style=color:#ff6ac1>=</span> flatXmlDataSetBuilder<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>build</span><span style=color:#ff6ac1>(</span>dataSet<span style=color:#ff6ac1>);</span>
+	<span style=color:#ff6ac1>}</span>
 
-	<span style=color:#a6e22e>@AfterClass</span>
-	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>closeEntityManager</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-		entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span>
-		entityManagerFactory<span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span>
-	<span style=color:#f92672>}</span>
+	<span style=color:#ff9f43>@AfterClass</span>
+	<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>static</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>closeEntityManager</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
+		entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>close</span><span style=color:#ff6ac1>();</span>
+		entityManagerFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>close</span><span style=color:#ff6ac1>();</span>
+	<span style=color:#ff6ac1>}</span>
 
-	<span style=color:#75715e>/**
-</span><span style=color:#75715e>	 * Will clean the dataBase before each test
-</span><span style=color:#75715e>	 *
-</span><span style=color:#75715e>	 * @throws SQLException
-</span><span style=color:#75715e>	 * @throws DatabaseUnitException
-</span><span style=color:#75715e>	 */</span>
-	<span style=color:#a6e22e>@Before</span>
-	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>cleanDB</span><span style=color:#f92672>()</span> <span style=color:#66d9ef>throws</span> DatabaseUnitException<span style=color:#f92672>,</span> SQLException <span style=color:#f92672>{</span>
-		DatabaseOperation<span style=color:#f92672>.</span><span style=color:#a6e22e>CLEAN_INSERT</span><span style=color:#f92672>.</span><span style=color:#a6e22e>execute</span><span style=color:#f92672>(</span>connection<span style=color:#f92672>,</span> dataset<span style=color:#f92672>);</span>
-	<span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+	<span style=color:#78787e>/**
+</span><span style=color:#78787e>	 * Will clean the dataBase before each test
+</span><span style=color:#78787e>	 *
+</span><span style=color:#78787e>	 * @throws SQLException
+</span><span style=color:#78787e>	 * @throws DatabaseUnitException
+</span><span style=color:#78787e>	 */</span>
+	<span style=color:#ff9f43>@Before</span>
+	<span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>cleanDB</span><span style=color:#ff6ac1>()</span> <span style=color:#ff5c57>throws</span> DatabaseUnitException<span style=color:#ff6ac1>,</span> SQLException <span style=color:#ff6ac1>{</span>
+		DatabaseOperation<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>CLEAN_INSERT</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>execute</span><span style=color:#ff6ac1>(</span>connection<span style=color:#ff6ac1>,</span> dataset<span style=color:#ff6ac1>);</span>
+	<span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>And an example of usage :</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AppTest</span> <span style=color:#66d9ef>extends</span> AbstractDbUnitJpaTest <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>AppTest</span> <span style=color:#ff5c57>extends</span> AbstractDbUnitJpaTest <span style=color:#ff6ac1>{</span>
 
-	<span style=color:#a6e22e>@Test</span>
-	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testFind</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+	<span style=color:#ff9f43>@Test</span>
+	<span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>testFind</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
 
-		User user <span style=color:#f92672>=</span> entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>find</span><span style=color:#f92672>(</span>User<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>,</span> 1L<span style=color:#f92672>);</span>
-		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertNotNull</span><span style=color:#f92672>(</span>user<span style=color:#f92672>);</span>
-		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertEquals</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;userTest&#34;</span><span style=color:#f92672>,</span> user<span style=color:#f92672>.</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>());</span>
-	<span style=color:#f92672>}</span>
+		User user <span style=color:#ff6ac1>=</span> entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>find</span><span style=color:#ff6ac1>(</span>User<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>,</span> 1L<span style=color:#ff6ac1>);</span>
+		Assert<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>assertNotNull</span><span style=color:#ff6ac1>(</span>user<span style=color:#ff6ac1>);</span>
+		Assert<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>assertEquals</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;userTest&#34;</span><span style=color:#ff6ac1>,</span> user<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getName</span><span style=color:#ff6ac1>());</span>
+	<span style=color:#ff6ac1>}</span>
 
-	<span style=color:#a6e22e>@Test</span>
-	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testInsert</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+	<span style=color:#ff9f43>@Test</span>
+	<span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>testInsert</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
 
-		User newUser <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> User<span style=color:#f92672>();</span>
-		newUser<span style=color:#f92672>.</span><span style=color:#a6e22e>setName</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;insert&#34;</span><span style=color:#f92672>);</span>
+		User newUser <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> User<span style=color:#ff6ac1>();</span>
+		newUser<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>setName</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;insert&#34;</span><span style=color:#ff6ac1>);</span>
 
-		entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>getTransaction</span><span style=color:#f92672>().</span><span style=color:#a6e22e>begin</span><span style=color:#f92672>();</span>
+		entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getTransaction</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>begin</span><span style=color:#ff6ac1>();</span>
 
-		entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>persist</span><span style=color:#f92672>(</span>newUser<span style=color:#f92672>);</span>
-		<span style=color:#66d9ef>long</span> id <span style=color:#f92672>=</span> newUser<span style=color:#f92672>.</span><span style=color:#a6e22e>getId</span><span style=color:#f92672>();</span>
+		entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>persist</span><span style=color:#ff6ac1>(</span>newUser<span style=color:#ff6ac1>);</span>
+		<span style=color:#9aedfe>long</span> id <span style=color:#ff6ac1>=</span> newUser<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getId</span><span style=color:#ff6ac1>();</span>
 
-		entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>getTransaction</span><span style=color:#f92672>().</span><span style=color:#a6e22e>commit</span><span style=color:#f92672>();</span>
+		entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getTransaction</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>commit</span><span style=color:#ff6ac1>();</span>
 
-		User user <span style=color:#f92672>=</span> entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>find</span><span style=color:#f92672>(</span>User<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>,</span> id<span style=color:#f92672>);</span>
-		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertNotNull</span><span style=color:#f92672>(</span>user<span style=color:#f92672>);</span>
-		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertEquals</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;insert&#34;</span><span style=color:#f92672>,</span> user<span style=color:#f92672>.</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>());</span>
-	<span style=color:#f92672>}</span>
+		User user <span style=color:#ff6ac1>=</span> entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>find</span><span style=color:#ff6ac1>(</span>User<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>,</span> id<span style=color:#ff6ac1>);</span>
+		Assert<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>assertNotNull</span><span style=color:#ff6ac1>(</span>user<span style=color:#ff6ac1>);</span>
+		Assert<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>assertEquals</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;insert&#34;</span><span style=color:#ff6ac1>,</span> user<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getName</span><span style=color:#ff6ac1>());</span>
+	<span style=color:#ff6ac1>}</span>
 
-	<span style=color:#a6e22e>@Test</span>
-	<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testFindAll</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+	<span style=color:#ff9f43>@Test</span>
+	<span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>testFindAll</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
 
-		List<span style=color:#f92672>&lt;</span>User<span style=color:#f92672>&gt;</span> allUsers <span style=color:#f92672>=</span> entityManager<span style=color:#f92672>.</span><span style=color:#a6e22e>createQuery</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;from User&#34;</span><span style=color:#f92672>).</span><span style=color:#a6e22e>getResultList</span><span style=color:#f92672>();</span>
-		Assert<span style=color:#f92672>.</span><span style=color:#a6e22e>assertEquals</span><span style=color:#f92672>(</span>2<span style=color:#f92672>,</span> allUsers<span style=color:#f92672>.</span><span style=color:#a6e22e>size</span><span style=color:#f92672>());</span>
-	<span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+		List<span style=color:#ff6ac1>&lt;</span>User<span style=color:#ff6ac1>&gt;</span> allUsers <span style=color:#ff6ac1>=</span> entityManager<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createQuery</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;from User&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>getResultList</span><span style=color:#ff6ac1>();</span>
+		Assert<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>assertEquals</span><span style=color:#ff6ac1>(</span>2<span style=color:#ff6ac1>,</span> allUsers<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>size</span><span style=color:#ff6ac1>());</span>
+	<span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>Notice we have to deal with the transactions ourselves which can be pretty tiresome. Recommended way to do this is to create a service layer which will be responsible for opening and committing transactions.</p>
 <p>The findAll test uses a standard <a href=http://docs.oracle.com/html/E24396_01/ejb3_langref.html>JPQL </a>query to find all users in the database. The select clause is facultative. The &ldquo;User&rdquo; keyword is the name of our entity.</p>
 <h2 id=conclusion>Conclusion<a hidden class=anchor aria-hidden=true href=#conclusion>#</a></h2>

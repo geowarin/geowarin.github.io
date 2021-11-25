@@ -8,8 +8,7 @@
 <meta name=description content="How to select nodes with xPath and keep the file structure of the original document in java with dom4j">
 <meta name=author content>
 <link rel=canonical href=https://geowarin.com/fun-with-xpath/>
-<link crossorigin=anonymous href=/assets/css/stylesheet.min.6f60056d44d3f7eb69a4bc6c332b59960f3a995802bded244750232f33713c49.css integrity="sha256-b2AFbUTT9+tppLxsMytZlg86mVgCve0kR1AjLzNxPEk=" rel="preload stylesheet" as=style>
-<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
 <link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png>
 <link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png>
@@ -78,101 +77,101 @@ Fun with xpath
 <p>For instance, the following xPath <code>/persons/person[@age > 18]/project[@language = 'java']</code>, would select the lines highlighted in the file below :</p>
 <p></p>
 <p>Normal xPath result would be a list of nodes like that</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;project</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;dom4j&#39;</span> <span style=color:#a6e22e>language=</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>/&gt;</span>
-<span style=color:#f92672>&lt;project</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;dom4j&#39;</span> <span style=color:#a6e22e>language=</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>/&gt;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#ff6ac1>&lt;project</span> <span style=color:#57c7ff>name=</span><span style=color:#5af78e>&#39;dom4j&#39;</span> <span style=color:#57c7ff>language=</span><span style=color:#5af78e>&#39;java&#39;</span><span style=color:#ff6ac1>/&gt;</span>
+<span style=color:#ff6ac1>&lt;project</span> <span style=color:#57c7ff>name=</span><span style=color:#5af78e>&#39;dom4j&#39;</span> <span style=color:#57c7ff>language=</span><span style=color:#5af78e>&#39;java&#39;</span><span style=color:#ff6ac1>/&gt;</span>
 </code></pre></div><p>But the desired output should look like this :</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;persons&gt;</span>
-	<span style=color:#f92672>&lt;person</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;Joe&#39;</span> <span style=color:#a6e22e>age=</span><span style=color:#e6db74>&#39;26&#39;</span><span style=color:#f92672>&gt;</span>
-		<span style=color:#f92672>&lt;project</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;dom4j&#39;</span> <span style=color:#a6e22e>language=</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>/&gt;</span>
-	<span style=color:#f92672>&lt;/person&gt;</span>
-	<span style=color:#f92672>&lt;person</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;Jane&#39;</span> <span style=color:#a6e22e>age=</span><span style=color:#e6db74>&#39;23&#39;</span><span style=color:#f92672>&gt;</span>
-		<span style=color:#f92672>&lt;project</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;dom4j&#39;</span> <span style=color:#a6e22e>language=</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>/&gt;</span>
-	<span style=color:#f92672>&lt;/person&gt;</span>
-<span style=color:#f92672>&lt;/persons&gt;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#ff6ac1>&lt;persons&gt;</span>
+	<span style=color:#ff6ac1>&lt;person</span> <span style=color:#57c7ff>name=</span><span style=color:#5af78e>&#39;Joe&#39;</span> <span style=color:#57c7ff>age=</span><span style=color:#5af78e>&#39;26&#39;</span><span style=color:#ff6ac1>&gt;</span>
+		<span style=color:#ff6ac1>&lt;project</span> <span style=color:#57c7ff>name=</span><span style=color:#5af78e>&#39;dom4j&#39;</span> <span style=color:#57c7ff>language=</span><span style=color:#5af78e>&#39;java&#39;</span><span style=color:#ff6ac1>/&gt;</span>
+	<span style=color:#ff6ac1>&lt;/person&gt;</span>
+	<span style=color:#ff6ac1>&lt;person</span> <span style=color:#57c7ff>name=</span><span style=color:#5af78e>&#39;Jane&#39;</span> <span style=color:#57c7ff>age=</span><span style=color:#5af78e>&#39;23&#39;</span><span style=color:#ff6ac1>&gt;</span>
+		<span style=color:#ff6ac1>&lt;project</span> <span style=color:#57c7ff>name=</span><span style=color:#5af78e>&#39;dom4j&#39;</span> <span style=color:#57c7ff>language=</span><span style=color:#5af78e>&#39;java&#39;</span><span style=color:#ff6ac1>/&gt;</span>
+	<span style=color:#ff6ac1>&lt;/person&gt;</span>
+<span style=color:#ff6ac1>&lt;/persons&gt;</span>
 </code></pre></div><p>So I decided to write a small class to handle this use case :</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>XPathFilter</span> <span style=color:#f92672>{</span>
-    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> Document xmlDocument<span style=color:#f92672>;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>XPathFilter</span> <span style=color:#ff6ac1>{</span>
+    <span style=color:#ff5c57>private</span> <span style=color:#ff5c57>final</span> Document xmlDocument<span style=color:#ff6ac1>;</span>
 
-    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>XPathFilter</span><span style=color:#f92672>(</span>String xml<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-        xmlDocument <span style=color:#f92672>=</span> readXml<span style=color:#f92672>(</span>xml<span style=color:#f92672>);</span>
-    <span style=color:#f92672>}</span>
+    <span style=color:#ff5c57>public</span> <span style=color:#57c7ff>XPathFilter</span><span style=color:#ff6ac1>(</span>String xml<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+        xmlDocument <span style=color:#ff6ac1>=</span> readXml<span style=color:#ff6ac1>(</span>xml<span style=color:#ff6ac1>);</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>filter</span><span style=color:#f92672>(</span>String xPath<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-        Element root <span style=color:#f92672>=</span> xmlDocument<span style=color:#f92672>.</span><span style=color:#a6e22e>getRootElement</span><span style=color:#f92672>();</span>
-        List<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> resultNodes <span style=color:#f92672>=</span> root<span style=color:#f92672>.</span><span style=color:#a6e22e>selectNodes</span><span style=color:#f92672>(</span>xPath<span style=color:#f92672>);</span>
+    <span style=color:#ff5c57>public</span> String <span style=color:#57c7ff>filter</span><span style=color:#ff6ac1>(</span>String xPath<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+        Element root <span style=color:#ff6ac1>=</span> xmlDocument<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getRootElement</span><span style=color:#ff6ac1>();</span>
+        List<span style=color:#ff6ac1>&lt;</span>Element<span style=color:#ff6ac1>&gt;</span> resultNodes <span style=color:#ff6ac1>=</span> root<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>selectNodes</span><span style=color:#ff6ac1>(</span>xPath<span style=color:#ff6ac1>);</span>
 
-        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>resultNodes<span style=color:#f92672>.</span><span style=color:#a6e22e>isEmpty</span><span style=color:#f92672>())</span> <span style=color:#f92672>{</span>
-            <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalStateException<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;No result found for xpath &#34;</span> <span style=color:#f92672>+</span> xPath<span style=color:#f92672>);</span>
-        <span style=color:#f92672>}</span>
+        <span style=color:#ff6ac1>if</span> <span style=color:#ff6ac1>(</span>resultNodes<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>isEmpty</span><span style=color:#ff6ac1>())</span> <span style=color:#ff6ac1>{</span>
+            <span style=color:#ff6ac1>throw</span> <span style=color:#ff6ac1>new</span> IllegalStateException<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;No result found for xpath &#34;</span> <span style=color:#ff6ac1>+</span> xPath<span style=color:#ff6ac1>);</span>
+        <span style=color:#ff6ac1>}</span>
 
-        deleteNonResultNodes<span style=color:#f92672>(</span>resultNodes<span style=color:#f92672>);</span>
-        <span style=color:#66d9ef>return</span> write<span style=color:#f92672>(</span>root<span style=color:#f92672>);</span>
-    <span style=color:#f92672>}</span>
+        deleteNonResultNodes<span style=color:#ff6ac1>(</span>resultNodes<span style=color:#ff6ac1>);</span>
+        <span style=color:#ff6ac1>return</span> write<span style=color:#ff6ac1>(</span>root<span style=color:#ff6ac1>);</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>deleteNonResultNodes</span><span style=color:#f92672>(</span>List<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> resultNodes<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-        Set<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> nodesToKeep <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> HashSet<span style=color:#f92672>&lt;&gt;(</span>resultNodes<span style=color:#f92672>);</span>
-        Set<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> parents<span style=color:#f92672>;</span>
-        <span style=color:#66d9ef>do</span> <span style=color:#f92672>{</span>
-            parents <span style=color:#f92672>=</span> getParentNodes<span style=color:#f92672>(</span>nodesToKeep<span style=color:#f92672>);</span>
+    <span style=color:#ff5c57>private</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>deleteNonResultNodes</span><span style=color:#ff6ac1>(</span>List<span style=color:#ff6ac1>&lt;</span>Element<span style=color:#ff6ac1>&gt;</span> resultNodes<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+        Set<span style=color:#ff6ac1>&lt;</span>Element<span style=color:#ff6ac1>&gt;</span> nodesToKeep <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> HashSet<span style=color:#ff6ac1>&lt;&gt;(</span>resultNodes<span style=color:#ff6ac1>);</span>
+        Set<span style=color:#ff6ac1>&lt;</span>Element<span style=color:#ff6ac1>&gt;</span> parents<span style=color:#ff6ac1>;</span>
+        <span style=color:#ff6ac1>do</span> <span style=color:#ff6ac1>{</span>
+            parents <span style=color:#ff6ac1>=</span> getParentNodes<span style=color:#ff6ac1>(</span>nodesToKeep<span style=color:#ff6ac1>);</span>
 
-            <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span>Element parent <span style=color:#f92672>:</span> parents<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-                List<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> children <span style=color:#f92672>=</span> parent<span style=color:#f92672>.</span><span style=color:#a6e22e>elements</span><span style=color:#f92672>();</span>
-                <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span>Element child <span style=color:#f92672>:</span> children<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-                    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(!</span>nodesToKeep<span style=color:#f92672>.</span><span style=color:#a6e22e>contains</span><span style=color:#f92672>(</span>child<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
-                        parent<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>child<span style=color:#f92672>);</span>
-                    <span style=color:#f92672>}</span>
-                <span style=color:#f92672>}</span>
-            <span style=color:#f92672>}</span>
-            nodesToKeep <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> HashSet<span style=color:#f92672>&lt;&gt;(</span>parents<span style=color:#f92672>);</span>
-        <span style=color:#f92672>}</span>
-        <span style=color:#66d9ef>while</span> <span style=color:#f92672>(!</span>parents<span style=color:#f92672>.</span><span style=color:#a6e22e>isEmpty</span><span style=color:#f92672>());</span>
-    <span style=color:#f92672>}</span>
+            <span style=color:#ff6ac1>for</span> <span style=color:#ff6ac1>(</span>Element parent <span style=color:#ff6ac1>:</span> parents<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+                List<span style=color:#ff6ac1>&lt;</span>Element<span style=color:#ff6ac1>&gt;</span> children <span style=color:#ff6ac1>=</span> parent<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>elements</span><span style=color:#ff6ac1>();</span>
+                <span style=color:#ff6ac1>for</span> <span style=color:#ff6ac1>(</span>Element child <span style=color:#ff6ac1>:</span> children<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+                    <span style=color:#ff6ac1>if</span> <span style=color:#ff6ac1>(!</span>nodesToKeep<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>contains</span><span style=color:#ff6ac1>(</span>child<span style=color:#ff6ac1>))</span> <span style=color:#ff6ac1>{</span>
+                        parent<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>remove</span><span style=color:#ff6ac1>(</span>child<span style=color:#ff6ac1>);</span>
+                    <span style=color:#ff6ac1>}</span>
+                <span style=color:#ff6ac1>}</span>
+            <span style=color:#ff6ac1>}</span>
+            nodesToKeep <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> HashSet<span style=color:#ff6ac1>&lt;&gt;(</span>parents<span style=color:#ff6ac1>);</span>
+        <span style=color:#ff6ac1>}</span>
+        <span style=color:#ff6ac1>while</span> <span style=color:#ff6ac1>(!</span>parents<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>isEmpty</span><span style=color:#ff6ac1>());</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#66d9ef>private</span> Set<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>getParentNodes</span><span style=color:#f92672>(</span>Collection<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> nodes<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-        Set<span style=color:#f92672>&lt;</span>Element<span style=color:#f92672>&gt;</span> parents <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> HashSet<span style=color:#f92672>&lt;&gt;();</span>
-        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span>Element node <span style=color:#f92672>:</span> nodes<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-            Element parent <span style=color:#f92672>=</span> node<span style=color:#f92672>.</span><span style=color:#a6e22e>getParent</span><span style=color:#f92672>();</span>
-            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>parent <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-                parents<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>parent<span style=color:#f92672>);</span>
-            <span style=color:#f92672>}</span>
-        <span style=color:#f92672>}</span>
-        <span style=color:#66d9ef>return</span> parents<span style=color:#f92672>;</span>
-    <span style=color:#f92672>}</span>
+    <span style=color:#ff5c57>private</span> Set<span style=color:#ff6ac1>&lt;</span>Element<span style=color:#ff6ac1>&gt;</span> <span style=color:#57c7ff>getParentNodes</span><span style=color:#ff6ac1>(</span>Collection<span style=color:#ff6ac1>&lt;</span>Element<span style=color:#ff6ac1>&gt;</span> nodes<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+        Set<span style=color:#ff6ac1>&lt;</span>Element<span style=color:#ff6ac1>&gt;</span> parents <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> HashSet<span style=color:#ff6ac1>&lt;&gt;();</span>
+        <span style=color:#ff6ac1>for</span> <span style=color:#ff6ac1>(</span>Element node <span style=color:#ff6ac1>:</span> nodes<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+            Element parent <span style=color:#ff6ac1>=</span> node<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getParent</span><span style=color:#ff6ac1>();</span>
+            <span style=color:#ff6ac1>if</span> <span style=color:#ff6ac1>(</span>parent <span style=color:#ff6ac1>!=</span> <span style=color:#ff6ac1>null</span><span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+                parents<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>add</span><span style=color:#ff6ac1>(</span>parent<span style=color:#ff6ac1>);</span>
+            <span style=color:#ff6ac1>}</span>
+        <span style=color:#ff6ac1>}</span>
+        <span style=color:#ff6ac1>return</span> parents<span style=color:#ff6ac1>;</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#66d9ef>private</span> Document <span style=color:#a6e22e>readXml</span><span style=color:#f92672>(</span>String xml<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-        Document document<span style=color:#f92672>;</span>
-        <span style=color:#66d9ef>try</span> <span style=color:#f92672>(</span>StringReader reader <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> StringReader<span style=color:#f92672>(</span>xml<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
-            DocumentFactory factory <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> DocumentFactory<span style=color:#f92672>();</span>
-            SAXReader saxReader <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> SAXReader<span style=color:#f92672>();</span>
-            saxReader<span style=color:#f92672>.</span><span style=color:#a6e22e>setDocumentFactory</span><span style=color:#f92672>(</span>factory<span style=color:#f92672>);</span>
-            document <span style=color:#f92672>=</span> saxReader<span style=color:#f92672>.</span><span style=color:#a6e22e>read</span><span style=color:#f92672>(</span>reader<span style=color:#f92672>);</span>
-        <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>DocumentException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-            <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalArgumentException<span style=color:#f92672>(</span>e<span style=color:#f92672>);</span>
-        <span style=color:#f92672>}</span>
-        <span style=color:#66d9ef>return</span> document<span style=color:#f92672>;</span>
-    <span style=color:#f92672>}</span>
+    <span style=color:#ff5c57>private</span> Document <span style=color:#57c7ff>readXml</span><span style=color:#ff6ac1>(</span>String xml<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+        Document document<span style=color:#ff6ac1>;</span>
+        <span style=color:#ff6ac1>try</span> <span style=color:#ff6ac1>(</span>StringReader reader <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> StringReader<span style=color:#ff6ac1>(</span>xml<span style=color:#ff6ac1>))</span> <span style=color:#ff6ac1>{</span>
+            DocumentFactory factory <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> DocumentFactory<span style=color:#ff6ac1>();</span>
+            SAXReader saxReader <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> SAXReader<span style=color:#ff6ac1>();</span>
+            saxReader<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>setDocumentFactory</span><span style=color:#ff6ac1>(</span>factory<span style=color:#ff6ac1>);</span>
+            document <span style=color:#ff6ac1>=</span> saxReader<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>read</span><span style=color:#ff6ac1>(</span>reader<span style=color:#ff6ac1>);</span>
+        <span style=color:#ff6ac1>}</span> <span style=color:#ff6ac1>catch</span> <span style=color:#ff6ac1>(</span>DocumentException e<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+            <span style=color:#ff6ac1>throw</span> <span style=color:#ff6ac1>new</span> IllegalArgumentException<span style=color:#ff6ac1>(</span>e<span style=color:#ff6ac1>);</span>
+        <span style=color:#ff6ac1>}</span>
+        <span style=color:#ff6ac1>return</span> document<span style=color:#ff6ac1>;</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#66d9ef>private</span> String <span style=color:#a6e22e>write</span><span style=color:#f92672>(</span>Element rootElement<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-        Document documentOut <span style=color:#f92672>=</span> DocumentHelper<span style=color:#f92672>.</span><span style=color:#a6e22e>createDocument</span><span style=color:#f92672>();</span>
-        documentOut<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>((</span>Element<span style=color:#f92672>)</span> rootElement<span style=color:#f92672>.</span><span style=color:#a6e22e>clone</span><span style=color:#f92672>());</span>
+    <span style=color:#ff5c57>private</span> String <span style=color:#57c7ff>write</span><span style=color:#ff6ac1>(</span>Element rootElement<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+        Document documentOut <span style=color:#ff6ac1>=</span> DocumentHelper<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createDocument</span><span style=color:#ff6ac1>();</span>
+        documentOut<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>add</span><span style=color:#ff6ac1>((</span>Element<span style=color:#ff6ac1>)</span> rootElement<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>clone</span><span style=color:#ff6ac1>());</span>
 
-        StringWriter writer <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> StringWriter<span style=color:#f92672>();</span>
-        XMLWriter xmlWriter <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> XMLWriter<span style=color:#f92672>(</span>writer<span style=color:#f92672>,</span> OutputFormat<span style=color:#f92672>.</span><span style=color:#a6e22e>createPrettyPrint</span><span style=color:#f92672>());</span>
+        StringWriter writer <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> StringWriter<span style=color:#ff6ac1>();</span>
+        XMLWriter xmlWriter <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> XMLWriter<span style=color:#ff6ac1>(</span>writer<span style=color:#ff6ac1>,</span> OutputFormat<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createPrettyPrint</span><span style=color:#ff6ac1>());</span>
 
-        <span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
-            xmlWriter<span style=color:#f92672>.</span><span style=color:#a6e22e>write</span><span style=color:#f92672>(</span>documentOut<span style=color:#f92672>);</span>
-        <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>IOException e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-            <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalStateException<span style=color:#f92672>(</span>e<span style=color:#f92672>);</span>
-        <span style=color:#f92672>}</span> <span style=color:#66d9ef>finally</span> <span style=color:#f92672>{</span>
-            <span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
-                xmlWriter<span style=color:#f92672>.</span><span style=color:#a6e22e>close</span><span style=color:#f92672>();</span>
-            <span style=color:#f92672>}</span> <span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>IOException ignored<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-            <span style=color:#f92672>}</span>
-        <span style=color:#f92672>}</span>
+        <span style=color:#ff6ac1>try</span> <span style=color:#ff6ac1>{</span>
+            xmlWriter<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>write</span><span style=color:#ff6ac1>(</span>documentOut<span style=color:#ff6ac1>);</span>
+        <span style=color:#ff6ac1>}</span> <span style=color:#ff6ac1>catch</span> <span style=color:#ff6ac1>(</span>IOException e<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+            <span style=color:#ff6ac1>throw</span> <span style=color:#ff6ac1>new</span> IllegalStateException<span style=color:#ff6ac1>(</span>e<span style=color:#ff6ac1>);</span>
+        <span style=color:#ff6ac1>}</span> <span style=color:#ff6ac1>finally</span> <span style=color:#ff6ac1>{</span>
+            <span style=color:#ff6ac1>try</span> <span style=color:#ff6ac1>{</span>
+                xmlWriter<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>close</span><span style=color:#ff6ac1>();</span>
+            <span style=color:#ff6ac1>}</span> <span style=color:#ff6ac1>catch</span> <span style=color:#ff6ac1>(</span>IOException ignored<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+            <span style=color:#ff6ac1>}</span>
+        <span style=color:#ff6ac1>}</span>
 
-        <span style=color:#66d9ef>return</span> writer<span style=color:#f92672>.</span><span style=color:#a6e22e>toString</span><span style=color:#f92672>();</span>
-    <span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+        <span style=color:#ff6ac1>return</span> writer<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>toString</span><span style=color:#ff6ac1>();</span>
+    <span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>The <code>readXml</code> and <code>write</code> methods are just standard <em>dom4j</em> stuff.</p>
 <p>The real code lies in the <code>deleteNonResultNodes</code> function which traverses XML nodes
 from the results to the root.

@@ -8,8 +8,7 @@
 <meta name=description content="Connecting your REST API to Redux used to be hard&mldr; But that was before Shasta!">
 <meta name=author content>
 <link rel=canonical href=https://geowarin.com/consuming-apis-with-redux-the-shasta-way/>
-<link crossorigin=anonymous href=/assets/css/stylesheet.min.6f60056d44d3f7eb69a4bc6c332b59960f3a995802bded244750232f33713c49.css integrity="sha256-b2AFbUTT9+tppLxsMytZlg86mVgCve0kR1AjLzNxPEk=" rel="preload stylesheet" as=style>
-<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
 <link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png>
 <link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png>
@@ -116,36 +115,36 @@ Tahoe:</p>
 <p>Let&rsquo;s dig into the core package.</p>
 <p><code>store.js</code> allows you to reference the store as a singleton. This is also where
 you register the plugins you use:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>createStore</span>, <span style=color:#a6e22e>createReducer</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;shasta&#39;</span>;
-<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>localReducers</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;../reducers/.lookup&#39;</span>;
-<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>plugins</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./plugins&#39;</span>;
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff6ac1>import</span> { createStore, createReducer } from <span style=color:#5af78e>&#39;shasta&#39;</span>;
+<span style=color:#ff6ac1>import</span> localReducers from <span style=color:#5af78e>&#39;../reducers/.lookup&#39;</span>;
+<span style=color:#ff6ac1>import</span> plugins from <span style=color:#5af78e>&#39;./plugins&#39;</span>;
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#a6e22e>createStore</span>({
-  <span style=color:#a6e22e>plugins</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>plugins</span>,
-  <span style=color:#a6e22e>reducers</span><span style=color:#f92672>:</span> [
-    <span style=color:#a6e22e>createReducer</span>(<span style=color:#a6e22e>localReducers</span>)
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> createStore({
+  plugins<span style=color:#ff6ac1>:</span> plugins,
+  reducers<span style=color:#ff6ac1>:</span> [
+    createReducer(localReducers)
   ]
 })
 </code></pre></div><p><code>plugins.js</code> is very simple. In this example, I use two plugins, Tahoe and shasta-router:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>router</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;shasta-router&#39;</span>
-<span style=color:#66d9ef>import</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>api</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;tahoe&#39;</span>;
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff6ac1>import</span> <span style=color:#ff6ac1>*</span> as router from <span style=color:#5af78e>&#39;shasta-router&#39;</span>
+<span style=color:#ff6ac1>import</span> <span style=color:#ff6ac1>*</span> as api from <span style=color:#5af78e>&#39;tahoe&#39;</span>;
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> [
-  <span style=color:#a6e22e>api</span>,
-  <span style=color:#a6e22e>router</span>
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> [
+  api,
+  router
 ]
 </code></pre></div><p>Finally, the <code>actions.js</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>actions</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>routeActions</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;shasta-router&#39;</span>
-<span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>createActions</span>, <span style=color:#a6e22e>createReducerActions</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;shasta&#39;</span>;
-<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>store</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./store&#39;</span>
-<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>localActions</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;../api/.lookup&#39;</span>
-<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>localReducers</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;../reducers/.lookup&#39;</span>;
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff6ac1>import</span> { actions as routeActions } from <span style=color:#5af78e>&#39;shasta-router&#39;</span>
+<span style=color:#ff6ac1>import</span> { createActions, createReducerActions } from <span style=color:#5af78e>&#39;shasta&#39;</span>;
+<span style=color:#ff6ac1>import</span> store from <span style=color:#5af78e>&#39;./store&#39;</span>
+<span style=color:#ff6ac1>import</span> localActions from <span style=color:#5af78e>&#39;../api/.lookup&#39;</span>
+<span style=color:#ff6ac1>import</span> localReducers from <span style=color:#5af78e>&#39;../reducers/.lookup&#39;</span>;
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#a6e22e>createActions</span>({
-  ...<span style=color:#a6e22e>localActions</span>,
-  ...<span style=color:#a6e22e>routeActions</span>,
-  ...<span style=color:#a6e22e>createReducerActions</span>(<span style=color:#a6e22e>localReducers</span>)
-}, <span style=color:#a6e22e>store</span>.<span style=color:#a6e22e>dispatch</span>)
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> createActions({
+  ...localActions,
+  ...routeActions,
+  ...createReducerActions(localReducers)
+}, store.dispatch)
 </code></pre></div><h3 id=plugins>Plugins<a hidden class=anchor aria-hidden=true href=#plugins>#</a></h3>
 <p>What are those plugins? Shasta defines multiple extension points.
 Most notably, your plugin can export reducers and middlewares which dramatically
@@ -157,37 +156,37 @@ and the setup for the <a href="https://chrome.google.com/webstore/detail/redux-d
 <p>The <code>.lookup</code> files are a really nice idea, they use the <a href=https://github.com/contra/glob-loader>glob-loader</a> to re-export all the js files
 according to a glob expression.</p>
 <p>This avoids writing repetitive and error prone-code like:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>reducer1</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./reducer1&#39;</span>
-<span style=color:#66d9ef>import</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>as</span> <span style=color:#a6e22e>reducer2</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./reducer2&#39;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff6ac1>import</span> <span style=color:#ff6ac1>*</span> as reducer1 from <span style=color:#5af78e>&#39;./reducer1&#39;</span>
+<span style=color:#ff6ac1>import</span> <span style=color:#ff6ac1>*</span> as reducer2 from <span style=color:#5af78e>&#39;./reducer2&#39;</span>
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
-  <span style=color:#a6e22e>reducer1</span>,
-  <span style=color:#a6e22e>reducer2</span>
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> {
+  reducer1,
+  reducer2
 }
 </code></pre></div><h2 id=the-root-component>The Root Component<a hidden class=anchor aria-hidden=true href=#the-root-component>#</a></h2>
 <p>Here is a quick glance at the Root component of our application.
 It is very classic, just note that Shasta adds support for additional PropTypes
 like routes or immutable types.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>React</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;react&#34;</span>;
-<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>Provider</span>, <span style=color:#a6e22e>Component</span>, <span style=color:#a6e22e>PropTypes</span>} <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta&#34;</span>;
-<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>Router</span>} <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta-router&#34;</span>;
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#ff6ac1>import</span> React from <span style=color:#5af78e>&#34;react&#34;</span>;
+<span style=color:#ff6ac1>import</span> {Provider, Component, PropTypes} from <span style=color:#5af78e>&#34;shasta&#34;</span>;
+<span style=color:#ff6ac1>import</span> {Router} from <span style=color:#5af78e>&#34;shasta-router&#34;</span>;
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RootView</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Component</span> {
-  <span style=color:#66d9ef>static</span> <span style=color:#a6e22e>displayName</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;RootView&#39;</span>;
-  <span style=color:#66d9ef>static</span> <span style=color:#a6e22e>propTypes</span> <span style=color:#f92672>=</span> {
-    <span style=color:#a6e22e>history</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>PropTypes</span>.<span style=color:#a6e22e>object</span>.<span style=color:#a6e22e>isRequired</span>,
-    <span style=color:#a6e22e>store</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>PropTypes</span>.<span style=color:#a6e22e>object</span>.<span style=color:#a6e22e>isRequired</span>,
-    <span style=color:#a6e22e>routes</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>PropTypes</span>.<span style=color:#a6e22e>node</span>.<span style=color:#a6e22e>isRequired</span>
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> <span style=color:#ff6ac1>class</span> RootView <span style=color:#ff6ac1>extends</span> Component {
+  <span style=color:#ff6ac1>static</span> displayName <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#39;RootView&#39;</span>;
+  <span style=color:#ff6ac1>static</span> propTypes <span style=color:#ff6ac1>=</span> {
+    history<span style=color:#ff6ac1>:</span> PropTypes.object.isRequired,
+    store<span style=color:#ff6ac1>:</span> PropTypes.object.isRequired,
+    routes<span style=color:#ff6ac1>:</span> PropTypes.node.isRequired
   };
 
-  <span style=color:#a6e22e>render</span> () {
-    <span style=color:#66d9ef>const</span> {<span style=color:#a6e22e>store</span>, <span style=color:#a6e22e>history</span>, <span style=color:#a6e22e>routes</span>} <span style=color:#f92672>=</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>props</span>;
-    <span style=color:#66d9ef>return</span> (
-      &lt;<span style=color:#f92672>Provider</span> <span style=color:#a6e22e>store</span><span style=color:#f92672>=</span>{<span style=color:#a6e22e>store</span>}&gt;
-        &lt;<span style=color:#f92672>Router</span> <span style=color:#a6e22e>history</span><span style=color:#f92672>=</span>{<span style=color:#a6e22e>history</span>}&gt;
-          {<span style=color:#a6e22e>routes</span>}
-        &lt;/<span style=color:#f92672>Router</span>&gt;
-      &lt;/<span style=color:#f92672>Provider</span>&gt;
+  render () {
+    <span style=color:#ff6ac1>const</span> {store, history, routes} <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>this</span>.props;
+    <span style=color:#ff6ac1>return</span> (
+      &lt;<span style=color:#ff6ac1>Provider</span> <span style=color:#57c7ff>store</span><span style=color:#ff6ac1>=</span>{store}&gt;
+        &lt;<span style=color:#ff6ac1>Router</span> <span style=color:#57c7ff>history</span><span style=color:#ff6ac1>=</span>{history}&gt;
+          {routes}
+        &lt;/<span style=color:#ff6ac1>Router</span>&gt;
+      &lt;/<span style=color:#ff6ac1>Provider</span>&gt;
     )
   }
 }
@@ -195,45 +194,45 @@ like routes or immutable types.</p>
 <p>This one took you by surprise, didn&rsquo;t it?
 Just to show the ideas behind Shasta, here is the reducer for our sacred counter example.</p>
 <p><code>reducers/counter.js</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>Map</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;immutable&#39;</span>;
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff6ac1>import</span> { Map } from <span style=color:#5af78e>&#39;immutable&#39;</span>;
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>initialState</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Map</span>({ <span style=color:#a6e22e>count</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span> });
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>const</span> initialState <span style=color:#ff6ac1>=</span> Map({ count<span style=color:#ff6ac1>:</span> <span style=color:#ff9f43>1</span> });
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>increment</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>state</span>, { <span style=color:#a6e22e>payload</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> }) =&gt;
-  <span style=color:#a6e22e>state</span>.<span style=color:#a6e22e>update</span>(<span style=color:#e6db74>&#39;count&#39;</span>, <span style=color:#a6e22e>c</span> =&gt; <span style=color:#a6e22e>c</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>payload</span>);
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>const</span> increment <span style=color:#ff6ac1>=</span> (state, { payload <span style=color:#ff6ac1>=</span> <span style=color:#ff9f43>1</span> }) =&gt;
+  state.update(<span style=color:#5af78e>&#39;count&#39;</span>, c =&gt; c <span style=color:#ff6ac1>+</span> payload);
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>decrement</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>state</span>, { <span style=color:#a6e22e>payload</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> }) =&gt;
-  <span style=color:#a6e22e>state</span>.<span style=color:#a6e22e>update</span>(<span style=color:#e6db74>&#39;count&#39;</span>, <span style=color:#a6e22e>c</span> =&gt; <span style=color:#a6e22e>c</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>payload</span>);
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>const</span> decrement <span style=color:#ff6ac1>=</span> (state, { payload <span style=color:#ff6ac1>=</span> <span style=color:#ff9f43>1</span> }) =&gt;
+  state.update(<span style=color:#5af78e>&#39;count&#39;</span>, c =&gt; c <span style=color:#ff6ac1>-</span> payload);
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>reset</span> <span style=color:#f92672>=</span> () =&gt; <span style=color:#a6e22e>initialState</span>;
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>const</span> reset <span style=color:#ff6ac1>=</span> () =&gt; initialState;
 </code></pre></div><p>Here, you see a very straightforward implementation of a reducer.
 It leverages the ImmutableJS API to create those nice little one-liners.</p>
 <p>Here is how to use those reducers as actions in your views:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>React</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;react&#34;</span>;
-<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>connect</span>, <span style=color:#a6e22e>Component</span>} <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta&#34;</span>;
-<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>actions</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;../core/actions&#34;</span>;
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#ff6ac1>import</span> React from <span style=color:#5af78e>&#34;react&#34;</span>;
+<span style=color:#ff6ac1>import</span> {connect, Component} from <span style=color:#5af78e>&#34;shasta&#34;</span>;
+<span style=color:#ff6ac1>import</span> actions from <span style=color:#5af78e>&#34;../core/actions&#34;</span>;
 
-<span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>connect</span>({
-  <span style=color:#a6e22e>count</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;counter.count&#39;</span>
+<span style=color:#ff5c57>@</span>connect({
+  count<span style=color:#ff6ac1>:</span> <span style=color:#5af78e>&#39;counter.count&#39;</span>
 })
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Counter</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Component</span> {
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> <span style=color:#ff6ac1>class</span> Counter <span style=color:#ff6ac1>extends</span> Component {
 
-  <span style=color:#a6e22e>render</span>() {
-    <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span>&gt;
-      &lt;<span style=color:#f92672>h2</span>&gt;<span style=color:#a6e22e>Counter</span>&lt;/<span style=color:#f92672>h2</span>&gt;
+  render() {
+    <span style=color:#ff6ac1>return</span> &lt;<span style=color:#ff6ac1>div</span>&gt;
+      &lt;<span style=color:#ff6ac1>h2</span>&gt;Counter&lt;/<span style=color:#ff6ac1>h2</span>&gt;
 
-      &lt;<span style=color:#f92672>p</span>&gt;{<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>count</span>}&lt;/<span style=color:#f92672>p</span>&gt;
+      &lt;<span style=color:#ff6ac1>p</span>&gt;{<span style=color:#ff6ac1>this</span>.props.count}&lt;/<span style=color:#ff6ac1>p</span>&gt;
 
-      &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>onClick</span><span style=color:#f92672>=</span>{() =&gt; <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>counter</span>.<span style=color:#a6e22e>increment</span>()}&gt;
-        <span style=color:#a6e22e>Increment</span>
-      &lt;/<span style=color:#f92672>button</span>&gt;
-      &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>onClick</span><span style=color:#f92672>=</span>{() =&gt; <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>counter</span>.<span style=color:#a6e22e>decrement</span>()}&gt;
-        <span style=color:#a6e22e>Decrement</span>
-      &lt;/<span style=color:#f92672>button</span>&gt;
-      &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>onClick</span><span style=color:#f92672>=</span>{() =&gt; <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>counter</span>.<span style=color:#a6e22e>reset</span>()}&gt;
-        <span style=color:#a6e22e>Reset</span>
-      &lt;/<span style=color:#f92672>button</span>&gt;
-    &lt;/<span style=color:#f92672>div</span>&gt;
+      &lt;<span style=color:#ff6ac1>button</span> <span style=color:#57c7ff>onClick</span><span style=color:#ff6ac1>=</span>{() =&gt; actions.counter.increment()}&gt;
+        Increment
+      &lt;/<span style=color:#ff6ac1>button</span>&gt;
+      &lt;<span style=color:#ff6ac1>button</span> <span style=color:#57c7ff>onClick</span><span style=color:#ff6ac1>=</span>{() =&gt; actions.counter.decrement()}&gt;
+        Decrement
+      &lt;/<span style=color:#ff6ac1>button</span>&gt;
+      &lt;<span style=color:#ff6ac1>button</span> <span style=color:#57c7ff>onClick</span><span style=color:#ff6ac1>=</span>{() =&gt; actions.counter.reset()}&gt;
+        Reset
+      &lt;/<span style=color:#ff6ac1>button</span>&gt;
+    &lt;/<span style=color:#ff6ac1>div</span>&gt;
   }
 }
 </code></pre></div><p>With our lookup file setup, there is nothing else to do.
@@ -243,58 +242,58 @@ Your actions will automatically be available from all components in the
 work seamlessly with immutable data types.</p>
 <h2 id=lets-fetch-data>Let&rsquo;s fetch data!<a hidden class=anchor aria-hidden=true href=#lets-fetch-data>#</a></h2>
 <p>Let&rsquo;s create a <code>api/chuck.js</code> file:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>createAction</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;tahoe&#39;</span>;
-<span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>Schema</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;normalizr&#39;</span>;
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff6ac1>import</span> { createAction } from <span style=color:#5af78e>&#39;tahoe&#39;</span>;
+<span style=color:#ff6ac1>import</span> { Schema } from <span style=color:#5af78e>&#39;normalizr&#39;</span>;
 
-<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>response</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Schema</span>(<span style=color:#e6db74>&#39;some-response&#39;</span>);
+<span style=color:#ff6ac1>const</span> response <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> Schema(<span style=color:#5af78e>&#39;some-response&#39;</span>);
 
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>getRandomFact</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createAction</span>({
-  <span style=color:#a6e22e>endpoint</span><span style=color:#f92672>:</span> () =&gt; <span style=color:#e6db74>`http://api.icndb.com/jokes/random`</span>,
-  <span style=color:#a6e22e>method</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;GET&#39;</span>,
-  <span style=color:#a6e22e>model</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>response</span>
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>const</span> getRandomFact <span style=color:#ff6ac1>=</span> createAction({
+  endpoint<span style=color:#ff6ac1>:</span> () =&gt; <span style=color:#5af78e>`http://api.icndb.com/jokes/random`</span>,
+  method<span style=color:#ff6ac1>:</span> <span style=color:#5af78e>&#39;GET&#39;</span>,
+  model<span style=color:#ff6ac1>:</span> response
 });
 </code></pre></div><p>Shasta has direct support for <a href=https://github.com/gaearon/normalizr>normalizr</a>.
 This will help us store our entities in a normalized way as we will see in a moment.</p>
 <p>Under the hood, Tahoe uses superagent to make HTTP requests.</p>
 <p>Let&rsquo;s see how to use this in a view:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>React</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;react&#34;</span>;
-<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>connect</span>} <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta&#34;</span>;
-<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>actions</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;../core/actions&#34;</span>;
-<span style=color:#66d9ef>import</span> <span style=color:#a6e22e>DataComponent</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;shasta-data-view&#34;</span>;
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#ff6ac1>import</span> React from <span style=color:#5af78e>&#34;react&#34;</span>;
+<span style=color:#ff6ac1>import</span> {connect} from <span style=color:#5af78e>&#34;shasta&#34;</span>;
+<span style=color:#ff6ac1>import</span> actions from <span style=color:#5af78e>&#34;../core/actions&#34;</span>;
+<span style=color:#ff6ac1>import</span> DataComponent from <span style=color:#5af78e>&#34;shasta-data-view&#34;</span>;
 
-<span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>connect</span>({
-  <span style=color:#a6e22e>joke</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;api.subsets.joke&#39;</span>
+<span style=color:#ff5c57>@</span>connect({
+  joke<span style=color:#ff6ac1>:</span> <span style=color:#5af78e>&#39;api.subsets.joke&#39;</span>
 })
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ChuckFact</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>DataComponent</span> {
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> <span style=color:#ff6ac1>class</span> ChuckFact <span style=color:#ff6ac1>extends</span> DataComponent {
 
-  <span style=color:#a6e22e>resolveData</span> () {
-    <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>chuck</span>.<span style=color:#a6e22e>getRandomFact</span>({
-      <span style=color:#a6e22e>subset</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;joke&#39;</span>
+  resolveData () {
+    actions.chuck.getRandomFact({
+      subset<span style=color:#ff6ac1>:</span> <span style=color:#5af78e>&#39;joke&#39;</span>
     });
   }
 
-  <span style=color:#a6e22e>renderLoader</span> () {
-    <span style=color:#66d9ef>return</span> (
-      &lt;<span style=color:#f92672>div</span>&gt;
-        <span style=color:#a6e22e>Loading</span>...
-      &lt;/<span style=color:#f92672>div</span>&gt;
+  renderLoader () {
+    <span style=color:#ff6ac1>return</span> (
+      &lt;<span style=color:#ff6ac1>div</span>&gt;
+        Loading...
+      &lt;/<span style=color:#ff6ac1>div</span>&gt;
     )
   }
 
-  <span style=color:#a6e22e>renderData</span> ({<span style=color:#a6e22e>joke</span>}) {
-    <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span>&gt;
-      &lt;<span style=color:#f92672>h2</span>&gt;<span style=color:#a6e22e>Chuck</span> <span style=color:#a6e22e>Norris</span> <span style=color:#a6e22e>Fact</span>&lt;/<span style=color:#f92672>h2</span>&gt;
+  renderData ({joke}) {
+    <span style=color:#ff6ac1>return</span> &lt;<span style=color:#ff6ac1>div</span>&gt;
+      &lt;<span style=color:#ff6ac1>h2</span>&gt;Chuck Norris Fact&lt;/<span style=color:#ff6ac1>h2</span>&gt;
 
-      &lt;<span style=color:#f92672>p</span>&gt;{<span style=color:#a6e22e>joke</span>.<span style=color:#a6e22e>getIn</span>([<span style=color:#e6db74>&#39;value&#39;</span>, <span style=color:#e6db74>&#39;joke&#39;</span>])}&lt;/<span style=color:#f92672>p</span>&gt;
-    &lt;/<span style=color:#f92672>div</span>&gt;
+      &lt;<span style=color:#ff6ac1>p</span>&gt;{joke.getIn([<span style=color:#5af78e>&#39;value&#39;</span>, <span style=color:#5af78e>&#39;joke&#39;</span>])}&lt;/<span style=color:#ff6ac1>p</span>&gt;
+    &lt;/<span style=color:#ff6ac1>div</span>&gt;
   }
 
-  <span style=color:#a6e22e>renderErrors</span> (<span style=color:#a6e22e>errors</span>) {
-    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>error</span>(<span style=color:#a6e22e>errors</span>);
-    <span style=color:#66d9ef>return</span> (
-      &lt;<span style=color:#f92672>div</span>&gt;
-        <span style=color:#a6e22e>There</span> <span style=color:#a6e22e>was</span> <span style=color:#a6e22e>an</span> <span style=color:#a6e22e>error</span> <span style=color:#a6e22e>fetching</span> <span style=color:#a6e22e>Chuck</span> <span style=color:#a6e22e>Norris</span> <span style=color:#a6e22e>facts</span>
-      &lt;/<span style=color:#f92672>div</span>&gt;
+  renderErrors (errors) {
+    console.error(errors);
+    <span style=color:#ff6ac1>return</span> (
+      &lt;<span style=color:#ff6ac1>div</span>&gt;
+        There was an error fetching Chuck Norris facts
+      &lt;/<span style=color:#ff6ac1>div</span>&gt;
     )
   }
 }
@@ -305,13 +304,13 @@ data will end up.</p>
 <p>This is great to scope your fetch requests to a component.
 Here, our request ends up in the <code>api.subsets.joke</code> namespace.</p>
 <p>Here is the JSON returned by our API so you can understand the <code>getIn</code> call:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
-  <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;success&#34;</span>,
-  <span style=color:#f92672>&#34;value&#34;</span>: {
-    <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>459</span>,
-    <span style=color:#f92672>&#34;joke&#34;</span>: <span style=color:#e6db74>&#34;Chuck Norris can solve the Towers of Hanoi in one move.&#34;</span>,
-    <span style=color:#f92672>&#34;categories&#34;</span>: [
-        <span style=color:#e6db74>&#34;nerdy&#34;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#ff6ac1>&#34;type&#34;</span>: <span style=color:#5af78e>&#34;success&#34;</span>,
+  <span style=color:#ff6ac1>&#34;value&#34;</span>: {
+    <span style=color:#ff6ac1>&#34;id&#34;</span>: <span style=color:#ff9f43>459</span>,
+    <span style=color:#ff6ac1>&#34;joke&#34;</span>: <span style=color:#5af78e>&#34;Chuck Norris can solve the Towers of Hanoi in one move.&#34;</span>,
+    <span style=color:#ff6ac1>&#34;categories&#34;</span>: [
+        <span style=color:#5af78e>&#34;nerdy&#34;</span>
     ]
   }
 }
@@ -319,53 +318,53 @@ Here, our request ends up in the <code>api.subsets.joke</code> namespace.</p>
 <p>If we use a schema for the API call, we can tell normalizr that the <code>value</code> field
 in our JSON response is actually an entity.</p>
 <p>As such, we will be able to retrieve it in the <code>api.entities</code> namespace.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>response</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Schema</span>(<span style=color:#e6db74>&#39;response&#39;</span>);
-<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>joke</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Schema</span>(<span style=color:#e6db74>&#39;jokes&#39;</span>);
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff6ac1>const</span> response <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> Schema(<span style=color:#5af78e>&#39;response&#39;</span>);
+<span style=color:#ff6ac1>const</span> joke <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> Schema(<span style=color:#5af78e>&#39;jokes&#39;</span>);
 
-<span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>define</span>({
-  <span style=color:#a6e22e>value</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>joke</span>
+response.define({
+  value<span style=color:#ff6ac1>:</span> joke
 });
 </code></pre></div><p>Normalizr will create a map of jokes indexed by ids and store it in <code>api.entities.jokes</code>.
 Which allows us to write something like so:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>connect</span>({
-  <span style=color:#a6e22e>jokes</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;api.entities.jokes&#39;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#ff5c57>@</span>connect({
+  jokes<span style=color:#ff6ac1>:</span> <span style=color:#5af78e>&#39;api.entities.jokes&#39;</span>
 })
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ChuckFact</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>DataComponent</span> {
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> <span style=color:#ff6ac1>class</span> ChuckFact <span style=color:#ff6ac1>extends</span> DataComponent {
 
-  <span style=color:#a6e22e>renderData</span> ({<span style=color:#a6e22e>jokes</span>}) {
-    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>jokesEl</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>jokes</span>.<span style=color:#a6e22e>valueSeq</span>().<span style=color:#a6e22e>map</span>((<span style=color:#a6e22e>joke</span>, <span style=color:#a6e22e>id</span>) =&gt; {
-      <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>key</span><span style=color:#f92672>=</span>{<span style=color:#a6e22e>id</span>}&gt;{<span style=color:#a6e22e>joke</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#39;joke&#39;</span>)}&lt;/<span style=color:#f92672>div</span>&gt;
+  renderData ({jokes}) {
+    <span style=color:#ff6ac1>const</span> jokesEl <span style=color:#ff6ac1>=</span> jokes.valueSeq().map((joke, id) =&gt; {
+      <span style=color:#ff6ac1>return</span> &lt;<span style=color:#ff6ac1>div</span> <span style=color:#57c7ff>key</span><span style=color:#ff6ac1>=</span>{id}&gt;{joke.get(<span style=color:#5af78e>&#39;joke&#39;</span>)}&lt;/<span style=color:#ff6ac1>div</span>&gt;
     });
 
-    <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span>&gt;
-      &lt;<span style=color:#f92672>h2</span>&gt;<span style=color:#a6e22e>Chuck</span> <span style=color:#a6e22e>Norris</span> <span style=color:#a6e22e>Fact</span>&lt;/<span style=color:#f92672>h2</span>&gt;
+    <span style=color:#ff6ac1>return</span> &lt;<span style=color:#ff6ac1>div</span>&gt;
+      &lt;<span style=color:#ff6ac1>h2</span>&gt;Chuck Norris Fact&lt;/<span style=color:#ff6ac1>h2</span>&gt;
 
-      {<span style=color:#a6e22e>jokesEl</span>}
-    &lt;/<span style=color:#f92672>div</span>&gt;
+      {jokesEl}
+    &lt;/<span style=color:#ff6ac1>div</span>&gt;
   }
 }
 </code></pre></div><p>We can also use a function in the <code>@connect</code> decorator:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>getFirstJoke</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>store</span>) =&gt; {
-  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>store</span>.<span style=color:#a6e22e>getIn</span>([<span style=color:#e6db74>&#39;api&#39;</span>, <span style=color:#e6db74>&#39;subsets&#39;</span>, <span style=color:#e6db74>&#39;myJoke&#39;</span>, <span style=color:#e6db74>&#39;data&#39;</span>, <span style=color:#e6db74>&#39;value&#39;</span>, <span style=color:#e6db74>&#39;joke&#39;</span>]);
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-jsx data-lang=jsx><span style=color:#ff6ac1>const</span> getFirstJoke <span style=color:#ff6ac1>=</span> (store) =&gt; {
+  <span style=color:#ff6ac1>return</span> store.getIn([<span style=color:#5af78e>&#39;api&#39;</span>, <span style=color:#5af78e>&#39;subsets&#39;</span>, <span style=color:#5af78e>&#39;myJoke&#39;</span>, <span style=color:#5af78e>&#39;data&#39;</span>, <span style=color:#5af78e>&#39;value&#39;</span>, <span style=color:#5af78e>&#39;joke&#39;</span>]);
 };
 
-<span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>connect</span>({
-  <span style=color:#a6e22e>joke</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>getFirstJoke</span>
+<span style=color:#ff5c57>@</span>connect({
+  joke<span style=color:#ff6ac1>:</span> getFirstJoke
 })
-<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ChuckFact</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>DataComponent</span> {
+<span style=color:#ff6ac1>export</span> <span style=color:#ff6ac1>default</span> <span style=color:#ff6ac1>class</span> ChuckFact <span style=color:#ff6ac1>extends</span> DataComponent {
 
-  <span style=color:#a6e22e>resolveData</span> () {
-    <span style=color:#a6e22e>actions</span>.<span style=color:#a6e22e>chuck</span>.<span style=color:#a6e22e>getRandomFact</span>({
-      <span style=color:#a6e22e>subset</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;myJoke&#39;</span>
+  resolveData () {
+    actions.chuck.getRandomFact({
+      subset<span style=color:#ff6ac1>:</span> <span style=color:#5af78e>&#39;myJoke&#39;</span>
     });
   }
 
-  <span style=color:#a6e22e>renderData</span> ({<span style=color:#a6e22e>joke</span>}) {
-    <span style=color:#66d9ef>return</span> &lt;<span style=color:#f92672>div</span>&gt;
-      &lt;<span style=color:#f92672>h2</span>&gt;<span style=color:#a6e22e>Chuck</span> <span style=color:#a6e22e>Norris</span> <span style=color:#a6e22e>Fact</span>&lt;/<span style=color:#f92672>h2</span>&gt;
+  renderData ({joke}) {
+    <span style=color:#ff6ac1>return</span> &lt;<span style=color:#ff6ac1>div</span>&gt;
+      &lt;<span style=color:#ff6ac1>h2</span>&gt;Chuck Norris Fact&lt;/<span style=color:#ff6ac1>h2</span>&gt;
 
-      {<span style=color:#a6e22e>joke</span>}
-    &lt;/<span style=color:#f92672>div</span>&gt;
+      {joke}
+    &lt;/<span style=color:#ff6ac1>div</span>&gt;
   }
 }
 </code></pre></div><h2 id=conclusion>Conclusion<a hidden class=anchor aria-hidden=true href=#conclusion>#</a></h2>

@@ -8,8 +8,7 @@
 <meta name=description content="The DateTime API in Java 8 is awesome but default Jackson serialization is not. Let&rsquo;s fix that!">
 <meta name=author content>
 <link rel=canonical href=https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/>
-<link crossorigin=anonymous href=/assets/css/stylesheet.min.6f60056d44d3f7eb69a4bc6c332b59960f3a995802bded244750232f33713c49.css integrity="sha256-b2AFbUTT9+tppLxsMytZlg86mVgCve0kR1AjLzNxPEk=" rel="preload stylesheet" as=style>
-<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
 <link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png>
 <link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png>
@@ -84,19 +83,19 @@ using Jackson.</p>
 <p>The code is <a href=https://github.com/geowarin/boot-jsr310>available on github</a> if you want to take a look.</p>
 <h2 id=the-problem>The problem<a hidden class=anchor aria-hidden=true href=#the-problem>#</a></h2>
 <p>Let&rsquo;s write a simple controller:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@RestController</span>
-<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DateController</span> <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@RestController</span>
+<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>DateController</span> <span style=color:#ff6ac1>{</span>
 
-    <span style=color:#a6e22e>@RequestMapping</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;/localDate&#34;</span><span style=color:#f92672>)</span>
-    <span style=color:#66d9ef>public</span> LocalDate <span style=color:#a6e22e>todayLocalDate</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-        <span style=color:#66d9ef>return</span> LocalDate<span style=color:#f92672>.</span><span style=color:#a6e22e>now</span><span style=color:#f92672>();</span>
-    <span style=color:#f92672>}</span>
+    <span style=color:#ff9f43>@RequestMapping</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;/localDate&#34;</span><span style=color:#ff6ac1>)</span>
+    <span style=color:#ff5c57>public</span> LocalDate <span style=color:#57c7ff>todayLocalDate</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
+        <span style=color:#ff6ac1>return</span> LocalDate<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>now</span><span style=color:#ff6ac1>();</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#a6e22e>@RequestMapping</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;/offsetDateTime&#34;</span><span style=color:#f92672>)</span>
-    <span style=color:#66d9ef>public</span> OffsetDateTime <span style=color:#a6e22e>todayOffsetDateTime</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-        <span style=color:#66d9ef>return</span> OffsetDateTime<span style=color:#f92672>.</span><span style=color:#a6e22e>now</span><span style=color:#f92672>();</span>
-    <span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+    <span style=color:#ff9f43>@RequestMapping</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;/offsetDateTime&#34;</span><span style=color:#ff6ac1>)</span>
+    <span style=color:#ff5c57>public</span> OffsetDateTime <span style=color:#57c7ff>todayOffsetDateTime</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
+        <span style=color:#ff6ac1>return</span> OffsetDateTime<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>now</span><span style=color:#ff6ac1>();</span>
+    <span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>Simple, right? What could possibly go wrong?</p>
 <p><img loading=lazy src=/assets/images/articles/2016-02-localDate.png alt="Oh boy what am I going to do with that?" title="Bad date time">
 </p>
@@ -108,7 +107,7 @@ when you are targeting a Java date?</p>
 <h2 id=the-solution>The solution<a hidden class=anchor aria-hidden=true href=#the-solution>#</a></h2>
 <p>Turns out that the solution is pretty straight-forward.
 Just add the following dependency to your project:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#e6db74>&#39;com.fasterxml.jackson.datatype:jackson-datatype-jsr310&#39;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#5af78e>&#39;com.fasterxml.jackson.datatype:jackson-datatype-jsr310&#39;</span>
 </code></pre></div><p>And the result, for <code>LocalDateTime</code>:</p>
 <pre tabindex=0><code>[
   2016,
@@ -123,18 +122,18 @@ Just add the following dependency to your project:</p>
 depends on some features being activated or not.</p>
 <p>To have a better default, we can override the default <code>ObjectMapper</code> and give
 it a different config:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Configuration</span>
-<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>JacksonConfig</span> <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@Configuration</span>
+<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>JacksonConfig</span> <span style=color:#ff6ac1>{</span>
 
-    <span style=color:#a6e22e>@Bean</span>
-    <span style=color:#a6e22e>@Primary</span>
-    <span style=color:#66d9ef>public</span> ObjectMapper <span style=color:#a6e22e>objectMapper</span><span style=color:#f92672>(</span>Jackson2ObjectMapperBuilder builder<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-        ObjectMapper objectMapper <span style=color:#f92672>=</span> builder<span style=color:#f92672>.</span><span style=color:#a6e22e>createXmlMapper</span><span style=color:#f92672>(</span><span style=color:#66d9ef>false</span><span style=color:#f92672>).</span><span style=color:#a6e22e>build</span><span style=color:#f92672>();</span>
-        objectMapper<span style=color:#f92672>.</span><span style=color:#a6e22e>configure</span><span style=color:#f92672>(</span>SerializationFeature<span style=color:#f92672>.</span><span style=color:#a6e22e>WRITE_DATES_AS_TIMESTAMPS</span><span style=color:#f92672>,</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>);</span>
-<span style=color:#75715e>//        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
-</span><span style=color:#75715e></span>        <span style=color:#66d9ef>return</span> objectMapper<span style=color:#f92672>;</span>
-    <span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+    <span style=color:#ff9f43>@Bean</span>
+    <span style=color:#ff9f43>@Primary</span>
+    <span style=color:#ff5c57>public</span> ObjectMapper <span style=color:#57c7ff>objectMapper</span><span style=color:#ff6ac1>(</span>Jackson2ObjectMapperBuilder builder<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+        ObjectMapper objectMapper <span style=color:#ff6ac1>=</span> builder<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createXmlMapper</span><span style=color:#ff6ac1>(</span><span style=color:#ff6ac1>false</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>build</span><span style=color:#ff6ac1>();</span>
+        objectMapper<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>configure</span><span style=color:#ff6ac1>(</span>SerializationFeature<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>WRITE_DATES_AS_TIMESTAMPS</span><span style=color:#ff6ac1>,</span> <span style=color:#ff6ac1>false</span><span style=color:#ff6ac1>);</span>
+<span style=color:#78787e>//        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+</span><span style=color:#78787e></span>        <span style=color:#ff6ac1>return</span> objectMapper<span style=color:#ff6ac1>;</span>
+    <span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>This time the result is, for <code>LocalDateTime</code>:</p>
 <pre tabindex=0><code>2016-02-02
 </code></pre><p>And for <code>OffsetDateTime</code>:</p>

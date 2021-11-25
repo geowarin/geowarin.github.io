@@ -8,8 +8,7 @@
 <meta name=description content="With Gradle, you can create a Docker image of your Spring Boot application and ship it instead of shipping a jar">
 <meta name=author content>
 <link rel=canonical href=https://geowarin.com/build-a-docker-image-of-your-spring-boot-app/>
-<link crossorigin=anonymous href=/assets/css/stylesheet.min.6f60056d44d3f7eb69a4bc6c332b59960f3a995802bded244750232f33713c49.css integrity="sha256-b2AFbUTT9+tppLxsMytZlg86mVgCve0kR1AjLzNxPEk=" rel="preload stylesheet" as=style>
-<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
 <link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png>
 <link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png>
@@ -90,83 +89,83 @@ We will create a gradle/groovy application with no Spring Boot starter to keep t
 Since the application is going to loop forever, you can remove the generated test, which
 would loop forever too.</p>
 <p>Add the following dependency to your <code>build.gradle</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#e6db74>&#39;org.codehaus.groovy.modules.http-builder:http-builder:0.7.1&#39;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#5af78e>&#39;org.codehaus.groovy.modules.http-builder:http-builder:0.7.1&#39;</span>
 </code></pre></div><p>Since we will use the JSONSlurper, the idiomatic way to parse JSON in groovy, we will need
 to the change the groovy dependency to <code>groovy-all</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#e6db74>&#39;org.codehaus.groovy:groovy-all&#39;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>compile <span style=color:#5af78e>&#39;org.codehaus.groovy:groovy-all&#39;</span>
 </code></pre></div><h2 id=the-code>The code<a hidden class=anchor aria-hidden=true href=#the-code>#</a></h2>
 <p>The code is really simple:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy><span style=color:#f92672>package</span> com<span style=color:#f92672>.</span><span style=color:#a6e22e>github</span><span style=color:#f92672>.</span><span style=color:#a6e22e>geowarin</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy><span style=color:#ff6ac1>package</span> com<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>github</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>geowarin</span>
 
-<span style=color:#f92672>import</span> groovy.util.logging.Log4j
-<span style=color:#f92672>import</span> groovyx.net.http.RESTClient
-<span style=color:#f92672>import</span> org.apache.log4j.Level
-<span style=color:#f92672>import</span> org.springframework.boot.CommandLineRunner
-<span style=color:#f92672>import</span> org.springframework.stereotype.Component
+<span style=color:#ff6ac1>import</span> groovy.util.logging.Log4j
+<span style=color:#ff6ac1>import</span> groovyx.net.http.RESTClient
+<span style=color:#ff6ac1>import</span> org.apache.log4j.Level
+<span style=color:#ff6ac1>import</span> org.springframework.boot.CommandLineRunner
+<span style=color:#ff6ac1>import</span> org.springframework.stereotype.Component
 
-<span style=color:#a6e22e>@Component</span>
-<span style=color:#a6e22e>@Log4j</span>
-<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MainRunner</span> <span style=color:#66d9ef>implements</span> CommandLineRunner <span style=color:#f92672>{</span>
+<span style=color:#ff9f43>@Component</span>
+<span style=color:#ff9f43>@Log4j</span>
+<span style=color:#ff5c57>class</span> <span style=color:#f3f99d>MainRunner</span> <span style=color:#ff5c57>implements</span> CommandLineRunner <span style=color:#ff6ac1>{</span>
 
-    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> Random random <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Random<span style=color:#f92672>();</span>
+    <span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> Random random <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> Random<span style=color:#ff6ac1>();</span>
 
-    <span style=color:#a6e22e>@Override</span>
-    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>run</span><span style=color:#f92672>(</span>String<span style=color:#f92672>...</span> args<span style=color:#f92672>)</span> <span style=color:#66d9ef>throws</span> Exception <span style=color:#f92672>{</span>
-        <span style=color:#66d9ef>while</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-            log<span style=color:#f92672>.</span><span style=color:#a6e22e>log</span><span style=color:#f92672>(</span>randomLevel<span style=color:#f92672>(),</span> randomMessage<span style=color:#f92672>())</span>
-            sleep <span style=color:#ae81ff>3000</span>
-        <span style=color:#f92672>}</span>
-    <span style=color:#f92672>}</span>
+    <span style=color:#ff9f43>@Override</span>
+    <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>String<span style=color:#ff6ac1>...</span> args<span style=color:#ff6ac1>)</span> <span style=color:#ff5c57>throws</span> Exception <span style=color:#ff6ac1>{</span>
+        <span style=color:#ff6ac1>while</span> <span style=color:#ff6ac1>(</span><span style=color:#ff6ac1>true</span><span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+            log<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>log</span><span style=color:#ff6ac1>(</span>randomLevel<span style=color:#ff6ac1>(),</span> randomMessage<span style=color:#ff6ac1>())</span>
+            sleep <span style=color:#ff9f43>3000</span>
+        <span style=color:#ff6ac1>}</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#66d9ef>private</span> Level <span style=color:#a6e22e>randomLevel</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-        <span style=color:#66d9ef>switch</span> <span style=color:#f92672>(</span>random<span style=color:#f92672>.</span><span style=color:#a6e22e>nextInt</span><span style=color:#f92672>(</span><span style=color:#ae81ff>3</span><span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
-            <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>:</span>
-                <span style=color:#66d9ef>return</span> Level<span style=color:#f92672>.</span><span style=color:#a6e22e>DEBUG</span><span style=color:#f92672>;</span>
-            <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span>
-                <span style=color:#66d9ef>return</span> Level<span style=color:#f92672>.</span><span style=color:#a6e22e>INFO</span><span style=color:#f92672>;</span>
-            <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>2</span><span style=color:#f92672>:</span>
-                <span style=color:#66d9ef>return</span> Level<span style=color:#f92672>.</span><span style=color:#a6e22e>ERROR</span><span style=color:#f92672>;</span>
-            <span style=color:#66d9ef>default</span><span style=color:#f92672>:</span>
-                <span style=color:#66d9ef>return</span> Level<span style=color:#f92672>.</span><span style=color:#a6e22e>INFO</span><span style=color:#f92672>;</span>
-        <span style=color:#f92672>}</span>
-    <span style=color:#f92672>}</span>
+    <span style=color:#ff5c57>private</span> Level <span style=color:#57c7ff>randomLevel</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
+        <span style=color:#ff6ac1>switch</span> <span style=color:#ff6ac1>(</span>random<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>nextInt</span><span style=color:#ff6ac1>(</span><span style=color:#ff9f43>3</span><span style=color:#ff6ac1>))</span> <span style=color:#ff6ac1>{</span>
+            <span style=color:#ff6ac1>case</span> <span style=color:#ff9f43>0</span><span style=color:#ff6ac1>:</span>
+                <span style=color:#ff6ac1>return</span> Level<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>DEBUG</span><span style=color:#ff6ac1>;</span>
+            <span style=color:#ff6ac1>case</span> <span style=color:#ff9f43>1</span><span style=color:#ff6ac1>:</span>
+                <span style=color:#ff6ac1>return</span> Level<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>INFO</span><span style=color:#ff6ac1>;</span>
+            <span style=color:#ff6ac1>case</span> <span style=color:#ff9f43>2</span><span style=color:#ff6ac1>:</span>
+                <span style=color:#ff6ac1>return</span> Level<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>ERROR</span><span style=color:#ff6ac1>;</span>
+            <span style=color:#ff6ac1>default</span><span style=color:#ff6ac1>:</span>
+                <span style=color:#ff6ac1>return</span> Level<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>INFO</span><span style=color:#ff6ac1>;</span>
+        <span style=color:#ff6ac1>}</span>
+    <span style=color:#ff6ac1>}</span>
 
-    <span style=color:#66d9ef>private</span> String <span style=color:#a6e22e>randomMessage</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-        <span style=color:#66d9ef>def</span> client <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> RESTClient<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;http://api.icndb.com/jokes/&#39;</span><span style=color:#f92672>)</span>
-        <span style=color:#66d9ef>def</span> response <span style=color:#f92672>=</span> client<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>path: <span style=color:#e6db74>&#39;random&#39;</span><span style=color:#f92672>)</span>
-        response<span style=color:#f92672>.</span><span style=color:#a6e22e>data</span><span style=color:#f92672>.</span><span style=color:#a6e22e>value</span><span style=color:#f92672>.</span><span style=color:#a6e22e>joke</span>
-    <span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+    <span style=color:#ff5c57>private</span> String <span style=color:#57c7ff>randomMessage</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
+        <span style=color:#9aedfe>def</span> client <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> RESTClient<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#39;http://api.icndb.com/jokes/&#39;</span><span style=color:#ff6ac1>)</span>
+        <span style=color:#9aedfe>def</span> response <span style=color:#ff6ac1>=</span> client<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>get</span><span style=color:#ff6ac1>(</span><span style=color:#ff5c57>path:</span> <span style=color:#5af78e>&#39;random&#39;</span><span style=color:#ff6ac1>)</span>
+        response<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>data</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>value</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>joke</span>
+    <span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><h2 id=build-the-docker-image>Build the docker image<a hidden class=anchor aria-hidden=true href=#build-the-docker-image>#</a></h2>
 <p>Add the plugin repository to find the Docker plugin:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>buildscript <span style=color:#f92672>{</span>
-  ext <span style=color:#f92672>{</span>
-    springBootVersion <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;1.3.0.RELEASE&#39;</span>
-  <span style=color:#f92672>}</span>
-  repositories <span style=color:#f92672>{</span>
-    mavenCentral<span style=color:#f92672>()</span>
-  <span style=color:#f92672>}</span>
-  dependencies <span style=color:#f92672>{</span>
-    classpath<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}&#34;</span><span style=color:#f92672>)</span>
-    classpath <span style=color:#e6db74>&#34;se.transmode.gradle:gradle-docker:1.2&#34;</span> <span style=color:#75715e>// &lt;- Here
-</span><span style=color:#75715e></span>  <span style=color:#f92672>}</span>
-<span style=color:#f92672>}</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>buildscript <span style=color:#ff6ac1>{</span>
+  ext <span style=color:#ff6ac1>{</span>
+    springBootVersion <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#39;1.3.0.RELEASE&#39;</span>
+  <span style=color:#ff6ac1>}</span>
+  repositories <span style=color:#ff6ac1>{</span>
+    mavenCentral<span style=color:#ff6ac1>()</span>
+  <span style=color:#ff6ac1>}</span>
+  dependencies <span style=color:#ff6ac1>{</span>
+    classpath<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}&#34;</span><span style=color:#ff6ac1>)</span>
+    classpath <span style=color:#5af78e>&#34;se.transmode.gradle:gradle-docker:1.2&#34;</span> <span style=color:#78787e>// &lt;- Here
+</span><span style=color:#78787e></span>  <span style=color:#ff6ac1>}</span>
+<span style=color:#ff6ac1>}</span>
 </code></pre></div><p>Apply the Docker plugin:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>apply plugin: <span style=color:#e6db74>&#39;docker&#39;</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>apply <span style=color:#ff5c57>plugin:</span> <span style=color:#5af78e>&#39;docker&#39;</span>
 </code></pre></div><p>Finally, add the buildDocker task:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>task <span style=color:#a6e22e>buildDocker</span><span style=color:#f92672>(</span>type: Docker<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
-  baseImage <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;develar/java:latest&#39;</span>
-  push <span style=color:#f92672>=</span> project<span style=color:#f92672>.</span><span style=color:#a6e22e>hasProperty</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;push&#39;</span><span style=color:#f92672>)</span>
-  tag <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;geowarin/sout-chuck-norris&#39;</span>
-  addFile <span style=color:#f92672>{</span>
+<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>task <span style=color:#57c7ff>buildDocker</span><span style=color:#ff6ac1>(</span><span style=color:#ff5c57>type:</span> Docker<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
+  baseImage <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#39;develar/java:latest&#39;</span>
+  push <span style=color:#ff6ac1>=</span> project<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>hasProperty</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#39;push&#39;</span><span style=color:#ff6ac1>)</span>
+  tag <span style=color:#ff6ac1>=</span> <span style=color:#5af78e>&#39;geowarin/sout-chuck-norris&#39;</span>
+  addFile <span style=color:#ff6ac1>{</span>
     from jar
-    rename <span style=color:#f92672>{</span><span style=color:#e6db74>&#39;app.jar&#39;</span><span style=color:#f92672>}</span>
-  <span style=color:#f92672>}</span>
-  entryPoint<span style=color:#f92672>([</span><span style=color:#e6db74>&#39;java&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;-Djava.security.egd=file:/dev/./urandom&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;-jar&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;/app.jar&#39;</span><span style=color:#f92672>])</span>
-  <span style=color:#75715e>// exposePort(8080)
-</span><span style=color:#75715e></span><span style=color:#f92672>}</span>
+    rename <span style=color:#ff6ac1>{</span><span style=color:#5af78e>&#39;app.jar&#39;</span><span style=color:#ff6ac1>}</span>
+  <span style=color:#ff6ac1>}</span>
+  entryPoint<span style=color:#ff6ac1>([</span><span style=color:#5af78e>&#39;java&#39;</span><span style=color:#ff6ac1>,</span> <span style=color:#5af78e>&#39;-Djava.security.egd=file:/dev/./urandom&#39;</span><span style=color:#ff6ac1>,</span> <span style=color:#5af78e>&#39;-jar&#39;</span><span style=color:#ff6ac1>,</span> <span style=color:#5af78e>&#39;/app.jar&#39;</span><span style=color:#ff6ac1>])</span>
+  <span style=color:#78787e>// exposePort(8080)
+</span><span style=color:#78787e></span><span style=color:#ff6ac1>}</span>
 
-buildDocker<span style=color:#f92672>.</span><span style=color:#a6e22e>dependsOn</span><span style=color:#f92672>(</span>build<span style=color:#f92672>)</span>
+buildDocker<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>dependsOn</span><span style=color:#ff6ac1>(</span>build<span style=color:#ff6ac1>)</span>
 </code></pre></div><p>With this Docker plugin, every Docker instruction is available in the Gradle build
 so you don&rsquo;t even have to write a Dockerfile.</p>
 <p>In this task, we create an image called <code>geowarin/sout-chuck-norris</code> (change geowarin to
