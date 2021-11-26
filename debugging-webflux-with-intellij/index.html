@@ -6,7 +6,7 @@
 <title>Debugging Webflux with IntelliJ | Geowarin</title>
 <meta name=keywords content="spring">
 <meta name=description content="By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!">
-<meta name=author content>
+<meta name=author content="Geoffroy Warin">
 <link rel=canonical href=https://geowarin.com/debugging-webflux-with-intellij/>
 <link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
@@ -30,7 +30,7 @@
 <meta name=twitter:title content="Debugging Webflux with IntelliJ">
 <meta name=twitter:description content="By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!">
 <script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://geowarin.com/post/"},{"@type":"ListItem","position":3,"name":"Debugging Webflux with IntelliJ","item":"https://geowarin.com/debugging-webflux-with-intellij/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Debugging Webflux with IntelliJ","name":"Debugging Webflux with IntelliJ","description":"By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!","keywords":["spring"],"articleBody":"By default, when you try to debug project reactor calls, you get something like this:\nBut if you add this dependency :\ntestImplementation(\"io.projectreactor:reactor-tools\") And click on this little funnel:\nAlso ensure that you have the reactor plugin and that its properly configured.\nYou get this:\nMuch better!\nSources:\n Intellij blog  ","wordCount":"50","inLanguage":"en","datePublished":"2019-12-20T21:04:54+01:00","dateModified":"2019-12-20T21:04:54+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/debugging-webflux-with-intellij/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Debugging Webflux with IntelliJ","name":"Debugging Webflux with IntelliJ","description":"By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!","keywords":["spring"],"articleBody":"By default, when you try to debug project reactor calls, you get something like this:\nBut if you add this dependency :\ntestImplementation(\"io.projectreactor:reactor-tools\") And click on this little funnel:\nAlso ensure that you have the reactor plugin and that its properly configured.\nYou get this:\nMuch better!\nSources:\n Intellij blog  ","wordCount":"50","inLanguage":"en","datePublished":"2019-12-20T21:04:54+01:00","dateModified":"2019-12-20T21:04:54+01:00","author":{"@type":"Person","name":"Geoffroy Warin"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/debugging-webflux-with-intellij/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
 </head>
 <body id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
@@ -69,7 +69,7 @@
 <h1 class=post-title>
 Debugging Webflux with IntelliJ
 </h1>
-<div class=post-meta><span title="2019-12-20 21:04:54 +0100 +0100">December 20, 2019</span>&nbsp;·&nbsp;1 min
+<div class=post-meta><span title="2019-12-20 21:04:54 +0100 +0100">December 20, 2019</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Geoffroy Warin
 </div>
 </header>
 <div class=post-content><p>By default, when you try to debug project reactor calls, you get something like this:</p>

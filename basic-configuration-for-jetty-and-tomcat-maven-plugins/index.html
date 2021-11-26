@@ -6,7 +6,7 @@
 <title>Basic configuration for Jetty and tomcat maven plugins | Geowarin</title>
 <meta name=keywords content="jetty,maven Plugin,servlet 3.0,tomcat">
 <meta name=description content="Cheatsheet for jetty and tomcat maven plugins">
-<meta name=author content>
+<meta name=author content="Geoffroy Warin">
 <link rel=canonical href=https://geowarin.com/basic-configuration-for-jetty-and-tomcat-maven-plugins/>
 <link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
@@ -30,7 +30,7 @@
 <meta name=twitter:title content="Basic configuration for Jetty and tomcat maven plugins">
 <meta name=twitter:description content="Cheatsheet for jetty and tomcat maven plugins">
 <script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://geowarin.com/post/"},{"@type":"ListItem","position":3,"name":"Basic configuration for Jetty and tomcat maven plugins","item":"https://geowarin.com/basic-configuration-for-jetty-and-tomcat-maven-plugins/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Basic configuration for Jetty and tomcat maven plugins","name":"Basic configuration for Jetty and tomcat maven plugins","description":"Cheatsheet for jetty and tomcat maven plugins","keywords":["jetty","maven Plugin","servlet 3.0","tomcat"],"articleBody":"This is a quick memento on how to set up tomcat7-maven-plugin and jetty-maven plugin (current version is 8).\nIt is interesting to note both of these servers are servlet 3.0 compatible.\nSetting up Jetty :\nNow your can run mvn jetty:run\nTo set up tomcat-7 plugin, you will have to add either the plugin to the pluginManagement section of your pom (more portable) - see below - or adding the pluginGroup to your settings.xml.\nNow your can run mvn tomcat7:run\npluginGroup :\n .... org.apache.tomcat.maven ....  ","wordCount":"87","inLanguage":"en","datePublished":"2013-01-22T04:07:49Z","dateModified":"2013-01-22T04:07:49Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/basic-configuration-for-jetty-and-tomcat-maven-plugins/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Basic configuration for Jetty and tomcat maven plugins","name":"Basic configuration for Jetty and tomcat maven plugins","description":"Cheatsheet for jetty and tomcat maven plugins","keywords":["jetty","maven Plugin","servlet 3.0","tomcat"],"articleBody":"This is a quick memento on how to set up tomcat7-maven-plugin and jetty-maven plugin (current version is 8).\nIt is interesting to note both of these servers are servlet 3.0 compatible.\nSetting up Jetty :\nNow your can run mvn jetty:run\nTo set up tomcat-7 plugin, you will have to add either the plugin to the pluginManagement section of your pom (more portable) - see below - or adding the pluginGroup to your settings.xml.\nNow your can run mvn tomcat7:run\npluginGroup :\n .... org.apache.tomcat.maven ....  ","wordCount":"87","inLanguage":"en","datePublished":"2013-01-22T04:07:49Z","dateModified":"2013-01-22T04:07:49Z","author":{"@type":"Person","name":"Geoffroy Warin"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/basic-configuration-for-jetty-and-tomcat-maven-plugins/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
 </head>
 <body id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
@@ -69,7 +69,7 @@
 <h1 class=post-title>
 Basic configuration for Jetty and tomcat maven plugins
 </h1>
-<div class=post-meta><span title="2013-01-22 04:07:49 +0000 UTC">January 22, 2013</span>&nbsp;·&nbsp;1 min
+<div class=post-meta><span title="2013-01-22 04:07:49 +0000 UTC">January 22, 2013</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Geoffroy Warin
 </div>
 </header>
 <div class=post-content><p>This is a quick memento on how to set up <a href=http://tomcat.apache.org/maven-plugin-2.0/>tomcat7-maven-plugin</a> and <a href=http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin>jetty-maven plugin</a> (current version is 8).</p>

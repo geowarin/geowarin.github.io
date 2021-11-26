@@ -6,7 +6,7 @@
 <title>Share IntelliJ run configurations with git | Geowarin</title>
 <meta name=keywords content="intellij,git">
 <meta name=description content="Isn&rsquo;t it great when you checkout a project and have everything at hand to run it?">
-<meta name=author content>
+<meta name=author content="Geoffroy Warin">
 <link rel=canonical href=https://geowarin.com/share-intellij-run-configurations-with-git/>
 <link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
@@ -30,7 +30,7 @@
 <meta name=twitter:title content="Share IntelliJ run configurations with git">
 <meta name=twitter:description content="Isn&rsquo;t it great when you checkout a project and have everything at hand to run it?">
 <script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://geowarin.com/post/"},{"@type":"ListItem","position":3,"name":"Share IntelliJ run configurations with git","item":"https://geowarin.com/share-intellij-run-configurations-with-git/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Share IntelliJ run configurations with git","name":"Share IntelliJ run configurations with git","description":"Isn\u0026rsquo;t it great when you checkout a project and have everything at hand to run it?","keywords":["intellij","git"],"articleBody":"This is a short note on how to share your intelliJ run configurations with git.\nFirst your .gitignore must whitelist the .idea/runConfigurations folder but not the rest of the .idea folder.\nYou probably don’t want to commit the entire folder because it can contain personal settings and plugin configurations.\n!.idea .idea/* !.idea/runConfigurations Here is a compound run configuration. It’s awesome. It launches multiple run configurations at once.\nThen you want to check the Share throught VCS checkbox on the top right corner, this will add an xml file to the .idea/runConfigurations file that you can commit and push.\n","wordCount":"98","inLanguage":"en","datePublished":"2019-12-22T01:47:32+01:00","dateModified":"2019-12-22T01:47:32+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/share-intellij-run-configurations-with-git/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Share IntelliJ run configurations with git","name":"Share IntelliJ run configurations with git","description":"Isn\u0026rsquo;t it great when you checkout a project and have everything at hand to run it?","keywords":["intellij","git"],"articleBody":"This is a short note on how to share your intelliJ run configurations with git.\nFirst your .gitignore must whitelist the .idea/runConfigurations folder but not the rest of the .idea folder.\nYou probably don’t want to commit the entire folder because it can contain personal settings and plugin configurations.\n!.idea .idea/* !.idea/runConfigurations Here is a compound run configuration. It’s awesome. It launches multiple run configurations at once.\nThen you want to check the Share throught VCS checkbox on the top right corner, this will add an xml file to the .idea/runConfigurations file that you can commit and push.\n","wordCount":"98","inLanguage":"en","datePublished":"2019-12-22T01:47:32+01:00","dateModified":"2019-12-22T01:47:32+01:00","author":{"@type":"Person","name":"Geoffroy Warin"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/share-intellij-run-configurations-with-git/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
 </head>
 <body id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
@@ -69,7 +69,7 @@
 <h1 class=post-title>
 Share IntelliJ run configurations with git
 </h1>
-<div class=post-meta><span title="2019-12-22 01:47:32 +0100 +0100">December 22, 2019</span>&nbsp;·&nbsp;1 min
+<div class=post-meta><span title="2019-12-22 01:47:32 +0100 +0100">December 22, 2019</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Geoffroy Warin
 </div>
 </header>
 <div class=post-content><p>This is a short note on how to share your intelliJ run configurations with git.</p>
