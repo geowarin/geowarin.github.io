@@ -55,6 +55,14 @@ params:
     - name: linkedin
       url: "https://linkedin.com/in/geowarin"
 
+  description: "Another web developer’s blog"
+  author: "Geoffroy Warin"
+  keywords:
+    - web
+    - linux
+    - development
+    - blog
+
 outputs:
   home:
     - HTML
