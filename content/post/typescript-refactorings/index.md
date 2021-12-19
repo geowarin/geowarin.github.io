@@ -35,7 +35,7 @@ until it looks right, then I can extract subcomponents with a simple keybinding.
 
 {{< figure src="images/extract-component.gif" >}}
 
-I have bound this refactoring to `Ctlr+Alt+Shift+M` because it is similar to the extract method refactoring (`Ctlr+Shift+M`).
+I have bound this refactoring to `Ctlr+Alt+Shift+M` because it is similar to the extract method refactoring (`Ctlr+Alt+M`).
 
 You should definitely check out the `Extract method` refactoring, by the way 😀.
 
