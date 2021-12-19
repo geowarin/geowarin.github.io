@@ -1,0 +1,27 @@
+<div id="img-overlay" style="display: none;">
+    <div id="img-content"></div>
+</div>
+
+<script>
+    document.querySelectorAll('figure > img').forEach((img) => {
+        img.style.cursor = "pointer";
+        img.addEventListener("click", () => {
+            const overlay = document.querySelector("#img-overlay");
+            overlay.style.display = "flex";
+            const imgOverlay = document.createElement("img");
+            imgOverlay.src = img.src;
+            document.querySelector("#img-content").replaceChildren(imgOverlay);
+        });
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === 'Escape') {
+            document.querySelector("#img-overlay").style.display = "none";
+        }
+    })
+    document.querySelector("#img-overlay").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) {
+            document.querySelector("#img-overlay").style.display = "none";
+        }
+    })
+</script>
+
