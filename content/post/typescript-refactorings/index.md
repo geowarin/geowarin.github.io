@@ -74,3 +74,5 @@ Finally, while I showed you toy examples on a small scale, you can probably imag
 be saved on a larger scale refactoring!
 
 Thanks to [horsty](https://horsty.fr/) for encouraging me to write this article.
+You should check out his blog (in French). He's using the same blog template as I do, he is
+a man of taste. 😉
