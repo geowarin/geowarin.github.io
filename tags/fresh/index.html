@@ -8,7 +8,7 @@
 <meta name=description content="Another web developer’s blog">
 <meta name=author content="Geoffroy Warin">
 <link rel=canonical href=https://geowarin.com/tags/fresh/>
-<link crossorigin=anonymous href=/assets/css/stylesheet.min.0c6bab6237d3d95167e534d00faa9d5af7c1569f29eb76017774163ee741216a.css integrity="sha256-DGurYjfT2VFn5TTQD6qdWvfBVp8p63YBd3QWPudBIWo=" rel="preload stylesheet" as=style>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.f9bed4d31e010416d72e164ef9792664e7b4470462781b2272c4f00f3f4c28ed.css integrity="sha256-+b7U0x4BBBbXLhZO+XkmZOe0RwRieBsicsTwDz9MKO0=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://geowarin.com/favicon.ico>
 <link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png>
 <link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png>
@@ -84,7 +84,10 @@ Powered by
 </span>
 </footer>
 <a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</a>
+</a><div id=img-overlay style=display:none>
+<div id=img-content></div>
+</div>
+<script>document.querySelectorAll('figure > img').forEach(a=>{a.style.cursor="pointer",a.addEventListener("click",()=>{const c=document.querySelector("#img-overlay");c.style.display="flex";const b=document.createElement("img");b.src=a.src,document.querySelector("#img-content").replaceChildren(b)})}),document.addEventListener("keydown",a=>{a.key==='Escape'&&(document.querySelector("#img-overlay").style.display="none")}),document.querySelector("#img-overlay").addEventListener("click",a=>{a.target===a.currentTarget&&(document.querySelector("#img-overlay").style.display="none")})</script>
 <script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
 <script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
 <script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
