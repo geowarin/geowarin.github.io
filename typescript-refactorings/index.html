@@ -32,7 +32,7 @@
 <meta name=twitter:title content="Typescript refactorings">
 <meta name=twitter:description content="Essential React and Typescript refactorings">
 <script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://geowarin.com/post/"},{"@type":"ListItem","position":3,"name":"Typescript refactorings","item":"https://geowarin.com/typescript-refactorings/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Typescript refactorings","name":"Typescript refactorings","description":"Essential React and Typescript refactorings","keywords":["react","typescript"],"articleBody":"If you are using React and Typescript, there is a lot that your editor can do to help you.\nHere are my favorite refactorings, I’m using IntelliJ for the screencast, but most of this will be available in VSCode as well.\nRename If I had to take a single refactoring to a desert island, it would be the “rename” refactoring.\nWith a typed language, you have no reasons not to use this.\n  IntelliJ has smart renames and understand getter/setter paradigms.\nCompared to ctrl+R or other manual replace actions, your editor will make sure that you correctly select only the relevant variable/method as well as being a lot faster.\nExtract component This refactoring is a real MVP. This enables a whole workflow for me: when I prototype, I lay down all the HTML until it looks right, then I can extract subcomponents with a simple keybinding.\n  I have bound this refactoring to Ctlr+Alt+Shift+M because it is similar to the extract method refactoring (Ctlr+Alt+M).\nYou should definitely check out the Extract method refactoring, by the way 😀.\nExtract variable This will allow you add meaningful names to your code in a heartbeat.\n  I should have checked the constant checkbox here, to have a const var instead of a let. 🤦‍\nExtract type The extract variable refactoring also works on types!\n  You can then use Alt+Enter to convert the type to an interface if you wish.\nMove I’m nearly done with my refactoring here, I just need my menu to be in its own file\n  And voilà!\nConclusion Refactoring can dramatically increase your productivity by providing useful keybindings for sometimes complex code transformations.\nThey also give you full confidence that the resulting code will be 100% valid.\nFinally, while I showed you toy examples on a small scale, you can probably imagine how much time will be saved on a larger scale refactoring!\nThanks to horsty for encouraging me to write this article. You should check out his blog (in French). He’s using the same blog template as I do, he is a man of taste. 😉\n","wordCount":"344","inLanguage":"en","image":"https://geowarin.com/typescript-refactorings/images/cover.png","datePublished":"2021-12-19T16:44:00+01:00","dateModified":"2021-12-19T16:44:00+01:00","author":{"@type":"Person","name":"Geoffroy Warin"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/typescript-refactorings/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Typescript refactorings","name":"Typescript refactorings","description":"Essential React and Typescript refactorings","keywords":["react","typescript"],"articleBody":"If you are using React and Typescript, there is a lot that your editor can do to help you.\nHere are my favorite refactorings, I’m using IntelliJ for the screencast, but most of this will be available in VSCode as well.\nRename If I had to take a single refactoring to a desert island, it would be the “rename” refactoring.\nWith a typed language, you have no reasons not to use this.\n  Rename (Shift+F6)\n  IntelliJ has smart renames and understand getter/setter paradigms.\nCompared to Ctrl+R or other manual replace actions, your editor will make sure that you correctly select only the relevant variable/method as well as being a lot faster.\nExtract component This refactoring is a real MVP. This enables a whole workflow for me: when I prototype, I lay down all the HTML until it looks right, then I can extract subcomponents with a simple keybinding.\n  Extract component (no default keybinding)\n  I have bound this refactoring to Ctlr+Alt+Shift+M because it is similar to the extract method refactoring (Ctlr+Alt+M).\nYou should definitely check out the Extract method refactoring, by the way 😀.\nExtract variable This will allow you add meaningful names to your code in a heartbeat.\n  Extract variable (Ctrl+Alt+V)\n  I should have checked the const checkbox here, to have a const variable generated, instead of a let. 🤦‍\nExtract type The extract variable refactoring also works on types!\n  Extract type (Ctrl+Alt+V)\n  You can then use Alt+Enter to convert the type to an interface if you wish.\nMove I’m nearly done with my refactoring here, I just need my menu to be in its own file\n  Move (F6)\n  And voilà!\nConclusion Refactoring can dramatically increase your productivity by providing useful keybindings for sometimes complex code transformations.\nThey also give you full confidence that the resulting code will be 100% valid.\nFinally, while I showed you toy examples on a small scale, you can probably imagine how much time will be saved on a larger scale refactorings!\nThanks to horsty for encouraging me to write this article. You should check out his blog (in French). He’s using the same blog template as I do, he is a man of taste. 😉\n","wordCount":"360","inLanguage":"en","image":"https://geowarin.com/typescript-refactorings/images/cover.png","datePublished":"2021-12-19T16:44:00+01:00","dateModified":"2021-12-19T16:44:00+01:00","author":{"@type":"Person","name":"Geoffroy Warin"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/typescript-refactorings/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
 </head>
 <body id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
@@ -87,35 +87,46 @@ will be available in VSCode as well.</p>
 <p>If I had to take a single refactoring to a desert island, it would be the &ldquo;rename&rdquo; refactoring.</p>
 <p>With a typed language, you have no reasons not to use this.</p>
 <figure>
-<img loading=lazy src=images/rename.gif>
+<img loading=lazy src=images/rename.gif alt="Rename (Shift+F6)"> <figcaption>
+<p>Rename (Shift+F6)</p>
+</figcaption>
 </figure>
 <p>IntelliJ has smart renames and understand getter/setter paradigms.</p>
-<p>Compared to <code>ctrl+R</code> or other manual replace actions, your editor will make sure that you correctly select
+<p>Compared to <code>Ctrl+R</code> or other manual replace actions, your editor will make sure that you correctly select
 only the relevant variable/method as well as being a lot faster.</p>
 <h2 id=extract-component>Extract component<a hidden class=anchor aria-hidden=true href=#extract-component>#</a></h2>
 <p>This refactoring is a real MVP. This enables a whole workflow for me: when I prototype, I lay down all the HTML
 until it looks right, then I can extract subcomponents with a simple keybinding.</p>
 <figure>
-<img loading=lazy src=images/extract-component.gif>
+<img loading=lazy src=images/extract-component.gif alt="Extract component (no default keybinding)"> <figcaption>
+<p>Extract component (no default keybinding)</p>
+</figcaption>
 </figure>
 <p>I have bound this refactoring to <code>Ctlr+Alt+Shift+M</code> because it is similar to the extract method refactoring (<code>Ctlr+Alt+M</code>).</p>
 <p>You should definitely check out the <code>Extract method</code> refactoring, by the way 😀.</p>
 <h2 id=extract-variable>Extract variable<a hidden class=anchor aria-hidden=true href=#extract-variable>#</a></h2>
 <p>This will allow you add meaningful names to your code in a heartbeat.</p>
 <figure>
-<img loading=lazy src=images/extract-var.gif>
+<img loading=lazy src=images/extract-var.gif alt="Extract variable (Ctrl+Alt+V)"> <figcaption>
+<p>Extract variable (Ctrl+Alt+V)</p>
+</figcaption>
 </figure>
-<p>I should have checked the <code>constant</code> checkbox here, to have a <code>const</code> var instead of a <code>let</code>. 🤦‍</p>
+<p>I should have checked the <code>const</code> checkbox here, to have a <code>const</code> variable generated,
+instead of a <code>let</code>. 🤦‍</p>
 <h2 id=extract-type>Extract type<a hidden class=anchor aria-hidden=true href=#extract-type>#</a></h2>
 <p>The extract variable refactoring also works on types!</p>
 <figure>
-<img loading=lazy src=images/extract-type.gif>
+<img loading=lazy src=images/extract-type.gif alt="Extract type (Ctrl+Alt+V)"> <figcaption>
+<p>Extract type (Ctrl+Alt+V)</p>
+</figcaption>
 </figure>
 <p>You can then use <code>Alt+Enter</code> to convert the type to an interface if you wish.</p>
 <h2 id=move>Move<a hidden class=anchor aria-hidden=true href=#move>#</a></h2>
 <p>I&rsquo;m nearly done with my refactoring here, I just need my menu to be in its own file</p>
 <figure>
-<img loading=lazy src=images/move.gif>
+<img loading=lazy src=images/move.gif alt="Move (F6)"> <figcaption>
+<p>Move (F6)</p>
+</figcaption>
 </figure>
 <p>And voilà!</p>
 <h2 id=conclusion>Conclusion<a hidden class=anchor aria-hidden=true href=#conclusion>#</a></h2>
@@ -123,7 +134,7 @@ until it looks right, then I can extract subcomponents with a simple keybinding.
 transformations.</p>
 <p>They also give you full confidence that the resulting code will be 100% valid.</p>
 <p>Finally, while I showed you toy examples on a small scale, you can probably imagine how much time will
-be saved on a larger scale refactoring!</p>
+be saved on a larger scale refactorings!</p>
 <p>Thanks to <a href=https://horsty.fr/>horsty</a> for encouraging me to write this article.
 You should check out his blog (in French). He&rsquo;s using the same blog template as I do, he is
 a man of taste. 😉</p>
