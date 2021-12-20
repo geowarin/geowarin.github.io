@@ -26,12 +26,12 @@ With a typed language, you have no reasons not to use this.
 IntelliJ has smart renames and understand getter/setter paradigms.
 
 Compared to `Ctrl+R` or other manual replace actions, your editor will make sure that you correctly select
-only the relevant variable/method, as well as being a lot faster.
+the relevant variables/methods, as well as being a lot faster.
 
 ## Extract component
 
 This refactoring is a real MVP. This enables a whole workflow for me: when I prototype, I lay down all the HTML
-until it looks right, then I can extract subcomponents with a simple keybinding.
+until it looks right. Then I can extract subcomponents with a simple keybinding.
 
 {{< figure src="images/extract-component.gif" caption="Extract component (no default keybinding)" >}}
 
