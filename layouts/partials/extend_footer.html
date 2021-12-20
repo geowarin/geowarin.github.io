@@ -1,27 +1,48 @@
 <div id="img-overlay" style="display: none;">
-    <div id="img-content"></div>
+    <button class="close">X</button>
+    <div class="overlay-content">
+        <img id="img-content">
+        <div id="img-caption"></div>
+    </div>
 </div>
 
 <script>
-    document.querySelectorAll('figure > img').forEach((img) => {
+    const figures = document.querySelectorAll('figure > img');
+    const overlay = document.querySelector("#img-overlay");
+    let currentIndex = 0;
+
+    function showOverlay(index) {
+        currentIndex = Math.min(Math.max(index, 0), figures.length - 1);
+        const image = figures[currentIndex];
+        overlay.style.display = "flex";
+        document.querySelector("#img-content").src = image.src;
+        const caption = image.parentNode.querySelector('figcaption');
+        document.querySelector("#img-caption").innerHTML = caption ? caption.textContent : "";
+    }
+
+    figures.forEach((img, index) => {
         img.style.cursor = "pointer";
-        img.addEventListener("click", () => {
-            const overlay = document.querySelector("#img-overlay");
-            overlay.style.display = "flex";
-            const imgOverlay = document.createElement("img");
-            imgOverlay.src = img.src;
-            document.querySelector("#img-content").replaceChildren(imgOverlay);
-        });
+        img.addEventListener("click", () => showOverlay(index));
     });
+
+    function closeOverlay() {
+        overlay.style.display = "none";
+    }
+
     document.addEventListener("keydown", (e) => {
         if (e.key === 'Escape') {
-            document.querySelector("#img-overlay").style.display = "none";
+            closeOverlay();
+        } else if (e.key === 'ArrowRight') {
+            showOverlay(++currentIndex)
+        } else if (e.key === 'ArrowLeft') {
+            showOverlay(--currentIndex)
         }
     })
-    document.querySelector("#img-overlay").addEventListener("click", (e) => {
+    overlay.addEventListener("click", (e) => {
         if (e.target === e.currentTarget) {
-            document.querySelector("#img-overlay").style.display = "none";
+            closeOverlay();
         }
     })
+    document.querySelector("#img-overlay .close").addEventListener("click", closeOverlay);
 </script>
 
