@@ -26,7 +26,7 @@ With a typed language, you have no reasons not to use this.
 IntelliJ has smart renames and understand getter/setter paradigms.
 
 Compared to `Ctrl+R` or other manual replace actions, your editor will make sure that you correctly select
-only the relevant variable/method as well as being a lot faster.
+only the relevant variable/method, as well as being a lot faster.
 
 ## Extract component
 
@@ -35,13 +35,13 @@ until it looks right, then I can extract subcomponents with a simple keybinding.
 
 {{< figure src="images/extract-component.gif" caption="Extract component (no default keybinding)" >}}
 
-I have bound this refactoring to `Ctlr+Alt+Shift+M` because it is similar to the extract method refactoring (`Ctlr+Alt+M`).
+I have bound this refactoring to `Ctlr+Alt+Shift+M` because it resembles the extract method refactoring (`Ctlr+Alt+M`).
 
 You should definitely check out the `Extract method` refactoring, by the way 😀.
 
 ## Extract variable
 
-This will allow you add meaningful names to your code in a heartbeat. 
+This will allow you to add meaningful names to your code in a heartbeat. 
 
 {{< figure src="images/extract-var.gif" caption="Extract variable (Ctrl+Alt+V)" >}}
 
@@ -58,7 +58,7 @@ You can then use `Alt+Enter` to convert the type to an interface if you wish.
 
 ## Move
 
-I'm nearly done with my refactoring here, I just need my menu to be in its own file
+I'm nearly done with my refactoring here, I just need my menu to be in its own file.
 
 {{< figure src="images/move.gif" caption="Move (F6)" >}}
 
@@ -66,12 +66,12 @@ And voilà!
 
 ## Conclusion
 
-Refactoring can dramatically increase your productivity by providing useful keybindings for sometimes complex code 
+Refactoring can dramatically increase your productivity by providing useful keybindings for complex code
 transformations.
 
 They also give you full confidence that the resulting code will be 100% valid.
 
-Finally, while I showed you toy examples on a small scale, you can probably imagine how much time will
+Finally, while I showed you examples on a small scale, you can probably imagine how much time will
 be saved on larger scale refactorings!
 
 Thanks to [horsty](https://horsty.fr/) for encouraging me to write this article.
