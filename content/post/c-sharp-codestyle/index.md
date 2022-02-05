@@ -117,13 +117,13 @@ It's probably not 100% correct, but I'll try to update it as I go.
 
 ## Conclusion
 
-Tooling is curcial to have a consistent code style in your projects.
+Tooling is crucial to have a homogenous code style in your projects.
 
 I know that most C# devs will be horrified by my personal code style but this is
 irrelevant. What's important is to have a code style and be consistent.
 
-I now have an `.editorconfig` file that I can drop in my personal projects to have my
-code style applied when I format my code.
+I now have an `.editorconfig` file that I can drop in my personal projects and is applied automatically
+when I format my code.
 
 This is enough for my personal projects, but there are other tools that might be interesting
 to look at in the future:
