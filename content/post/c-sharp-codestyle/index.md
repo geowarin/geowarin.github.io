@@ -122,10 +122,10 @@ Tooling is crucial to have a homogenous code style in your projects.
 I know that most C# devs will be horrified by my personal code style but this is
 irrelevant. What's important is to have a code style and be consistent.
 
-I now have an `.editorconfig` file that I can drop in my personal projects and is applied automatically
+I now have an `.editorconfig` file that I can drop in my projects and is applied automatically
 when I format my code.
 
-This is enough for my personal projects, but there are other tools that might be interesting
+This is enough for my side projects, but there are other tools that might be interesting
 to look at in the future:
 
 - [dotnet format](https://github.com/dotnet/format)
