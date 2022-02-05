@@ -70,7 +70,7 @@ and simple to follow.
 
 ## Tooling via editor config
 
-Both Visual Studio and Rider support coding style via editorconfig:
+Both Visual Studio and Rider support coding style via [editorconfig](https://editorconfig.org/):
 
  - [Rider](https://www.jetbrains.com/help/rider/2021.3/Using_EditorConfig.html)
  - [Visual Studio](https://docs.microsoft.com/en-us/visualstudio/ide/code-styles-and-code-cleanup?view=vs-2022)
