@@ -80,7 +80,7 @@ that gave me a simple base to work on.
 
 In summary, it allows you to define styles:
 
-```config
+```ini
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
                     
 dotnet_naming_style.lower_camel_case_style.required_prefix = _
@@ -90,20 +90,26 @@ dotnet_naming_style.lower_camel_case_style.capitalization = camel_case
 You can then use those styles in rules that have this form `<kind>.<name>.<prop>` where the
 name is defined by you:
 
-```config
-# Names of private, protected, internal and protected internal fields and properties: _camelCase
-dotnet_naming_rule.private_rule.severity = warning
-dotnet_naming_rule.private_rule.symbols = private_fields
-dotnet_naming_rule.private_rule.style = lower_camel_case_style
+```ini
+# privatish fields and properties: _camelCase
+
+# define 'private_fields'
 dotnet_naming_symbols.private_fields.applicable_kinds = field
 dotnet_naming_symbols.private_fields.applicable_accessibilities = private, protected, internal, protected_internal, private_protected
 
+# apply lower_camel_case_style to private fields
+dotnet_naming_rule.private_rule.symbols = private_fields
+dotnet_naming_rule.private_rule.style = lower_camel_case_style
+
+
 # Use PascalCase for public fields
-dotnet_naming_rule.pascal_case_for_public_fields.severity = warning
-dotnet_naming_rule.pascal_case_for_public_fields.symbols = public_fields
 dotnet_naming_rule.pascal_case_for_public_fields.style = pascal_case_style
 dotnet_naming_symbols.public_fields.applicable_kinds = field
 dotnet_naming_symbols.public_fields.applicable_accessibilities = public
+
+dotnet_naming_rule.pascal_case_for_public_fields.severity = warning
+dotnet_naming_rule.pascal_case_for_public_fields.symbols = public_fields
+
 ```
 
 See [the documentation](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#net-style-rules).
