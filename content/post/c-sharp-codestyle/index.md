@@ -2,7 +2,7 @@
 title: "C# code style"
 url: "c-sharp-code-style"
 date: 2022-02-05T02:12:39+01:00
-tags: []
+tags: [CSharp]
 summary: Use editor config files to enforce your code style automatically!
 cover:
     image: images/cover.png
