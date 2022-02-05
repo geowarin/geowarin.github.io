@@ -87,8 +87,8 @@ dotnet_naming_style.lower_camel_case_style.required_prefix = _
 dotnet_naming_style.lower_camel_case_style.capitalization = camel_case
 ```
 
-You can then use those styles in rules that have this form `<kind>.<name>.<prop>` where the
-name is defined by you:
+You can then use those styles in rules that have this form `<kind>.<name>.<prop>`, where the
+`<name>` is defined by you:
 
 ```ini
 # privatish fields and properties: _camelCase
@@ -103,12 +103,12 @@ dotnet_naming_rule.private_rule.style = lower_camel_case_style
 
 
 # Use PascalCase for public fields
-dotnet_naming_rule.pascal_case_for_public_fields.style = pascal_case_style
 dotnet_naming_symbols.public_fields.applicable_kinds = field
 dotnet_naming_symbols.public_fields.applicable_accessibilities = public
 
-dotnet_naming_rule.pascal_case_for_public_fields.severity = warning
 dotnet_naming_rule.pascal_case_for_public_fields.symbols = public_fields
+dotnet_naming_rule.pascal_case_for_public_fields.style = pascal_case_style
+dotnet_naming_rule.pascal_case_for_public_fields.severity = warning
 
 ```
 
