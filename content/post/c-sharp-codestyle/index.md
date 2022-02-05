@@ -30,7 +30,7 @@ Microsoft has [some guidelines](https://docs.microsoft.com/en-us/dotnet/standard
 but I found them a bit lacking. 
 
 Roslyn has [a strict code style](https://github.com/dotnet/corefx/blob/master/Documentation/coding-guidelines/coding-style.md).
-They are enforced via their [code formatter](https://github.com/dotnet/codeformatter).
+It is enforced via their [code formatter](https://github.com/dotnet/codeformatter).
 
 They also have an [.editorconfig file](https://github.com/dotnet/roslyn/blob/main/.editorconfig).
 
