@@ -58,7 +58,7 @@ tries to remove ambiguities from the official Microsoft guidelines.
 - `PascalCase` for everything `public`
 - `I` prefix for interfaces
 - use `var` only when usage is obvious
-- Always use braces even when optional
+- Always use braces, even when optional
 - **NO** new lines before braces
 
 My personal preferences goes to google's because I like braces for clarity.
@@ -117,7 +117,12 @@ It's probably not 100% correct, but I'll try to update it as I go.
 
 ## Conclusion
 
-I now have an `.editorconfig` file that I can drop in my personal project to have my
+Tooling is curcial to have a consistent code style in your projects.
+
+I know that most C# devs will be horrified by my personal code style but this is
+irrelevant. What's important is to have a code style and be consistent.
+
+I now have an `.editorconfig` file that I can drop in my personal projects to have my
 code style applied when I format my code.
 
 This is enough for my personal projects, but there are other tools that might be interesting
