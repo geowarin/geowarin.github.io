@@ -141,4 +141,4 @@ There also seems to be [a way](https://docs.microsoft.com/en-us/dotnet/core/proj
 to enforce code style in the dotnet build.
 
 C# aficionados, I'm curious to hear your thoughts! Do you have a code style in your projects?
-Do you have tools to enforce them?
+Do you have tools to enforce it?
