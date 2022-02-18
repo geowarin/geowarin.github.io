@@ -199,7 +199,7 @@ Mocking is a balancing act between:
 You might find some cases where hitting a real database, for instance, is not that "inconvenient".
 
 If your unit tests automatically launch a PostgreSQL database in a container in 0.5 seconds, it might be a pretty good 
-tradeoff and reduce the overall amount tests you write as well as improve your confidence in your code.
+tradeoff and reduce the overall amount of tests you write as well as improve your confidence in your code.
 
 See: [Mocks Aren't Stubs](https://martinfowler.com/articles/mocksArentStubs.html)
 
