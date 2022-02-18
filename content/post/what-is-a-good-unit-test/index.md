@@ -9,7 +9,6 @@ cover:
     image: images/cover.png
     relative: true
     linkFullImages: true
-draft: true
 ---
 
 At my current job, during interviews, we like to ask this seemingly innocent question:
