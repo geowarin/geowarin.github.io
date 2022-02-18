@@ -3,7 +3,7 @@ title: "What is a good unit test?"
 date: 2022-02-18T12:50:57+01:00
 tags: [testing]
 summary: 
-    What constitutes good unit test might be a little more involved that you think. Let's reflect on the practice to
+    What constitutes good unit test might be a little more involved than you think. Let's reflect on the practice to
     make sure that we test our applications as efficiently as possible.
 cover:
     image: images/cover.png
@@ -15,7 +15,7 @@ At my current job, during interviews, we like to ask this seemingly innocent que
 "What is a good unit test?".
 
 It turns out that it is a tricky questions. Let's try to reflect on the practice of testing to make sure that
-we write tests as efficiently as possible.
+we write our tests as efficiently as possible.
 
 ## What is a Unit?
 
