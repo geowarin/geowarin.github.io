@@ -162,7 +162,7 @@ If your predictions are wrong, you might have over-engineered your code, or on t
 that would have made your code easier to change.
 
 I think the latter is definitely better ([YAGNI](https://www.martinfowler.com/bliki/Yagni.html)). 
-If a portion of code is hard to change, I will refactor it until it's easy to change and then, make the change.
+If a portion of code is hard to change, we can refactor it until it's easy to change and then, make the change.
 
 ## What to mock/fake/stub?
 
