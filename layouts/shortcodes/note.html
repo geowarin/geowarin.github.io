@@ -1,0 +1,4 @@
+<div class='admonition {{ .Get "type" | default "note" }}'>
+    <span class="icon"></span>
+    <p>{{ printf "%s" .Inner | markdownify }}</p>
+</div>
