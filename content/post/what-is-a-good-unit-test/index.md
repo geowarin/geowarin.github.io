@@ -30,7 +30,7 @@ For now, let's define a unit as:
 
 We will see if we can refine this definition as we reflect on the practice of unit-testing.
 
-## What is good about testing?
+## What is good about tests?
 
 Let's try to give some properties of "good testing" practices.
 
