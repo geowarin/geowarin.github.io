@@ -138,9 +138,9 @@ slower tests.
 The objective of all good code is *high cohesion* and *low coupling*.
 {{< /note >}}
 
-This basically means maximizing how easy it is to change the code.
+In other words, maximizing how easy it is to change the code.
 
-Ideally, we want a minimal amount of code change to break a minimal amount of tests.
+Ideally, we want a minimal code change to break a minimal amount of tests.
 
 Therefore, we should apply the same "clean code" principles to the tests as we apply to production code.
 
@@ -177,7 +177,7 @@ The usual candidates for mocking are:
 My rule of thumb is:
 
 {{< note >}}
-Mock when it is convenient **not** to call the "off-unit" code.
+Mock when it is inconvenient to call "off-unit" code.
 {{< /note >}}
 
 Some mocking tools are *fragile* (using reflection, code instrumentation). They make it easy to couple your mocks
@@ -199,7 +199,7 @@ Mocking is a balancing act between:
 You might find some cases where hitting a real database, for instance, is not that "inconvenient".
 
 If your unit tests automatically launch a PostgreSQL database in a container in 0.5 seconds, it might be a pretty good 
-tradeoff and reduce the overall amount of tests you write as well as improve your confidence in your code.
+tradeoff and reduce the overall amount of tests you write, as well as improve your confidence in your code.
 
 See: [Mocks Aren't Stubs](https://martinfowler.com/articles/mocksArentStubs.html)
 
