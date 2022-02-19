@@ -158,7 +158,7 @@ to be expended in the future.
 We might define some extensions points or make it easy to add behaviors by adding variables in an array, or a 
 configuration file.
 
-If your predictions are wrong, you might have over-engineered your code. Conversely, you might not have seen potential
+If your predictions are wrong, you might have over-engineered your code. Conversely, you might have missed potential
 abstractions that would have made your code easier to change.
 
 I think the latter is definitely better ([YAGNI](https://www.martinfowler.com/bliki/Yagni.html)). 
