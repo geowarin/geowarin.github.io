@@ -150,19 +150,23 @@ We should always Refactor/simplify/delete unnecessary tests.
 
 Now that we talked about cohesion and coupling, we might propose a better definition for a "unit":
 
-> A Unit is an arbitrary amount of related code that we expect to change as a whole
+> A Unit is an arbitrary amount of related code that we expect to change altogether
 
-All the nuance is in the "we expect". With our current knowledge of the domain, we expect some part of the code
+All the nuance is in "we expect". With our current knowledge of the domain, we expect some part of the code
 to be expended in the future.
 
-We might define some extensions points or make it easy to add behaviors by adding variables in an array or a 
+We might define some extensions points or make it easy to add behaviors by adding variables in an array, or a 
 configuration file.
 
-If your predictions are wrong, you might have over-engineered your code, or on the contrary, failed to see abstractions
-that would have made your code easier to change.
+If your predictions are wrong, you might have over-engineered your code. Conversely, you might not have seen potential
+abstractions that would have made your code easier to change.
 
 I think the latter is definitely better ([YAGNI](https://www.martinfowler.com/bliki/Yagni.html)). 
 If a portion of code is hard to change, we can refactor it until it's easy to change and then, make the change.
+
+{{< note >}}
+Over-engineering complicates testing.
+{{< /note >}}
 
 ## What to mock/fake/stub?
 
