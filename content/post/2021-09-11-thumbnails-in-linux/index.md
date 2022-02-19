@@ -13,6 +13,11 @@ cover:
    linkFullImages: true
 ---
 
+{{< note >}}
+[f3d](https://github.com/f3d-app/f3d) is available in the AUR and automatically sets up file associations and 
+thumbnailers for a lot of common 3D models. I suggest that you use that instead.
+{{< /note >}}
+
 ## Mime mapping
 
 In my distro, there were no mimetypes declared for gltf/glb files. 
