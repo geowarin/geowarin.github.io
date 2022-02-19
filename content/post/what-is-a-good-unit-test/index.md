@@ -135,7 +135,7 @@ slower tests.
 **Yes.**
 
 {{< note >}}
-The objective of all good code is *high cohesion* and *low coupling*.
+One measure good code is *high cohesion* and *low coupling*.
 {{< /note >}}
 
 In other words, maximizing how easy it is to change the code.
