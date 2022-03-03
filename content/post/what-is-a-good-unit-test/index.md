@@ -146,6 +146,8 @@ Therefore, we should apply the same "clean code" principles to the tests as we a
 
 We should always Refactor/simplify/delete unnecessary tests.
 
+See: [Maximize cohesion Minimize coupling](https://essentials.xebia.com/maximize-cohesion-minimize-coupling/)
+
 ## Can we predict the future?
 
 Now that we talked about cohesion and coupling, we might propose a better definition for a "unit":
