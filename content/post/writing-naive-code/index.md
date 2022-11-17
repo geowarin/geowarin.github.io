@@ -31,7 +31,7 @@ Reflecting on this topic is at the heart of the profession, but I've personally 
 Having to work with a couple of juniors, I have to explain why a particular piece of code is better than another
 and this is no easy task.
 
-Like whine tasting, code tasting is something that seems to be acquired mostly through experience.
+Like wine tasting, code tasting is something that seems to be acquired mostly through experience.
 
 ---
 
