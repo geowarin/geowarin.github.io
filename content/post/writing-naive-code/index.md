@@ -76,7 +76,7 @@ transforming a naive, repeated, pattern leads to better code.
 
 > I always think of this silly list from "Why bad scientific code beats code following "best practices"" [https://yosefk.com/blog/why-bad-scientific-code-beats-code-following-best-practices.html](https://yosefk.com/blog/why-bad-scientific-code-beats-code-following-best-practices.html)
 
-This article explains that the code written by scientist is often more enjoyable to work with than code written
+This article explains that the code written by scientists is often more enjoyable to work with than code written
 by "professional" programmers because it doesn't try to be too clever for its own good.
 
 ---
