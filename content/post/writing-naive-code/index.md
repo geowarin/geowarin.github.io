@@ -43,6 +43,9 @@ Other users of reddit had interesting references as well.
 
 The first link is [a talk by John Ousterhout](https://www.youtube.com/watch?v=bmSAYlu0NcY), Professor a Standford.
 
+He states that the most important thing in all computer science is "problem decomposition": 
+how do you chop a complicated problem into pieces that you can build independently. 
+
 His approach is to teach students the principles of software design, a topic that is unfortunately not taught enough because
 it requires teachers with a sizeable coding experience in the industry as opposed to mostly academic research and papers.
 
