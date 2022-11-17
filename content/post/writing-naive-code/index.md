@@ -20,7 +20,7 @@ The article explains three things:
 
 The last idea is not novel, but I personally agree with it for multiple reasons:
 
-- Naive code is easier to write: it prevents the writer's block when beginning working on a new feature
+- Naive code is easier to write: it prevents the writer's block when you begin working on a new feature
 - Naive code is easier to understand: anyone, you or your teammates can understand and refactor it when needed
 
 
