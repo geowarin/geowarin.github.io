@@ -21,7 +21,7 @@ The article explains three things:
 The last idea is not novel, but I personally agree with it for multiple reasons:
 
 - Naive code is easier to write: it prevents the writer's block when you begin working on a new feature
-- Naive code is easier to understand: anyone, you or your teammates can understand and refactor it when needed
+- Naive code is easier to understand: anyone, you or your teammates, can understand and refactor it when needed
 
 
 The most interesting thing about this article, though, is the broader topic it refers to: is naive code good code?
@@ -44,10 +44,10 @@ Other users of reddit had interesting references as well.
 The first link is [a talk by John Ousterhout](https://www.youtube.com/watch?v=bmSAYlu0NcY), Professor a Standford.
 
 He states that the most important thing in all computer science is "problem decomposition": 
-how do you chop a complicated problem into pieces that you can build independently. 
+how do you chop a complicated problem into pieces that you can build independently? 
 
 His approach is to teach students the principles of software design, a topic that is unfortunately not taught enough because
-it requires teachers with a sizeable coding experience in the industry as opposed to mostly academic research and papers.
+it requires teachers with a sizeable coding experience in the industry, as opposed to mostly academic research and papers.
 
 [His book](https://www.goodreads.com/en/book/show/39996759-a-philosophy-of-software-design) sounds like an interesting read
 and certainly one I would like to discuss with my teammates.
