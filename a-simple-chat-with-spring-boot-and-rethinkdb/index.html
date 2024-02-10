@@ -1,411 +1,225 @@
-<!doctype html><html lang=en dir=auto>
-<head><meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
-<meta name=robots content="index, follow">
-<title>A simple chat with Spring Boot and RethinkDB | Geowarin</title>
-<meta name=keywords content="chat">
-<meta name=description content="RethinkDB is a great database engine allowing you to receive live updates on your data. Let&rsquo;s create a Spring Boot App and give it a try!">
-<meta name=author content="Geoffroy Warin">
-<link rel=canonical href=https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/>
-<link crossorigin=anonymous href=/assets/css/stylesheet.min.81cd1c2194819ea2b3745b85d3f4b5edaca2ad3af09a7635c480764fea2d546f.css integrity="sha256-gc0cIZSBnqKzdFuF0/S17ayirTrwmnY1xIB2T+otVG8=" rel="preload stylesheet" as=style>
-<link rel=icon href=https://geowarin.com/favicon.ico>
-<link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png>
-<link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png>
-<link rel=apple-touch-icon href=https://geowarin.com/apple-touch-icon.png>
-<link rel=mask-icon href=https://geowarin.com/safari-pinned-tab.svg>
-<meta name=theme-color content="#2e2e33">
-<meta name=msapplication-TileColor content="#2e2e33">
-<meta name=generator content="Hugo 0.89.2">
-<noscript>
-<style>#theme-toggle,.top-link{display:none}</style>
-<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
-</noscript><meta property="og:title" content="A simple chat with Spring Boot and RethinkDB">
-<meta property="og:description" content="RethinkDB is a great database engine allowing you to receive live updates on your data. Let&rsquo;s create a Spring Boot App and give it a try!">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/"><meta property="article:section" content="post">
-<meta property="article:published_time" content="2016-01-28T00:00:00+00:00">
-<meta property="article:modified_time" content="2016-01-28T00:00:00+00:00">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="A simple chat with Spring Boot and RethinkDB">
-<meta name=twitter:description content="RethinkDB is a great database engine allowing you to receive live updates on your data. Let&rsquo;s create a Spring Boot App and give it a try!">
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://geowarin.com/post/"},{"@type":"ListItem","position":3,"name":"A simple chat with Spring Boot and RethinkDB","item":"https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"A simple chat with Spring Boot and RethinkDB","name":"A simple chat with Spring Boot and RethinkDB","description":"RethinkDB is a great database engine allowing you to receive live updates on your data. Let\u0026rsquo;s create a Spring Boot App and give it a try!","keywords":["chat"],"articleBody":"The Java driver for RethinkDB has recently been released in beta.\nI created a little chat application with Spring Boot, you can see the result on github.\nThere is a docker-compose file at the root of the project that you can use to run a RethinkDB instance instead of installing it directly on your machine.\nWhy RethinkDB? I already gave RethinkDB a try a few months ago and I was very impressed with its beautiful admin GUI, its clustering capabilities and its clever and intuitive API.\nBut there is more! RethinkDB is a DB engine designed to push updates to the clients in real time.\nIn the CAP theorem, rethinkDB focuses on being Consistent in case of difficulties in the cluster.\nRelevant quote from the FAQ:\nOnce RethinkDB is started, you can connect on the beautiful admin GUI on port 8080:\nSetting up the project I created a Gradle project with the web and websocket Spring boot starters. I also added a couple of webjars: jquery for ajax requests, sockjs and stomp to connect to Spring’s websockets:\ndependencies { compile('org.springframework.boot:spring-boot-starter-web') compile('org.springframework.boot:spring-boot-starter-websocket') compile('org.springframework.boot:spring-boot-devtools') compile 'org.webjars:jquery:3.0.0-alpha1' compile 'org.webjars:sockjs-client:1.0.0' compile 'org.webjars:stomp-websocket:2.3.3' compile 'com.rethinkdb:rethinkdb-driver:2.2-b1-SNAPSHOT' } Getting a connection Every action we will perform on the database will require a Connection. We can create a small factory that we will later use in the code:\npublic class RethinkDBConnectionFactory { private String host; public RethinkDBConnectionFactory(String host) { this.host = host; } public ConnectionConnectionInstance createConnection() { try { return RethinkDB.r.connection().hostname(host).connect(); } catch (TimeoutException e) { throw new RuntimeException(e); } } } Initializing the DB For this little chat, we will need a database called chat and a table called messages.\nTo avoid creating them by hand, we can create a Spring bean that will get called when the application starts:\npublic class DbInitializer implements InitializingBean { @Autowired private RethinkDBConnectionFactory connectionFactory; @Autowired private ChatChangesListener chatChangesListener; private static final RethinkDB r = RethinkDB.r; @Override public void afterPropertiesSet() throws Exception { createDb(); // we will see that later on  chatChangesListener.pushChangesToWebSocket(); } private void createDb() { ConnectionConnectionInstance connection = connectionFactory.createConnection(); ListString dbList = r.dbList().run(connection); if (!dbList.contains(\"chat\")) { r.dbCreate(\"chat\").run(connection); } ListString tables = r.db(\"chat\").tableList().run(connection); if (!tables.contains(\"messages\")) { r.db(\"chat\").tableCreate(\"messages\").run(connection); r.db(\"chat\").table(\"messages\").indexCreate(\"time\").run(connection); } } } Ignore the pushChangesToWebSocket() method call for now, we will see this in a minute.\nWe can already get a feel for the RethinkDB API. It was originally designed for dynamically typed language so some things might be a little awkward for hardcore Java developers.\nFor instance, the result of the operations can be of any type. RethinkDB will try to coerce the result according to the return type chosen, if possible.\nThis is both good, because of the additional flexibility, and bad, because you cannot rely on autocomplete to know the return type of an operation.\nThe ChatController The chat controller will react to two things:\n GETting the last 20 messages from the DB POSTing a new message  Here is the code, which is kind of straight-forward:\n@RestController @RequestMapping(\"/chat\") public class ChatController { protected final Logger log = LoggerFactory.getLogger(ChatController.class); private static final RethinkDB r = RethinkDB.r; @Autowired private RethinkDBConnectionFactory connectionFactory; @RequestMapping(method = RequestMethod.POST) public ChatMessage postMessage(@RequestBody ChatMessage chatMessage) { chatMessage.setTime(OffsetDateTime.now()); Object run = r.db(\"chat\").table(\"messages\").insert(chatMessage) .run(connectionFactory.createConnection()); log.info(\"Insert {}\", run); return chatMessage; } @RequestMapping(method = RequestMethod.GET) public ListChatMessage getMessages() { ListChatMessage messages = r.db(\"chat\").table(\"messages\") .orderBy().optArg(\"index\", r.desc(\"time\")) .limit(20) .orderBy(\"time\") .run(connectionFactory.createConnection(), ChatMessage.class); return messages; } } The cool thing is that the API clean and simple to understand.\nSome things are still a bit funny:\n The optArg after the orderBy is a bit cryptic I spent some time figuring out that your POJO class must not contain any id attribute for the auto-generation to work  Setting up websockets Now that we can read and write from the DB, we need to push the updates to the client in real time.\nWe will use websockets over SockJS for that. The configuration for websockets is pretty classic:\n@Configuration @EnableWebSocketMessageBroker public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer { @Override public void configureMessageBroker(MessageBrokerRegistry config) { config.enableSimpleBroker(\"/topic\"); } @Override public void registerStompEndpoints(StompEndpointRegistry registry) { registry.addEndpoint(\"/chatWS\").withSockJS(); } } How to read that:\n Our clients will be able to connect to the /chatWS endpoint The clients will then have the possibility to listen to any topic whose url begins with /topic (i.e, /topic/messages) and get notified in real time  Listening to the updates We will now listen to database updates in a thread and broadcast the changes to all the clients listening on the web socket.\nWe use the @Async annotation, so Spring will take care of running the code in a thread for us:\n@Service public class ChatChangesListener { protected final Logger log = LoggerFactory.getLogger(ChatChangesListener.class); private static final RethinkDB r = RethinkDB.r; @Autowired private RethinkDBConnectionFactory connectionFactory; @Autowired private SimpMessagingTemplate webSocket; @Async public void pushChangesToWebSocket() { CursorChatMessage cursor = r.db(\"chat\").table(\"messages\").changes() .getField(\"new_val\") .run(connectionFactory.createConnection(), ChatMessage.class); while (cursor.hasNext()) { ChatMessage chatMessage = cursor.next(); log.info(\"New message: {}\", chatMessage.message); webSocket.convertAndSend(\"/topic/messages\", chatMessage); } } } So what happens here? Each time a change happens in the database, we will get an update. This update will contain two fields: old_val and new_val. See the documentation.\nSince we are only interested in the new things, we will only retrieve the new_val field.\nNote that the second (optional) argument to the run method is a class. If present, RethinkDB will try to convert the data to this target class, just like we did in the ChatController above.\nThen, we simply broadcast the message to all the clients listening on /topic/messages.\nThe client If you never used webjars before, they are simply jar packages containing frontend dependencies. With Spring Boot we can use them in our web pages directly. Below the index.html file of our application:\n html lang=\"en\" head meta charset=\"UTF-8\" titleTitletitle script src=\"webjars/jquery/3.0.0-alpha1/jquery.js\"script script src=\"webjars/sockjs-client/1.0.0/sockjs.js\"script script src=\"webjars/stomp-websocket/2.3.3/stomp.js\"script script src=\"js/main.js\"script head body div id=\"chat\" div id=\"messages\" div form onsubmit=\"sendMessage(); return false;\" label Message: input type=\"text\" id=\"messageInput\" / label button type=\"submit\"Sendbutton form div body html And the javascript:\nvar userName = window.prompt(\"Enter your name\", \"some user\"); function appendMessage(message) { $('#messages').append($('').text(message.from + \": \" + message.message)) } function getPreviousMessages() { $.get('/chat').done(messages = messages.forEach(appendMessage)); } function sendMessage() { var $messageInput = $('#messageInput'); var message = {message: $messageInput.val(), from: userName}; $messageInput.val(''); post('/chat', message); } function onNewMessage(result) { var message = JSON.parse(result.body); appendMessage(message); } function connectWebSocket() { var socket = new SockJS('/chatWS'); stompClient = Stomp.over(socket); //stompClient.debug = null;  stompClient.connect({}, (frame) = { console.log('Connected: ' + frame); stompClient.subscribe('/topic/messages', onNewMessage); }); } getPreviousMessages(); connectWebSocket(); Conclusion RethinkDB is an awesome database, especially because it lets you decouple the code that updates the database and the code that listens to the changes.\nThe driver is brand new and still in beta but we can already salute the efforts of the developers for such an amazing work!\nAs always, check out the project on github and tell me what you think!\n","wordCount":"1121","inLanguage":"en","datePublished":"2016-01-28T00:00:00Z","dateModified":"2016-01-28T00:00:00Z","author":{"@type":"Person","name":"Geoffroy Warin"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script>
-</head>
-<body id=top>
-<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
-<header class=header>
-<nav class=nav>
-<div class=logo>
-<a href=https://geowarin.com accesskey=h title="Geowarin (Alt + H)">Geowarin</a>
-<span class=logo-switches>
-<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-</button>
-</span>
-</div>
-<ul id=menu>
-<li>
-<a href=https://geowarin.com/archive/ title=Archive>
-<span>Archive</span>
-</a>
-</li>
-<li>
-<a href=https://geowarin.com/search/ title="Search (Alt + /)" accesskey=/>
-<span>Search</span>
-</a>
-</li>
-<li>
-<a href=https://geowarin.com/mastering-spring-mvc-4/ title=Book>
-<span>Book</span>
-</a>
-</li>
-</ul>
-</nav>
-</header>
-<main class=main>
-<article class=post-single>
-<header class=post-header>
-<div class=breadcrumbs><a href=https://geowarin.com>Home</a>&nbsp;»&nbsp;<a href=https://geowarin.com/post/>Posts</a></div>
-<h1 class=post-title>
-A simple chat with Spring Boot and RethinkDB
-</h1>
-<div class=post-meta><span title="2016-01-28 00:00:00 +0000 UTC">January 28, 2016</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Geoffroy Warin
-</div>
-</header>
-<div class=post-content><p>The Java driver for <a href=https://www.rethinkdb.com/>RethinkDB</a> has recently
-<a href=https://rethinkdb.com/blog/official-java-driver/>been released</a> in beta.</p>
-<p>I created a little chat application with Spring Boot, you can see the result
-<a href=https://github.com/geowarin/boot-rethinkdb>on github</a>.</p>
-<p>There is a docker-compose file at the root of the project that you can
-use to run a RethinkDB instance instead of installing it directly on your machine.</p>
-<h2 id=why-rethinkdb>Why RethinkDB?<a hidden class=anchor aria-hidden=true href=#why-rethinkdb>#</a></h2>
-<p>I already gave RethinkDB a try a few months ago and I was very impressed
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>A simple chat with Spring Boot and RethinkDB | Geowarin</title>
+<meta name=keywords content="chat"><meta name=description content="RethinkDB is a great database engine allowing you to receive live updates on your data. Let&rsquo;s create a Spring Boot App and give it a try!"><meta name=author content="Geoffroy Warin"><link rel=canonical href=https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/><link crossorigin=anonymous href=/assets/css/stylesheet.bab27dda923d816ad5a171f9ce2977da3fea909668eeb39afe401d03844c29b5.css integrity="sha256-urJ92pI9gWrVoXH5zil32j/qkJZo7rOa/kAdA4RMKbU=" rel="preload stylesheet" as=style><link rel=icon href=https://geowarin.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://geowarin.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://geowarin.com/favicon-32x32.png><link rel=apple-touch-icon href=https://geowarin.com/apple-touch-icon.png><link rel=mask-icon href=https://geowarin.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="A simple chat with Spring Boot and RethinkDB"><meta property="og:description" content="RethinkDB is a great database engine allowing you to receive live updates on your data. Let&rsquo;s create a Spring Boot App and give it a try!"><meta property="og:type" content="article"><meta property="og:url" content="https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/"><meta property="article:section" content="post"><meta property="article:published_time" content="2016-01-28T00:00:00+00:00"><meta property="article:modified_time" content="2016-01-28T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="A simple chat with Spring Boot and RethinkDB"><meta name=twitter:description content="RethinkDB is a great database engine allowing you to receive live updates on your data. Let&rsquo;s create a Spring Boot App and give it a try!"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://geowarin.com/post/"},{"@type":"ListItem","position":2,"name":"A simple chat with Spring Boot and RethinkDB","item":"https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"A simple chat with Spring Boot and RethinkDB","name":"A simple chat with Spring Boot and RethinkDB","description":"RethinkDB is a great database engine allowing you to receive live updates on your data. Let\u0026rsquo;s create a Spring Boot App and give it a try!","keywords":["chat"],"articleBody":"The Java driver for RethinkDB has recently been released in beta.\nI created a little chat application with Spring Boot, you can see the result on github.\nThere is a docker-compose file at the root of the project that you can use to run a RethinkDB instance instead of installing it directly on your machine.\nWhy RethinkDB? I already gave RethinkDB a try a few months ago and I was very impressed with its beautiful admin GUI, its clustering capabilities and its clever and intuitive API.\nBut there is more! RethinkDB is a DB engine designed to push updates to the clients in real time.\nIn the CAP theorem, rethinkDB focuses on being Consistent in case of difficulties in the cluster.\nRelevant quote from the FAQ:\nOnce RethinkDB is started, you can connect on the beautiful admin GUI on port 8080:\nSetting up the project I created a Gradle project with the web and websocket Spring boot starters. I also added a couple of webjars: jquery for ajax requests, sockjs and stomp to connect to Spring’s websockets:\ndependencies { compile('org.springframework.boot:spring-boot-starter-web') compile('org.springframework.boot:spring-boot-starter-websocket') compile('org.springframework.boot:spring-boot-devtools') compile 'org.webjars:jquery:3.0.0-alpha1' compile 'org.webjars:sockjs-client:1.0.0' compile 'org.webjars:stomp-websocket:2.3.3' compile 'com.rethinkdb:rethinkdb-driver:2.2-b1-SNAPSHOT' } Getting a connection Every action we will perform on the database will require a Connection. We can create a small factory that we will later use in the code:\npublic class RethinkDBConnectionFactory { private String host; public RethinkDBConnectionFactory(String host) { this.host = host; } public Connection\u003cConnectionInstance\u003e createConnection() { try { return RethinkDB.r.connection().hostname(host).connect(); } catch (TimeoutException e) { throw new RuntimeException(e); } } } Initializing the DB For this little chat, we will need a database called chat and a table called messages.\nTo avoid creating them by hand, we can create a Spring bean that will get called when the application starts:\npublic class DbInitializer implements InitializingBean { @Autowired private RethinkDBConnectionFactory connectionFactory; @Autowired private ChatChangesListener chatChangesListener; private static final RethinkDB r = RethinkDB.r; @Override public void afterPropertiesSet() throws Exception { createDb(); // we will see that later on chatChangesListener.pushChangesToWebSocket(); } private void createDb() { Connection\u003cConnectionInstance\u003e connection = connectionFactory.createConnection(); List\u003cString\u003e dbList = r.dbList().run(connection); if (!dbList.contains(\"chat\")) { r.dbCreate(\"chat\").run(connection); } List\u003cString\u003e tables = r.db(\"chat\").tableList().run(connection); if (!tables.contains(\"messages\")) { r.db(\"chat\").tableCreate(\"messages\").run(connection); r.db(\"chat\").table(\"messages\").indexCreate(\"time\").run(connection); } } } Ignore the pushChangesToWebSocket() method call for now, we will see this in a minute.\nWe can already get a feel for the RethinkDB API. It was originally designed for dynamically typed language so some things might be a little awkward for hardcore Java developers.\nFor instance, the result of the operations can be of any type. RethinkDB will try to coerce the result according to the return type chosen, if possible.\nThis is both good, because of the additional flexibility, and bad, because you cannot rely on autocomplete to know the return type of an operation.\nThe ChatController The chat controller will react to two things:\nGETting the last 20 messages from the DB POSTing a new message Here is the code, which is kind of straight-forward:\n@RestController @RequestMapping(\"/chat\") public class ChatController { protected final Logger log = LoggerFactory.getLogger(ChatController.class); private static final RethinkDB r = RethinkDB.r; @Autowired private RethinkDBConnectionFactory connectionFactory; @RequestMapping(method = RequestMethod.POST) public ChatMessage postMessage(@RequestBody ChatMessage chatMessage) { chatMessage.setTime(OffsetDateTime.now()); Object run = r.db(\"chat\").table(\"messages\").insert(chatMessage) .run(connectionFactory.createConnection()); log.info(\"Insert {}\", run); return chatMessage; } @RequestMapping(method = RequestMethod.GET) public List\u003cChatMessage\u003e getMessages() { List\u003cChatMessage\u003e messages = r.db(\"chat\").table(\"messages\") .orderBy().optArg(\"index\", r.desc(\"time\")) .limit(20) .orderBy(\"time\") .run(connectionFactory.createConnection(), ChatMessage.class); return messages; } } The cool thing is that the API clean and simple to understand.\nSome things are still a bit funny:\nThe optArg after the orderBy is a bit cryptic I spent some time figuring out that your POJO class must not contain any id attribute for the auto-generation to work Setting up websockets Now that we can read and write from the DB, we need to push the updates to the client in real time.\nWe will use websockets over SockJS for that. The configuration for websockets is pretty classic:\n@Configuration @EnableWebSocketMessageBroker public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer { @Override public void configureMessageBroker(MessageBrokerRegistry config) { config.enableSimpleBroker(\"/topic\"); } @Override public void registerStompEndpoints(StompEndpointRegistry registry) { registry.addEndpoint(\"/chatWS\").withSockJS(); } } How to read that:\nOur clients will be able to connect to the /chatWS endpoint The clients will then have the possibility to listen to any topic whose url begins with /topic (i.e, /topic/messages) and get notified in real time Listening to the updates We will now listen to database updates in a thread and broadcast the changes to all the clients listening on the web socket.\nWe use the @Async annotation, so Spring will take care of running the code in a thread for us:\n@Service public class ChatChangesListener { protected final Logger log = LoggerFactory.getLogger(ChatChangesListener.class); private static final RethinkDB r = RethinkDB.r; @Autowired private RethinkDBConnectionFactory connectionFactory; @Autowired private SimpMessagingTemplate webSocket; @Async public void pushChangesToWebSocket() { Cursor\u003cChatMessage\u003e cursor = r.db(\"chat\").table(\"messages\").changes() .getField(\"new_val\") .run(connectionFactory.createConnection(), ChatMessage.class); while (cursor.hasNext()) { ChatMessage chatMessage = cursor.next(); log.info(\"New message: {}\", chatMessage.message); webSocket.convertAndSend(\"/topic/messages\", chatMessage); } } } So what happens here? Each time a change happens in the database, we will get an update. This update will contain two fields: old_val and new_val. See the documentation.\nSince we are only interested in the new things, we will only retrieve the new_val field.\nNote that the second (optional) argument to the run method is a class. If present, RethinkDB will try to convert the data to this target class, just like we did in the ChatController above.\nThen, we simply broadcast the message to all the clients listening on /topic/messages.\nThe client If you never used webjars before, they are simply jar packages containing frontend dependencies. With Spring Boot we can use them in our web pages directly. Below the index.html file of our application:\n\u003c!DOCTYPE html\u003e \u003chtml lang=\"en\"\u003e \u003chead\u003e \u003cmeta charset=\"UTF-8\"\u003e \u003ctitle\u003eTitle\u003c/title\u003e \u003cscript src=\"webjars/jquery/3.0.0-alpha1/jquery.js\"\u003e\u003c/script\u003e \u003cscript src=\"webjars/sockjs-client/1.0.0/sockjs.js\"\u003e\u003c/script\u003e \u003cscript src=\"webjars/stomp-websocket/2.3.3/stomp.js\"\u003e\u003c/script\u003e \u003cscript src=\"js/main.js\"\u003e\u003c/script\u003e \u003c/head\u003e \u003cbody\u003e \u003cdiv id=\"chat\"\u003e \u003cdiv id=\"messages\"\u003e \u003c/div\u003e \u003cform onsubmit=\"sendMessage(); return false;\"\u003e \u003clabel\u003e Message: \u003cinput type=\"text\" id=\"messageInput\" /\u003e \u003c/label\u003e \u003cbutton type=\"submit\"\u003eSend\u003c/button\u003e \u003c/form\u003e \u003c/div\u003e \u003c/body\u003e \u003c/html\u003e And the javascript:\nvar userName = window.prompt(\"Enter your name\", \"some user\"); function appendMessage(message) { $('#messages').append($('').text(message.from + \": \" + message.message)) } function getPreviousMessages() { $.get('/chat').done(messages =\u003e messages.forEach(appendMessage)); } function sendMessage() { var $messageInput = $('#messageInput'); var message = {message: $messageInput.val(), from: userName}; $messageInput.val(''); post('/chat', message); } function onNewMessage(result) { var message = JSON.parse(result.body); appendMessage(message); } function connectWebSocket() { var socket = new SockJS('/chatWS'); stompClient = Stomp.over(socket); //stompClient.debug = null; stompClient.connect({}, (frame) =\u003e { console.log('Connected: ' + frame); stompClient.subscribe('/topic/messages', onNewMessage); }); } getPreviousMessages(); connectWebSocket(); Conclusion RethinkDB is an awesome database, especially because it lets you decouple the code that updates the database and the code that listens to the changes.\nThe driver is brand new and still in beta but we can already salute the efforts of the developers for such an amazing work!\nAs always, check out the project on github and tell me what you think!\n","wordCount":"1121","inLanguage":"en","datePublished":"2016-01-28T00:00:00Z","dateModified":"2016-01-28T00:00:00Z","author":{"@type":"Person","name":"Geoffroy Warin"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/"},"publisher":{"@type":"Organization","name":"Geowarin","logo":{"@type":"ImageObject","url":"https://geowarin.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://geowarin.com accesskey=h title="Geowarin (Alt + H)">Geowarin</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://geowarin.com/archive/ title=Archive><span>Archive</span></a></li><li><a href=https://geowarin.com/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=https://geowarin.com/mastering-spring-mvc-4/ title=Book><span>Book</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://geowarin.com>Home</a>&nbsp;»&nbsp;<a href=https://geowarin.com/post/>Posts</a></div><h1 class="post-title entry-hint-parent">A simple chat with Spring Boot and RethinkDB</h1><div class=post-meta><span title='2016-01-28 00:00:00 +0000 UTC'>January 28, 2016</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Geoffroy Warin</div></header><div class=post-content><p>The Java driver for <a href=https://www.rethinkdb.com/>RethinkDB</a> has recently
+<a href=https://rethinkdb.com/blog/official-java-driver/>been released</a> in beta.</p><p>I created a little chat application with Spring Boot, you can see the result
+<a href=https://github.com/geowarin/boot-rethinkdb>on github</a>.</p><p>There is a docker-compose file at the root of the project that you can
+use to run a RethinkDB instance instead of installing it directly on your machine.</p><h2 id=why-rethinkdb>Why RethinkDB?<a hidden class=anchor aria-hidden=true href=#why-rethinkdb>#</a></h2><p>I already gave RethinkDB a try a few months ago and I was very impressed
 with its beautiful admin GUI, its clustering capabilities and its clever
-and intuitive API.</p>
-<p>But there is more! RethinkDB is a DB engine designed to push updates to the clients
-in real time.</p>
-<p>In the <a href=https://github.com/henryr/cap-faq>CAP theorem</a>, rethinkDB focuses on being
-Consistent in case of difficulties in the cluster.</p>
-<p>Relevant quote from the <a href=https://www.rethinkdb.com/docs/architecture/#cap-theorem>FAQ</a>:</p>
-<p>Once RethinkDB is started, you can connect on the beautiful admin GUI on port <code>8080</code>:</p>
-<p><img loading=lazy src=/assets/images/articles/2016-01-rethinkDB-admin.png alt="The awesome GUI" title="The RethinkDB admin GUI">
-</p>
-<h2 id=setting-up-the-project>Setting up the project<a hidden class=anchor aria-hidden=true href=#setting-up-the-project>#</a></h2>
-<p>I created a Gradle project with the <code>web</code> and <code>websocket</code> Spring boot starters.
+and intuitive API.</p><p>But there is more! RethinkDB is a DB engine designed to push updates to the clients
+in real time.</p><p>In the <a href=https://github.com/henryr/cap-faq>CAP theorem</a>, rethinkDB focuses on being
+Consistent in case of difficulties in the cluster.</p><p>Relevant quote from the <a href=https://www.rethinkdb.com/docs/architecture/#cap-theorem>FAQ</a>:</p><p>Once RethinkDB is started, you can connect on the beautiful admin GUI on port <code>8080</code>:</p><p><img loading=lazy src=/assets/images/articles/2016-01-rethinkDB-admin.png alt="The awesome GUI" title="The RethinkDB admin GUI"></p><h2 id=setting-up-the-project>Setting up the project<a hidden class=anchor aria-hidden=true href=#setting-up-the-project>#</a></h2><p>I created a Gradle project with the <code>web</code> and <code>websocket</code> Spring boot starters.
 I also added a couple of <a href=https://spring.io/blog/2014/01/03/utilizing-webjars-in-spring-boot>webjars</a>:
-<code>jquery</code> for ajax requests, sockjs and stomp to connect to Spring&rsquo;s websockets:</p>
-<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy>dependencies <span style=color:#ff6ac1>{</span>
-    compile<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#39;org.springframework.boot:spring-boot-starter-web&#39;</span><span style=color:#ff6ac1>)</span>
-    compile<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#39;org.springframework.boot:spring-boot-starter-websocket&#39;</span><span style=color:#ff6ac1>)</span>
-    compile<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#39;org.springframework.boot:spring-boot-devtools&#39;</span><span style=color:#ff6ac1>)</span>
-
-    compile <span style=color:#5af78e>&#39;org.webjars:jquery:3.0.0-alpha1&#39;</span>
-    compile <span style=color:#5af78e>&#39;org.webjars:sockjs-client:1.0.0&#39;</span>
-    compile <span style=color:#5af78e>&#39;org.webjars:stomp-websocket:2.3.3&#39;</span>
-
-    compile <span style=color:#5af78e>&#39;com.rethinkdb:rethinkdb-driver:2.2-b1-SNAPSHOT&#39;</span>
-<span style=color:#ff6ac1>}</span>
-</code></pre></div><h2 id=getting-a-connection>Getting a connection<a hidden class=anchor aria-hidden=true href=#getting-a-connection>#</a></h2>
-<p>Every action we will perform on the database will require a <code>Connection</code>.
-We can create a small factory that we will later use in the code:</p>
-<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>RethinkDBConnectionFactory</span> <span style=color:#ff6ac1>{</span>
-    <span style=color:#ff5c57>private</span> String host<span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff5c57>public</span> <span style=color:#57c7ff>RethinkDBConnectionFactory</span><span style=color:#ff6ac1>(</span>String host<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
-        <span style=color:#ff6ac1>this</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>host</span> <span style=color:#ff6ac1>=</span> host<span style=color:#ff6ac1>;</span>
-    <span style=color:#ff6ac1>}</span>
-
-    <span style=color:#ff5c57>public</span> Connection<span style=color:#ff6ac1>&lt;</span>ConnectionInstance<span style=color:#ff6ac1>&gt;</span> <span style=color:#57c7ff>createConnection</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
-        <span style=color:#ff6ac1>try</span> <span style=color:#ff6ac1>{</span>
-            <span style=color:#ff6ac1>return</span> RethinkDB<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>r</span><span style=color:#ff6ac1>.</span><span style=color:#57c7ff>connection</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>hostname</span><span style=color:#ff6ac1>(</span>host<span style=color:#ff6ac1>).</span><span style=color:#57c7ff>connect</span><span style=color:#ff6ac1>();</span>
-        <span style=color:#ff6ac1>}</span> <span style=color:#ff6ac1>catch</span> <span style=color:#ff6ac1>(</span>TimeoutException e<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
-            <span style=color:#ff6ac1>throw</span> <span style=color:#ff6ac1>new</span> RuntimeException<span style=color:#ff6ac1>(</span>e<span style=color:#ff6ac1>);</span>
-        <span style=color:#ff6ac1>}</span>
-    <span style=color:#ff6ac1>}</span>
-<span style=color:#ff6ac1>}</span>
-</code></pre></div><h2 id=initializing-the-db>Initializing the DB<a hidden class=anchor aria-hidden=true href=#initializing-the-db>#</a></h2>
-<p>For this little chat, we will need a database called <code>chat</code> and a table
-called <code>messages</code>.</p>
-<p>To avoid creating them by hand, we can create a Spring bean that will get called
-when the application starts:</p>
-<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>DbInitializer</span> <span style=color:#ff5c57>implements</span> InitializingBean <span style=color:#ff6ac1>{</span>
-    <span style=color:#ff9f43>@Autowired</span>
-    <span style=color:#ff5c57>private</span> RethinkDBConnectionFactory connectionFactory<span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff9f43>@Autowired</span>
-    <span style=color:#ff5c57>private</span> ChatChangesListener chatChangesListener<span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> <span style=color:#ff5c57>final</span> RethinkDB r <span style=color:#ff6ac1>=</span> RethinkDB<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>r</span><span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff9f43>@Override</span>
-    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>afterPropertiesSet</span><span style=color:#ff6ac1>()</span> <span style=color:#ff5c57>throws</span> Exception <span style=color:#ff6ac1>{</span>
-        createDb<span style=color:#ff6ac1>();</span>
-        <span style=color:#78787e>// we will see that later on
-</span><span style=color:#78787e></span>        chatChangesListener<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>pushChangesToWebSocket</span><span style=color:#ff6ac1>();</span>
-    <span style=color:#ff6ac1>}</span>
-
-    <span style=color:#ff5c57>private</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>createDb</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
-        Connection<span style=color:#ff6ac1>&lt;</span>ConnectionInstance<span style=color:#ff6ac1>&gt;</span> connection <span style=color:#ff6ac1>=</span> connectionFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createConnection</span><span style=color:#ff6ac1>();</span>
-        List<span style=color:#ff6ac1>&lt;</span>String<span style=color:#ff6ac1>&gt;</span> dbList <span style=color:#ff6ac1>=</span> r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>dbList</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>connection<span style=color:#ff6ac1>);</span>
-        <span style=color:#ff6ac1>if</span> <span style=color:#ff6ac1>(!</span>dbList<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>contains</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;chat&#34;</span><span style=color:#ff6ac1>))</span> <span style=color:#ff6ac1>{</span>
-            r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>dbCreate</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;chat&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>connection<span style=color:#ff6ac1>);</span>
-        <span style=color:#ff6ac1>}</span>
-        List<span style=color:#ff6ac1>&lt;</span>String<span style=color:#ff6ac1>&gt;</span> tables <span style=color:#ff6ac1>=</span> r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>db</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;chat&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>tableList</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>connection<span style=color:#ff6ac1>);</span>
-        <span style=color:#ff6ac1>if</span> <span style=color:#ff6ac1>(!</span>tables<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>contains</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;messages&#34;</span><span style=color:#ff6ac1>))</span> <span style=color:#ff6ac1>{</span>
-            r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>db</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;chat&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>tableCreate</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;messages&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>connection<span style=color:#ff6ac1>);</span>
-            r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>db</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;chat&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>table</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;messages&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>indexCreate</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;time&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>connection<span style=color:#ff6ac1>);</span>
-        <span style=color:#ff6ac1>}</span>
-    <span style=color:#ff6ac1>}</span>
-<span style=color:#ff6ac1>}</span>
-</code></pre></div><p>Ignore the <code>pushChangesToWebSocket()</code> method call for now, we will see this in a minute.</p>
-<p>We can already get a feel for the RethinkDB API.
+<code>jquery</code> for ajax requests, sockjs and stomp to connect to Spring&rsquo;s websockets:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy><span style=display:flex><span>dependencies <span style=color:#ff6ac1>{</span>
+</span></span><span style=display:flex><span>    compile<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#39;org.springframework.boot:spring-boot-starter-web&#39;</span><span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>    compile<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#39;org.springframework.boot:spring-boot-starter-websocket&#39;</span><span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>    compile<span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#39;org.springframework.boot:spring-boot-devtools&#39;</span><span style=color:#ff6ac1>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    compile <span style=color:#5af78e>&#39;org.webjars:jquery:3.0.0-alpha1&#39;</span>
+</span></span><span style=display:flex><span>    compile <span style=color:#5af78e>&#39;org.webjars:sockjs-client:1.0.0&#39;</span>
+</span></span><span style=display:flex><span>    compile <span style=color:#5af78e>&#39;org.webjars:stomp-websocket:2.3.3&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    compile <span style=color:#5af78e>&#39;com.rethinkdb:rethinkdb-driver:2.2-b1-SNAPSHOT&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#ff6ac1>}</span>
+</span></span></code></pre></div><h2 id=getting-a-connection>Getting a connection<a hidden class=anchor aria-hidden=true href=#getting-a-connection>#</a></h2><p>Every action we will perform on the database will require a <code>Connection</code>.
+We can create a small factory that we will later use in the code:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>RethinkDBConnectionFactory</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> String host;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>public</span> <span style=color:#57c7ff>RethinkDBConnectionFactory</span>(String host) {
+</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>this</span>.<span style=color:#57c7ff>host</span> <span style=color:#ff6ac1>=</span> host;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>public</span> Connection<span style=color:#ff6ac1>&lt;</span>ConnectionInstance<span style=color:#ff6ac1>&gt;</span> <span style=color:#57c7ff>createConnection</span>() {
+</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>try</span> {
+</span></span><span style=display:flex><span>            <span style=color:#ff6ac1>return</span> RethinkDB.<span style=color:#57c7ff>r</span>.<span style=color:#57c7ff>connection</span>().<span style=color:#57c7ff>hostname</span>(host).<span style=color:#57c7ff>connect</span>();
+</span></span><span style=display:flex><span>        } <span style=color:#ff6ac1>catch</span> (TimeoutException e) {
+</span></span><span style=display:flex><span>            <span style=color:#ff6ac1>throw</span> <span style=color:#ff6ac1>new</span> RuntimeException(e);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=initializing-the-db>Initializing the DB<a hidden class=anchor aria-hidden=true href=#initializing-the-db>#</a></h2><p>For this little chat, we will need a database called <code>chat</code> and a table
+called <code>messages</code>.</p><p>To avoid creating them by hand, we can create a Spring bean that will get called
+when the application starts:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>DbInitializer</span> <span style=color:#ff5c57>implements</span> InitializingBean {
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Autowired</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> RethinkDBConnectionFactory connectionFactory;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Autowired</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> ChatChangesListener chatChangesListener;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> <span style=color:#ff5c57>final</span> RethinkDB r <span style=color:#ff6ac1>=</span> RethinkDB.<span style=color:#57c7ff>r</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>afterPropertiesSet</span>() <span style=color:#ff5c57>throws</span> Exception {
+</span></span><span style=display:flex><span>        createDb();
+</span></span><span style=display:flex><span>        <span style=color:#78787e>// we will see that later on</span>
+</span></span><span style=display:flex><span>        chatChangesListener.<span style=color:#57c7ff>pushChangesToWebSocket</span>();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>createDb</span>() {
+</span></span><span style=display:flex><span>        Connection<span style=color:#ff6ac1>&lt;</span>ConnectionInstance<span style=color:#ff6ac1>&gt;</span> connection <span style=color:#ff6ac1>=</span> connectionFactory.<span style=color:#57c7ff>createConnection</span>();
+</span></span><span style=display:flex><span>        List<span style=color:#ff6ac1>&lt;</span>String<span style=color:#ff6ac1>&gt;</span> dbList <span style=color:#ff6ac1>=</span> r.<span style=color:#57c7ff>dbList</span>().<span style=color:#57c7ff>run</span>(connection);
+</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>if</span> (<span style=color:#ff6ac1>!</span>dbList.<span style=color:#57c7ff>contains</span>(<span style=color:#5af78e>&#34;chat&#34;</span>)) {
+</span></span><span style=display:flex><span>            r.<span style=color:#57c7ff>dbCreate</span>(<span style=color:#5af78e>&#34;chat&#34;</span>).<span style=color:#57c7ff>run</span>(connection);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        List<span style=color:#ff6ac1>&lt;</span>String<span style=color:#ff6ac1>&gt;</span> tables <span style=color:#ff6ac1>=</span> r.<span style=color:#57c7ff>db</span>(<span style=color:#5af78e>&#34;chat&#34;</span>).<span style=color:#57c7ff>tableList</span>().<span style=color:#57c7ff>run</span>(connection);
+</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>if</span> (<span style=color:#ff6ac1>!</span>tables.<span style=color:#57c7ff>contains</span>(<span style=color:#5af78e>&#34;messages&#34;</span>)) {
+</span></span><span style=display:flex><span>            r.<span style=color:#57c7ff>db</span>(<span style=color:#5af78e>&#34;chat&#34;</span>).<span style=color:#57c7ff>tableCreate</span>(<span style=color:#5af78e>&#34;messages&#34;</span>).<span style=color:#57c7ff>run</span>(connection);
+</span></span><span style=display:flex><span>            r.<span style=color:#57c7ff>db</span>(<span style=color:#5af78e>&#34;chat&#34;</span>).<span style=color:#57c7ff>table</span>(<span style=color:#5af78e>&#34;messages&#34;</span>).<span style=color:#57c7ff>indexCreate</span>(<span style=color:#5af78e>&#34;time&#34;</span>).<span style=color:#57c7ff>run</span>(connection);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Ignore the <code>pushChangesToWebSocket()</code> method call for now, we will see this in a minute.</p><p>We can already get a feel for the RethinkDB API.
 It was originally designed for dynamically typed language so some things might
-be a little awkward for hardcore Java developers.</p>
-<p>For instance, the result of the operations can be of any type.
-RethinkDB will try to coerce the result according to the return type chosen, if possible.</p>
-<p>This is both good, because of the additional flexibility, and bad, because you
-cannot rely on autocomplete to know the return type of an operation.</p>
-<h2 id=the-chatcontroller>The ChatController<a hidden class=anchor aria-hidden=true href=#the-chatcontroller>#</a></h2>
-<p>The chat controller will react to two things:</p>
-<ol>
-<li><code>GET</code>ting the last 20 messages from the DB</li>
-<li><code>POST</code>ing a new message</li>
-</ol>
-<p>Here is the code, which is kind of straight-forward:</p>
-<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@RestController</span>
-<span style=color:#ff9f43>@RequestMapping</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;/chat&#34;</span><span style=color:#ff6ac1>)</span>
-<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>ChatController</span> <span style=color:#ff6ac1>{</span>
-
-    <span style=color:#ff5c57>protected</span> <span style=color:#ff5c57>final</span> Logger log <span style=color:#ff6ac1>=</span> LoggerFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getLogger</span><span style=color:#ff6ac1>(</span>ChatController<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>);</span>
-    <span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> <span style=color:#ff5c57>final</span> RethinkDB r <span style=color:#ff6ac1>=</span> RethinkDB<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>r</span><span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff9f43>@Autowired</span>
-    <span style=color:#ff5c57>private</span> RethinkDBConnectionFactory connectionFactory<span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff9f43>@RequestMapping</span><span style=color:#ff6ac1>(</span>method <span style=color:#ff6ac1>=</span> RequestMethod<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>POST</span><span style=color:#ff6ac1>)</span>
-    <span style=color:#ff5c57>public</span> ChatMessage <span style=color:#57c7ff>postMessage</span><span style=color:#ff6ac1>(</span><span style=color:#ff9f43>@RequestBody</span> ChatMessage chatMessage<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
-        chatMessage<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>setTime</span><span style=color:#ff6ac1>(</span>OffsetDateTime<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>now</span><span style=color:#ff6ac1>());</span>
-        Object run <span style=color:#ff6ac1>=</span> r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>db</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;chat&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>table</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;messages&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>insert</span><span style=color:#ff6ac1>(</span>chatMessage<span style=color:#ff6ac1>)</span>
-                <span style=color:#ff6ac1>.</span><span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>connectionFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createConnection</span><span style=color:#ff6ac1>());</span>
-
-        log<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>info</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;Insert {}&#34;</span><span style=color:#ff6ac1>,</span> run<span style=color:#ff6ac1>);</span>
-        <span style=color:#ff6ac1>return</span> chatMessage<span style=color:#ff6ac1>;</span>
-    <span style=color:#ff6ac1>}</span>
-
-    <span style=color:#ff9f43>@RequestMapping</span><span style=color:#ff6ac1>(</span>method <span style=color:#ff6ac1>=</span> RequestMethod<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>GET</span><span style=color:#ff6ac1>)</span>
-    <span style=color:#ff5c57>public</span> List<span style=color:#ff6ac1>&lt;</span>ChatMessage<span style=color:#ff6ac1>&gt;</span> <span style=color:#57c7ff>getMessages</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
-
-        List<span style=color:#ff6ac1>&lt;</span>ChatMessage<span style=color:#ff6ac1>&gt;</span> messages <span style=color:#ff6ac1>=</span> r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>db</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;chat&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>table</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;messages&#34;</span><span style=color:#ff6ac1>)</span>
-                <span style=color:#ff6ac1>.</span><span style=color:#57c7ff>orderBy</span><span style=color:#ff6ac1>().</span><span style=color:#57c7ff>optArg</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;index&#34;</span><span style=color:#ff6ac1>,</span> r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>desc</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;time&#34;</span><span style=color:#ff6ac1>))</span>
-                <span style=color:#ff6ac1>.</span><span style=color:#57c7ff>limit</span><span style=color:#ff6ac1>(</span>20<span style=color:#ff6ac1>)</span>
-                <span style=color:#ff6ac1>.</span><span style=color:#57c7ff>orderBy</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;time&#34;</span><span style=color:#ff6ac1>)</span>
-                <span style=color:#ff6ac1>.</span><span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>connectionFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createConnection</span><span style=color:#ff6ac1>(),</span> ChatMessage<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>);</span>
-
-        <span style=color:#ff6ac1>return</span> messages<span style=color:#ff6ac1>;</span>
-    <span style=color:#ff6ac1>}</span>
-<span style=color:#ff6ac1>}</span>
-</code></pre></div><p>The cool thing is that the API clean and simple to understand.</p>
-<p>Some things are still a bit funny:</p>
-<ul>
-<li>The <code>optArg</code> after the orderBy is a bit cryptic</li>
-<li>I spent some time figuring out that your POJO class must not contain any id
-attribute for the auto-generation to work</li>
-</ul>
-<h2 id=setting-up-websockets>Setting up websockets<a hidden class=anchor aria-hidden=true href=#setting-up-websockets>#</a></h2>
-<p>Now that we can read and write from the DB, we need to push the updates to
-the client in real time.</p>
-<p>We will use websockets over <a href=http://www.rabbitmq.com/blog/2011/09/13/sockjs-websocket-emulation/>SockJS</a> for that.
-The configuration for websockets is pretty classic:</p>
-<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@Configuration</span>
-<span style=color:#ff9f43>@EnableWebSocketMessageBroker</span>
-<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>WebSocketConfig</span> <span style=color:#ff5c57>extends</span> AbstractWebSocketMessageBrokerConfigurer <span style=color:#ff6ac1>{</span>
-
-    <span style=color:#ff9f43>@Override</span>
-    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>configureMessageBroker</span><span style=color:#ff6ac1>(</span>MessageBrokerRegistry config<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
-        config<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>enableSimpleBroker</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;/topic&#34;</span><span style=color:#ff6ac1>);</span>
-    <span style=color:#ff6ac1>}</span>
-
-    <span style=color:#ff9f43>@Override</span>
-    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>registerStompEndpoints</span><span style=color:#ff6ac1>(</span>StompEndpointRegistry registry<span style=color:#ff6ac1>)</span> <span style=color:#ff6ac1>{</span>
-        registry<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>addEndpoint</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;/chatWS&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>withSockJS</span><span style=color:#ff6ac1>();</span>
-    <span style=color:#ff6ac1>}</span>
-<span style=color:#ff6ac1>}</span>
-</code></pre></div><p>How to read that:</p>
-<ul>
-<li>Our clients will be able to connect to the <code>/chatWS</code> endpoint</li>
-<li>The clients will then have the possibility to listen to any topic whose url begins
-with <code>/topic</code> (i.e, <code>/topic/messages</code>) and get notified in real time</li>
-</ul>
-<h2 id=listening-to-the-updates>Listening to the updates<a hidden class=anchor aria-hidden=true href=#listening-to-the-updates>#</a></h2>
-<p>We will now listen to database updates in a thread and broadcast the changes
-to all the clients listening on the web socket.</p>
-<p>We use the <code>@Async</code> annotation, so Spring will take care of running the code in a thread
-for us:</p>
-<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#ff9f43>@Service</span>
-<span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>ChatChangesListener</span> <span style=color:#ff6ac1>{</span>
-    <span style=color:#ff5c57>protected</span> <span style=color:#ff5c57>final</span> Logger log <span style=color:#ff6ac1>=</span> LoggerFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getLogger</span><span style=color:#ff6ac1>(</span>ChatChangesListener<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>);</span>
-    <span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> <span style=color:#ff5c57>final</span> RethinkDB r <span style=color:#ff6ac1>=</span> RethinkDB<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>r</span><span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff9f43>@Autowired</span>
-    <span style=color:#ff5c57>private</span> RethinkDBConnectionFactory connectionFactory<span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff9f43>@Autowired</span>
-    <span style=color:#ff5c57>private</span> SimpMessagingTemplate webSocket<span style=color:#ff6ac1>;</span>
-
-    <span style=color:#ff9f43>@Async</span>
-    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>pushChangesToWebSocket</span><span style=color:#ff6ac1>()</span> <span style=color:#ff6ac1>{</span>
-      Cursor<span style=color:#ff6ac1>&lt;</span>ChatMessage<span style=color:#ff6ac1>&gt;</span> cursor <span style=color:#ff6ac1>=</span> r<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>db</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;chat&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>table</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;messages&#34;</span><span style=color:#ff6ac1>).</span><span style=color:#57c7ff>changes</span><span style=color:#ff6ac1>()</span>
-              <span style=color:#ff6ac1>.</span><span style=color:#57c7ff>getField</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;new_val&#34;</span><span style=color:#ff6ac1>)</span>
-              <span style=color:#ff6ac1>.</span><span style=color:#57c7ff>run</span><span style=color:#ff6ac1>(</span>connectionFactory<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>createConnection</span><span style=color:#ff6ac1>(),</span> ChatMessage<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>class</span><span style=color:#ff6ac1>);</span>
-
-      <span style=color:#ff6ac1>while</span> <span style=color:#ff6ac1>(</span>cursor<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>hasNext</span><span style=color:#ff6ac1>())</span> <span style=color:#ff6ac1>{</span>
-          ChatMessage chatMessage <span style=color:#ff6ac1>=</span> cursor<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>next</span><span style=color:#ff6ac1>();</span>
-          log<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>info</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;New message: {}&#34;</span><span style=color:#ff6ac1>,</span> chatMessage<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>message</span><span style=color:#ff6ac1>);</span>
-          webSocket<span style=color:#ff6ac1>.</span><span style=color:#57c7ff>convertAndSend</span><span style=color:#ff6ac1>(</span><span style=color:#5af78e>&#34;/topic/messages&#34;</span><span style=color:#ff6ac1>,</span> chatMessage<span style=color:#ff6ac1>);</span>
-      <span style=color:#ff6ac1>}</span>
-  <span style=color:#ff6ac1>}</span>
-<span style=color:#ff6ac1>}</span>
-</code></pre></div><p>So what happens here? Each time a change happens in the database,
+be a little awkward for hardcore Java developers.</p><p>For instance, the result of the operations can be of any type.
+RethinkDB will try to coerce the result according to the return type chosen, if possible.</p><p>This is both good, because of the additional flexibility, and bad, because you
+cannot rely on autocomplete to know the return type of an operation.</p><h2 id=the-chatcontroller>The ChatController<a hidden class=anchor aria-hidden=true href=#the-chatcontroller>#</a></h2><p>The chat controller will react to two things:</p><ol><li><code>GET</code>ting the last 20 messages from the DB</li><li><code>POST</code>ing a new message</li></ol><p>Here is the code, which is kind of straight-forward:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#ff9f43>@RestController</span>
+</span></span><span style=display:flex><span><span style=color:#ff9f43>@RequestMapping</span>(<span style=color:#5af78e>&#34;/chat&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>ChatController</span> {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>protected</span> <span style=color:#ff5c57>final</span> Logger log <span style=color:#ff6ac1>=</span> LoggerFactory.<span style=color:#57c7ff>getLogger</span>(ChatController.<span style=color:#57c7ff>class</span>);
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> <span style=color:#ff5c57>final</span> RethinkDB r <span style=color:#ff6ac1>=</span> RethinkDB.<span style=color:#57c7ff>r</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Autowired</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> RethinkDBConnectionFactory connectionFactory;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@RequestMapping</span>(method <span style=color:#ff6ac1>=</span> RequestMethod.<span style=color:#57c7ff>POST</span>)
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>public</span> ChatMessage <span style=color:#57c7ff>postMessage</span>(<span style=color:#ff9f43>@RequestBody</span> ChatMessage chatMessage) {
+</span></span><span style=display:flex><span>        chatMessage.<span style=color:#57c7ff>setTime</span>(OffsetDateTime.<span style=color:#57c7ff>now</span>());
+</span></span><span style=display:flex><span>        Object run <span style=color:#ff6ac1>=</span> r.<span style=color:#57c7ff>db</span>(<span style=color:#5af78e>&#34;chat&#34;</span>).<span style=color:#57c7ff>table</span>(<span style=color:#5af78e>&#34;messages&#34;</span>).<span style=color:#57c7ff>insert</span>(chatMessage)
+</span></span><span style=display:flex><span>                .<span style=color:#57c7ff>run</span>(connectionFactory.<span style=color:#57c7ff>createConnection</span>());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        log.<span style=color:#57c7ff>info</span>(<span style=color:#5af78e>&#34;Insert {}&#34;</span>, run);
+</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>return</span> chatMessage;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@RequestMapping</span>(method <span style=color:#ff6ac1>=</span> RequestMethod.<span style=color:#57c7ff>GET</span>)
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>public</span> List<span style=color:#ff6ac1>&lt;</span>ChatMessage<span style=color:#ff6ac1>&gt;</span> <span style=color:#57c7ff>getMessages</span>() {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        List<span style=color:#ff6ac1>&lt;</span>ChatMessage<span style=color:#ff6ac1>&gt;</span> messages <span style=color:#ff6ac1>=</span> r.<span style=color:#57c7ff>db</span>(<span style=color:#5af78e>&#34;chat&#34;</span>).<span style=color:#57c7ff>table</span>(<span style=color:#5af78e>&#34;messages&#34;</span>)
+</span></span><span style=display:flex><span>                .<span style=color:#57c7ff>orderBy</span>().<span style=color:#57c7ff>optArg</span>(<span style=color:#5af78e>&#34;index&#34;</span>, r.<span style=color:#57c7ff>desc</span>(<span style=color:#5af78e>&#34;time&#34;</span>))
+</span></span><span style=display:flex><span>                .<span style=color:#57c7ff>limit</span>(20)
+</span></span><span style=display:flex><span>                .<span style=color:#57c7ff>orderBy</span>(<span style=color:#5af78e>&#34;time&#34;</span>)
+</span></span><span style=display:flex><span>                .<span style=color:#57c7ff>run</span>(connectionFactory.<span style=color:#57c7ff>createConnection</span>(), ChatMessage.<span style=color:#57c7ff>class</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>return</span> messages;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>The cool thing is that the API clean and simple to understand.</p><p>Some things are still a bit funny:</p><ul><li>The <code>optArg</code> after the orderBy is a bit cryptic</li><li>I spent some time figuring out that your POJO class must not contain any id
+attribute for the auto-generation to work</li></ul><h2 id=setting-up-websockets>Setting up websockets<a hidden class=anchor aria-hidden=true href=#setting-up-websockets>#</a></h2><p>Now that we can read and write from the DB, we need to push the updates to
+the client in real time.</p><p>We will use websockets over <a href=http://www.rabbitmq.com/blog/2011/09/13/sockjs-websocket-emulation/>SockJS</a> for that.
+The configuration for websockets is pretty classic:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#ff9f43>@Configuration</span>
+</span></span><span style=display:flex><span><span style=color:#ff9f43>@EnableWebSocketMessageBroker</span>
+</span></span><span style=display:flex><span><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>WebSocketConfig</span> <span style=color:#ff5c57>extends</span> AbstractWebSocketMessageBrokerConfigurer {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>configureMessageBroker</span>(MessageBrokerRegistry config) {
+</span></span><span style=display:flex><span>        config.<span style=color:#57c7ff>enableSimpleBroker</span>(<span style=color:#5af78e>&#34;/topic&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>registerStompEndpoints</span>(StompEndpointRegistry registry) {
+</span></span><span style=display:flex><span>        registry.<span style=color:#57c7ff>addEndpoint</span>(<span style=color:#5af78e>&#34;/chatWS&#34;</span>).<span style=color:#57c7ff>withSockJS</span>();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>How to read that:</p><ul><li>Our clients will be able to connect to the <code>/chatWS</code> endpoint</li><li>The clients will then have the possibility to listen to any topic whose url begins
+with <code>/topic</code> (i.e, <code>/topic/messages</code>) and get notified in real time</li></ul><h2 id=listening-to-the-updates>Listening to the updates<a hidden class=anchor aria-hidden=true href=#listening-to-the-updates>#</a></h2><p>We will now listen to database updates in a thread and broadcast the changes
+to all the clients listening on the web socket.</p><p>We use the <code>@Async</code> annotation, so Spring will take care of running the code in a thread
+for us:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#ff9f43>@Service</span>
+</span></span><span style=display:flex><span><span style=color:#ff5c57>public</span> <span style=color:#ff5c57>class</span> <span style=color:#f3f99d>ChatChangesListener</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>protected</span> <span style=color:#ff5c57>final</span> Logger log <span style=color:#ff6ac1>=</span> LoggerFactory.<span style=color:#57c7ff>getLogger</span>(ChatChangesListener.<span style=color:#57c7ff>class</span>);
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> <span style=color:#ff5c57>static</span> <span style=color:#ff5c57>final</span> RethinkDB r <span style=color:#ff6ac1>=</span> RethinkDB.<span style=color:#57c7ff>r</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Autowired</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> RethinkDBConnectionFactory connectionFactory;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Autowired</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>private</span> SimpMessagingTemplate webSocket;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff9f43>@Async</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>public</span> <span style=color:#9aedfe>void</span> <span style=color:#57c7ff>pushChangesToWebSocket</span>() {
+</span></span><span style=display:flex><span>      Cursor<span style=color:#ff6ac1>&lt;</span>ChatMessage<span style=color:#ff6ac1>&gt;</span> cursor <span style=color:#ff6ac1>=</span> r.<span style=color:#57c7ff>db</span>(<span style=color:#5af78e>&#34;chat&#34;</span>).<span style=color:#57c7ff>table</span>(<span style=color:#5af78e>&#34;messages&#34;</span>).<span style=color:#57c7ff>changes</span>()
+</span></span><span style=display:flex><span>              .<span style=color:#57c7ff>getField</span>(<span style=color:#5af78e>&#34;new_val&#34;</span>)
+</span></span><span style=display:flex><span>              .<span style=color:#57c7ff>run</span>(connectionFactory.<span style=color:#57c7ff>createConnection</span>(), ChatMessage.<span style=color:#57c7ff>class</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#ff6ac1>while</span> (cursor.<span style=color:#57c7ff>hasNext</span>()) {
+</span></span><span style=display:flex><span>          ChatMessage chatMessage <span style=color:#ff6ac1>=</span> cursor.<span style=color:#57c7ff>next</span>();
+</span></span><span style=display:flex><span>          log.<span style=color:#57c7ff>info</span>(<span style=color:#5af78e>&#34;New message: {}&#34;</span>, chatMessage.<span style=color:#57c7ff>message</span>);
+</span></span><span style=display:flex><span>          webSocket.<span style=color:#57c7ff>convertAndSend</span>(<span style=color:#5af78e>&#34;/topic/messages&#34;</span>, chatMessage);
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>So what happens here? Each time a change happens in the database,
 we will get an update. This update will contain two fields: <code>old_val</code> and <code>new_val</code>.
-See <a href=https://www.rethinkdb.com/api/java/changes/>the documentation</a>.</p>
-<p>Since we are only interested in the new things, we will only retrieve the <code>new_val</code> field.</p>
-<p>Note that the second (optional) argument to the <code>run</code> method is a class.
+See <a href=https://www.rethinkdb.com/api/java/changes/>the documentation</a>.</p><p>Since we are only interested in the new things, we will only retrieve the <code>new_val</code> field.</p><p>Note that the second (optional) argument to the <code>run</code> method is a class.
 If present, RethinkDB will try to convert the data to this target class, just like
-we did in the <code>ChatController</code> above.</p>
-<p>Then, we simply broadcast the message to all the clients listening on <code>/topic/messages</code>.</p>
-<h2 id=the-client>The client<a hidden class=anchor aria-hidden=true href=#the-client>#</a></h2>
-<p>If you never used webjars before, they are simply jar packages containing frontend
+we did in the <code>ChatController</code> above.</p><p>Then, we simply broadcast the message to all the clients listening on <code>/topic/messages</code>.</p><h2 id=the-client>The client<a hidden class=anchor aria-hidden=true href=#the-client>#</a></h2><p>If you never used webjars before, they are simply jar packages containing frontend
 dependencies. With Spring Boot we can use them in our web pages directly.
-Below the <code>index.html</code> file of our application:</p>
-<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=color:#78787e>&lt;!DOCTYPE html&gt;</span>
-&lt;<span style=color:#ff6ac1>html</span> <span style=color:#57c7ff>lang</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;en&#34;</span>&gt;
-&lt;<span style=color:#ff6ac1>head</span>&gt;
-    &lt;<span style=color:#ff6ac1>meta</span> <span style=color:#57c7ff>charset</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;UTF-8&#34;</span>&gt;
-    &lt;<span style=color:#ff6ac1>title</span>&gt;Title&lt;/<span style=color:#ff6ac1>title</span>&gt;
-
-    &lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;webjars/jquery/3.0.0-alpha1/jquery.js&#34;</span>&gt;&lt;/<span style=color:#ff6ac1>script</span>&gt;
-    &lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;webjars/sockjs-client/1.0.0/sockjs.js&#34;</span>&gt;&lt;/<span style=color:#ff6ac1>script</span>&gt;
-    &lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;webjars/stomp-websocket/2.3.3/stomp.js&#34;</span>&gt;&lt;/<span style=color:#ff6ac1>script</span>&gt;
-    &lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;js/main.js&#34;</span>&gt;&lt;/<span style=color:#ff6ac1>script</span>&gt;
-&lt;/<span style=color:#ff6ac1>head</span>&gt;
-&lt;<span style=color:#ff6ac1>body</span>&gt;
-
-&lt;<span style=color:#ff6ac1>div</span> <span style=color:#57c7ff>id</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;chat&#34;</span>&gt;
-
-    &lt;<span style=color:#ff6ac1>div</span> <span style=color:#57c7ff>id</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;messages&#34;</span>&gt;
-
-    &lt;/<span style=color:#ff6ac1>div</span>&gt;
-    &lt;<span style=color:#ff6ac1>form</span> <span style=color:#57c7ff>onsubmit</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;sendMessage(); return false;&#34;</span>&gt;
-        &lt;<span style=color:#ff6ac1>label</span>&gt;
-            Message:
-            &lt;<span style=color:#ff6ac1>input</span> <span style=color:#57c7ff>type</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;text&#34;</span> <span style=color:#57c7ff>id</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;messageInput&#34;</span> /&gt;
-        &lt;/<span style=color:#ff6ac1>label</span>&gt;
-        &lt;<span style=color:#ff6ac1>button</span> <span style=color:#57c7ff>type</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;submit&#34;</span>&gt;Send&lt;/<span style=color:#ff6ac1>button</span>&gt;
-    &lt;/<span style=color:#ff6ac1>form</span>&gt;
-&lt;/<span style=color:#ff6ac1>div</span>&gt;
-
-&lt;/<span style=color:#ff6ac1>body</span>&gt;
-&lt;/<span style=color:#ff6ac1>html</span>&gt;
-</code></pre></div><p>And the javascript:</p>
-<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#ff5c57>var</span> userName <span style=color:#ff6ac1>=</span> <span style=color:#ff5c57>window</span>.prompt(<span style=color:#5af78e>&#34;Enter your name&#34;</span>, <span style=color:#5af78e>&#34;some user&#34;</span>);
-
-<span style=color:#ff5c57>function</span> appendMessage(message) {
-    $(<span style=color:#5af78e>&#39;#messages&#39;</span>).append($(<span style=color:#5af78e>&#39;&lt;div /&gt;&#39;</span>).text(message.from <span style=color:#ff6ac1>+</span> <span style=color:#5af78e>&#34;: &#34;</span> <span style=color:#ff6ac1>+</span> message.message))
-}
-
-<span style=color:#ff5c57>function</span> getPreviousMessages() {
-    $.get(<span style=color:#5af78e>&#39;/chat&#39;</span>).done(messages =&gt; messages.forEach(appendMessage));
-}
-
-<span style=color:#ff5c57>function</span> sendMessage() {
-    <span style=color:#ff5c57>var</span> $messageInput <span style=color:#ff6ac1>=</span> $(<span style=color:#5af78e>&#39;#messageInput&#39;</span>);
-    <span style=color:#ff5c57>var</span> message <span style=color:#ff6ac1>=</span> {message<span style=color:#ff6ac1>:</span> $messageInput.val(), from<span style=color:#ff6ac1>:</span> userName};
-    $messageInput.val(<span style=color:#5af78e>&#39;&#39;</span>);
-    post(<span style=color:#5af78e>&#39;/chat&#39;</span>, message);
-}
-
-<span style=color:#ff5c57>function</span> onNewMessage(result) {
-    <span style=color:#ff5c57>var</span> message <span style=color:#ff6ac1>=</span> JSON.parse(result.body);
-    appendMessage(message);
-}
-
-<span style=color:#ff5c57>function</span> connectWebSocket() {
-    <span style=color:#ff5c57>var</span> socket <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> SockJS(<span style=color:#5af78e>&#39;/chatWS&#39;</span>);
-    stompClient <span style=color:#ff6ac1>=</span> Stomp.over(socket);
-    <span style=color:#78787e>//stompClient.debug = null;
-</span><span style=color:#78787e></span>    stompClient.connect({}, (frame) =&gt; {
-        console.log(<span style=color:#5af78e>&#39;Connected: &#39;</span> <span style=color:#ff6ac1>+</span> frame);
-        stompClient.subscribe(<span style=color:#5af78e>&#39;/topic/messages&#39;</span>, onNewMessage);
-    });
-}
-
-getPreviousMessages();
-connectWebSocket();
-</code></pre></div><p><img loading=lazy src=/assets/images/articles/2016-01-rethinkDB-hello.gif alt="The chat with a bit of CSS" title="Hello world!">
-</p>
-<h2 id=conclusion>Conclusion<a hidden class=anchor aria-hidden=true href=#conclusion>#</a></h2>
-<p>RethinkDB is an awesome database, especially because it lets you decouple the
-code that updates the database and the code that listens to the changes.</p>
-<p>The driver is brand new and still in beta but we can already salute the efforts
-of the developers for such an amazing work!</p>
-<p>As always, check out the project <a href=https://github.com/geowarin/boot-rethinkdb>on github</a>
-and tell me what you think!</p>
-</div>
-<footer class=post-footer>
-<ul class=post-tags>
-<li><a href=https://geowarin.com/tags/chat/>chat</a></li>
-</ul>
-<nav class=paginav>
-<a class=prev href=https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/>
-<span class=title>« Prev Page</span>
-<br>
-<span>Correctly handle JSR-310 (java 8) dates with Jackson</span>
-</a>
-<a class=next href=https://geowarin.com/test-your-java-application-with-groovy/>
-<span class=title>Next Page »</span>
-<br>
-<span>Test your Java application with Groovy</span>
-</a>
-</nav>
-<div class=share-buttons>
-<a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on twitter" href="https://twitter.com/intent/tweet/?text=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&url=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f&hashtags=chat"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg>
-</a>
-<a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f&title=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&summary=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&source=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
-</a>
-<a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f&title=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
-</a>
-<a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
-</a>
-<a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on whatsapp" href="https://api.whatsapp.com/send?text=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB%20-%20https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
-</a>
-<a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on telegram" href="https://telegram.me/share/url?text=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&url=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg viewBox="2 2 28 28"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
-</a>
-</div>
-</footer><section class=comments>
-<script>function loadComments(){const b=document.body.classList.contains('dark')?'photon-dark':'github-light';let a=document.createElement('script');a.src='https://utteranc.es/client.js',a.setAttribute('repo','geowarin/geowarin.github.io'),a.setAttribute('issue-term','title'),a.setAttribute('theme',b),a.setAttribute('crossorigin','anonymous'),a.setAttribute('async',''),document.querySelector('section.comments').innerHTML='',document.querySelector('section.comments').appendChild(a)}const mutationObserver=new MutationObserver(a=>{a.some(a=>a.attributeName==='class')&&loadComments()});mutationObserver.observe(document.body,{attributes:!0}),loadComments()</script>
-</section>
-</article>
-</main>
-<footer class=footer>
-<span>&copy; 2023 <a href=https://geowarin.com>Geowarin</a></span>
-<span>
-Powered by
+Below the <code>index.html</code> file of our application:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span><span style=color:#78787e>&lt;!DOCTYPE html&gt;</span>
+</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>html</span> <span style=color:#57c7ff>lang</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;en&#34;</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>head</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#ff6ac1>meta</span> <span style=color:#57c7ff>charset</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;UTF-8&#34;</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#ff6ac1>title</span>&gt;Title&lt;/<span style=color:#ff6ac1>title</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    &lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;webjars/jquery/3.0.0-alpha1/jquery.js&#34;</span>&gt;&lt;/<span style=color:#ff6ac1>script</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;webjars/sockjs-client/1.0.0/sockjs.js&#34;</span>&gt;&lt;/<span style=color:#ff6ac1>script</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;webjars/stomp-websocket/2.3.3/stomp.js&#34;</span>&gt;&lt;/<span style=color:#ff6ac1>script</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#ff6ac1>script</span> <span style=color:#57c7ff>src</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;js/main.js&#34;</span>&gt;&lt;/<span style=color:#ff6ac1>script</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#ff6ac1>head</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>body</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;<span style=color:#ff6ac1>div</span> <span style=color:#57c7ff>id</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;chat&#34;</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    &lt;<span style=color:#ff6ac1>div</span> <span style=color:#57c7ff>id</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;messages&#34;</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#ff6ac1>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#ff6ac1>form</span> <span style=color:#57c7ff>onsubmit</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;sendMessage(); return false;&#34;</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#ff6ac1>label</span>&gt;
+</span></span><span style=display:flex><span>            Message:
+</span></span><span style=display:flex><span>            &lt;<span style=color:#ff6ac1>input</span> <span style=color:#57c7ff>type</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;text&#34;</span> <span style=color:#57c7ff>id</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;messageInput&#34;</span> /&gt;
+</span></span><span style=display:flex><span>        &lt;/<span style=color:#ff6ac1>label</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#ff6ac1>button</span> <span style=color:#57c7ff>type</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;submit&#34;</span>&gt;Send&lt;/<span style=color:#ff6ac1>button</span>&gt;
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#ff6ac1>form</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#ff6ac1>div</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;/<span style=color:#ff6ac1>body</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#ff6ac1>html</span>&gt;
+</span></span></code></pre></div><p>And the javascript:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=display:flex><span><span style=color:#ff5c57>var</span> userName <span style=color:#ff6ac1>=</span> <span style=color:#ff5c57>window</span>.prompt(<span style=color:#5af78e>&#34;Enter your name&#34;</span>, <span style=color:#5af78e>&#34;some user&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff5c57>function</span> appendMessage(message) {
+</span></span><span style=display:flex><span>    $(<span style=color:#5af78e>&#39;#messages&#39;</span>).append($(<span style=color:#5af78e>&#39;&lt;div /&gt;&#39;</span>).text(message.from <span style=color:#ff6ac1>+</span> <span style=color:#5af78e>&#34;: &#34;</span> <span style=color:#ff6ac1>+</span> message.message))
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff5c57>function</span> getPreviousMessages() {
+</span></span><span style=display:flex><span>    $.get(<span style=color:#5af78e>&#39;/chat&#39;</span>).done(messages =&gt; messages.forEach(appendMessage));
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff5c57>function</span> sendMessage() {
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>var</span> $messageInput <span style=color:#ff6ac1>=</span> $(<span style=color:#5af78e>&#39;#messageInput&#39;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>var</span> message <span style=color:#ff6ac1>=</span> {message<span style=color:#ff6ac1>:</span> $messageInput.val(), from<span style=color:#ff6ac1>:</span> userName};
+</span></span><span style=display:flex><span>    $messageInput.val(<span style=color:#5af78e>&#39;&#39;</span>);
+</span></span><span style=display:flex><span>    post(<span style=color:#5af78e>&#39;/chat&#39;</span>, message);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff5c57>function</span> onNewMessage(result) {
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>var</span> message <span style=color:#ff6ac1>=</span> JSON.parse(result.body);
+</span></span><span style=display:flex><span>    appendMessage(message);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff5c57>function</span> connectWebSocket() {
+</span></span><span style=display:flex><span>    <span style=color:#ff5c57>var</span> socket <span style=color:#ff6ac1>=</span> <span style=color:#ff6ac1>new</span> SockJS(<span style=color:#5af78e>&#39;/chatWS&#39;</span>);
+</span></span><span style=display:flex><span>    stompClient <span style=color:#ff6ac1>=</span> Stomp.over(socket);
+</span></span><span style=display:flex><span>    <span style=color:#78787e>//stompClient.debug = null;
+</span></span></span><span style=display:flex><span><span style=color:#78787e></span>    stompClient.connect({}, (frame) =&gt; {
+</span></span><span style=display:flex><span>        console.log(<span style=color:#5af78e>&#39;Connected: &#39;</span> <span style=color:#ff6ac1>+</span> frame);
+</span></span><span style=display:flex><span>        stompClient.subscribe(<span style=color:#5af78e>&#39;/topic/messages&#39;</span>, onNewMessage);
+</span></span><span style=display:flex><span>    });
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>getPreviousMessages();
+</span></span><span style=display:flex><span>connectWebSocket();
+</span></span></code></pre></div><p><img loading=lazy src=/assets/images/articles/2016-01-rethinkDB-hello.gif alt="The chat with a bit of CSS" title="Hello world!"></p><h2 id=conclusion>Conclusion<a hidden class=anchor aria-hidden=true href=#conclusion>#</a></h2><p>RethinkDB is an awesome database, especially because it lets you decouple the
+code that updates the database and the code that listens to the changes.</p><p>The driver is brand new and still in beta but we can already salute the efforts
+of the developers for such an amazing work!</p><p>As always, check out the project <a href=https://github.com/geowarin/boot-rethinkdb>on github</a>
+and tell me what you think!</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://geowarin.com/tags/chat/>chat</a></li></ul><nav class=paginav><a class=prev href=https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/><span class=title>« Prev</span><br><span>Correctly handle JSR-310 (java 8) dates with Jackson</span>
+</a><a class=next href=https://geowarin.com/test-your-java-application-with-groovy/><span class=title>Next »</span><br><span>Test your Java application with Groovy</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on x" href="https://x.com/intent/tweet/?text=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&amp;url=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f&amp;hashtags=chat"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f&amp;title=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&amp;summary=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&amp;source=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f&title=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on whatsapp" href="https://api.whatsapp.com/send?text=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB%20-%20https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on telegram" href="https://telegram.me/share/url?text=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&amp;url=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share A simple chat with Spring Boot and RethinkDB on ycombinator" href="https://news.ycombinator.com/submitlink?t=A%20simple%20chat%20with%20Spring%20Boot%20and%20RethinkDB&u=https%3a%2f%2fgeowarin.com%2fa-simple-chat-with-spring-boot-and-rethinkdb%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer><section class=comments><script>function loadComments(){const t=document.body.classList.contains("dark")?"photon-dark":"github-light";let e=document.createElement("script");e.src="https://utteranc.es/client.js",e.setAttribute("repo","geowarin/geowarin.github.io"),e.setAttribute("issue-term","title"),e.setAttribute("theme",t),e.setAttribute("crossorigin","anonymous"),e.setAttribute("async",""),document.querySelector("section.comments").innerHTML="",document.querySelector("section.comments").appendChild(e)}const mutationObserver=new MutationObserver(e=>{e.some(e=>e.attributeName==="class")&&loadComments()});mutationObserver.observe(document.body,{attributes:!0}),loadComments()</script></section></article></main><footer class=footer><span>&copy; 2024 <a href=https://geowarin.com>Geowarin</a></span>
+<span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
-</span>
-</footer>
-<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</a><div id=img-overlay style=display:none>
-<button class=close>X</button>
-<div class=overlay-content>
-<img id=img-content>
-<div id=img-caption></div>
-</div>
-</div>
-<script>const figures=document.querySelectorAll('figure > img'),overlay=document.querySelector("#img-overlay");let currentIndex=0;function showOverlay(c){currentIndex=Math.min(Math.max(c,0),figures.length-1);const a=figures[currentIndex];overlay.style.display="flex",document.querySelector("#img-content").src=a.src;const b=a.parentNode.querySelector('figcaption');document.querySelector("#img-caption").innerHTML=b?b.textContent:""}figures.forEach((a,b)=>{a.style.cursor="pointer",a.addEventListener("click",()=>showOverlay(b))});function closeOverlay(){overlay.style.display="none"}document.addEventListener("keydown",a=>{a.key==='Escape'?closeOverlay():a.key==='ArrowRight'?showOverlay(++currentIndex):a.key==='ArrowLeft'&&showOverlay(--currentIndex)}),overlay.addEventListener("click",a=>{a.target===a.currentTarget&&closeOverlay()}),document.querySelector("#img-overlay .close").addEventListener("click",closeOverlay)</script>
-<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
-<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
-<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
-<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
-</body>
-</html>
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><div id=img-overlay style=display:none><button class=close>X</button><div class=overlay-content><img id=img-content><div id=img-caption></div></div></div><script>const figures=document.querySelectorAll("figure > img"),overlay=document.querySelector("#img-overlay");let currentIndex=0;function showOverlay(e){currentIndex=Math.min(Math.max(e,0),figures.length-1);const t=figures[currentIndex];overlay.style.display="flex",document.querySelector("#img-content").src=t.src;const n=t.parentNode.querySelector("figcaption");document.querySelector("#img-caption").innerHTML=n?n.textContent:""}figures.forEach((e,t)=>{e.style.cursor="pointer",e.addEventListener("click",()=>showOverlay(t))});function closeOverlay(){overlay.style.display="none"}document.addEventListener("keydown",e=>{e.key==="Escape"?closeOverlay():e.key==="ArrowRight"?showOverlay(++currentIndex):e.key==="ArrowLeft"&&showOverlay(--currentIndex)}),overlay.addEventListener("click",e=>{e.target===e.currentTarget&&closeOverlay()}),document.querySelector("#img-overlay .close").addEventListener("click",closeOverlay)</script><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
