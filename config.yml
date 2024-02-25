@@ -36,6 +36,7 @@ params:
   ShowCodeCopyButtons: true
   disableSpecial1stPost: true
 #  disableScrollToTop: false
+  ShowFullTextinRSS: true
   comments: true
 
   assets:
