@@ -1,1 +1,119 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>fresh on Geowarin</title><link>https://geowarin.com/tags/fresh/</link><description>Recent content in fresh on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 18 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/fresh/index.xml" rel="self" type="application/rss+xml"/><item><title>React freshness</title><link>https://geowarin.com/react-freshness/</link><pubDate>Thu, 18 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/react-freshness/</guid><description>We&amp;rsquo;ve heard a lot about Javascript fatigue but what if I showed you two simple ways to get started with React without a single line of configuration? Refresh!</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>fresh on Geowarin</title><link>https://geowarin.com/tags/fresh/</link><description>Recent content in fresh on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 18 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/fresh/index.xml" rel="self" type="application/rss+xml"/><item><title>React freshness</title><link>https://geowarin.com/react-freshness/</link><pubDate>Thu, 18 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/react-freshness/</guid><description>We&amp;rsquo;ve heard a lot about Javascript fatigue but what if I showed you two simple ways to get started with React without a single line of configuration? Refresh!</description><content:encoded><![CDATA[<p>In the javascript community, some people have experienced <a href="https://medium.com/@ericclemmons/javascript-fatigue-48d4011b6fc4#.4ex2kn77n">javascript fatigue</a>.</p>
+<p>For me, this fatigue is two folds.
+First, you need to keep up to date with the frantic pace
+of redux, react-router and friends and make sure you will be able to migrate your
+code to the new major versions.</p>
+<p>Second, Webpack configuration is not always straight-forward.
+I know a lot of people that really want to see what React is like and play with
+it without having to cope with a lot of configuration up-front.</p>
+<p>I have no solution for the first problem. To me, innovation in this community feels
+like a fantastic thing. Watching the github repos and <a href="https://medium.com/@dan_abramov/my-react-list-862227952a8c#.l1p0093pk">following people</a> on Twitter
+is my way to keep up-to-date with the latest improvements.</p>
+<p>I also want to point out that the most used tools seem to be more and more stable.
+It is unlikely that redux or react-router will go through a full rewrite now. So
+relax. If you&rsquo;re not able to update your dependencies every two days, it&rsquo;s
+probably not the end of the world.</p>
+<p>In this article, I will show you two ways to get started with React with <strong>zero</strong>
+configuration. So you can start hacking right away when you&rsquo;re still fresh!</p>
+<h2 id="quick-prototyping-with-babel-browser-transform">Quick prototyping with babel browser transform</h2>
+<p>So you need to get some React code out of the door <strong>now</strong>.
+You don&rsquo;t care about hot reloading and want to write some React and ES2015 code
+in a web page.</p>
+<p>Jim Sproch has <a href="http://www.jimsproch.com/react/">a very cool solution</a> for us.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">html</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;http://www.jimsproch.com/react/future/react.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;http://www.jimsproch.com/react/future/react-dom.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;http://www.jimsproch.com/react/babel-browser.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">div</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;container&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;text/babel&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      ReactDOM.render(<span style="color:#ff6ac1">&lt;</span>div<span style="color:#ff6ac1">&gt;</span>Hello World<span style="color:#ff6ac1">!&lt;</span><span style="color:#ff5c57">/div&gt;, document.getElementById(&#39;container&#39;));</span>
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">html</span>&gt;
+</span></span></code></pre></div><p>And that&rsquo;s about it!
+Every script tag with the <code>text/babel</code> type will be transformed with babel.
+So you have support for destructuring, arrow functions and, of course, JSX.
+It will even work for external scripts so you don&rsquo;t need to write all your
+code in the page.</p>
+<p>Now, Jim likes to work with the bleeding edge beta of React but you can easily
+switch <code>react.js</code> and <code>react-dom</code> with production versions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;//cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;//cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span></code></pre></div><p>The downside of this solution, of course, is that the transform is executed by the
+client&rsquo;s browser so this will be slower than pre-compiled Babel.
+And you don&rsquo;t have hot reloading available.</p>
+<p>But still, zero config.</p>
+<h2 id="a-true-react-project-with-nwb">A true React project with nwb</h2>
+<p><a href="https://github.com/insin/nwb">Nwb</a> will take care of all the webpack and babel configuration.</p>
+<p>Install it as a global package:</p>
+<pre tabindex="0"><code>npm i -g nwb
+</code></pre><p>You can then create a React project:</p>
+<pre tabindex="0"><code>nwb new react-app my-nwb-app
+</code></pre><p>And it will scaffold the application for you.
+It is a very simple application:</p>
+<pre tabindex="0"><code>nwb: new react-app
+  create .gitignore
+  create .travis.yml
+  create README.md
+  create nwb.config.js
+  create package.json
+  create public/index.html
+  create src/App.js
+  create src/index.js
+  create tests/.eslintrc
+  create tests/App-test.js
+</code></pre><p>No configuration outside of <code>nwb.config.js</code>, which is almost empty.</p>
+<p>Let&rsquo;s start the application:</p>
+<pre tabindex="0"><code>npm start
+</code></pre><p>Try to modify <code>App.js</code>&hellip; Hot reloading works!</p>
+<p>Now let&rsquo;s run the tests:</p>
+<pre tabindex="0"><code>$ nwb test
+
+START:
+18 02 2016 10:14:54.838:INFO [karma]: Karma v0.13.18 server started at http://localhost:9876/
+18 02 2016 10:14:54.846:INFO [launcher]: Starting browser PhantomJS
+18 02 2016 10:14:56.139:INFO [PhantomJS 1.9.8 (Mac OS X 0.0.0)]: Connected on socket IHNx80uh9I6VW9fjAAAA with id 617985
+  App component
+    ✔ displays a welcome message
+
+Finished in 0.01 secs / 0.004 secs
+
+SUMMARY:
+✔ 1 test completed
+</code></pre><p>We&rsquo;ve got karma and coverage pre-configured so we can start TDDing right away.</p>
+<p>And the best part, we can build the application and get an optimized version
+of the scripts.</p>
+<pre tabindex="0"><code>$ npm run build
+
+&gt; my-nwb-app@1.0.0 build /Users/geowarin/dev/react/my-nwb-app
+&gt; nwb build
+
+nwb: clean-app
+nwb: build-react-app
+Hash: 81e127933ddb73bbdfb4
+Version: webpack 1.12.11
+Time: 3234ms
+        Asset       Size  Chunks             Chunk Names
+    vendor.js     131 kB       0  [emitted]  vendor
+       app.js  971 bytes       1  [emitted]  app
+vendor.js.map    1.54 MB       0  [emitted]  vendor
+   app.js.map    4.13 kB       1  [emitted]  app
+</code></pre><p>Nwb also has support for <a href="https://github.com/insin/nwb-sass">sass</a>, <a href="https://github.com/insin/nwb-stylus">stylus</a> and <a href="https://github.com/insin/nwb-less">less</a>.</p>
+<h3 id="nwb-gotchas">Nwb gotchas</h3>
+<p>Nwb has opinions. And that&rsquo;s a good thing.
+For example, you write tests with Karma and that&rsquo;s it.</p>
+<p>Support for Babel 6 is not there yet so it&rsquo;s not completely bleeding edge.</p>
+<p>But you can serenely leave the hard part of configuring your app to Nwb.
+It&rsquo;s got a very impressive test suite and coverage. You&rsquo;re in good hands!</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Feeling fatigued? I do not!
+I wish there were more projects like Nwb with strong opinions and one easy
+way to do things.</p>
+<p>But it is possible to get started with React and even have a production-ready
+application with zero configuration.</p>
+<p>Never used React? You have no more excuses. Get to work and help this community
+improve!</p>
+]]></content:encoded></item></channel></rss>

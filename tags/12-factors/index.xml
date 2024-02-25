@@ -1,1 +1,116 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>12-factors on Geowarin</title><link>https://geowarin.com/tags/12-factors/</link><description>Recent content in 12-factors on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 11 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/12-factors/index.xml" rel="self" type="application/rss+xml"/><item><title>Spring boot logs in Elastic Search with fluentd</title><link>https://geowarin.com/spring-boot-logs-in-elastic-search-with-fluentd/</link><pubDate>Mon, 11 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/spring-boot-logs-in-elastic-search-with-fluentd/</guid><description>Redirect your Spring boot logs to Elastic Search with a simple logback appender</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>12-factors on Geowarin</title><link>https://geowarin.com/tags/12-factors/</link><description>Recent content in 12-factors on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 11 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/12-factors/index.xml" rel="self" type="application/rss+xml"/><item><title>Spring boot logs in Elastic Search with fluentd</title><link>https://geowarin.com/spring-boot-logs-in-elastic-search-with-fluentd/</link><pubDate>Mon, 11 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/spring-boot-logs-in-elastic-search-with-fluentd/</guid><description>Redirect your Spring boot logs to Elastic Search with a simple logback appender</description><content:encoded><![CDATA[<p>If you deploy a lot of micro-services with Spring Boot (or any other technology),
+you will have a hard time collecting and making sense of the all logs of your different
+applications.</p>
+<p>In this article, I will show you a simple way to redirect your logs to Elastic Search
+with a Logback appender.</p>
+<p>The demo project is <a href="https://github.com/geowarin/fluentd-boot">available on github</a>.</p>
+<p>While this approach requires very little configuration, the <a href="http://12factor.net/logs">12 factors app manifesto</a> actually recommends logging to stdout.</p>
+<p>We will see how we can leverage docker to do that in the conclusion.</p>
+<h2 id="the-efk-stack">The EFK stack</h2>
+<p>A lot of people refer to the triptych Elastic Search + Logstash + Kibana as the ELK
+stack.</p>
+<p>In this stack, <a href="https://www.elastic.co/products/logstash">Logstash</a> is the log collector. Its role will be to redirect our
+logs to Elastic Search.
+Your app can either send its logs directly to Logstash/Fluentd as we will see in this example,
+or write them to a file that Logstash will regularly process.</p>
+<p><a href="https://www.elastic.co/products/elasticsearch">Elastic Search</a> is used to store and process a large amount of logs.</p>
+<p>We can then use <a href="https://www.elastic.co/products/kibana">Kibana</a> as a dashboard to analyze them:</p>
+<p><img loading="lazy" src="/assets/images/articles/2016-01-kibana.png" alt="Kibana"  title="Kibana"  />
+</p>
+<p>Instead of Logstash, we will use <a href="http://www.fluentd.org/">Fluentd</a>, an alternative log collector which is really
+easy to set up.</p>
+<h2 id="docker-compose-to-run-your-efk">Docker compose to run your EFK</h2>
+<p>With docker-compose, setting up the EFK stack is really straightforward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff6ac1">es</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">image</span>: elasticsearch:2
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># The following will store es data in your boot2docker vm</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">volumes</span>:
+</span></span><span style="display:flex;"><span>    - /srv/docker/es:/usr/share/elasticsearch/data
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">ports</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ff9f43">9200</span>:<span style="color:#ff9f43">9200</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ff9f43">9300</span>:<span style="color:#ff9f43">9300</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">kibana</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">image</span>: kibana
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">ports</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ff9f43">5601</span>:<span style="color:#ff9f43">5601</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">links</span>:
+</span></span><span style="display:flex;"><span>    - es:elasticsearch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">fluentd</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">build</span>: fluent-es/
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">ports</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ff9f43">24224</span>:<span style="color:#ff9f43">24224</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">links</span>:
+</span></span><span style="display:flex;"><span>    - es:es
+</span></span></code></pre></div><p>If you are running docker inside a VM, like me on my Mac, you cannot easily use volumes to
+persist Elastic Search data because the owner of the directory must be <code>elasticsearch</code>.
+So above is a little trick to easily overcome this.</p>
+<p>To delete this directory, connect to your boot2docker vm with <code>docker-machine ssh default</code>.</p>
+<p>The fluentd part points to a custom docker image in which I installed the Elastic
+Search plugin as well as redefined the fluentd config to look like this:</p>
+<pre tabindex="0"><code>&lt;source&gt;
+type forward
+port 24224
+bind 0.0.0.0
+&lt;/source&gt;
+
+
+&lt;match **&gt;
+type elasticsearch
+logstash_format true
+host &#34;#{ENV[&#39;ES_PORT_9200_TCP_ADDR&#39;]}&#34; # dynamically configured to use Docker&#39;s link feature
+port 9200
+flush_interval 5s
+&lt;/match&gt;
+</code></pre><p>In this config, we use the environment variable that docker-compose <a href="https://docs.docker.com/compose/env/">automatically
+sets</a> when we use links to find the Elastic
+Search host.</p>
+<h2 id="configure-logback-to-send-logs-to-fluentd">Configure logback to send logs to fluentd</h2>
+<p>Add the following dependencies to you build configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>compile <span style="color:#5af78e">&#39;org.fluentd:fluent-logger:0.3.2&#39;</span>
+</span></span><span style="display:flex;"><span>compile <span style="color:#5af78e">&#39;com.sndyuk:logback-more-appenders:1.1.1&#39;</span>
+</span></span></code></pre></div><p>We use <a href="https://github.com/sndyuk/logback-more-appenders">logback-more-appenders</a>, which
+includes a fluentd appender.
+It&rsquo;s not available on central so you will have to add the follwing maven repo:</p>
+<pre tabindex="0"><code>repositories {
+    mavenCentral()
+    maven { url &#39;http://sndyuk.github.com/maven&#39; }
+}
+</code></pre><p>Here is the logback configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#78787e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;include</span> <span style="color:#57c7ff">resource=</span><span style="color:#5af78e">&#34;org/springframework/boot/logging/logback/base.xml&#34;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;property</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;FLUENTD_HOST&#34;</span> <span style="color:#57c7ff">value=</span><span style="color:#5af78e">&#34;${FLUENTD_HOST:-${DOCKER_HOST:-localhost}}&#34;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;property</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;FLUENTD_PORT&#34;</span> <span style="color:#57c7ff">value=</span><span style="color:#5af78e">&#34;${FLUENTD_PORT:-24224}&#34;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;appender</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;FLUENT&#34;</span> <span style="color:#57c7ff">class=</span><span style="color:#5af78e">&#34;ch.qos.logback.more.appenders.DataFluentAppender&#34;</span><span style="color:#ff6ac1">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;tag&gt;</span>dab<span style="color:#ff6ac1">&lt;/tag&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;label&gt;</span>normal<span style="color:#ff6ac1">&lt;/label&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;remoteHost&gt;</span>${FLUENTD_HOST}<span style="color:#ff6ac1">&lt;/remoteHost&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;port&gt;</span>${FLUENTD_PORT}<span style="color:#ff6ac1">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;maxQueueSize&gt;</span>20<span style="color:#ff6ac1">&lt;/maxQueueSize&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/appender&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;logger</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;fluentd&#34;</span> <span style="color:#57c7ff">level=</span><span style="color:#5af78e">&#34;debug&#34;</span> <span style="color:#57c7ff">additivity=</span><span style="color:#5af78e">&#34;false&#34;</span><span style="color:#ff6ac1">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;appender-ref</span> <span style="color:#57c7ff">ref=</span><span style="color:#5af78e">&#34;CONSOLE&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;appender-ref</span> <span style="color:#57c7ff">ref=</span><span style="color:#5af78e">&#34;FILE&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;appender-ref</span> <span style="color:#57c7ff">ref=</span><span style="color:#5af78e">&#34;FLUENT&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/logger&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/configuration&gt;</span>
+</span></span></code></pre></div><p>Note that we use the <code>FLUENTD_HOST</code> and <code>FLUENTD_PORT</code> environment variables
+to connect to Fluentd so this can be overridden in production.</p>
+<h2 id="use-docker-to-natively-redirect-logs-to-fluentd">Use docker to natively redirect logs to Fluentd</h2>
+<p>Redirecting to fluentd directly is kind of cool but, the <a href="http://12factor.net/logs">12 factors app manifesto</a>
+says we should write our logs to stdout instead.</p>
+<p>If you use docker to deploy your services, you can use a native docker feature called
+log drivers to redirect your standard output to fluentd!</p>
+<pre tabindex="0"><code>docker run --log-driver=fluentd --log-opt fluentd-address=192.168.2.4:24225 ubuntu echo &#34;Hello world&#34;
+</code></pre><p>See <a href="http://www.fluentd.org/guides/recipes/docker-logging">the manual</a> for more information.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In a cloud environment, redirecting your app&rsquo;s logs to a file is not practical.
+Sometimes, it is not even an option (no persistent filesystem available on your host).</p>
+<p>Elastic Search tends to become the de-facto standard logging solution for the
+cloud era.</p>
+<p>Don&rsquo;t forget to checkout the project <a href="https://github.com/geowarin/fluentd-boot">on github</a>
+and tell me what you think!</p>
+]]></content:encoded></item></channel></rss>

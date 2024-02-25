@@ -1,1 +1,173 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>docker on Geowarin</title><link>https://geowarin.com/tags/docker/</link><description>Recent content in docker on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 21 Dec 2019 00:24:53 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>Reverse proxy on docker-compose with CORS and SSL</title><link>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</link><pubDate>Sat, 21 Dec 2019 00:24:53 +0100</pubDate><guid>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</guid><description>How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>docker on Geowarin</title><link>https://geowarin.com/tags/docker/</link><description>Recent content in docker on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 21 Dec 2019 00:24:53 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>Reverse proxy on docker-compose with CORS and SSL</title><link>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</link><pubDate>Sat, 21 Dec 2019 00:24:53 +0100</pubDate><guid>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</guid><description>How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.</description><content:encoded><![CDATA[<h1 id="the-problem">The problem</h1>
+<p><a href="https://github.com/electerious/Ackee">Ackee</a> is a neat self-hosted analytics solution for simple needs (e.g. a blog).
+On the repo, the authors give instructions to run the tool, a node application, via docker-compose.</p>
+<p>On the other hand, the website whose analytics will be tracked needs to include a script that will look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">async</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;https://unpkg.com/ackee-tracker@3.2.2/dist/ackee-tracker.min.js&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57c7ff">data-ackee-server</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;https://ackee.com&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57c7ff">data-ackee-domain-id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;67bfa855-7569-4d29-a0a3-a2f4ceae2ea3&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57c7ff">data-ackee-opts</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#39;{ &#34;ignoreLocalhost&#34;: false }&#39;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span></code></pre></div><p>The problem is that <code>localhost:1313</code>, where my blog runs locally, cannot send json requests to <code>https:localhost</code>
+or whichever host Ackee is running on, if they differ in name/port, etc.</p>
+<p>This is a browser built-in protection known as <em>CORS</em>.</p>
+<p>To allow the browser to make a certain type of requests (like json request) to another host, this host must explicitly
+allow it by responding with the following headers to a preflight request (with the OPTION http verb):</p>
+<pre tabindex="0"><code>Access-Control-Allow-Origin  &#34;*&#34;
+Access-Control-Allow-Methods &#34;GET, POST, PATCH, OPTIONS&#34;
+Access-Control-Allow-Headers &#34;Content-Type&#34;
+</code></pre><p>The example above allows whichever host (*) to send GET, POST, PATCH, and OPTIONS requests with the <code>Content-Type</code>
+header.
+More info can be found in the <a href="https://fetch.spec.whatwg.org/#http-cors-protocol">fetch specification</a></p>
+<p>This is a good use-case for a <a href="https://medium.com/intrinsic/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca">reverse-proxy</a>.</p>
+<p>We&rsquo;ll use nginx and a self-signed certificate for SSL.</p>
+<p>Please note:</p>
+<ul>
+<li>You should avoid using wild-card in CORS headers in production</li>
+<li>SSL is not required to allow CORS</li>
+<li>You should use a properly signed certificate in production</li>
+</ul>
+<p>However, I thought it would be a good occasion to learn something new.
+And I really wanted Ackee to work locally.</p>
+<h1 id="the-solution">The solution</h1>
+<p>Credits to Nickolas Kraus who wrote a <a href="https://nickolaskraus.org/articles/how-to-create-a-self-signed-certificate-for-nginx-on-macos/">very good article</a>
+on how to run nginx with self-signed certificates.</p>
+<p>I just added docker-compose and CORS headers into the mix.</p>
+<h2 id="generating-the-cerficates">Generating the cerficates</h2>
+<p>Here is a shell script that will create <code>self-signed.crt</code>, <code>self-signed.key</code> and <code>dhparam.pem</code>, your self-signed certificates.
+It will also add it to the macOS trust store.</p>
+<p>This will work immediately with Chrome.
+Firefox has its own store and you will have to manually add the certificate upon the first connection.</p>
+<p>For other platforms, <a href="https://github.com/Busindre/How-to-Add-trusted-root-certificates">see here</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#78787e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>
+</span></span><span style="display:flex;"><span>mkdir -p nginx
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>rm -f nginx/dhparam.pem nginx/self-signed.crt nginx/self-signed.key
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># create a ssl certificate</span>
+</span></span><span style="display:flex;"><span>sudo openssl req <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -x509 -nodes -days <span style="color:#ff9f43">365</span> -newkey rsa:2048 <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -subj <span style="color:#5af78e">&#34;/CN=localhost&#34;</span> <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -config nginx/openssl.cnf <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -keyout nginx/self-signed.key <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -out nginx/self-signed.crt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># create a Diffie-Hellman key pair</span>
+</span></span><span style="display:flex;"><span>sudo openssl dhparam -out nginx/dhparam.pem <span style="color:#ff9f43">128</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># add certificate to the trusted root store</span>
+</span></span><span style="display:flex;"><span>sudo security add-trusted-cert <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -d -r trustRoot <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -k /Library/Keychains/System.keychain nginx/self-signed.crt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># to remove</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># sudo security delete-certificate -c &#34;&lt;name of existing certificate&gt;&#34;</span>
+</span></span></code></pre></div><h2 id="nginx-conf">Nginx conf</h2>
+<p><strong>nginx.conf</strong></p>
+<pre tabindex="0"><code>worker_processes  1;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+  include       mime.types;
+  default_type  application/octet-stream;
+
+  sendfile           on;
+  keepalive_timeout  65;
+  proxy_http_version 1.1;
+
+  # configure nginx server to redirect to HTTPS
+  server {
+    listen       80;
+    server_name  localhost;
+    return 302 https://$server_name:443;
+  }
+
+  # configure nginx server with ssl
+  server {
+    listen       443 ssl http2;
+    server_name  localhost;
+    include self-signed.conf;
+    include ssl-params.conf;
+
+    # route requests to the local development server
+    location / {
+      add_header   Access-Control-Allow-Origin &#34;*&#34; always;
+      add_header   Access-Control-Allow-Methods &#34;GET, POST, PATCH, OPTIONS&#34; always;
+      add_header   Access-Control-Allow-Headers &#34;Content-Type&#34; always;
+      add_header   Strict-Transport-Security &#34;max-age=31536000&#34; always;
+      add_header   X-Frame-Options deny;
+      proxy_pass   http://ackee:3000/;
+    }
+  }
+
+  include servers/*;
+}
+</code></pre><p>Note the <code>proxy_pass</code> line that will reference the site we reverse-proxy.
+With docker-compose the hostname will be the name of the container listed in <code>docker-compose.yml</code>.</p>
+<p>We know that the node server runs on port 3000.</p>
+<p>You can also see that nginx will automatically add the CORS headers we previously discussed.</p>
+<p>You can see two includes:</p>
+<p><strong>ssl-params.conf</strong></p>
+<pre tabindex="0"><code>ssl_protocols TLSv1.1 TLSv1.2;
+ssl_prefer_server_ciphers on;
+ssl_ciphers &#34;EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH&#34;;
+ssl_ecdh_curve secp384r1;
+ssl_session_cache shared:SSL:10m;
+ssl_session_tickets off;
+ssl_stapling on;
+ssl_stapling_verify on;
+resolver 8.8.8.8 8.8.4.4 valid=300s;
+resolver_timeout 5s;
+add_header Strict-Transport-Security &#34;max-age=63072000; includeSubdomains&#34;;
+add_header X-Frame-Options DENY;
+add_header X-Content-Type-Options nosniff;
+ssl_dhparam dhparam.pem;
+</code></pre><p><strong>self-signed.conf</strong></p>
+<pre tabindex="0"><code>ssl_certificate self-signed.crt;
+ssl_certificate_key self-signed.key;
+</code></pre><h2 id="docker-compose">docker-compose</h2>
+<p><strong>docker-compose.yml</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff6ac1">version</span>: <span style="color:#5af78e">&#34;3&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">nginx</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">image</span>: nginx:latest
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">container_name</span>: pnginx
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">volumes</span>:
+</span></span><span style="display:flex;"><span>      - ./nginx/:/etc/nginx/
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ff9f43">80</span>:<span style="color:#ff9f43">80</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ff9f43">443</span>:<span style="color:#ff9f43">443</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - ackee
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">ackee</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">image</span>: electerious/ackee
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">container_name</span>: ackee
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">restart</span>: always
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">environment</span>:
+</span></span><span style="display:flex;"><span>      - WAIT_HOSTS=mongo:27017
+</span></span><span style="display:flex;"><span>      - ACKEE_MONGODB=mongodb://mongo:27017/ackee
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">env_file</span>:
+</span></span><span style="display:flex;"><span>      - .env
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - mongo
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">mongo</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">image</span>: mongo
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">container_name</span>: mongo
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">restart</span>: always
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">volumes</span>:
+</span></span><span style="display:flex;"><span>      - ./data:/data/db
+</span></span></code></pre></div><p>Note the <code>depends_on</code> line which will make the Ackee container available inside the docker network on http://ackee.</p>
+<p>With that, we have a node application running behind nginx with HTTPS and CORS enabled!</p>
+<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-21-success.png" alt="It works"  />
+</p>
+<p>Resources:</p>
+<ul>
+<li><a href="https://github.com/geowarin/docker-compose-nginx">Github repository</a></li>
+<li><a href="https://nickolaskraus.org/articles/how-to-create-a-self-signed-certificate-for-nginx-on-macos/">Original article</a></li>
+<li><a href="https://medium.com/intrinsic/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca">Why should I use a Reverse Proxy if Node.js is Production-Ready?</a></li>
+<li><a href="https://github.com/Busindre/How-to-Add-trusted-root-certificates">How-to: Adding trusted root certificates</a></li>
+</ul>
+]]></content:encoded></item></channel></rss>

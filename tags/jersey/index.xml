@@ -1,1 +1,175 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>jersey on Geowarin</title><link>https://geowarin.com/tags/jersey/</link><description>Recent content in jersey on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 31 Jan 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/jersey/index.xml" rel="self" type="application/rss+xml"/><item><title>A simple Spring Boot and Jersey Application</title><link>https://geowarin.com/a-simple-spring-boot-and-jersey-application/</link><pubDate>Fri, 31 Jan 2014 00:00:00 +0000</pubDate><guid>https://geowarin.com/a-simple-spring-boot-and-jersey-application/</guid><description>How to setup a simple spring-boot and jersey application</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>jersey on Geowarin</title><link>https://geowarin.com/tags/jersey/</link><description>Recent content in jersey on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 31 Jan 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/jersey/index.xml" rel="self" type="application/rss+xml"/><item><title>A simple Spring Boot and Jersey Application</title><link>https://geowarin.com/a-simple-spring-boot-and-jersey-application/</link><pubDate>Fri, 31 Jan 2014 00:00:00 +0000</pubDate><guid>https://geowarin.com/a-simple-spring-boot-and-jersey-application/</guid><description>How to setup a simple spring-boot and jersey application</description><content:encoded><![CDATA[<p>Spring boot RC1 <a href="https://spring.io/blog/2014/01/22/spring-boot-1-0-0-rc1-released">is available</a>.</p>
+<p><em>Update</em> : <a href="https://spring.io/blog/2014/02/12/spring-boot-1-0-0-rc2-released">RC3 released</a> I updated the project.</p>
+<p>It takes spring development and fast prototyping to a whole new level by taking care of all the dependencies for you, auto-detecting your configuration, providing an executable jar (great for deploying in the cloud), and much more.</p>
+<p>In this post we&rsquo;ll see how to integrate spring-boot with jersey, including testing of Jersey controllers with <a href="https://jersey.java.net/documentation/latest/test-framework.html">jersey-test</a>.</p>
+<p>Of course, the source code is available <a href="https://github.com/geowarin/springboot-jersey">on my github</a>.</p>
+<h2 id="setting-up-spring-boot">Setting up spring-boot</h2>
+<p><a href="http://projects.spring.io/spring-boot/">Spring boot</a> aims towards simplicity and convention over configuration. First step is to include the necessary configuration in your pom.xml :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;parent&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;artifactId&gt;</span>spring-boot-starter-parent<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;version&gt;</span>1.0.0.RC3<span style="color:#ff6ac1">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/parent&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;repositories&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;repository&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;id&gt;</span>spring-milestones<span style="color:#ff6ac1">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;name&gt;</span>Spring Milestones<span style="color:#ff6ac1">&lt;/name&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;url&gt;</span>http://repo.spring.io/milestone<span style="color:#ff6ac1">&lt;/url&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;snapshots&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;enabled&gt;</span>false<span style="color:#ff6ac1">&lt;/enabled&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;/snapshots&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/repository&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/repositories&gt;</span>
+</span></span></code></pre></div><p>One of the good ideas of spring boot is to provide all the &lsquo;boilerplate&rsquo; configuration for you by letting you inherit their parent configuration.</p>
+<p>Then, you&rsquo;ll select a starter, in this case, we are going to develop a web application, so starter-web is fine.</p>
+<p>Now, we&rsquo;ll create a main function for our application :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@EnableAutoConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">Application</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">main</span>(String<span style="color:#ff6ac1">[]</span> args) <span style="color:#ff5c57">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">new</span> SpringApplicationBuilder(Application.<span style="color:#57c7ff">class</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">showBanner</span>(<span style="color:#ff6ac1">false</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">run</span>(args);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We will just add an index.html file in the webapp directory and we should be ok.
+With this configuration, you can run the main function and you&rsquo;ll see your index file.</p>
+<p>Awesome.</p>
+<h2 id="runnable-jar">Runnable jar</h2>
+<p>Spring boot allows you to package your application as a runnable jar. Include the following in your <code>pom.xml</code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;artifactId&gt;</span>spring-boot-maven-plugin<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;pluginRepositories&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;pluginRepository&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;id&gt;</span>spring-milestones<span style="color:#ff6ac1">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;url&gt;</span>http://repo.spring.io/milestone<span style="color:#ff6ac1">&lt;/url&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/pluginRepository&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/pluginRepositories&gt;</span>
+</span></span></code></pre></div><p>With this, when running <code>mvn package</code>, you will generate the runnable jar.
+Just <code>java -jar</code> it to launch an embedded Tomcat containing your webapp!</p>
+<h2 id="integrating-jersey">Integrating jersey</h2>
+<p>Jersey has a spring support project <a href="https://jersey.java.net/documentation/latest/spring.html">jersey-spring-3</a>. Despite what its name suggests, the project is (still?) compatible with spring 4.0 so we&rsquo;ll use it.</p>
+<p>It basically allows you to inject spring beans in your jersey controllers.</p>
+<p>To complete our configuration we&rsquo;ll add the jersey servlet to our application together with a small class to configure it.</p>
+<p>In the Application :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> ServletRegistrationBean <span style="color:#57c7ff">jerseyServlet</span>() {
+</span></span><span style="display:flex;"><span>    ServletRegistrationBean registration <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> ServletRegistrationBean(<span style="color:#ff6ac1">new</span> ServletContainer(), <span style="color:#5af78e">&#34;/rest/*&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// our rest resources will be available in the path /rest/*</span>
+</span></span><span style="display:flex;"><span>    registration.<span style="color:#57c7ff">addInitParameter</span>(ServletProperties.<span style="color:#57c7ff">JAXRS_APPLICATION_CLASS</span>, JerseyConfig.<span style="color:#57c7ff">class</span>.<span style="color:#57c7ff">getName</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> registration;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We also need to add the <code>@ComponentScan</code> annotation to find our spring services and components (including jersey)</p>
+<p>Next, we&rsquo;ll create the JerseyConfig class :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">JerseyConfig</span> <span style="color:#ff5c57">extends</span> ResourceConfig {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">JerseyConfig</span>() {
+</span></span><span style="display:flex;"><span>        register(RequestContextFilter.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>        packages(<span style="color:#5af78e">&#34;com.geowarin.rest&#34;</span>);
+</span></span><span style="display:flex;"><span>        register(LoggingFilter.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Here we are providing the package(s) in which our rest resources are.</p>
+<p>Speaking about our rest resources, we&rsquo;ll create a simple one :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Path</span>(<span style="color:#5af78e">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResource</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@GET</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Produces</span>(MediaType.<span style="color:#57c7ff">APPLICATION_JSON</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Path</span>(<span style="color:#5af78e">&#34;/hello&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> String <span style="color:#57c7ff">hello</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> <span style="color:#5af78e">&#34;Hello World&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There you have it : the dreadful hello world !</p>
+<p>In the <a href="https://github.com/geowarin/springboot-jersey">complete example</a>, I show you how to generate JSON from a domain class.</p>
+<p>Basically all you have to do is provide classes with the <code>@XmlRootElement</code> annotation, add the getters and setters for the properties you want serialized and don&rsquo;t forget to provide a default constructor (see <a href="https://github.com/geowarin/springboot-jersey/blob/master/src/main/java/com/geowarin/domain/Message.java">here</a>).</p>
+<p>To show that dependency injection works, we&rsquo;ll add a simple service :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Singleton</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MessageService</span> {
+</span></span><span style="display:flex;"><span>    List<span style="color:#ff6ac1">&lt;</span>Message<span style="color:#ff6ac1">&gt;</span> messages <span style="color:#ff6ac1">=</span> Collections.<span style="color:#57c7ff">synchronizedList</span>(<span style="color:#ff6ac1">new</span> ArrayList<span style="color:#ff6ac1">&lt;</span>Message<span style="color:#ff6ac1">&gt;</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@PostConstruct</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">init</span>() {
+</span></span><span style="display:flex;"><span>        messages.<span style="color:#57c7ff">add</span>(<span style="color:#ff6ac1">new</span> Message(<span style="color:#5af78e">&#34;Joe&#34;</span>, <span style="color:#5af78e">&#34;Hello&#34;</span>));
+</span></span><span style="display:flex;"><span>        messages.<span style="color:#57c7ff">add</span>(<span style="color:#ff6ac1">new</span> Message(<span style="color:#5af78e">&#34;Jane&#34;</span>, <span style="color:#5af78e">&#34;Spring boot is cool !&#34;</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> List<span style="color:#ff6ac1">&lt;</span>Message<span style="color:#ff6ac1">&gt;</span> <span style="color:#57c7ff">getMessages</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> messages;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We can now autowire it to our Jersey controller!</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Path</span>(<span style="color:#5af78e">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResource</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> MessageService messageService;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@GET</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Produces</span>(MediaType.<span style="color:#57c7ff">APPLICATION_JSON</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Path</span>(<span style="color:#5af78e">&#34;/messages&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> List<span style="color:#ff6ac1">&lt;</span>Message<span style="color:#ff6ac1">&gt;</span> <span style="color:#57c7ff">message</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> messageService.<span style="color:#57c7ff">getMessages</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><a href="http://www.eclipse.org/eclipselink/moxy.php">Moxy</a> will automatically convert
+the returned result to JSON.</p>
+<h2 id="testing">Testing</h2>
+<p>Real programmers do tests. We want to test our controller right? There is a framework for that: <a href="https://jersey.java.net/documentation/latest/test-framework.html">jersey-test</a>.</p>
+<p><em>The Problem?</em> it does not (yet) support annotated configuration.</p>
+<!-- raw HTML omitted -->
+<p><em>Update</em> : I submitted a <a href="https://github.com/jersey/jersey/pull/59">pull request</a> which has been accepted by Jersey. I updated the project to use the 2.6 snapshot release of jersey which includes the modified <code>SpringComponentProvider</code>.</p>
+<p>Now the test :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResourceTest</span> <span style="color:#ff5c57">extends</span> JerseyTest {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> Application <span style="color:#57c7ff">configure</span>() {
+</span></span><span style="display:flex;"><span>        ApplicationContext context <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> AnnotationConfigApplicationContext(TestConfig.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> JerseyConfig()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">property</span>(<span style="color:#5af78e">&#34;contextConfig&#34;</span>, context);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">testHello</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">final</span> String hello <span style="color:#ff6ac1">=</span> target(<span style="color:#5af78e">&#34;hello&#34;</span>).<span style="color:#57c7ff">request</span>().<span style="color:#57c7ff">get</span>(String.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>        assertThat(hello).<span style="color:#57c7ff">isEqualTo</span>(<span style="color:#5af78e">&#34;Hello World&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">testMessages</span>() <span style="color:#ff5c57">throws</span> JSONException {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">final</span> String messages <span style="color:#ff6ac1">=</span> target(<span style="color:#5af78e">&#34;messages&#34;</span>).<span style="color:#57c7ff">request</span>().<span style="color:#57c7ff">get</span>(String.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>        String expected <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;[ &#34;</span> <span style="color:#ff6ac1">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#5af78e">&#34;{ &#39;author&#39;: &#39;Joe&#39;, &#39;contents&#39;: &#39;Hello&#39;},&#34;</span> <span style="color:#ff6ac1">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#5af78e">&#34;{ &#39;author&#39;: &#39;Jane&#39;, &#39;contents&#39;: &#39;Spring boot is cool !&#39;}&#34;</span> <span style="color:#ff6ac1">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#5af78e">&#34;]&#34;</span>;
+</span></span><span style="display:flex;"><span>        JSONAssert.<span style="color:#57c7ff">assertEquals</span>(expected, messages, JSONCompareMode.<span style="color:#57c7ff">LENIENT</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Jersey Test will automatically select a provider from your classpath, in the example I&rsquo;m using the in memory provider which I believe to be the fastest but you can also use <a href="https://grizzly.java.net/">grizzly</a> and others instead.</p>
+<p>I&rsquo;m using <a href="https://github.com/skyscreamer/JSONassert">JSONassert</a> to test json results.</p>
+<p>In the example, we are providing a simple, lighter <code>TestConfig</code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ComponentScan</span>(basePackageClasses <span style="color:#ff6ac1">=</span> RestResource.<span style="color:#57c7ff">class</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">TestConfig</span> {
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>Testing with Jersey Test is fast and intuitive.</p>
+<p>Spring boot is a nice addition to the spring ecosystem. Now that everything should be accessible from the cloud, so should be spring webapps !</p>
+]]></content:encoded></item></channel></rss>

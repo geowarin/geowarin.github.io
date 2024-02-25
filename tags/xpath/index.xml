@@ -1,1 +1,108 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>xpath on Geowarin</title><link>https://geowarin.com/tags/xpath/</link><description>Recent content in xpath on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 30 Jan 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/xpath/index.xml" rel="self" type="application/rss+xml"/><item><title>Fun with xpath</title><link>https://geowarin.com/fun-with-xpath/</link><pubDate>Thu, 30 Jan 2014 00:00:00 +0000</pubDate><guid>https://geowarin.com/fun-with-xpath/</guid><description>How to select nodes with xPath and keep the file structure of the original document in java with dom4j</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>xpath on Geowarin</title><link>https://geowarin.com/tags/xpath/</link><description>Recent content in xpath on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 30 Jan 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/xpath/index.xml" rel="self" type="application/rss+xml"/><item><title>Fun with xpath</title><link>https://geowarin.com/fun-with-xpath/</link><pubDate>Thu, 30 Jan 2014 00:00:00 +0000</pubDate><guid>https://geowarin.com/fun-with-xpath/</guid><description>How to select nodes with xPath and keep the file structure of the original document in java with dom4j</description><content:encoded><![CDATA[<p>I had fun today at work when I had to design a program that allows users to select nodes with xPath but keep the same hierarchical structure as the original xml file.</p>
+<p>The result with tests is available <a href="https://github.com/geowarin/xpath-dom4j">on github</a>.</p>
+<p>For instance, the following xPath <code>/persons/person[@age &gt; 18]/project[@language = 'java']</code>, would select the lines highlighted in the file below :</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Normal xPath result would be a list of nodes like that</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;project</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#39;dom4j&#39;</span> <span style="color:#57c7ff">language=</span><span style="color:#5af78e">&#39;java&#39;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;project</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#39;dom4j&#39;</span> <span style="color:#57c7ff">language=</span><span style="color:#5af78e">&#39;java&#39;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span></code></pre></div><p>But the desired output should look like this :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;persons&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;person</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#39;Joe&#39;</span> <span style="color:#57c7ff">age=</span><span style="color:#5af78e">&#39;26&#39;</span><span style="color:#ff6ac1">&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">&lt;project</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#39;dom4j&#39;</span> <span style="color:#57c7ff">language=</span><span style="color:#5af78e">&#39;java&#39;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;/person&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;person</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#39;Jane&#39;</span> <span style="color:#57c7ff">age=</span><span style="color:#5af78e">&#39;23&#39;</span><span style="color:#ff6ac1">&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">&lt;project</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#39;dom4j&#39;</span> <span style="color:#57c7ff">language=</span><span style="color:#5af78e">&#39;java&#39;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;/person&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/persons&gt;</span>
+</span></span></code></pre></div><p>So I decided to write a small class to handle this use case :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">XPathFilter</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> Document xmlDocument;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">XPathFilter</span>(String xml) {
+</span></span><span style="display:flex;"><span>        xmlDocument <span style="color:#ff6ac1">=</span> readXml(xml);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> String <span style="color:#57c7ff">filter</span>(String xPath) {
+</span></span><span style="display:flex;"><span>        Element root <span style="color:#ff6ac1">=</span> xmlDocument.<span style="color:#57c7ff">getRootElement</span>();
+</span></span><span style="display:flex;"><span>        List<span style="color:#ff6ac1">&lt;</span>Element<span style="color:#ff6ac1">&gt;</span> resultNodes <span style="color:#ff6ac1">=</span> root.<span style="color:#57c7ff">selectNodes</span>(xPath);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span> (resultNodes.<span style="color:#57c7ff">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">throw</span> <span style="color:#ff6ac1">new</span> IllegalStateException(<span style="color:#5af78e">&#34;No result found for xpath &#34;</span> <span style="color:#ff6ac1">+</span> xPath);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        deleteNonResultNodes(resultNodes);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> write(root);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">deleteNonResultNodes</span>(List<span style="color:#ff6ac1">&lt;</span>Element<span style="color:#ff6ac1">&gt;</span> resultNodes) {
+</span></span><span style="display:flex;"><span>        Set<span style="color:#ff6ac1">&lt;</span>Element<span style="color:#ff6ac1">&gt;</span> nodesToKeep <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> HashSet<span style="color:#ff6ac1">&lt;&gt;</span>(resultNodes);
+</span></span><span style="display:flex;"><span>        Set<span style="color:#ff6ac1">&lt;</span>Element<span style="color:#ff6ac1">&gt;</span> parents;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">do</span> {
+</span></span><span style="display:flex;"><span>            parents <span style="color:#ff6ac1">=</span> getParentNodes(nodesToKeep);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">for</span> (Element parent : parents) {
+</span></span><span style="display:flex;"><span>                List<span style="color:#ff6ac1">&lt;</span>Element<span style="color:#ff6ac1">&gt;</span> children <span style="color:#ff6ac1">=</span> parent.<span style="color:#57c7ff">elements</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">for</span> (Element child : children) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">if</span> (<span style="color:#ff6ac1">!</span>nodesToKeep.<span style="color:#57c7ff">contains</span>(child)) {
+</span></span><span style="display:flex;"><span>                        parent.<span style="color:#57c7ff">remove</span>(child);
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            nodesToKeep <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> HashSet<span style="color:#ff6ac1">&lt;&gt;</span>(parents);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">while</span> (<span style="color:#ff6ac1">!</span>parents.<span style="color:#57c7ff">isEmpty</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> Set<span style="color:#ff6ac1">&lt;</span>Element<span style="color:#ff6ac1">&gt;</span> <span style="color:#57c7ff">getParentNodes</span>(Collection<span style="color:#ff6ac1">&lt;</span>Element<span style="color:#ff6ac1">&gt;</span> nodes) {
+</span></span><span style="display:flex;"><span>        Set<span style="color:#ff6ac1">&lt;</span>Element<span style="color:#ff6ac1">&gt;</span> parents <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> HashSet<span style="color:#ff6ac1">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> (Element node : nodes) {
+</span></span><span style="display:flex;"><span>            Element parent <span style="color:#ff6ac1">=</span> node.<span style="color:#57c7ff">getParent</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> (parent <span style="color:#ff6ac1">!=</span> <span style="color:#ff6ac1">null</span>) {
+</span></span><span style="display:flex;"><span>                parents.<span style="color:#57c7ff">add</span>(parent);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> parents;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> Document <span style="color:#57c7ff">readXml</span>(String xml) {
+</span></span><span style="display:flex;"><span>        Document document;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">try</span> (StringReader reader <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> StringReader(xml)) {
+</span></span><span style="display:flex;"><span>            DocumentFactory factory <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> DocumentFactory();
+</span></span><span style="display:flex;"><span>            SAXReader saxReader <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> SAXReader();
+</span></span><span style="display:flex;"><span>            saxReader.<span style="color:#57c7ff">setDocumentFactory</span>(factory);
+</span></span><span style="display:flex;"><span>            document <span style="color:#ff6ac1">=</span> saxReader.<span style="color:#57c7ff">read</span>(reader);
+</span></span><span style="display:flex;"><span>        } <span style="color:#ff6ac1">catch</span> (DocumentException e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">throw</span> <span style="color:#ff6ac1">new</span> IllegalArgumentException(e);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> document;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> String <span style="color:#57c7ff">write</span>(Element rootElement) {
+</span></span><span style="display:flex;"><span>        Document documentOut <span style="color:#ff6ac1">=</span> DocumentHelper.<span style="color:#57c7ff">createDocument</span>();
+</span></span><span style="display:flex;"><span>        documentOut.<span style="color:#57c7ff">add</span>((Element) rootElement.<span style="color:#57c7ff">clone</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        StringWriter writer <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> StringWriter();
+</span></span><span style="display:flex;"><span>        XMLWriter xmlWriter <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> XMLWriter(writer, OutputFormat.<span style="color:#57c7ff">createPrettyPrint</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">try</span> {
+</span></span><span style="display:flex;"><span>            xmlWriter.<span style="color:#57c7ff">write</span>(documentOut);
+</span></span><span style="display:flex;"><span>        } <span style="color:#ff6ac1">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">throw</span> <span style="color:#ff6ac1">new</span> IllegalStateException(e);
+</span></span><span style="display:flex;"><span>        } <span style="color:#ff6ac1">finally</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">try</span> {
+</span></span><span style="display:flex;"><span>                xmlWriter.<span style="color:#57c7ff">close</span>();
+</span></span><span style="display:flex;"><span>            } <span style="color:#ff6ac1">catch</span> (IOException ignored) {
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> writer.<span style="color:#57c7ff">toString</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The <code>readXml</code> and <code>write</code> methods are just standard <em>dom4j</em> stuff.</p>
+<p>The real code lies in the <code>deleteNonResultNodes</code> function which traverses XML nodes
+from the results to the root.
+On each level, we will look at the parents of the current nodes (the selected ones at first) and delete every child which is not a result.</p>
+<p>The parents will become the current nodes and will keep on until we reach the root.
+At this point we would have kept only the xml structure that actually wrap our xPath results.</p>
+<p>That&rsquo;s all folks ! Check out the result <a href="https://github.com/geowarin/xpath-dom4j">on github</a>, unit tests included.</p>
+]]></content:encoded></item></channel></rss>

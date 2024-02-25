@@ -1,1 +1,714 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>react on Geowarin</title><link>https://geowarin.com/categories/react/</link><description>Recent content in react on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 12 Apr 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/react/index.xml" rel="self" type="application/rss+xml"/><item><title>Consuming APIs with Redux, the Shasta way</title><link>https://geowarin.com/consuming-apis-with-redux-the-shasta-way/</link><pubDate>Tue, 12 Apr 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/consuming-apis-with-redux-the-shasta-way/</guid><description>Connecting your REST API to Redux used to be hard&amp;hellip; But that was before Shasta!</description></item><item><title>React freshness</title><link>https://geowarin.com/react-freshness/</link><pubDate>Thu, 18 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/react-freshness/</guid><description>We&amp;rsquo;ve heard a lot about Javascript fatigue but what if I showed you two simple ways to get started with React without a single line of configuration? Refresh!</description></item><item><title>Spring Boot and React hot loader</title><link>https://geowarin.com/spring-boot-and-react-hot-loader/</link><pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/spring-boot-and-react-hot-loader/</guid><description>The perfect setup for Spring boot and React hot loader</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>react on Geowarin</title><link>https://geowarin.com/categories/react/</link><description>Recent content in react on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 12 Apr 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/react/index.xml" rel="self" type="application/rss+xml"/><item><title>Consuming APIs with Redux, the Shasta way</title><link>https://geowarin.com/consuming-apis-with-redux-the-shasta-way/</link><pubDate>Tue, 12 Apr 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/consuming-apis-with-redux-the-shasta-way/</guid><description>Connecting your REST API to Redux used to be hard&amp;hellip; But that was before Shasta!</description><content:encoded><![CDATA[<p>Since React is just the view layer of your front-end stack, the community had to
+provide the solutions for the remaining problems.</p>
+<p>Right now there seems to be a consensus for the best libraries. The recommended stack is:</p>
+<ul>
+<li>Building: <code>Webpack</code> and <code>babel</code></li>
+<li>Managing your UI state: <code>Redux</code> and <code>ImmutableJS</code></li>
+<li>Routing: <code>React-router</code> (<a href="https://github.com/taion/rrtr">ahem!</a>)</li>
+</ul>
+<p>But there seems to be <a href="https://blog.boldlisting.com/connecting-redux-to-your-api-eac51ad9ff89#.s83cs4um8">lots of options</a>
+to connect Redux to your API.</p>
+<p>Yesterday, I decided to see what <a href="http://shasta.tools/">Shasta</a> had in store for
+us. I have to say that I was more than happy with what I saw!</p>
+<p>Check out my demo project <a href="https://github.com/geowarin/shasta-preview">on github</a>.</p>
+<h2 id="what-is-shasta">What is Shasta?</h2>
+<p>Shasta is the latest project of <a href="https://github.com/contra">@Contra (Eric Schoffstall)</a>,
+previously known for Gulp.</p>
+<p>The idea is to take the best practices and libraries used by the React community
+and stitch them together with nice helpers.</p>
+<p>It is an <a href="http://shasta.tools/shasta/docs/Opinions.html">opinionated library</a>.</p>
+<p>Without surprise, you will find support for all the libraries cited above.</p>
+<p>Shasta is very ambitious and aims to help you solve Server Side Rendering, manage
+security and user sessions, etc.</p>
+<p>Check the <a href="https://github.com/shastajs/boilerplate">shasta-boilerplate</a> for a more comprehensive example.</p>
+<p>In this article I will focus on <a href="https://github.com/shastajs/tahoe">Tahoe</a> and
+the <a href="https://github.com/shastajs/shasta-data-view">shasta data view</a>.</p>
+<p>I think that those two things alone are well worth a blog post!</p>
+<h2 id="a-word-of-warning">A word of warning!</h2>
+<p>Shasta is under development. All the dependencies in the demo are pointing to the
+github repositories. There are no npm releases yet!</p>
+<p>Likewise, the documentation <a href="http://shasta.tools/shasta/index.html">is very sparse</a> at
+the moment.</p>
+<p>Thinks are likely to change or break. You have been warned.</p>
+<p>Your best bet to learn more about Shasta right now is to listen to the Javascript Jabber podcast
+<a href="https://devchat.tv/js-jabber/205-jsj-shasta-with-eric-schoffstall">episode on Shasta</a>.</p>
+<h2 id="the-store">The store</h2>
+<p>The central element in Shasta is the store.
+It is very similar to Redux&rsquo;s store but it adds the notion of plugins.</p>
+<p>To get started quickly, I created a project [using nwb]({% post_url 2016-02-18-react-freshness %}).</p>
+<p>Here is what the project looks like after setting up Shasta with the router and
+Tahoe:</p>
+<!-- raw HTML omitted -->
+<p>Let&rsquo;s dig into the core package.</p>
+<p><code>store.js</code> allows you to reference the store as a singleton. This is also where
+you register the plugins you use:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> { createStore, createReducer } from <span style="color:#5af78e">&#39;shasta&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> localReducers from <span style="color:#5af78e">&#39;../reducers/.lookup&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> plugins from <span style="color:#5af78e">&#39;./plugins&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> createStore({
+</span></span><span style="display:flex;"><span>  plugins<span style="color:#ff6ac1">:</span> plugins,
+</span></span><span style="display:flex;"><span>  reducers<span style="color:#ff6ac1">:</span> [
+</span></span><span style="display:flex;"><span>    createReducer(localReducers)
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p><code>plugins.js</code> is very simple. In this example, I use two plugins, Tahoe and shasta-router:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> <span style="color:#ff6ac1">*</span> as router from <span style="color:#5af78e">&#39;shasta-router&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> <span style="color:#ff6ac1">*</span> as api from <span style="color:#5af78e">&#39;tahoe&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> [
+</span></span><span style="display:flex;"><span>  api,
+</span></span><span style="display:flex;"><span>  router
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><p>Finally, the <code>actions.js</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> { actions as routeActions } from <span style="color:#5af78e">&#39;shasta-router&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> { createActions, createReducerActions } from <span style="color:#5af78e">&#39;shasta&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> store from <span style="color:#5af78e">&#39;./store&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> localActions from <span style="color:#5af78e">&#39;../api/.lookup&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> localReducers from <span style="color:#5af78e">&#39;../reducers/.lookup&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> createActions({
+</span></span><span style="display:flex;"><span>  ...localActions,
+</span></span><span style="display:flex;"><span>  ...routeActions,
+</span></span><span style="display:flex;"><span>  ...createReducerActions(localReducers)
+</span></span><span style="display:flex;"><span>}, store.dispatch)
+</span></span></code></pre></div><h3 id="plugins">Plugins</h3>
+<p>What are those plugins? Shasta defines multiple extension points.
+Most notably, your plugin can export reducers and middlewares which dramatically
+help reducing the boilerplate.</p>
+<p>With the example above, you will get your routes stored in Redux with <code>react-router-redux</code>,
+and the setup for the <a href="https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en">Redux Devtools chrome extension</a>.</p>
+<p>Tahoe also adds a bunch of reducers to handle our API calls.</p>
+<h3 id="what-about-the-lookup-file">What about the .lookup file?</h3>
+<p>The <code>.lookup</code> files are a really nice idea, they use the <a href="https://github.com/contra/glob-loader">glob-loader</a> to re-export all the js files
+according to a glob expression.</p>
+<p>This avoids writing repetitive and error prone-code like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> <span style="color:#ff6ac1">*</span> as reducer1 from <span style="color:#5af78e">&#39;./reducer1&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> <span style="color:#ff6ac1">*</span> as reducer2 from <span style="color:#5af78e">&#39;./reducer2&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> {
+</span></span><span style="display:flex;"><span>  reducer1,
+</span></span><span style="display:flex;"><span>  reducer2
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="the-root-component">The Root Component</h2>
+<p>Here is a quick glance at the Root component of our application.
+It is very classic, just note that Shasta adds support for additional PropTypes
+like routes or immutable types.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React from <span style="color:#5af78e">&#34;react&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> {Provider, Component, PropTypes} from <span style="color:#5af78e">&#34;shasta&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> {Router} from <span style="color:#5af78e">&#34;shasta-router&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> RootView <span style="color:#ff6ac1">extends</span> Component {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">static</span> displayName <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;RootView&#39;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">static</span> propTypes <span style="color:#ff6ac1">=</span> {
+</span></span><span style="display:flex;"><span>    history<span style="color:#ff6ac1">:</span> PropTypes.object.isRequired,
+</span></span><span style="display:flex;"><span>    store<span style="color:#ff6ac1">:</span> PropTypes.object.isRequired,
+</span></span><span style="display:flex;"><span>    routes<span style="color:#ff6ac1">:</span> PropTypes.node.isRequired
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  render () {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">const</span> {store, history, routes} <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">this</span>.props;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> (
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">Provider</span> <span style="color:#57c7ff">store</span><span style="color:#ff6ac1">=</span>{store}&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">Router</span> <span style="color:#57c7ff">history</span><span style="color:#ff6ac1">=</span>{history}&gt;
+</span></span><span style="display:flex;"><span>          {routes}
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#ff6ac1">Router</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#ff6ac1">Provider</span>&gt;
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="our-first-reducer-the-counter">Our first reducer: the counter!</h2>
+<p>This one took you by surprise, didn&rsquo;t it?
+Just to show the ideas behind Shasta, here is the reducer for our sacred counter example.</p>
+<p><code>reducers/counter.js</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> { Map } from <span style="color:#5af78e">&#39;immutable&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">const</span> initialState <span style="color:#ff6ac1">=</span> Map({ count<span style="color:#ff6ac1">:</span> <span style="color:#ff9f43">1</span> });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">const</span> increment <span style="color:#ff6ac1">=</span> (state, { payload <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">1</span> }) =&gt;
+</span></span><span style="display:flex;"><span>  state.update(<span style="color:#5af78e">&#39;count&#39;</span>, c =&gt; c <span style="color:#ff6ac1">+</span> payload);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">const</span> decrement <span style="color:#ff6ac1">=</span> (state, { payload <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">1</span> }) =&gt;
+</span></span><span style="display:flex;"><span>  state.update(<span style="color:#5af78e">&#39;count&#39;</span>, c =&gt; c <span style="color:#ff6ac1">-</span> payload);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">const</span> reset <span style="color:#ff6ac1">=</span> () =&gt; initialState;
+</span></span></code></pre></div><p>Here, you see a very straightforward implementation of a reducer.
+It leverages the ImmutableJS API to create those nice little one-liners.</p>
+<p>Here is how to use those reducers as actions in your views:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React from <span style="color:#5af78e">&#34;react&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> {connect, Component} from <span style="color:#5af78e">&#34;shasta&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> actions from <span style="color:#5af78e">&#34;../core/actions&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">@</span>connect({
+</span></span><span style="display:flex;"><span>  count<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;counter.count&#39;</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> Counter <span style="color:#ff6ac1">extends</span> Component {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  render() {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> &lt;<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">h2</span>&gt;Counter&lt;/<span style="color:#ff6ac1">h2</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">p</span>&gt;{<span style="color:#ff6ac1">this</span>.props.count}&lt;/<span style="color:#ff6ac1">p</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">button</span> <span style="color:#57c7ff">onClick</span><span style="color:#ff6ac1">=</span>{() =&gt; actions.counter.increment()}&gt;
+</span></span><span style="display:flex;"><span>        Increment
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#ff6ac1">button</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">button</span> <span style="color:#57c7ff">onClick</span><span style="color:#ff6ac1">=</span>{() =&gt; actions.counter.decrement()}&gt;
+</span></span><span style="display:flex;"><span>        Decrement
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#ff6ac1">button</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">button</span> <span style="color:#57c7ff">onClick</span><span style="color:#ff6ac1">=</span>{() =&gt; actions.counter.reset()}&gt;
+</span></span><span style="display:flex;"><span>        Reset
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#ff6ac1">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>With our lookup file setup, there is nothing else to do.
+Your actions will automatically be available from all components in the
+<code>actions.counter</code> namespace.</p>
+<p>The <code>@connect</code> annotation reminds a lot of Redux but it has been modified to
+work seamlessly with immutable data types.</p>
+<h2 id="lets-fetch-data">Let&rsquo;s fetch data!</h2>
+<p>Let&rsquo;s create a <code>api/chuck.js</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> { createAction } from <span style="color:#5af78e">&#39;tahoe&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> { Schema } from <span style="color:#5af78e">&#39;normalizr&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> response <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Schema(<span style="color:#5af78e">&#39;some-response&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">const</span> getRandomFact <span style="color:#ff6ac1">=</span> createAction({
+</span></span><span style="display:flex;"><span>  endpoint<span style="color:#ff6ac1">:</span> () =&gt; <span style="color:#5af78e">`http://api.icndb.com/jokes/random`</span>,
+</span></span><span style="display:flex;"><span>  method<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;GET&#39;</span>,
+</span></span><span style="display:flex;"><span>  model<span style="color:#ff6ac1">:</span> response
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>Shasta has direct support for <a href="https://github.com/gaearon/normalizr">normalizr</a>.
+This will help us store our entities in a normalized way as we will see in a moment.</p>
+<p>Under the hood, Tahoe uses superagent to make HTTP requests.</p>
+<p>Let&rsquo;s see how to use this in a view:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React from <span style="color:#5af78e">&#34;react&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> {connect} from <span style="color:#5af78e">&#34;shasta&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> actions from <span style="color:#5af78e">&#34;../core/actions&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> DataComponent from <span style="color:#5af78e">&#34;shasta-data-view&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">@</span>connect({
+</span></span><span style="display:flex;"><span>  joke<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;api.subsets.joke&#39;</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> ChuckFact <span style="color:#ff6ac1">extends</span> DataComponent {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  resolveData () {
+</span></span><span style="display:flex;"><span>    actions.chuck.getRandomFact({
+</span></span><span style="display:flex;"><span>      subset<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;joke&#39;</span>
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  renderLoader () {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> (
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>        Loading...
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  renderData ({joke}) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> &lt;<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">h2</span>&gt;Chuck Norris Fact&lt;/<span style="color:#ff6ac1">h2</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">p</span>&gt;{joke.getIn([<span style="color:#5af78e">&#39;value&#39;</span>, <span style="color:#5af78e">&#39;joke&#39;</span>])}&lt;/<span style="color:#ff6ac1">p</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  renderErrors (errors) {
+</span></span><span style="display:flex;"><span>    console.error(errors);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> (
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>        There was an error fetching Chuck Norris facts
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Shasta has a <code>DataComponent</code> class that will help you manage the pattern of displaying
+a loading message while fetching the data, and errors if the request fail.</p>
+<p>When using a Tahoe action, you can optionally specify a subset in which the fetched
+data will end up.</p>
+<p>This is great to scope your fetch requests to a component.
+Here, our request ends up in the <code>api.subsets.joke</code> namespace.</p>
+<p>Here is the JSON returned by our API so you can understand the <code>getIn</code> call:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">&#34;type&#34;</span>: <span style="color:#5af78e">&#34;success&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">&#34;value&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&#34;id&#34;</span>: <span style="color:#ff9f43">459</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&#34;joke&#34;</span>: <span style="color:#5af78e">&#34;Chuck Norris can solve the Towers of Hanoi in one move.&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&#34;categories&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;nerdy&#34;</span>
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="using-normalizr">Using normalizr</h2>
+<p>If we use a schema for the API call, we can tell normalizr that the <code>value</code> field
+in our JSON response is actually an entity.</p>
+<p>As such, we will be able to retrieve it in the <code>api.entities</code> namespace.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> response <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Schema(<span style="color:#5af78e">&#39;response&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> joke <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Schema(<span style="color:#5af78e">&#39;jokes&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>response.define({
+</span></span><span style="display:flex;"><span>  value<span style="color:#ff6ac1">:</span> joke
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>Normalizr will create a map of jokes indexed by ids and store it in <code>api.entities.jokes</code>.
+Which allows us to write something like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ff5c57">@</span>connect({
+</span></span><span style="display:flex;"><span>  jokes<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;api.entities.jokes&#39;</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> ChuckFact <span style="color:#ff6ac1">extends</span> DataComponent {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  renderData ({jokes}) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">const</span> jokesEl <span style="color:#ff6ac1">=</span> jokes.valueSeq().map((joke, id) =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">return</span> &lt;<span style="color:#ff6ac1">div</span> <span style="color:#57c7ff">key</span><span style="color:#ff6ac1">=</span>{id}&gt;{joke.get(<span style="color:#5af78e">&#39;joke&#39;</span>)}&lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> &lt;<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">h2</span>&gt;Chuck Norris Fact&lt;/<span style="color:#ff6ac1">h2</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      {jokesEl}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We can also use a function in the <code>@connect</code> decorator:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> getFirstJoke <span style="color:#ff6ac1">=</span> (store) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">return</span> store.getIn([<span style="color:#5af78e">&#39;api&#39;</span>, <span style="color:#5af78e">&#39;subsets&#39;</span>, <span style="color:#5af78e">&#39;myJoke&#39;</span>, <span style="color:#5af78e">&#39;data&#39;</span>, <span style="color:#5af78e">&#39;value&#39;</span>, <span style="color:#5af78e">&#39;joke&#39;</span>]);
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">@</span>connect({
+</span></span><span style="display:flex;"><span>  joke<span style="color:#ff6ac1">:</span> getFirstJoke
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> ChuckFact <span style="color:#ff6ac1">extends</span> DataComponent {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  resolveData () {
+</span></span><span style="display:flex;"><span>    actions.chuck.getRandomFact({
+</span></span><span style="display:flex;"><span>      subset<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;myJoke&#39;</span>
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  renderData ({joke}) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> &lt;<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#ff6ac1">h2</span>&gt;Chuck Norris Fact&lt;/<span style="color:#ff6ac1">h2</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      {joke}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>I&rsquo;m very excited about Shasta.
+It solves a long-standing problem in the React community with an unmatched elegance.</p>
+<p>It might be that piece that a lot of us have been missing in our projects.</p>
+]]></content:encoded></item><item><title>React freshness</title><link>https://geowarin.com/react-freshness/</link><pubDate>Thu, 18 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/react-freshness/</guid><description>We&amp;rsquo;ve heard a lot about Javascript fatigue but what if I showed you two simple ways to get started with React without a single line of configuration? Refresh!</description><content:encoded><![CDATA[<p>In the javascript community, some people have experienced <a href="https://medium.com/@ericclemmons/javascript-fatigue-48d4011b6fc4#.4ex2kn77n">javascript fatigue</a>.</p>
+<p>For me, this fatigue is two folds.
+First, you need to keep up to date with the frantic pace
+of redux, react-router and friends and make sure you will be able to migrate your
+code to the new major versions.</p>
+<p>Second, Webpack configuration is not always straight-forward.
+I know a lot of people that really want to see what React is like and play with
+it without having to cope with a lot of configuration up-front.</p>
+<p>I have no solution for the first problem. To me, innovation in this community feels
+like a fantastic thing. Watching the github repos and <a href="https://medium.com/@dan_abramov/my-react-list-862227952a8c#.l1p0093pk">following people</a> on Twitter
+is my way to keep up-to-date with the latest improvements.</p>
+<p>I also want to point out that the most used tools seem to be more and more stable.
+It is unlikely that redux or react-router will go through a full rewrite now. So
+relax. If you&rsquo;re not able to update your dependencies every two days, it&rsquo;s
+probably not the end of the world.</p>
+<p>In this article, I will show you two ways to get started with React with <strong>zero</strong>
+configuration. So you can start hacking right away when you&rsquo;re still fresh!</p>
+<h2 id="quick-prototyping-with-babel-browser-transform">Quick prototyping with babel browser transform</h2>
+<p>So you need to get some React code out of the door <strong>now</strong>.
+You don&rsquo;t care about hot reloading and want to write some React and ES2015 code
+in a web page.</p>
+<p>Jim Sproch has <a href="http://www.jimsproch.com/react/">a very cool solution</a> for us.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">html</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;http://www.jimsproch.com/react/future/react.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;http://www.jimsproch.com/react/future/react-dom.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;http://www.jimsproch.com/react/babel-browser.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">div</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;container&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;text/babel&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      ReactDOM.render(<span style="color:#ff6ac1">&lt;</span>div<span style="color:#ff6ac1">&gt;</span>Hello World<span style="color:#ff6ac1">!&lt;</span><span style="color:#ff5c57">/div&gt;, document.getElementById(&#39;container&#39;));</span>
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">html</span>&gt;
+</span></span></code></pre></div><p>And that&rsquo;s about it!
+Every script tag with the <code>text/babel</code> type will be transformed with babel.
+So you have support for destructuring, arrow functions and, of course, JSX.
+It will even work for external scripts so you don&rsquo;t need to write all your
+code in the page.</p>
+<p>Now, Jim likes to work with the bleeding edge beta of React but you can easily
+switch <code>react.js</code> and <code>react-dom</code> with production versions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;//cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;//cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span></code></pre></div><p>The downside of this solution, of course, is that the transform is executed by the
+client&rsquo;s browser so this will be slower than pre-compiled Babel.
+And you don&rsquo;t have hot reloading available.</p>
+<p>But still, zero config.</p>
+<h2 id="a-true-react-project-with-nwb">A true React project with nwb</h2>
+<p><a href="https://github.com/insin/nwb">Nwb</a> will take care of all the webpack and babel configuration.</p>
+<p>Install it as a global package:</p>
+<pre tabindex="0"><code>npm i -g nwb
+</code></pre><p>You can then create a React project:</p>
+<pre tabindex="0"><code>nwb new react-app my-nwb-app
+</code></pre><p>And it will scaffold the application for you.
+It is a very simple application:</p>
+<pre tabindex="0"><code>nwb: new react-app
+  create .gitignore
+  create .travis.yml
+  create README.md
+  create nwb.config.js
+  create package.json
+  create public/index.html
+  create src/App.js
+  create src/index.js
+  create tests/.eslintrc
+  create tests/App-test.js
+</code></pre><p>No configuration outside of <code>nwb.config.js</code>, which is almost empty.</p>
+<p>Let&rsquo;s start the application:</p>
+<pre tabindex="0"><code>npm start
+</code></pre><p>Try to modify <code>App.js</code>&hellip; Hot reloading works!</p>
+<p>Now let&rsquo;s run the tests:</p>
+<pre tabindex="0"><code>$ nwb test
+
+START:
+18 02 2016 10:14:54.838:INFO [karma]: Karma v0.13.18 server started at http://localhost:9876/
+18 02 2016 10:14:54.846:INFO [launcher]: Starting browser PhantomJS
+18 02 2016 10:14:56.139:INFO [PhantomJS 1.9.8 (Mac OS X 0.0.0)]: Connected on socket IHNx80uh9I6VW9fjAAAA with id 617985
+  App component
+    ✔ displays a welcome message
+
+Finished in 0.01 secs / 0.004 secs
+
+SUMMARY:
+✔ 1 test completed
+</code></pre><p>We&rsquo;ve got karma and coverage pre-configured so we can start TDDing right away.</p>
+<p>And the best part, we can build the application and get an optimized version
+of the scripts.</p>
+<pre tabindex="0"><code>$ npm run build
+
+&gt; my-nwb-app@1.0.0 build /Users/geowarin/dev/react/my-nwb-app
+&gt; nwb build
+
+nwb: clean-app
+nwb: build-react-app
+Hash: 81e127933ddb73bbdfb4
+Version: webpack 1.12.11
+Time: 3234ms
+        Asset       Size  Chunks             Chunk Names
+    vendor.js     131 kB       0  [emitted]  vendor
+       app.js  971 bytes       1  [emitted]  app
+vendor.js.map    1.54 MB       0  [emitted]  vendor
+   app.js.map    4.13 kB       1  [emitted]  app
+</code></pre><p>Nwb also has support for <a href="https://github.com/insin/nwb-sass">sass</a>, <a href="https://github.com/insin/nwb-stylus">stylus</a> and <a href="https://github.com/insin/nwb-less">less</a>.</p>
+<h3 id="nwb-gotchas">Nwb gotchas</h3>
+<p>Nwb has opinions. And that&rsquo;s a good thing.
+For example, you write tests with Karma and that&rsquo;s it.</p>
+<p>Support for Babel 6 is not there yet so it&rsquo;s not completely bleeding edge.</p>
+<p>But you can serenely leave the hard part of configuring your app to Nwb.
+It&rsquo;s got a very impressive test suite and coverage. You&rsquo;re in good hands!</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Feeling fatigued? I do not!
+I wish there were more projects like Nwb with strong opinions and one easy
+way to do things.</p>
+<p>But it is possible to get started with React and even have a production-ready
+application with zero configuration.</p>
+<p>Never used React? You have no more excuses. Get to work and help this community
+improve!</p>
+]]></content:encoded></item><item><title>Spring Boot and React hot loader</title><link>https://geowarin.com/spring-boot-and-react-hot-loader/</link><pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/spring-boot-and-react-hot-loader/</guid><description>The perfect setup for Spring boot and React hot loader</description><content:encoded><![CDATA[<p>When I develop web applications, I love using React.
+I&rsquo;m also a Spring and groovy addict.</p>
+<p>Those two stacks make me more productive.
+Can we have the best of both worlds?</p>
+<p>I will show you step by step how I created
+<a href="https://github.com/geowarin/boot-react">this project</a>.
+Feel free to fiddle with it and give me your feedback.</p>
+<h2 id="goal">Goal</h2>
+<p>My perfect stack on the backend is to use Spring boot and groovy.
+With the latest version of Spring boot, there is a new tool called
+<a href="https://spring.io/blog/2015/06/17/devtools-in-spring-boot-1-3">dev-tools</a> that
+will automatically reload the embedded server when you recompile your project.</p>
+<p>On the frontend, most React developers use <a href="http://webpack.github.io/">webpack</a>.
+React has awesome support for hot reloading with <a href="https://github.com/gaearon/react-hot-loader">react-hot-loader</a>.
+It will magically update your views without requiring you to refresh your browser.
+Because React encourages your to have a unidirectional data flow, your whole
+application can use hot reloading every time you save.
+For this to work, we have to launch a <a href="http://webpack.github.io/docs/webpack-dev-server.html">webpack dev server</a>.</p>
+<p>The problem when you launch your Spring boot server on the port 8080 and the
+dev server on the port 3000 is that you will get cross origin requests preventing
+the two servers from interacting.</p>
+<p>We also want to isolate the two projects and make separate gradle modules.</p>
+<p>This blog post will show a solution to this problem and will provide an
+enjoyable dev environment.</p>
+<p>This might not be the perfect solution and I&rsquo;d love any feedback from
+both communities to help me improve it.</p>
+<h2 id="the-backend">The backend</h2>
+<p>We will generate the backend. To do that, you can go on <a href="http://start.spring.io/">http://start.spring.io/</a>
+and create a <strong>gradle project</strong> using <strong>groovy</strong>, <strong>java 8</strong> and the latest Spring boot
+(<strong>1.3.0 M2</strong> at the time of writing).</p>
+<p>For the dependencies tick <strong>DevTools</strong> and <strong>Web</strong>.</p>
+<p>If you want to do it command line style just type the following in your console:</p>
+<pre tabindex="0"><code>curl https://start.spring.io/starter.tgz \
+-d name=boot-react  \
+-d bootVersion=1.3.0.M2 \
+-d dependencies=devtools,web \
+-d language=groovy \
+-d JavaVersion=1.8 \
+-d type=gradle-project \
+-d packageName=react \
+-d packaging=jar \
+-d artifactId=boot-react \
+-d baseDir=boot-react | tar -xzvf -
+</code></pre><p>This will create a base project with the latest spring boot, the devtools, groovy
+and gradle.</p>
+<p>Don&rsquo;t forget to generate the gradle wrapper:</p>
+<pre tabindex="0"><code>gradle wrapper
+</code></pre><p>See the <a href="https://github.com/geowarin/boot-react/commit/c290269a9e105688b38dcc6cc0b3293ec85199e6">commit</a></p>
+<p>Great so now we have tomcat embedded, hot reloading and supernatural groovy
+strength. The usual.</p>
+<p>We will create a simple REST resource that we would like our frontend to consume:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SimpleResource</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;/api/simple&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>    Map <span style="color:#57c7ff">resource</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">[</span><span style="color:#ff5c57">simple:</span> <span style="color:#5af78e">&#39;resource&#39;</span><span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span></code></pre></div><h2 id="the-frontend">The frontend</h2>
+<p>As mentioned before, we want the frontend to be a separated project.
+We will create a gradle module for that.</p>
+<p>At the root of your project add a <code>settings.gradle</code> file with the following
+content:</p>
+<pre tabindex="0"><code>include &#39;frontend&#39;
+</code></pre><p>Now, create a <code>frontend</code> directory under the project root and add a build.gradle
+file in it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>plugins <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#5af78e">&#34;com.moowork.node&#34;</span> version <span style="color:#5af78e">&#34;0.10&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>version <span style="color:#5af78e">&#39;0.0.1&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>task <span style="color:#57c7ff">bundle</span><span style="color:#ff6ac1">(</span><span style="color:#ff5c57">type:</span> NpmTask<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    args <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">[</span><span style="color:#5af78e">&#39;run&#39;</span><span style="color:#ff6ac1">,</span> <span style="color:#5af78e">&#39;bundle&#39;</span><span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>task <span style="color:#57c7ff">start</span><span style="color:#ff6ac1">(</span><span style="color:#ff5c57">type:</span> NpmTask<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    args <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">[</span><span style="color:#5af78e">&#39;start&#39;</span><span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>start<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">dependsOn</span><span style="color:#ff6ac1">(</span>npm_install<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>bundle<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">dependsOn</span><span style="color:#ff6ac1">(</span>npm_install<span style="color:#ff6ac1">)</span>
+</span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/6788e068c9071d0368879bee8188b7aeb194388e">commit</a></p>
+<p>We will use the <a href="https://github.com/srs/gradle-node-plugin">gradle node plugin</a>
+to call the two main tasks in our application:</p>
+<ul>
+<li><code>npm run bundle</code> will create the minified app in the <code>dist</code> directory</li>
+<li><code>npm start</code> will start our dev server</li>
+</ul>
+<p>We can call them from the gradle build with <code>./gradlew frontend:start</code> and
+<code>./gradlew frontend:bundle</code></p>
+<p>The content of the project will basically be the same as
+<a href="https://github.com/gaearon/react-hot-boilerplate">react-hot-boilerplate</a></p>
+<p>Let&rsquo;s get the sources of this project as a zip file from github and unzip them into the
+frontend directory.
+With bash, type the following command at the root of your project:</p>
+<pre tabindex="0"><code>wget -qO- -O tmp.zip https://github.com/gaearon/react-hot-boilerplate/archive/master.zip &amp;&amp; unzip tmp.zip &amp;&amp; mv react-hot-boilerplate-master/* frontend &amp;&amp; rm -rf react-hot-boilerplate-master &amp;&amp; rm tmp.zip
+</code></pre><p>See the <a href="https://github.com/geowarin/boot-react/commit/a3de637d0d94f48d1cdd0379038115e5b98b79d3">commit</a></p>
+<p>If everything goes well, typing <code>./gradlew fronted:start</code>, will start the react
+application at <code>http://localhost:3000</code>.</p>
+<p>The first problem arises when you <code>ctrl+c</code> out of the gradle build,
+the server will still hang. You can kill it with <code>killall node</code>.
+This is a problem I&rsquo;d like help solving, if you have a solution, please tell me.</p>
+<p>In the rest of the article I will use <code>npm start</code> directly, which presupposes that
+you have <code>npm</code> available on your development machine.
+The whole build will only require Java.</p>
+<p>We will use the <a href="https://github.com/ampedandwired/html-webpack-plugin">webpack-html-plugin</a>
+to automatically generate the index.html page.</p>
+<pre tabindex="0"><code>npm install --save-dev html-webpack-plugin
+</code></pre><p>Since using the document body as a root for our application is a bad practice,
+we need to tweak the default html template.</p>
+<p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
+It will serve as a template to generate our <code>index.html</code> file:</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>As you can see, it contains a div with the id <code>root</code>.</p>
+<p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
+<p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> path <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;path&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> HtmlWebpackPlugin <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;html-webpack-plugin&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>module.exports <span style="color:#ff6ac1">=</span> {
+</span></span><span style="display:flex;"><span>  devtool<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;eval&#39;</span>,
+</span></span><span style="display:flex;"><span>  entry<span style="color:#ff6ac1">:</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;webpack-dev-server/client?http://localhost:3000&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;webpack/hot/only-dev-server&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;./src/index&#39;</span>
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  output<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    path<span style="color:#ff6ac1">:</span> path.join(__dirname, <span style="color:#5af78e">&#39;dist&#39;</span>),
+</span></span><span style="display:flex;"><span>    filename<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;bundle.js&#39;</span>,
+</span></span><span style="display:flex;"><span>    publicPath<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;http://localhost:3000/&#39;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  plugins<span style="color:#ff6ac1">:</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">new</span> webpack.HotModuleReplacementPlugin(),
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">new</span> webpack.NoErrorsPlugin(),
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">new</span> HtmlWebpackPlugin({
+</span></span><span style="display:flex;"><span>      title<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;Boot React&#39;</span>,
+</span></span><span style="display:flex;"><span>      template<span style="color:#ff6ac1">:</span> path.join(__dirname, <span style="color:#5af78e">&#39;assets/index-template.html&#39;</span>)
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  resolve<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    extensions<span style="color:#ff6ac1">:</span> [<span style="color:#5af78e">&#39;&#39;</span>, <span style="color:#5af78e">&#39;.js&#39;</span>]
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  module<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    loaders<span style="color:#ff6ac1">:</span> [{
+</span></span><span style="display:flex;"><span>      test<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">/\.js$/</span>,
+</span></span><span style="display:flex;"><span>      loaders<span style="color:#ff6ac1">:</span> [<span style="color:#5af78e">&#39;react-hot&#39;</span>, <span style="color:#5af78e">&#39;babel&#39;</span>],
+</span></span><span style="display:flex;"><span>      include<span style="color:#ff6ac1">:</span> path.join(__dirname, <span style="color:#5af78e">&#39;src&#39;</span>)
+</span></span><span style="display:flex;"><span>    }]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>We changed the <code>publicPath</code> to point directly at our dev server and included the
+<code>HtmlWebpackPlugin</code>.</p>
+<p>Now we can get rid of the old index.html and start our dev server with <code>npm start</code>.
+The index will be automatically generated for us.</p>
+<p>See the <a href="https://github.com/geowarin/boot-react/commit/10e3fdae8ac53bea40c585076363a4cc54ed9d9e">commit</a></p>
+<h2 id="include-the-frontend-in-the-boot-jar">Include the frontend in the boot jar</h2>
+<p>We have to create the npm <code>bundle</code> task, which will generate an optimized
+web application in the <code>dist</code> directory.</p>
+<p>In the <code>package.json</code> file, update the <code>scripts</code>:</p>
+<pre tabindex="0"><code>&#34;scripts&#34;: {
+  &#34;start&#34;: &#34;node server.js&#34;,
+  &#34;bundle&#34;: &#34;webpack --optimize-minimize --optimize-dedupe --output-public-path &#39;&#39;&#34;
+}
+</code></pre><p>Now if you launch <code>./gradlew frontend:bundle</code>, it will generate an optimized
+<code>bundle.js</code> file and the <code>index.html</code> in the <code>dist</code> directory.</p>
+<p>The last step is to include this <code>dist</code> directory in our application&rsquo;s jar as
+static assets.
+Add the following task to our main gradle build:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>jar <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>  from<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;frontend/dist&#39;</span><span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    into <span style="color:#5af78e">&#39;static&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>processResources<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">dependsOn</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;frontend:bundle&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span></code></pre></div><p>If you generate your jar with <code>./gradlew assemble</code>, you will see that the
+built jar includes the frontend resources.</p>
+<p>If you run the jar (<code>java -jar build/libs/boot-react-0.0.1-SNAPSHOT.jar</code>), you should
+see the React hello world on <code>localhost:8080</code></p>
+<p>See the <a href="https://github.com/geowarin/boot-react/commit/99b89a19200fe847bc0740346a0c4e5668b4e3c2">commit</a></p>
+<h2 id="launch-it-in-dev">Launch it in dev</h2>
+<p>When working on our application, it would be nice if:</p>
+<ol>
+<li>Launching the spring boot server in dev launched the webpack dev server</li>
+<li>Our dev-server proxied the request to <code>localhost:8080</code> so we can access
+the application on <code>localhost:3000</code> and not get cross-origin requests</li>
+</ol>
+<p>Add the following <code>WebpackLauncher</code> to the project:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Profile</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;dev&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebpackLauncher</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>  WebpackRunner <span style="color:#57c7ff">frontRunner</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">new</span> <span style="color:#57c7ff">WebpackRunner</span><span style="color:#ff6ac1">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebpackRunner</span> <span style="color:#ff5c57">implements</span> InitializingBean <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> String WEBPACK_SERVER_PROPERTY <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;webpack-server-loaded&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">boolean</span> <span style="color:#57c7ff">isWindows</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">getProperty</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;os.name&#39;</span><span style="color:#ff6ac1">).</span><span style="color:#57c7ff">toLowerCase</span><span style="color:#ff6ac1">().</span><span style="color:#57c7ff">contains</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;windows&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">afterPropertiesSet</span><span style="color:#ff6ac1">()</span> <span style="color:#ff5c57">throws</span> Exception <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">if</span> <span style="color:#ff6ac1">(!</span>System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">getProperty</span><span style="color:#ff6ac1">(</span>WEBPACK_SERVER_PROPERTY<span style="color:#ff6ac1">))</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>        startWebpackDevServer<span style="color:#ff6ac1">()</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">startWebpackDevServer</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>      String cmd <span style="color:#ff6ac1">=</span> isWindows<span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">?</span> <span style="color:#5af78e">&#39;cmd /c npm start&#39;</span> <span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;npm start&#39;</span>
+</span></span><span style="display:flex;"><span>      cmd<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">execute</span><span style="color:#ff6ac1">(</span><span style="color:#ff6ac1">null</span><span style="color:#ff6ac1">,</span> <span style="color:#ff6ac1">new</span> File<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;frontend&#39;</span><span style="color:#ff6ac1">)).</span><span style="color:#57c7ff">consumeProcessOutput</span><span style="color:#ff6ac1">(</span>System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">out</span><span style="color:#ff6ac1">,</span> System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">err</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">setProperty</span><span style="color:#ff6ac1">(</span>WEBPACK_SERVER_PROPERTY<span style="color:#ff6ac1">,</span> <span style="color:#5af78e">&#39;true&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span></code></pre></div><p>This will take care of the first task by launching <code>npm start</code> when our server starts.
+I used a system property to make sure the dev-tools will not reload the frontend
+when we make a change in the backend code.
+This class will be available when we start the application with the <code>dev</code>
+<a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html">profile</a></p>
+<p>We can make a simple proxy with webpack-dev-server.
+Change the <code>server.js</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> WebpackDevServer <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack-dev-server&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> config <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;./webpack.dev.config&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">new</span> WebpackDevServer(webpack(config), {
+</span></span><span style="display:flex;"><span>  publicPath<span style="color:#ff6ac1">:</span> config.output.publicPath,
+</span></span><span style="display:flex;"><span>  hot<span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">true</span>,
+</span></span><span style="display:flex;"><span>  historyApiFallback<span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">true</span>,
+</span></span><span style="display:flex;"><span>  proxy<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;*&#34;</span><span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#34;http://localhost:8080&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}).listen(<span style="color:#ff9f43">3000</span>, <span style="color:#5af78e">&#39;localhost&#39;</span>, <span style="color:#ff5c57">function</span> (err, result) {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">if</span> (err) {
+</span></span><span style="display:flex;"><span>    console.log(err);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  console.log(<span style="color:#5af78e">&#39;Listening at localhost:3000&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>Launch your application with the <code>--spring.profiles.active=dev</code> flag.</p>
+<p>You should be able see the react hello world on <a href="http://localhost:3000">http://localhost:3000</a>. If you make some changes to it,
+it will automatically reload.</p>
+<p>See the old commit <a href="https://github.com/geowarin/boot-react/commit/af66c4b2f9798ad50f4e6be30ba5fb6c5f56f79f">commit</a></p>
+<p>And the new <a href="https://github.com/geowarin/boot-react/commit/2eb6460812c2f2022b49e04f8ed4034dda402c2c">commit</a></p>
+<h2 id="fetch-the-resource">Fetch the resource</h2>
+<p>We can check that we do not get cross-origin errors using <a href="https://github.com/mzabriskie/axios">axios</a>,
+a simple library to do http requests. It supports promises and automatically
+handles json.</p>
+<pre tabindex="0"><code>npm i -S axios
+</code></pre><p>Let&rsquo;s amend our <code>App.js</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React, { Component } from <span style="color:#5af78e">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> axios from <span style="color:#5af78e">&#39;axios&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> App <span style="color:#ff6ac1">extends</span> Component {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  componentDidMount() {
+</span></span><span style="display:flex;"><span>    axios.get(<span style="color:#5af78e">&#39;/api/simple&#39;</span>)
+</span></span><span style="display:flex;"><span>      .then(res =&gt; console.log(res.data))
+</span></span><span style="display:flex;"><span>      .<span style="color:#ff6ac1">catch</span>(err =&gt; console.error(err))
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  render() {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> (
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">&lt;</span>h1<span style="color:#ff6ac1">&gt;</span>Hello, guys.<span style="color:#ff6ac1">&lt;</span><span style="color:#ff5c57">/h1&gt;</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/blob/079f0c8afcd8266355b77a094941c8cdbe1349fd/frontend/src/App.js">commit</a></p>
+<h2 id="better-optimization-of-the-javascript-assets">Better optimization of the javascript assets</h2>
+<p>We can further improve the compression of the javascript assets by separating our dev
+webpack configuration from our production configuration.</p>
+<p>In the production configuration, we can use the DefinePlugin to set the NODE_ENV
+variable to production. This will allow webpack to automatically remove all the
+code intended for development purposes in our libraries:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">new</span> webpack.DefinePlugin({
+</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;process.env&#34;</span><span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    NODE_ENV<span style="color:#ff6ac1">:</span> JSON.stringify(<span style="color:#5af78e">&#34;production&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1">commit</a></p>
+<h2 id="feedback-needed">Feedback needed</h2>
+<p>Well, this works pretty well!</p>
+<p><img loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" alt="Hot hot reload"  title="Hot reload"  />
+</p>
+<p>What do you think? Care to comment and help me make something better?
+Your feedback is welcome!</p>
+<p>The project is available <a href="https://github.com/geowarin/boot-react">on github</a>.
+Pull requests and issues are gladly accepted.</p>
+]]></content:encoded></item></channel></rss>

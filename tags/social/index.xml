@@ -1,1 +1,303 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>social on Geowarin</title><link>https://geowarin.com/tags/social/</link><description>Recent content in social on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 12 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/social/index.xml" rel="self" type="application/rss+xml"/><item><title>Social login with Spring</title><link>https://geowarin.com/social-login-with-spring/</link><pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/social-login-with-spring/</guid><description>Log-in with your social account in your Spring application</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>social on Geowarin</title><link>https://geowarin.com/tags/social/</link><description>Recent content in social on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 12 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/social/index.xml" rel="self" type="application/rss+xml"/><item><title>Social login with Spring</title><link>https://geowarin.com/social-login-with-spring/</link><pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/social-login-with-spring/</guid><description>Log-in with your social account in your Spring application</description><content:encoded><![CDATA[<p>Nowadays, it&rsquo;s getting rare and even a bit annoying when a service rolls up its own
+authentication mechanism instead of relying on a OAuth sign-on with our social
+networks.</p>
+<p>Login via social networks means fewer passwords to remember, and stronger guarantees
+in terms of security because you can check and control the authorizations of the applications
+you use.</p>
+<p>In this article, I will show you how to allow users to log into your application
+via Twitter from a rich Javascript client (React).</p>
+<p>We will also persist our users connections in database.</p>
+<p>The code is available <a href="https://github.com/geowarin/boot-social-api">on github</a>.</p>
+<h2 id="setting-up-your-app-on-twitter">Setting up your app on Twitter</h2>
+<p>Before coding anything, you will need to create a new Twitter application
+in <a href="https://apps.twitter.com/">your twitter apps page</a>.</p>
+<p><img loading="lazy" src="/assets/images/articles/2016-02-twitter-app.png" alt="Creating a Twitter app"  title="Creating a Twitter app"  />
+</p>
+<p>Then go to the &ldquo;Keys and access tokens&rdquo; tab and note your API key and API secret
+ids.</p>
+<p><img loading="lazy" src="/assets/images/articles/2016-02-twitter-app-keys.png" alt="Twitter app keys"  title="Twitter app keys"  />
+</p>
+<h2 id="creating-a-spring-boot-app">Creating a Spring Boot app</h2>
+<p>Use the <a href="http://start.spring.io">Spring initializer</a> to create a new Spring Boot
+application. You will need the following dependencies:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>dependencies <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-devtools&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-starter-security&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-starter-social-twitter&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-starter-web&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-starter-jdbc&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;com.h2database:h2&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span></code></pre></div><p>Please copy your <code>appId</code> and <code>appSecret</code> in the <code>application.properties</code> file and
+configure a few things:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#57c7ff">spring.social.twitter.appId</span><span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&lt;Consumer Key&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">spring.social.twitter.appSecret</span><span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&lt;Consumer Secret&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># Disable auto views, we are making an API</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">spring.social.auto-connection-views</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># Disable basic security</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">security.basic.enabled</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># Persist H2 data to disk to keep connection info between reboots</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">spring.datasource.url</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">jdbc:h2:~/social-test</span>
+</span></span></code></pre></div><h2 id="sign-in-and-sign-up-flows">Sign-in and Sign-up flows</h2>
+<p>Spring social has two different flows when someone logs into your app via social
+networks.</p>
+<p>The first time someone logs into your application, they will go through the sign-up flow.
+If their ID already registered in Spring Social, they will go through the sign-in
+flow instead.</p>
+<p>You job is to create a <code>SignInAdapter</code> that will handle the sign-in process and
+a controller that will decide what to do during the sign-up process (you will receive a
+request on the <code>/signup</code> URL by default).</p>
+<p>Here is an overview of the authentication flow in Spring Social:</p>
+<p><img loading="lazy" src="/assets/images/articles/2016-02-social-flow.png" alt="Spring Social flow"  title="Spring Social flow"  />
+</p>
+<ul>
+<li>Your application produces a POST request to <code>/signin/{providerId}</code></li>
+<li>The <code>ProviderSigninController</code> then redirects the user to the identification provider&rsquo;s sign-in screen</li>
+<li>The user logs in</li>
+<li>The identification provider will send the OAuth token with GET request to <code>/signin/{providerId}</code></li>
+<li>If the user is not found in the <code>UsersConnectionRepository</code>, the controller will use a <code>SessionStrategy</code> to store the pending login request and will then redirect to the signupUrl page</li>
+<li>If the user is found, your <code>SignInAdapter</code> interface is called</li>
+</ul>
+<p>If you want to know more details about Spring social inner workings, check the <code>SocialWebAutoConfiguration</code> class of Spring Boot and the <code>ProviderSignInController</code> class
+of Spring Social.</p>
+<p>In the above diagram, we can see that we have two more extensions points:</p>
+<ul>
+<li>The <code>SessionStrategy</code>. By default, it stores temporary information about the connection
+in the HTTP session</li>
+<li>The <code>UsersConnectionRepository</code>. By default, Spring boot provides an <code>InMemoryUsersConnectionRepository</code>. Connections will be lost when your application
+reboots.</li>
+</ul>
+<h2 id="spring-security-config">Spring Security Config</h2>
+<p>We need to enable security in our application. Let&rsquo;s create a classic security
+configuration.
+It will make sure that users using our REST api are authenticated but will let calls
+to <code>/api/session</code>, our authentication end point, go through:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Order</span>(SecurityProperties.<span style="color:#57c7ff">ACCESS_OVERRIDE_ORDER</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SecurityConfiguration</span> <span style="color:#ff5c57">extends</span> WebSecurityConfigurerAdapter {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">configure</span>(HttpSecurity http) <span style="color:#ff5c57">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        http
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">authorizeRequests</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">antMatchers</span>(<span style="color:#5af78e">&#34;/api/session&#34;</span>).<span style="color:#57c7ff">permitAll</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">antMatchers</span>(<span style="color:#5af78e">&#34;/h2-console/**&#34;</span>).<span style="color:#57c7ff">permitAll</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">antMatchers</span>(<span style="color:#5af78e">&#34;/api/**&#34;</span>).<span style="color:#57c7ff">authenticated</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">and</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">headers</span>().<span style="color:#57c7ff">frameOptions</span>().<span style="color:#57c7ff">disable</span>() <span style="color:#78787e">// for h2</span>
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">and</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">requestCache</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">requestCache</span>(<span style="color:#ff6ac1">new</span> NullRequestCache())
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">and</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">sessionManagement</span>().<span style="color:#57c7ff">sessionCreationPolicy</span>(SessionCreationPolicy.<span style="color:#57c7ff">IF_REQUIRED</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">and</span>().<span style="color:#57c7ff">csrf</span>().<span style="color:#57c7ff">disable</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The authentication end point is very simple. It provides a way to <code>GET</code> the
+current session and to <code>DELETE</code> it to logout:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@RequestMapping</span>(<span style="color:#5af78e">&#34;/api/session&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AuthenticationResource</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    AuthenticationManager authenticationManager;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span>(method <span style="color:#ff6ac1">=</span> RequestMethod.<span style="color:#57c7ff">GET</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> User <span style="color:#57c7ff">session</span>(Principal user) {
+</span></span><span style="display:flex;"><span>        String name <span style="color:#ff6ac1">=</span> user <span style="color:#ff6ac1">==</span> <span style="color:#ff6ac1">null</span> <span style="color:#ff6ac1">?</span> <span style="color:#ff6ac1">null</span> : user.<span style="color:#57c7ff">getName</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> User(name);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span>(method <span style="color:#ff6ac1">=</span> RequestMethod.<span style="color:#57c7ff">DELETE</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">logout</span>(HttpSession session) {
+</span></span><span style="display:flex;"><span>        session.<span style="color:#57c7ff">invalidate</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="sign-in">Sign-in</h2>
+<p>To handle the sign-in, we need to provide a <code>SignInAdapter</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SocialConfiguration</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> SignInAdapter <span style="color:#57c7ff">authSignInAdapter</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> (userId, connection, request) <span style="color:#ff6ac1">-&gt;</span> {
+</span></span><span style="display:flex;"><span>            AuthUtil.<span style="color:#57c7ff">authenticate</span>(connection);
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">null</span>;
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We can create a simple <code>authenticate</code> method that will take a Social <code>Connection</code>
+and authenticate the user using Spring Security&rsquo;s context:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AuthUtil</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> Logger log <span style="color:#ff6ac1">=</span> LoggerFactory.<span style="color:#57c7ff">getLogger</span>(AuthUtil.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">authenticate</span>(Connection<span style="color:#ff6ac1">&lt;?&gt;</span> connection) {
+</span></span><span style="display:flex;"><span>        UserProfile userProfile <span style="color:#ff6ac1">=</span> connection.<span style="color:#57c7ff">fetchUserProfile</span>();
+</span></span><span style="display:flex;"><span>        String username <span style="color:#ff6ac1">=</span> userProfile.<span style="color:#57c7ff">getUsername</span>();
+</span></span><span style="display:flex;"><span>        UsernamePasswordAuthenticationToken authentication <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> UsernamePasswordAuthenticationToken(username, <span style="color:#ff6ac1">null</span>, <span style="color:#ff6ac1">null</span>);
+</span></span><span style="display:flex;"><span>        SecurityContextHolder.<span style="color:#57c7ff">getContext</span>().<span style="color:#57c7ff">setAuthentication</span>(authentication);
+</span></span><span style="display:flex;"><span>        log.<span style="color:#57c7ff">info</span>(<span style="color:#5af78e">&#34;User {} {} connected.&#34;</span>, userProfile.<span style="color:#57c7ff">getFirstName</span>(), userProfile.<span style="color:#57c7ff">getLastName</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Note that we have access to our user&rsquo;s profile with the <code>Connection</code>
+object.</p>
+<h2 id="sign-up">Sign-up</h2>
+<p>Here is a simple implementation of a signup controller:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SignupController</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> ProviderSignInUtils signInUtils;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">SignupController</span>(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository connectionRepository) {
+</span></span><span style="display:flex;"><span>        signInUtils <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span>(value <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;/signup&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> String <span style="color:#57c7ff">signup</span>(WebRequest request) {
+</span></span><span style="display:flex;"><span>        Connection<span style="color:#ff6ac1">&lt;?&gt;</span> connection <span style="color:#ff6ac1">=</span> signInUtils.<span style="color:#57c7ff">getConnectionFromSession</span>(request);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span> (connection <span style="color:#ff6ac1">!=</span> <span style="color:#ff6ac1">null</span>) {
+</span></span><span style="display:flex;"><span>            AuthUtil.<span style="color:#57c7ff">authenticate</span>(connection);
+</span></span><span style="display:flex;"><span>            signInUtils.<span style="color:#57c7ff">doPostSignUp</span>(connection.<span style="color:#57c7ff">getDisplayName</span>(), request);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> <span style="color:#5af78e">&#34;redirect:/&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There are two things to note here:</p>
+<ul>
+<li>Spring lets us decide what to do the first time we register a user. In this
+example, we just authenticate him</li>
+<li>The <code>SignInUtils</code> class is very handy to handle this scenario. Its constructor
+optionally takes a <code>SessionStrategy</code> that will be used to retrieve the connection info.
+You can customize the strategy here.</li>
+</ul>
+<p>A this point, your authentication process should work.
+It will use the HTTP Session to store connection data and an in-memory user
+repository.</p>
+<h2 id="the-client">The client</h2>
+<p>We can create a very simple client with any web framework.
+It will need to:</p>
+<ul>
+<li>Issue a <code>GET /api/session</code> request to check if the user is logged</li>
+<li>Display a login form that will <code>POST</code> to <code>/login/twitter</code> if not</li>
+<li>Display a logout button if the user is connected. The logout button will
+send a <code>DELETE /api/session</code> request.</li>
+</ul>
+<p>I chose to use React because of its very simple and declarative API.</p>
+<p>We can use ES2015 features and JSX without a pre-compilation step thanks to
+<a href="http://www.jimsproch.com/react/">this script</a>.</p>
+<p>It is a bit slower because it lets the browser do the compilation but it&rsquo;s
+perfect for prototyping.</p>
+<p>Here is the client code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> LoginForm <span style="color:#ff6ac1">=</span> () =&gt; (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">form</span> <span style="color:#57c7ff">action</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;/signin/twitter&#34;</span> <span style="color:#57c7ff">method</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;post&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">h1</span>&gt;Please login&lt;/<span style="color:#ff6ac1">h1</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">button</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;submit&#34;</span>&gt;Login&lt;/<span style="color:#ff6ac1">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">form</span>&gt;
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> LogoutComponent <span style="color:#ff6ac1">=</span> (props) =&gt; (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">h2</span>&gt;Your name is {props.name}&lt;/<span style="color:#ff6ac1">h2</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">button</span> <span style="color:#57c7ff">onClick</span><span style="color:#ff6ac1">=</span>{props.logout}&gt;Logout&lt;/<span style="color:#ff6ac1">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> Main <span style="color:#ff6ac1">extends</span> React.Component {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    constructor(...args) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">super</span>(...args);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">this</span>.state <span style="color:#ff6ac1">=</span> {name<span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">null</span>};
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    componentDidMount() {
+</span></span><span style="display:flex;"><span>        fetch(<span style="color:#5af78e">&#39;/api/session&#39;</span>, {credentials<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;same-origin&#39;</span>})
+</span></span><span style="display:flex;"><span>            .then(res =&gt; res.json())
+</span></span><span style="display:flex;"><span>            .then(session =&gt; <span style="color:#ff6ac1">this</span>.setState({name<span style="color:#ff6ac1">:</span> session.name}));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    logout() {
+</span></span><span style="display:flex;"><span>        console.log(<span style="color:#5af78e">&#34;logout&#34;</span>);
+</span></span><span style="display:flex;"><span>        fetch(<span style="color:#5af78e">&#39;/api/session&#39;</span>, {method<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;delete&#39;</span>, credentials<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;same-origin&#39;</span>})
+</span></span><span style="display:flex;"><span>            .then(res =&gt; <span style="color:#ff6ac1">this</span>.setState({name<span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">null</span>}));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    render() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">const</span> profile <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">this</span>.state.name <span style="color:#ff6ac1">?</span>
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#ff6ac1">LogoutComponent</span> <span style="color:#57c7ff">name</span><span style="color:#ff6ac1">=</span>{<span style="color:#ff6ac1">this</span>.state.name} <span style="color:#57c7ff">logout</span><span style="color:#ff6ac1">=</span>{() =&gt; <span style="color:#ff6ac1">this</span>.logout()}/&gt; <span style="color:#ff6ac1">:</span>
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#ff6ac1">LoginForm</span> /&gt;;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> (
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>                {profile}
+</span></span><span style="display:flex;"><span>            &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ReactDOM.render(&lt;<span style="color:#ff6ac1">Main</span> /&gt;, <span style="color:#ff5c57">document</span>.getElementById(<span style="color:#5af78e">&#39;container&#39;</span>));
+</span></span></code></pre></div><p>We use the <a href="https://developers.google.com/web/updates/2015/03/introduction-to-fetch">fetch API</a> (a modern replacement for XMLHttpRequest) to make ajax
+calls so the code will only work in <a href="http://caniuse.com/#feat=fetch">FF and Chrome</a>.
+You can find various polyfills in the wild.</p>
+<p>Notice that we need to pass <code>{credentials: 'same-origin'}</code> to the REST API calls
+to make sure we send the cookies along with the requests.</p>
+<h2 id="store-the-connections-in-database">Store the connections in database</h2>
+<p>In most applications, we want to store the user already known in a database.</p>
+<p>Spring social provides a default JDBC implementation of the <code>UsersConnectionRepository</code>.
+Take a look <a href="http://docs.spring.io/spring-social/docs/current/reference/htmlsingle/#section_jdbcConnectionFactory">the documentation</a>
+to know more about the table in which it will store users&rsquo; connections data.</p>
+<p>We can initialize the database with the script contained in Spring Social&rsquo;s jar:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DbInitializer</span> <span style="color:#ff5c57">implements</span> InitializingBean {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> DataSource dataSource;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">DbInitializer</span>(DataSource dataSource) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">dataSource</span> <span style="color:#ff6ac1">=</span> dataSource;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">afterPropertiesSet</span>() <span style="color:#ff5c57">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        ClassPathResource resource <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> ClassPathResource(<span style="color:#5af78e">&#34;org/springframework/social/connect/jdbc/JdbcUsersConnectionRepository.sql&#34;</span>);
+</span></span><span style="display:flex;"><span>        runScript(resource);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">runScript</span>(Resource resource) {
+</span></span><span style="display:flex;"><span>        ResourceDatabasePopulator populator <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> ResourceDatabasePopulator();
+</span></span><span style="display:flex;"><span>        populator.<span style="color:#57c7ff">setContinueOnError</span>(<span style="color:#ff6ac1">true</span>);
+</span></span><span style="display:flex;"><span>        populator.<span style="color:#57c7ff">addScript</span>(resource);
+</span></span><span style="display:flex;"><span>        DatabasePopulatorUtils.<span style="color:#57c7ff">execute</span>(populator, dataSource);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now, we need to create a <code>SocialAdapater</code> that will use Spring Social&rsquo;s
+<code>JdbcUsersConnectionRepository</code> as a user repository:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DatabaseSocialConfigurer</span> <span style="color:#ff5c57">extends</span> SocialConfigurerAdapter {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> DataSource dataSource;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">DatabaseSocialConfigurer</span>(DataSource dataSource) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">dataSource</span> <span style="color:#ff6ac1">=</span> dataSource;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> UsersConnectionRepository <span style="color:#57c7ff">getUsersConnectionRepository</span>(ConnectionFactoryLocator connectionFactoryLocator) {
+</span></span><span style="display:flex;"><span>        TextEncryptor textEncryptor <span style="color:#ff6ac1">=</span> Encryptors.<span style="color:#57c7ff">noOpText</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, textEncryptor);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Don&rsquo;t forget to declare our <code>DatabaseSocialConfigurer</code> as a Spring bean and we are
+good to go!</p>
+<p>Please note that this works because of an &ldquo;interesting&rdquo; design decision of
+Spring Social.
+You can see <a href="https://github.com/spring-projects/spring-social/blob/master/spring-social-config/src/main/java/org/springframework/social/config/annotation/SocialConfiguration.java#L87">here</a>
+that Spring Social will take the first <code>SocialConfigurer</code> that declares a non-null
+<code>UsersConnectionRepository</code>.</p>
+<p>Ours come before the <code>SocialConfigurer</code>s auto-configured by Spring Boot but
+if you are wary of this implementation, consider disabling Spring boot auto-configuration.</p>
+<p>We can use the h2 console Spring boot auto-configured for us to check the database.</p>
+<p><img loading="lazy" src="/assets/images/articles/2016-02-social-db.png" alt="The data in our database"  title="The data in our database"  />
+</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Social login with Spring is a bit tricky but definitely worth the investment!</p>
+<p>Spring Boot provides default configuration for LinkedIn and Facebook as well
+but there are <a href="http://projects.spring.io/spring-social/">many more connectors</a> like Github and Tripit that you can include by replicating Spring Boot&rsquo;s configuration.</p>
+<p>Don&rsquo;t forget to <a href="https://github.com/geowarin/boot-social-api">check out the code</a>
+and give your opinion in the comments.</p>
+]]></content:encoded></item></channel></rss>

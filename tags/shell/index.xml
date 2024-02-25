@@ -1,1 +1,113 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>shell on Geowarin</title><link>https://geowarin.com/tags/shell/</link><description>Recent content in shell on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 30 Apr 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/shell/index.xml" rel="self" type="application/rss+xml"/><item><title>The missing fish shell tutorial</title><link>https://geowarin.com/the-missing-fish-shell-tutorial/</link><pubDate>Thu, 30 Apr 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/the-missing-fish-shell-tutorial/</guid><description>Fish is an awesome shell but requires a bit of practice. Here are a few tips I wish people gave me when I started using it.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>shell on Geowarin</title><link>https://geowarin.com/tags/shell/</link><description>Recent content in shell on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 30 Apr 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/shell/index.xml" rel="self" type="application/rss+xml"/><item><title>The missing fish shell tutorial</title><link>https://geowarin.com/the-missing-fish-shell-tutorial/</link><pubDate>Thu, 30 Apr 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/the-missing-fish-shell-tutorial/</guid><description>Fish is an awesome shell but requires a bit of practice. Here are a few tips I wish people gave me when I started using it.</description><content:encoded><![CDATA[<p>I must admit it after years of trying to avoid writing script shells: I&rsquo;m not a big fan of bash.
+Sure you can do amazing things when you become a script guru but for someone who spends his life trying to write
+readable code, it feels a bit unnatural.</p>
+<p>So it was with great pleasure and a bit of excitation that I began playing with the new kid in the shell block:
+<a href="http://fishshell.com/">fish</a>.</p>
+<p>After a few weeks of practice, I can tell you that I love it.
+Here are a few tips to get you started using fish.</p>
+<h2 id="installation">Installation</h2>
+<p>The following command will install fish:</p>
+<pre tabindex="0"><code>brew install fish
+</code></pre><p>To add it as an available shell, you should <code>sudo vi /etc/shells</code> and add the following line <code>/usr/local/bin/fish</code>.
+Now to use it as default, type:</p>
+<pre tabindex="0"><code>chsh -s /usr/local/bin/fish
+</code></pre><h2 id="configure-you-shell">Configure you shell</h2>
+<p>First thing you can do is to configure fish. Type:</p>
+<pre tabindex="0"><code>fish_config
+</code></pre><p>You will be brought to a web page where you can configure your prompt and various options of fish.
+Personally, I use the <code>Classic + Git</code> prompt which is still minimalist but will display useful information when you
+are inside a git repository.</p>
+<p>You can see right away one of the big pros of fish: it is very fast, easy to customize and has very good defaults.</p>
+<h2 id="install-oh-my-fish">Install oh my fish</h2>
+<p>There is one small problem with fish: <em>it is not compatible with POSIX</em>.
+This means that you cannot directly use bash commands or scripts directly in fish.</p>
+<p>Of course, you can invoke bash inside of fish: <code>bash my-command</code>.
+But there is a simpler solution for a handful of very handy scripts called <a href="https://github.com/bpinto/oh-my-fish">oh-my-fish</a>.</p>
+<p>Oh-my-fish allows you to use plugins (some kind of functions with shell loading hooks) to easily
+customize your shell.</p>
+<p>Follow the very simple <a href="htps://github.com/bpinto/oh-my-fish#installation">installation instructions</a>.
+This will create a new fish configuration.
+The main configuration file in fish is located in <code>~/.config/fish/config.fish</code> and it will be replaced by oh-my-fish (it
+will be backed up don&rsquo;t worry).</p>
+<p>In a nutshell, installing oh-my-fish will add the following line to your config:</p>
+<pre tabindex="0"><code># Load oh-my-fish configuration.
+source $OMF_PATH/init.fish
+</code></pre><h2 id="navigate-with-z">Navigate with z</h2>
+<p>If you don&rsquo;t know <a href="https://github.com/rupa/z">z</a>, try it out immediately, it is guaranteed to change your life.
+It will allow you to navigate to the most frequent directories with fuzzy commands.</p>
+<p>For instance, issuing <code>z fun</code> would bring me to <code>/Users/geowarin/.configfish/functions</code> since it is a directory I often
+visit.</p>
+<p>To install it:</p>
+<pre tabindex="0"><code>brew install z
+</code></pre><p>This will install z&hellip; For bash.</p>
+<p>This is where oh-my-fish comes into play.
+Simply install the <code>z</code> plugin with:</p>
+<pre tabindex="0"><code>omf install z
+</code></pre><h2 id="backward-history-search-with-re-search">Backward history search with re-search</h2>
+<p>One of the most useful features of bash is the ability to search a term in your recent history with <code>CTRL + R</code>.
+This feature is not enabled by default but somebody wrote a little program called <a href="https://github.com/jbonjean/re-search">re-search</a>.</p>
+<p>Follow the instructions to install it.
+You will have to <code>git clone</code> it, <code>make</code>, add it to the path, add a function to fish and finally define a keyboard shortcut to
+call it.</p>
+<p>Those are really interesting steps. To add something to the path, open <code>~/.config/fish/config.fish</code> and use the
+<a href="">set function</a>:</p>
+<pre tabindex="0"><code>set -gx PATH $PATH ~/bin
+</code></pre><p>This will add <code>~/bin</code> to the path, you can put <code>re-search</code> in there.</p>
+<p>To add a function, you simply have to add files to <code>~/.config/fish/functions</code>.
+The functions contained in the files of this directory will automatically be loaded by fish.</p>
+<p>Finally you can see it is very easy to bind a function to a shortcut simply by editing <code>~/.config/fish/functions/fish_user_key_bindings.fish</code></p>
+<pre tabindex="0"><code>bind \cr re_search
+</code></pre><h2 id="define-your-own-functions">Define your own functions</h2>
+<p>The final step to your fish initiation is to define your own functions.
+I might not be super fluent with bash but I was able to define my own functions when I had something repetitive to do.</p>
+<p>One thing I like is to directly <code>cd</code> into a directory I created.
+A simple solution with bash is to define a function that will do something like this:</p>
+<pre tabindex="0"><code>function mkd() {
+	mkdir -p &#34;$@&#34; &amp;&amp; cd &#34;$@&#34;
+}
+</code></pre><p>With fish, simply create a file in <code>~/.config/fish/functions</code> and write:</p>
+<pre tabindex="0"><code>function mkd
+	mkdir -p $argv; and cd $argv
+end
+</code></pre><p>You can see that fish syntax is actually pretty simple.</p>
+<p>Another thing I like is to define a variable linking to a binary before invoking it, like this:</p>
+<pre tabindex="0"><code>function office
+	set -l office /Applications/LibreOffice.app/Contents/MacOS/soffice
+	eval $office --headless --convert-to $argv[1] --outdir (pwd) $argv[2]
+end
+</code></pre><p>This will allow you to invoke Libre Office in command line to convert a file from one format to another:</p>
+<pre tabindex="0"><code>office docx myDoc.odt
+</code></pre><p>A last one, invoke a web server in the current directory and open it in the browser:</p>
+<pre tabindex="0"><code>function server
+	python -m SimpleHTTPServer&amp;
+	sleep 1
+	open http://localhost:8000
+end
+</code></pre><h2 id="working-around-posix-limitation-with-bash--c">Working around POSIX limitation with bash -c</h2>
+<p>In simple cases, you can get pretty far by calling bash scripts with
+<code>bash -c</code>.</p>
+<p>A tool I love is <a href="http://sdkman.io/">sdkman</a>, which will manage JVM-based binaries
+like groovy or gradle.</p>
+<p>Just add the following function in fish:</p>
+<pre tabindex="0"><code>function sdk
+  bash -c &#39;. ~/.sdkman/bin/sdkman-init.sh; sdk &#34;$@&#34;&#39; sdk $argv
+end
+</code></pre><p>I also wanted the current versions of the binaries managed by skdman to be in my
+path so I added the following to my <code>config.fish</code>:</p>
+<pre tabindex="0"><code># sdkman
+set PATH $PATH (find ~/.sdkman/*/current/bin -maxdepth 0)
+</code></pre><h2 id="working-around-posix-limitation-with-bass">Working around POSIX limitation with bass</h2>
+<p>In most cases, you will find good plugins compatible with oh-my-fish.
+If it is not the case, I have found <a href="https://github.com/edc/bass">bass</a> to be
+incredibly useful.</p>
+<p>It is a simple python wrapper that will call scripts in bash and pass in and out
+environment variables.</p>
+<p>Simply git clone the project and use <code>make</code> to install it.</p>
+<p>I have used it successfully to make <a href="https://github.com/creationix/nvm">nvm</a>
+compatible with fish.</p>
+<p>For nvm, I added the following function:</p>
+<pre tabindex="0"><code>function nvm
+  bass source (brew --prefix nvm)/nvm.sh &#39;;&#39; nvm $argv
+end
+</code></pre><p>Here you go! I hope this will help you get started with fish.</p>
+]]></content:encoded></item></channel></rss>

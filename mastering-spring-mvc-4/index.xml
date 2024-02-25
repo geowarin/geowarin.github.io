@@ -1,1 +1,189 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mastering spring MVC 4 on Geowarin</title><link>https://geowarin.com/mastering-spring-mvc-4/</link><description>Recent content in Mastering spring MVC 4 on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 13 Jun 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/mastering-spring-mvc-4/index.xml" rel="self" type="application/rss+xml"/><item><title>Chapter 1 - Setting up a Spring web application in no time</title><link>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</link><pubDate>Sun, 01 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</guid><description>In the first chapter, you will learn how to bootstrap your application effectively and how to leverage spring boot to get started with spring MVC in a couple of minutes</description></item><item><title>Chapter 2 - Mastering the MVC Architecture</title><link>https://geowarin.com/book/chapter-2-mastering-the-mvc-architecture.html</link><pubDate>Fri, 27 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-2-mastering-the-mvc-architecture.html</guid><description>In the second chapter, we will design a twitter search engine, learning the principles of MVC and DDD along the way.</description></item><item><title>Chapter 3 - Handling forms and complex URL mapping</title><link>https://geowarin.com/book/chapter-3-handling-forms-and-complex-url-mapping.html</link><pubDate>Fri, 27 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-3-handling-forms-and-complex-url-mapping.html</guid><description>In this chapter, we will create a beautiful profile form with server and client side validation</description></item><item><title>Chapter 4 - File Upload and Error Handling</title><link>https://geowarin.com/book/chapter-4-file-upload-error-handling.html</link><pubDate>Fri, 27 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-4-file-upload-error-handling.html</guid><description>In this chapter, we will implement file upload and see how to handle errors in Spring MVC</description></item><item><title>Chapter 5 - Crafting a RESTful application</title><link>https://geowarin.com/book/chapter-5-crafting-a-restful-application.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-5-crafting-a-restful-application.html</guid><description>In this chapter, we will have a look a the principles of RESTful API and learn how to craft one using Spring MVC</description></item><item><title>Chapter 6 - Securing your application</title><link>https://geowarin.com/book/chapter-6-securing-your-application.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-6-securing-your-application.html</guid><description>In this chapter, we’ll learn how to secure our web application and also how to cope with the security challenges of modern, distributed web applications.</description></item><item><title>Chapter 7 - Leaving nothing to luck with unit and acceptance tests</title><link>https://geowarin.com/book/chapter-7-unit-and-acceptance-tests.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-7-unit-and-acceptance-tests.html</guid><description>In this chapter we will learn how to test our application with spring test and fluentlenium as well as with geb and spock.</description></item><item><title>Chapter 8 - Optimizing your requests</title><link>https://geowarin.com/book/chapter-8-optimizing-your-requests.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-8-optimizing-your-requests.html</guid><description>In this chapter we will be looking at different techniques to improve our application&amp;#39;s performances using cache, gzipping, etags, async and websockets</description></item><item><title>Chapter 9 - Deploying to the cloud</title><link>https://geowarin.com/book/chapter-9-deploying-to-the-cloud.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-9-deploying-to-the-cloud.html</guid><description>In this chapter, we’ll take a tour of the different cloud providers, understand the challenges and benefits of a distributed architecture and we’ll deploy our web application on Heroku.</description></item><item><title>Writing a book on Spring MVC 4</title><link>https://geowarin.com/book/writing-a-book-on-spring-mvc-4.html</link><pubDate>Mon, 02 Feb 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/writing-a-book-on-spring-mvc-4.html</guid><description>I&amp;#39;m writing a book on Spring MVC 4 called &amp;#39;Mastering Spring MVC 4&amp;#39; for Packt Publishing</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Mastering spring MVC 4 on Geowarin</title><link>https://geowarin.com/mastering-spring-mvc-4/</link><description>Recent content in Mastering spring MVC 4 on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 13 Jun 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/mastering-spring-mvc-4/index.xml" rel="self" type="application/rss+xml"/><item><title>Chapter 1 - Setting up a Spring web application in no time</title><link>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</link><pubDate>Sun, 01 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</guid><description>In the first chapter, you will learn how to bootstrap your application effectively and how to leverage spring boot to get started with spring MVC in a couple of minutes</description><content:encoded><![CDATA[<p>I just finished writing the first chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>.
+That was a lot of fun. I enjoyed sharing the tips and tricks that I use when I bootstrap a Spring application.</p>
+<p>In this first chapter, you will learn how to get started with spring MVC in a snap.</p>
+<h2 id="know-thy-tools">Know thy tools</h2>
+<p>Have you heard of <a href="https://spring.io/tools/sts">Spring Tool Suite</a>? Do you know <a href="http://start.spring.io/">start.spring.io</a>?
+Did you know you could actually <em>curl</em> <a href="http://start.spring.io/">start.spring.io</a>?</p>
+<p>You will learn all that and much more in this action-packed first chapter!</p>
+<h2 id="the-power-of-spring-boot">The power of Spring Boot</h2>
+<p>Did you know spring boot actually does a <strong>lot</strong> of things for us?</p>
+<ol>
+<li>Initializing the <em>DispatcherServlet</em> of Spring MVC</li>
+<li>Setting up an encoding filter, which will enforce correct encoding of clients&rsquo; requests</li>
+<li>Setting up a view resolver to tell Spring where to find our views</li>
+<li>Configuring static resources locations (css, js)</li>
+<li>Configuring supported locales and resource bundles</li>
+<li>Configuring a multipart resolver for file uploads to work</li>
+<li>Including tomcat or jetty to run our application on a web server</li>
+<li>Setting up error pages (404, etc)</li>
+</ol>
+<p>The first chapter walks you through Spring Boot&rsquo;s code to explain how it works and how to customize the default configurations.</p>
+<p>A big thank you to <a href="https://twitter.com/phillip_webb">Phillip Webb</a>, co-lead of Spring Boot for helping me and my editor sort
+out potential licensing issues when quoting Spring Boot&rsquo;s code. If you&rsquo;re interested, the code is under <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache license</a>
+and allows reproduction under the conditions listed in paragraph 4.</p>
+<p>Well guys, good talking to you but I&rsquo;d better get back to writing chapter two, which is about the MVC architecture and Spring MVC views and navigation.</p>
+]]></content:encoded></item><item><title>Chapter 2 - Mastering the MVC Architecture</title><link>https://geowarin.com/book/chapter-2-mastering-the-mvc-architecture.html</link><pubDate>Fri, 27 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-2-mastering-the-mvc-architecture.html</guid><description>In the second chapter, we will design a twitter search engine, learning the principles of MVC and DDD along the way.</description><content:encoded><![CDATA[<p>I was so busy writing the third chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>, I did not take the time to write about chapter 2.</p>
+<p>In this outstanding chapter you will learn the principles of the <a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC Architecture</a>.
+We will also be discussing good practices, the basis of Domain Driven Design and the trade-offs this kind of design imply on a Spring MVC architecture.</p>
+<p>A good read on the subject is available on <a href="http://www.petrikainulainen.net/software-development/design/the-biggest-flaw-of-spring-web-applications/">Petri Kainulainen&rsquo;s blog</a>.</p>
+<p>You will then set up Spring Boot to work with  <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Thyemleaf</a>, the benefits of this good templating engine and how to leverage it effectively in your
+MVC application.</p>
+<p>In 5 minutes, I will walk you through the process of registering your application on twitter and we will be designing a little but beautiful
+tweet search engine using <a href="http://projects.spring.io/spring-social-twitter/">Spring Social Twitter</a>:</p>
+<p><img loading="lazy" src="/assets/images/book/chap2-1.png" alt="Search"  title="Search field"  />
+</p>
+<p><img loading="lazy" src="/assets/images/book/chap2-2.png" alt="Results"  title="Results"  />
+</p>
+<p>This will give us the opportunity to discuss the navigation in a web application, java 8 streams system, the <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring Expression Language</a>,
+material design, web jars and much more!</p>
+<p>At the end of the chapter you will have laid the foundations of the web application that we will deploy on the cloud later and that will make you rich and famous!</p>
+<p>I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!</p>
+]]></content:encoded></item><item><title>Chapter 3 - Handling forms and complex URL mapping</title><link>https://geowarin.com/book/chapter-3-handling-forms-and-complex-url-mapping.html</link><pubDate>Fri, 27 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-3-handling-forms-and-complex-url-mapping.html</guid><description>In this chapter, we will create a beautiful profile form with server and client side validation</description><content:encoded><![CDATA[<p>The third chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a> is about the cornerstone of web application: forms.
+Oh boy, what a chapter.</p>
+<p>In this epic piece of literature, we will create a complete profile form like this one:</p>
+<p><img loading="lazy" src="/assets/images/book/chap3-1.png" alt="A beautiful profile form"  title="Profile form"  />
+</p>
+<p>We will discuss forms, validation, conversion and formatting.</p>
+<p>See the birth date field up there? That&rsquo;s a <code>java.time.LocalDate</code>.
+Do you wonder how to make it work with Spring MVC?</p>
+<p>Our application will be available in different languages and it will be easy to
+switch between them.</p>
+<p>We will also be looking at a simple way to validate the form on the client side
+thanks to the available <a href="http://diveintohtml5.info/forms.html#validation">HTML 5 specification</a>.</p>
+<p>That&rsquo;s not all, you might have noticed that we ask the user to fill out a list of tastes, things that interest him.
+That&rsquo;s because we will allow searches on multiple keywords with <a href="http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/mvc.html#mvc-ann-matrix-variables">matrix variables</a>.</p>
+<p>Sounds good? I hope it does and can&rsquo;t wait for the moment when you will be able to get your hands on the book!</p>
+]]></content:encoded></item><item><title>Chapter 4 - File Upload and Error Handling</title><link>https://geowarin.com/book/chapter-4-file-upload-error-handling.html</link><pubDate>Fri, 27 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-4-file-upload-error-handling.html</guid><description>In this chapter, we will implement file upload and see how to handle errors in Spring MVC</description><content:encoded><![CDATA[<p>In the fourth chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>
+We will allow the user to upload his profile picture.</p>
+<p><img loading="lazy" src="/assets/images/book/chap3-1.png" alt="Woah, such file upload!"  title="File upload"  />
+</p>
+<p>The file upload component implies handling errors at two levels:
+I/O exceptions at the controller level and multipart exception (a file too big, for instance) at the container level.</p>
+<p>If your curious about this part take a look at this <a href="http://stackoverflow.com/questions/29363705/handling-multipartexception-with-spring-boot-and-display-error-page">stackoverflow question</a>.</p>
+<p>This will give us the opportunity to discuss error handling in Spring MVC and Spring boot.</p>
+<p><img loading="lazy" src="/assets/images/book/chap4-3.png" alt="A beautiful 404 page"  title="Not found"  />
+</p>
+<p>Can&rsquo;t wait to hear what you think about this chapter!</p>
+]]></content:encoded></item><item><title>Chapter 5 - Crafting a RESTful application</title><link>https://geowarin.com/book/chapter-5-crafting-a-restful-application.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-5-crafting-a-restful-application.html</guid><description>In this chapter, we will have a look a the principles of RESTful API and learn how to craft one using Spring MVC</description><content:encoded><![CDATA[<p>In this chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>, we’ll tackle main principles of a RESTful architecture. We’ll learn how to convert data to JSON and handle different media types in the application.</p>
+<p>We will use the JSR-310 (Java DateTime) spec from the get-go and see how
+to handle them properly in your MVC application.</p>
+<h2 id="forever-restful">Forever RESTful</h2>
+<p>We will see how REST works in theory: HTTP codes and verbs, API versioning, HATEOAS, etc.</p>
+<p>Then, we will design an API that uses both JSON and XML to do a twitter search
+and manage users.</p>
+<p><img loading="lazy" src="/assets/images/book/chap4-1.png" alt="API"  title="API"  />
+</p>
+<h2 id="tooling">Tooling</h2>
+<p>I will also show you some useful tools to debug REST API.
+My favorite one is a little command line tool called <a href="http://httpie.org/">httpie</a>.</p>
+<p>You will study the best practice like exceptions handling and custom
+error pages.</p>
+<p>We will also see how to set up Jackson serialization using mixins and Java 8 dates.</p>
+<h2 id="documentation">Documentation</h2>
+<p>We will use <a href="http://swagger.io/">swagger</a> to document our API.</p>
+<!-- raw HTML omitted -->
+<p>I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!</p>
+]]></content:encoded></item><item><title>Chapter 6 - Securing your application</title><link>https://geowarin.com/book/chapter-6-securing-your-application.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-6-securing-your-application.html</guid><description>In this chapter, we’ll learn how to secure our web application and also how to cope with the security challenges of modern, distributed web applications.</description><content:encoded><![CDATA[<p>In this chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>, we’ll learn how to secure our web application and also how to cope with the security challenges of modern, distributed web applications.</p>
+<p>This is a parts chapter:</p>
+<ol>
+<li>First, we will set up basic HTTP authentication in a minute</li>
+<li>Then, we will design a form-based authentication for the web pages, keeping
+the basic authentication for the REST API</li>
+<li>We will allow the users to signup via the Twitter OAuth API</li>
+<li>Then, we will leverage Spring Session to make sure our application can scale
+using a distributed session mechanism</li>
+<li>Last, we will configure Tomcat to use secured connection through SSL</li>
+</ol>
+<!-- raw HTML omitted -->
+<h2 id="safe-and-sound">Safe and sound</h2>
+<p>At the end of this chapter you will be a security expert.
+We will protect our REST API with basic auth, which is secure as well as easy
+to interact with.</p>
+<p>We will also design a gorgeous login page for our web application:</p>
+<!-- raw HTML omitted -->
+<h2 id="going-social">Going social</h2>
+<p>My favorite part in this chapter is when we use <a href="http://projects.spring.io/spring-social/">Spring Social</a> to allow users to log-in using
+their twitter account!</p>
+<!-- raw HTML omitted -->
+<h2 id="infinite-scaling">Infinite scaling</h2>
+<p>We will use <a href="http://projects.spring.io/spring-session/">Spring Session</a>
+to put our users&rsquo; sessions into <a href="http://redis.io/">Redis</a> with little configuration.</p>
+<p>This will allow us to add more servers to handle high traffic without worrying
+about sticky sessions.</p>
+<h2 id="ssl">SSL</h2>
+<p>In the end, we will see how to use SSL with tomcat.</p>
+<p>I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!</p>
+]]></content:encoded></item><item><title>Chapter 7 - Leaving nothing to luck with unit and acceptance tests</title><link>https://geowarin.com/book/chapter-7-unit-and-acceptance-tests.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-7-unit-and-acceptance-tests.html</guid><description>In this chapter we will learn how to test our application with spring test and fluentlenium as well as with geb and spock.</description><content:encoded><![CDATA[<p>In this chapter, we will make sure our application never regresses thanks to a
+handful of unit tests.</p>
+<h2 id="to-test-or-not-to-test">To test or not to test?</h2>
+<p>Chapter 5 is by far my favorite chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>!</p>
+<p>In this uplifting piece of literature, you will learn more about testing best
+practices: TDD, the pyramid of tests, unit tests and end-to-end tests.</p>
+<!-- raw HTML omitted -->
+<p>We will see the difference behind mocking and stubbing and use mockito and
+the power of Spring&rsquo;s IOC to study both options.</p>
+<p>With <code>spring-mvc-test</code> we will create unit test for our web controllers as well
+as our REST controllers.</p>
+<h2 id="acceptance-tests">Acceptance tests</h2>
+<p>Using <a href="https://github.com/FluentLenium/FluentLenium">fluentlenium</a>, we will create
+simple yet powerful end-to-end tests leveraging Selenium.</p>
+<p>I will tell you what the Page Object pattern is and how to use it with fluentlenium.</p>
+<p>You will see how to configure Gradle to create a task for our acceptance tests
+and generate reports for this task.</p>
+<h2 id="making-it-groovy">Making it groovy</h2>
+<p>At the end of the chapter I will show you how to make your tests even better and
+more readable with <a href="https://github.com/spockframework/spock">Spock</a>.</p>
+<p>Then we will use <a href="http://www.gebish.org/">Geb</a>, a wonderful library used by the grails
+community to design acceptance tests on top of WebDriver.</p>
+<p>I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!</p>
+]]></content:encoded></item><item><title>Chapter 8 - Optimizing your requests</title><link>https://geowarin.com/book/chapter-8-optimizing-your-requests.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-8-optimizing-your-requests.html</guid><description>In this chapter we will be looking at different techniques to improve our application&amp;#39;s performances using cache, gzipping, etags, async and websockets</description><content:encoded><![CDATA[<p>In this chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>, we will
+implement classic ways of optimizing a web application: cache
+control headers and Gzipping.</p>
+<p>We will also use Spring&rsquo;s cache abstraction and <a href="https://en.wikipedia.org/wiki/HTTP_ETag">ETags</a>.</p>
+<h2 id="more-threads-please">More threads, please</h2>
+<p>You will learn how to create asynchronous services with Spring Async.</p>
+<p>Spring Async is a nice part of Spring, if you want to dig deeper
+see [this article]({% post_url 2015-06-12-completable-futures-with-spring-async %})
+where we use Java 8 <code>CompletableFuture</code>s to create a multithreaded application.</p>
+<h2 id="websockets">Websockets</h2>
+<p>To finish, we will enter the reactive stuff and learn how to use websockets with
+<a href="http://sockjs.org">sockjs</a>.</p>
+<p>I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!</p>
+]]></content:encoded></item><item><title>Chapter 9 - Deploying to the cloud</title><link>https://geowarin.com/book/chapter-9-deploying-to-the-cloud.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-9-deploying-to-the-cloud.html</guid><description>In this chapter, we’ll take a tour of the different cloud providers, understand the challenges and benefits of a distributed architecture and we’ll deploy our web application on Heroku.</description><content:encoded><![CDATA[<p>In this chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>, you will deploy your application on the cloud and invite the whole world to see!</p>
+<p>We will see how to deploy our application on two popular PaaS: Cloud Foundry and
+Heroku.</p>
+<p>A big thank you to Wayne Lund at Pivotal who wrote the <a href="https://run.pivotal.io/">Pivotal Web Services</a> part!</p>
+<p><img loading="lazy" src="/assets/images/book/chap8-1.png" alt="Our login page on Heroku!"  title="Login page"  />
+</p>
+<h2 id="know-your-options">Know your options</h2>
+<p>We will have a look at the different PaaS providers, then I will guide you through the steps of deploying your application on Cloud Foundry and Heroku.</p>
+<p>We will use Redis to distribute our sessions as well as our application cache
+and prepare our application to handle thousands of requests without spending a single penny!</p>
+<h2 id="im-not-bluffing">I&rsquo;m not bluffing</h2>
+<p>I already deployed my application on <a href="http://masterspringmvc.herokuapp.com/">Heroku</a>!</p>
+<p>It&rsquo;s a free Heroku instance so you might have to wait 30 seconds for it to go
+out of sleep.</p>
+<p>As always, I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!</p>
+]]></content:encoded></item><item><title>Writing a book on Spring MVC 4</title><link>https://geowarin.com/book/writing-a-book-on-spring-mvc-4.html</link><pubDate>Mon, 02 Feb 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/writing-a-book-on-spring-mvc-4.html</guid><description>I&amp;#39;m writing a book on Spring MVC 4 called &amp;#39;Mastering Spring MVC 4&amp;#39; for Packt Publishing</description><content:encoded><![CDATA[<p>Good news everyone!</p>
+<p>After reviewing the awesome <a href="https://www.packtpub.com/application-development/learning-spring-boot">Learning Spring Boot</a> by <a href="https://twitter.com/gregturn">Greg Lee Turnquist</a>,
+Packt Publishing asked me to write a book of my own on Spring MVC 4.</p>
+<p>Of course I said! I just signed the contract and I&rsquo;m getting ready for five months of intense writing with a publishing date somewhere around
+the last quarter of 2015.</p>
+<p>I&rsquo;m glad to seize this opportunity to answer the questions you guys have been asking me after the publication of
+[my article on spring MVC]({% post_url 2013-01-23-complete-example-of-a-spring-mvc-3-2-project %}) last year.</p>
+<p>Here is a peek of the topics I will cover in the book:</p>
+<p><strong>Master Spring MVC 4</strong></p>
+<ol>
+<li>Setting up a Spring web application in no time</li>
+<li>Mastering the MVC Architecture</li>
+<li>Handling forms and complex URL mapping</li>
+<li>Crafting a RESTful application</li>
+<li>Leaving nothing to luck: Unit tests and Acceptance Tests</li>
+<li>Securing your application</li>
+<li>Optimizing your requests</li>
+<li>Deploying to the cloud</li>
+<li>Beyond Spring Web</li>
+</ol>
+<p>I hope that you like the outline and that the book will help you achieve ultimate mastery of Spring MVC!</p>
+<p>I created a section on the blog where you can <a href="/mastering-spring-mvc4.html">follow my progress</a>.</p>
+]]></content:encoded></item></channel></rss>

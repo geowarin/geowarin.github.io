@@ -1,1 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>review on Geowarin</title><link>https://geowarin.com/tags/review/</link><description>Recent content in review on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 19 Feb 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/review/index.xml" rel="self" type="application/rss+xml"/><item><title>Review of Learning Spring Boot</title><link>https://geowarin.com/review-of-learning-spring-boot/</link><pubDate>Thu, 19 Feb 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/review-of-learning-spring-boot/</guid><description>Review of the book Learning Spring Boot by Greg L. Turnquist</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>review on Geowarin</title><link>https://geowarin.com/tags/review/</link><description>Recent content in review on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 19 Feb 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/review/index.xml" rel="self" type="application/rss+xml"/><item><title>Review of Learning Spring Boot</title><link>https://geowarin.com/review-of-learning-spring-boot/</link><pubDate>Thu, 19 Feb 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/review-of-learning-spring-boot/</guid><description>Review of the book Learning Spring Boot by Greg L. Turnquist</description><content:encoded><![CDATA[<p>Today, I&rsquo;ll be reviewing the first book ever written on Spring Boot, <a href="https://www.packtpub.com/application-development/learning-spring-boot">Learning Spring Boot</a>, by Greg L. Turnquist.
+Packt Publishing, the editor, contacted me to review it during its writing but I&rsquo;ll remain as unbiased as possible.</p>
+<p>It&rsquo;s a good book, well worth reading if you want to learn how spring boot works but more globally, it will
+give you good insights and tips on the capabilities of Spring and its integration with other technologies.</p>
+<h2 id="summary">Summary</h2>
+<p>The book has five chapters:</p>
+<ol>
+<li>Quick Start with Groovy</li>
+<li>Quick Start with java</li>
+<li>Debugging and Managing Your App</li>
+<li>Data Access with Spring boot</li>
+<li>Securing your App with Spring Boot</li>
+</ol>
+<p>Each chapter is one big tutorial that you can follow along by coding. I guess you will be better off with the e-book version
+for copy-paste even if the entire code is <a href="https://github.com/learning-spring-boot/learning-spring-boot-code">available on github</a>.</p>
+<p>It will be a better experience for mac users, as the author gives some instructions on how to install the dependencies (like Active MQ)
+with brew. I guess you can achieve the same results with a small effort on other platforms as well.</p>
+<h2 id="the-topics">The topics</h2>
+<h3 id="quick-start-with-groovy">Quick Start with Groovy</h3>
+<p>In the first chapter you will get started fast, using <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/cli-using-the-cli.html">Spring Boot&rsquo;s CLI</a> and groovy.
+I dig groovy so it&rsquo;s a nice start.</p>
+<p>You will get some basic notions of testing with <a href="https://code.google.com/p/spock/">spock</a>, manage javascript dependencies
+with WebJars and bower and learn how to use <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-remote-shell.html">CRaSH</a> to consult and monitor
+your app through a remote shell which is amazing.</p>
+<h3 id="quick-start-with-java">Quick Start with java</h3>
+<p>In this chapter, you will build a classic java application with Spring Boot.
+But you&rsquo;ll also use the <a href="https://github.com/spring-projects/spring-social-github">Spring Social Github</a>, consume its API and leverage <a href="http://projects.spring.io/spring-mobile/">Spring Mobile</a> and jQuery mobile to
+develop a simple application working on mobile devices.</p>
+<h3 id="debugging-and-managing-your-app">Debugging and Managing Your App</h3>
+<p>This chapter is about <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-messaging.html">JMS integration</a> with either an in memory broker or with ActiveMQ.
+You will also add health checks, custom CRaSH commands and connect to your app with JMX to monitor your queue.</p>
+<h3 id="data-access-with-spring-boot">Data Access with Spring Boot</h3>
+<p>In this chapter, you will use Spring Data and <a href="http://projects.spring.io/spring-data-rest/">Spring Data Rest</a> with either H2 and MySQL or Mongo
+and produce a RESTful, discoverable json API.
+You will use profiles to use different configuration in development and in production.</p>
+<h3 id="securing-your-app-with-spring-boot">Securing Your App with Spring Boot</h3>
+<p>In this chapter you will get dig into <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html">Spring Security</a>
+with basic http auth, in memory authentication and create a real in database security model.
+You will also learn how to configure your Tomcat to be more secure <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/howto-embedded-servlet-containers.html#howto-configure-ssl">using SSL</a>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Whatever are your current skills with Spring, you will undoubtedly learn some new things reading the book.
+I did and I enjoyed the experience. The topics addressed by Greg L. Turnquist are diverse and interesting
+and the book is easy to follow.</p>
+<p>If you work with Spring often, you have to understand how Spring Boot works.
+It&rsquo;s an amazing tool for fast prototyping and a wonderful way to dig deeper into the framework by small increments.</p>
+]]></content:encoded></item></channel></rss>

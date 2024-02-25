@@ -1,1 +1,499 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>groovy on Geowarin</title><link>https://geowarin.com/tags/groovy/</link><description>Recent content in groovy on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/groovy/index.xml" rel="self" type="application/rss+xml"/><item><title>Test your Java application with Groovy</title><link>https://geowarin.com/test-your-java-application-with-groovy/</link><pubDate>Wed, 20 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/test-your-java-application-with-groovy/</guid><description>You can write better tests for your Java application with Spock, Groovy and very little configuration</description></item><item><title>Spring Boot and React hot loader</title><link>https://geowarin.com/spring-boot-and-react-hot-loader/</link><pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/spring-boot-and-react-hot-loader/</guid><description>The perfect setup for Spring boot and React hot loader</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>groovy on Geowarin</title><link>https://geowarin.com/tags/groovy/</link><description>Recent content in groovy on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/groovy/index.xml" rel="self" type="application/rss+xml"/><item><title>Test your Java application with Groovy</title><link>https://geowarin.com/test-your-java-application-with-groovy/</link><pubDate>Wed, 20 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/test-your-java-application-with-groovy/</guid><description>You can write better tests for your Java application with Spock, Groovy and very little configuration</description><content:encoded><![CDATA[<p>I think Groovy is a wonderful language.
+However, I would not advise a complete rewrite of your project in Groovy!</p>
+<p>We can however use Groovy to test our Java code.</p>
+<p>I&rsquo;m actually a big fan of this approach.
+I&rsquo;ve been using it to test legacy applications written in Java.</p>
+<p>I still couldn&rsquo;t use lambdas or fancy Java 8 features but all of a sudden,
+my test code was more expressive.
+I could take advantage closures, power asserts, the Spock DSL and Groovy simple syntax.
+The best part: every library I used was a test dependency and never impacted
+the actual code.</p>
+<p>In this article I will show you how to add Groovy tests to
+an existing Java application built either with Maven or Gradle.</p>
+<p>The code source of a demo application using Maven and Spock is <a href="https://github.com/geowarin/groovy-tests">available on github</a>.</p>
+<h2 id="why-groovy">Why groovy?</h2>
+<p>Groovy is a dynamic language with optional typing. It means that you can
+have the guarantees of a type system when it matters and the versatility of
+duck typing when you know what your are doing.</p>
+<p>Groovy removes all the verbosity from the Java syntax.
+Some small examples:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#78787e">// map literals
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>Map<span style="color:#ff6ac1">&lt;</span>String<span style="color:#ff6ac1">,</span> String<span style="color:#ff6ac1">&gt;</span> things <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">[</span><span style="color:#5af78e">&#39;hello&#39;</span><span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;world&#39;</span><span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// Write to a file
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span><span style="color:#ff6ac1">new</span> <span style="color:#57c7ff">File</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#34;hello.txt&#34;</span><span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">&lt;&lt;</span> <span style="color:#5af78e">&#39;Hello world!&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// Add some numbers
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>BigInteger a <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">18</span>
+</span></span><span style="display:flex;"><span>BigDecimal b <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">24</span>
+</span></span><span style="display:flex;"><span><span style="color:#9aedfe">int</span> sum <span style="color:#ff6ac1">=</span> a <span style="color:#ff6ac1">+</span> b
+</span></span><span style="display:flex;"><span>println <span style="color:#5af78e">&#34;$sum ${sum.class}&#34;</span> <span style="color:#78787e">// 42 class java.lang.Integer
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// List literals
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>List<span style="color:#ff6ac1">&lt;</span>Number<span style="color:#ff6ac1">&gt;</span> numbers <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">[-</span><span style="color:#ff9f43">2</span><span style="color:#ff6ac1">,</span> <span style="color:#ff9f43">12</span><span style="color:#ff6ac1">,</span> <span style="color:#ff9f43">6</span><span style="color:#ff6ac1">,</span> <span style="color:#ff9f43">3</span><span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// Closures
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span><span style="color:#9aedfe">def</span> result <span style="color:#ff6ac1">=</span> numbers
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">.</span><span style="color:#57c7ff">findAll</span> <span style="color:#ff6ac1">{</span> it <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">0</span> <span style="color:#ff6ac1">}</span> <span style="color:#78787e">// filter
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>        <span style="color:#ff6ac1">.</span><span style="color:#57c7ff">collect</span> <span style="color:#ff6ac1">{</span> it <span style="color:#ff6ac1">*</span> <span style="color:#ff9f43">2</span> <span style="color:#ff6ac1">}</span> <span style="color:#78787e">// map
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>        <span style="color:#ff6ac1">.</span><span style="color:#57c7ff">sum</span><span style="color:#ff6ac1">()</span> <span style="color:#78787e">// reduce
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// template strings
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>println <span style="color:#5af78e">&#34;This answer to life, universe and everything: ${result}&#34;</span>
+</span></span></code></pre></div><p>If you want a good introduction to groovy check out the <a href="http://www.groovy-lang.org/style-guide.html">groovy style guide</a>.</p>
+<p>You can also watch the amazing <a href="http://www.infoq.com/presentations/groovy-for-java">Groovy for Java developers</a> presentation by Peter Ledbrook.</p>
+<p>Another thing. Groovy let you access private class members.
+Although this completely violates encapsulation, you will get away
+with just a warning.</p>
+<p>It is nice to have this kind of ability when you add tests to a legacy application before
+refactoring it.</p>
+<h2 id="why-spock">Why Spock?</h2>
+<p>Spock is a wonderful test framework.</p>
+<p>It combines the best features of other frameworks like JUnit, jMock, and RSpec
+and let you write specifications with a nice <a href="https://fr.wikipedia.org/wiki/Behavior_driven_development">BDD</a> DSL.</p>
+<p>It is fully compatible with JUnit so you can use all the stuff you like (rules for instance)
+and much more!</p>
+<p>It will also completely remove the need for a mocking framework like Mockito.</p>
+<p>If you want to learn more about Spock read: <a href="https://code.google.com/p/spock/wiki/WhySpock">why spock</a> and <a href="http://spockframework.github.io/spock/docs/1.0/spock_primer.html">spock primer</a>.</p>
+<p>I also found the <a href="https://github.com/spockframework/next-level-spock">next level spock repo</a>
+interesting to look at.</p>
+<h2 id="how">How?</h2>
+<p>You are now ready to add Spock to your tool-belt. But how?</p>
+<h3 id="with-maven">With Maven</h3>
+<p>Add dependencies to Groovy and Spock:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.codehaus.groovy<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;artifactId&gt;</span>groovy-all<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;version&gt;</span>2.4.4<span style="color:#ff6ac1">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;scope&gt;</span>test<span style="color:#ff6ac1">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.spockframework<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;artifactId&gt;</span>spock-core<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;version&gt;</span>1.0-groovy-2.4<span style="color:#ff6ac1">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;scope&gt;</span>test<span style="color:#ff6ac1">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/dependencies&gt;</span>
+</span></span></code></pre></div><p>Now, you need to tell maven to compile the code contained in <code>src/test/groovy</code>.
+We will use the <a href="https://github.com/groovy/GMavenPlus">gmavenplus</a> plugin for that.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.codehaus.gmavenplus<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;artifactId&gt;</span>gmavenplus-plugin<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;version&gt;</span>1.0<span style="color:#ff6ac1">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#ff6ac1">&lt;goal&gt;</span>generateStubs<span style="color:#ff6ac1">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#ff6ac1">&lt;goal&gt;</span>compile<span style="color:#ff6ac1">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#ff6ac1">&lt;goal&gt;</span>testGenerateStubs<span style="color:#ff6ac1">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#ff6ac1">&lt;goal&gt;</span>testCompile<span style="color:#ff6ac1">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.codehaus.groovy<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;artifactId&gt;</span>groovy-all<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;version&gt;</span>2.4.4<span style="color:#ff6ac1">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;scope&gt;</span>runtime<span style="color:#ff6ac1">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">&lt;!-- Optional --&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;artifactId&gt;</span>maven-surefire-plugin<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;version&gt;</span>2.16<span style="color:#ff6ac1">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;parallel&gt;</span>methods<span style="color:#ff6ac1">&lt;/parallel&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;threadCount&gt;</span>5<span style="color:#ff6ac1">&lt;/threadCount&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;include&gt;</span>**/*Test.*<span style="color:#ff6ac1">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;include&gt;</span>**/*Spec.*<span style="color:#ff6ac1">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;excludes&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff6ac1">&lt;exclude&gt;</span>**/Abstract*.java<span style="color:#ff6ac1">&lt;/exclude&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">&lt;/excludes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/build&gt;</span>
+</span></span></code></pre></div><p>By convention, Spock tests are called specifications and spec files end with
+<code>*Spec.groovy</code>.
+This is optional but we can enable that behavior by overriding the surefire default
+configuration.</p>
+<h3 id="with-gradle">With gradle</h3>
+<p>Just apply the groovy plugin, included by default in Gradle.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>apply <span style="color:#ff5c57">plugin:</span> <span style="color:#5af78e">&#39;groovy&#39;</span>
+</span></span></code></pre></div><p>Since the plugin extends the Java convention, it will automatically compile the
+Java code contained in <code>src/main/java</code> and <code>src/test/java</code> as well as the
+Groovy code contained in <code>src/main/groovy</code> and <code>src/test/groovy</code>.</p>
+<h2 id="your-first-spock-specification">Your first Spock specification</h2>
+<p>Place this little specification in <code>src/test/groovy</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> spock.lang.Specification
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> spock.lang.Unroll
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MySpec</span> <span style="color:#ff5c57">extends</span> Specification <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Unroll</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#9aedfe">def</span> <span style="color:#5af78e">&#34;max(#a,#b) == #c&#34;</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">expect:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// This class is in our Java code
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>        MyClass<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">max</span><span style="color:#ff6ac1">(</span>a<span style="color:#ff6ac1">,</span> b<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">==</span> c
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">where:</span>
+</span></span><span style="display:flex;"><span>        a  <span style="color:#ff6ac1">|</span> b   <span style="color:#ff6ac1">|</span> c
+</span></span><span style="display:flex;"><span>        <span style="color:#ff9f43">1</span>  <span style="color:#ff6ac1">|</span> <span style="color:#ff9f43">2</span>   <span style="color:#ff6ac1">|</span> <span style="color:#ff9f43">2</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff9f43">42</span> <span style="color:#ff6ac1">|</span> <span style="color:#ff6ac1">-</span><span style="color:#ff9f43">12</span> <span style="color:#ff6ac1">|</span> <span style="color:#ff9f43">42</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff9f43">42</span> <span style="color:#ff6ac1">|</span> <span style="color:#ff6ac1">-</span><span style="color:#ff9f43">12</span> <span style="color:#ff6ac1">|</span> <span style="color:#ff6ac1">-</span><span style="color:#ff9f43">42</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span></code></pre></div><p>Here is what it looks like in IntelliJ:</p>
+<p><img loading="lazy" src="/assets/images/articles/2016-01-spock.png" alt="Spock test results"  title="Spock results"  />
+</p>
+<p>You can also verify that it works with maven by typing:</p>
+<pre tabindex="0"><code>mvn test
+</code></pre><p>You would get this result:</p>
+<pre tabindex="0"><code>-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running MySpec
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.146 sec &lt;&lt;&lt; FAILURE! - in MySpec
+max(42,-12) == -42(MySpec)  Time elapsed: 0.105 sec  &lt;&lt;&lt; FAILURE!
+org.spockframework.runtime.SpockComparisonFailure: Condition not satisfied:
+
+Math.max(a, b) == c
+     |   |  |  |  |
+     42  42 -12|  -42
+               false
+
+        at MySpec.max(#a,#b) == #c(MySpec.groovy:9)
+
+
+Results :
+
+Failed tests:
+  MySpec.max(#a,#b) == #c:9 Condition not satisfied:
+
+Math.max(a, b) == c
+     |   |  |  |  |
+     42  42 -12|  -42
+               false
+
+
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1.887 s
+[INFO] Finished at: 2016-01-20T15:52:40+01:00
+[INFO] Final Memory: 11M/309M
+[INFO] ------------------------------------------------------------------------
+</code></pre><h2 id="ide-integration">IDE integration</h2>
+<p>Install the <a href="https://github.com/mycila/gmavenplus-intellij-plugin">gmavnen intelliJ plugin</a>
+and the <a href="https://plugins.jetbrains.com/plugin/7114">spock plugin</a> for a better integration with your IDE.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Even if your whole codebase is in Java, your fellow developers will thank you
+for bringing a breath of fresh air to your project with Groovy tests.</p>
+<p>The configuration to get this working is very simple. You have no excuse
+for not giving it a try!</p>
+<p>As always, checkout the <a href="https://github.com/geowarin/groovy-tests">github repo</a> and tell me your thoughts.</p>
+]]></content:encoded></item><item><title>Spring Boot and React hot loader</title><link>https://geowarin.com/spring-boot-and-react-hot-loader/</link><pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/spring-boot-and-react-hot-loader/</guid><description>The perfect setup for Spring boot and React hot loader</description><content:encoded><![CDATA[<p>When I develop web applications, I love using React.
+I&rsquo;m also a Spring and groovy addict.</p>
+<p>Those two stacks make me more productive.
+Can we have the best of both worlds?</p>
+<p>I will show you step by step how I created
+<a href="https://github.com/geowarin/boot-react">this project</a>.
+Feel free to fiddle with it and give me your feedback.</p>
+<h2 id="goal">Goal</h2>
+<p>My perfect stack on the backend is to use Spring boot and groovy.
+With the latest version of Spring boot, there is a new tool called
+<a href="https://spring.io/blog/2015/06/17/devtools-in-spring-boot-1-3">dev-tools</a> that
+will automatically reload the embedded server when you recompile your project.</p>
+<p>On the frontend, most React developers use <a href="http://webpack.github.io/">webpack</a>.
+React has awesome support for hot reloading with <a href="https://github.com/gaearon/react-hot-loader">react-hot-loader</a>.
+It will magically update your views without requiring you to refresh your browser.
+Because React encourages your to have a unidirectional data flow, your whole
+application can use hot reloading every time you save.
+For this to work, we have to launch a <a href="http://webpack.github.io/docs/webpack-dev-server.html">webpack dev server</a>.</p>
+<p>The problem when you launch your Spring boot server on the port 8080 and the
+dev server on the port 3000 is that you will get cross origin requests preventing
+the two servers from interacting.</p>
+<p>We also want to isolate the two projects and make separate gradle modules.</p>
+<p>This blog post will show a solution to this problem and will provide an
+enjoyable dev environment.</p>
+<p>This might not be the perfect solution and I&rsquo;d love any feedback from
+both communities to help me improve it.</p>
+<h2 id="the-backend">The backend</h2>
+<p>We will generate the backend. To do that, you can go on <a href="http://start.spring.io/">http://start.spring.io/</a>
+and create a <strong>gradle project</strong> using <strong>groovy</strong>, <strong>java 8</strong> and the latest Spring boot
+(<strong>1.3.0 M2</strong> at the time of writing).</p>
+<p>For the dependencies tick <strong>DevTools</strong> and <strong>Web</strong>.</p>
+<p>If you want to do it command line style just type the following in your console:</p>
+<pre tabindex="0"><code>curl https://start.spring.io/starter.tgz \
+-d name=boot-react  \
+-d bootVersion=1.3.0.M2 \
+-d dependencies=devtools,web \
+-d language=groovy \
+-d JavaVersion=1.8 \
+-d type=gradle-project \
+-d packageName=react \
+-d packaging=jar \
+-d artifactId=boot-react \
+-d baseDir=boot-react | tar -xzvf -
+</code></pre><p>This will create a base project with the latest spring boot, the devtools, groovy
+and gradle.</p>
+<p>Don&rsquo;t forget to generate the gradle wrapper:</p>
+<pre tabindex="0"><code>gradle wrapper
+</code></pre><p>See the <a href="https://github.com/geowarin/boot-react/commit/c290269a9e105688b38dcc6cc0b3293ec85199e6">commit</a></p>
+<p>Great so now we have tomcat embedded, hot reloading and supernatural groovy
+strength. The usual.</p>
+<p>We will create a simple REST resource that we would like our frontend to consume:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SimpleResource</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;/api/simple&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>    Map <span style="color:#57c7ff">resource</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">[</span><span style="color:#ff5c57">simple:</span> <span style="color:#5af78e">&#39;resource&#39;</span><span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span></code></pre></div><h2 id="the-frontend">The frontend</h2>
+<p>As mentioned before, we want the frontend to be a separated project.
+We will create a gradle module for that.</p>
+<p>At the root of your project add a <code>settings.gradle</code> file with the following
+content:</p>
+<pre tabindex="0"><code>include &#39;frontend&#39;
+</code></pre><p>Now, create a <code>frontend</code> directory under the project root and add a build.gradle
+file in it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>plugins <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#5af78e">&#34;com.moowork.node&#34;</span> version <span style="color:#5af78e">&#34;0.10&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>version <span style="color:#5af78e">&#39;0.0.1&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>task <span style="color:#57c7ff">bundle</span><span style="color:#ff6ac1">(</span><span style="color:#ff5c57">type:</span> NpmTask<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    args <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">[</span><span style="color:#5af78e">&#39;run&#39;</span><span style="color:#ff6ac1">,</span> <span style="color:#5af78e">&#39;bundle&#39;</span><span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>task <span style="color:#57c7ff">start</span><span style="color:#ff6ac1">(</span><span style="color:#ff5c57">type:</span> NpmTask<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    args <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">[</span><span style="color:#5af78e">&#39;start&#39;</span><span style="color:#ff6ac1">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>start<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">dependsOn</span><span style="color:#ff6ac1">(</span>npm_install<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>bundle<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">dependsOn</span><span style="color:#ff6ac1">(</span>npm_install<span style="color:#ff6ac1">)</span>
+</span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/6788e068c9071d0368879bee8188b7aeb194388e">commit</a></p>
+<p>We will use the <a href="https://github.com/srs/gradle-node-plugin">gradle node plugin</a>
+to call the two main tasks in our application:</p>
+<ul>
+<li><code>npm run bundle</code> will create the minified app in the <code>dist</code> directory</li>
+<li><code>npm start</code> will start our dev server</li>
+</ul>
+<p>We can call them from the gradle build with <code>./gradlew frontend:start</code> and
+<code>./gradlew frontend:bundle</code></p>
+<p>The content of the project will basically be the same as
+<a href="https://github.com/gaearon/react-hot-boilerplate">react-hot-boilerplate</a></p>
+<p>Let&rsquo;s get the sources of this project as a zip file from github and unzip them into the
+frontend directory.
+With bash, type the following command at the root of your project:</p>
+<pre tabindex="0"><code>wget -qO- -O tmp.zip https://github.com/gaearon/react-hot-boilerplate/archive/master.zip &amp;&amp; unzip tmp.zip &amp;&amp; mv react-hot-boilerplate-master/* frontend &amp;&amp; rm -rf react-hot-boilerplate-master &amp;&amp; rm tmp.zip
+</code></pre><p>See the <a href="https://github.com/geowarin/boot-react/commit/a3de637d0d94f48d1cdd0379038115e5b98b79d3">commit</a></p>
+<p>If everything goes well, typing <code>./gradlew fronted:start</code>, will start the react
+application at <code>http://localhost:3000</code>.</p>
+<p>The first problem arises when you <code>ctrl+c</code> out of the gradle build,
+the server will still hang. You can kill it with <code>killall node</code>.
+This is a problem I&rsquo;d like help solving, if you have a solution, please tell me.</p>
+<p>In the rest of the article I will use <code>npm start</code> directly, which presupposes that
+you have <code>npm</code> available on your development machine.
+The whole build will only require Java.</p>
+<p>We will use the <a href="https://github.com/ampedandwired/html-webpack-plugin">webpack-html-plugin</a>
+to automatically generate the index.html page.</p>
+<pre tabindex="0"><code>npm install --save-dev html-webpack-plugin
+</code></pre><p>Since using the document body as a root for our application is a bad practice,
+we need to tweak the default html template.</p>
+<p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
+It will serve as a template to generate our <code>index.html</code> file:</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>As you can see, it contains a div with the id <code>root</code>.</p>
+<p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
+<p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> path <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;path&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> HtmlWebpackPlugin <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;html-webpack-plugin&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>module.exports <span style="color:#ff6ac1">=</span> {
+</span></span><span style="display:flex;"><span>  devtool<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;eval&#39;</span>,
+</span></span><span style="display:flex;"><span>  entry<span style="color:#ff6ac1">:</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;webpack-dev-server/client?http://localhost:3000&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;webpack/hot/only-dev-server&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;./src/index&#39;</span>
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  output<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    path<span style="color:#ff6ac1">:</span> path.join(__dirname, <span style="color:#5af78e">&#39;dist&#39;</span>),
+</span></span><span style="display:flex;"><span>    filename<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;bundle.js&#39;</span>,
+</span></span><span style="display:flex;"><span>    publicPath<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;http://localhost:3000/&#39;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  plugins<span style="color:#ff6ac1">:</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">new</span> webpack.HotModuleReplacementPlugin(),
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">new</span> webpack.NoErrorsPlugin(),
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">new</span> HtmlWebpackPlugin({
+</span></span><span style="display:flex;"><span>      title<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;Boot React&#39;</span>,
+</span></span><span style="display:flex;"><span>      template<span style="color:#ff6ac1">:</span> path.join(__dirname, <span style="color:#5af78e">&#39;assets/index-template.html&#39;</span>)
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  resolve<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    extensions<span style="color:#ff6ac1">:</span> [<span style="color:#5af78e">&#39;&#39;</span>, <span style="color:#5af78e">&#39;.js&#39;</span>]
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  module<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    loaders<span style="color:#ff6ac1">:</span> [{
+</span></span><span style="display:flex;"><span>      test<span style="color:#ff6ac1">:</span> <span style="color:#5af78e">/\.js$/</span>,
+</span></span><span style="display:flex;"><span>      loaders<span style="color:#ff6ac1">:</span> [<span style="color:#5af78e">&#39;react-hot&#39;</span>, <span style="color:#5af78e">&#39;babel&#39;</span>],
+</span></span><span style="display:flex;"><span>      include<span style="color:#ff6ac1">:</span> path.join(__dirname, <span style="color:#5af78e">&#39;src&#39;</span>)
+</span></span><span style="display:flex;"><span>    }]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>We changed the <code>publicPath</code> to point directly at our dev server and included the
+<code>HtmlWebpackPlugin</code>.</p>
+<p>Now we can get rid of the old index.html and start our dev server with <code>npm start</code>.
+The index will be automatically generated for us.</p>
+<p>See the <a href="https://github.com/geowarin/boot-react/commit/10e3fdae8ac53bea40c585076363a4cc54ed9d9e">commit</a></p>
+<h2 id="include-the-frontend-in-the-boot-jar">Include the frontend in the boot jar</h2>
+<p>We have to create the npm <code>bundle</code> task, which will generate an optimized
+web application in the <code>dist</code> directory.</p>
+<p>In the <code>package.json</code> file, update the <code>scripts</code>:</p>
+<pre tabindex="0"><code>&#34;scripts&#34;: {
+  &#34;start&#34;: &#34;node server.js&#34;,
+  &#34;bundle&#34;: &#34;webpack --optimize-minimize --optimize-dedupe --output-public-path &#39;&#39;&#34;
+}
+</code></pre><p>Now if you launch <code>./gradlew frontend:bundle</code>, it will generate an optimized
+<code>bundle.js</code> file and the <code>index.html</code> in the <code>dist</code> directory.</p>
+<p>The last step is to include this <code>dist</code> directory in our application&rsquo;s jar as
+static assets.
+Add the following task to our main gradle build:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>jar <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>  from<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;frontend/dist&#39;</span><span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    into <span style="color:#5af78e">&#39;static&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>processResources<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">dependsOn</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;frontend:bundle&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span></code></pre></div><p>If you generate your jar with <code>./gradlew assemble</code>, you will see that the
+built jar includes the frontend resources.</p>
+<p>If you run the jar (<code>java -jar build/libs/boot-react-0.0.1-SNAPSHOT.jar</code>), you should
+see the React hello world on <code>localhost:8080</code></p>
+<p>See the <a href="https://github.com/geowarin/boot-react/commit/99b89a19200fe847bc0740346a0c4e5668b4e3c2">commit</a></p>
+<h2 id="launch-it-in-dev">Launch it in dev</h2>
+<p>When working on our application, it would be nice if:</p>
+<ol>
+<li>Launching the spring boot server in dev launched the webpack dev server</li>
+<li>Our dev-server proxied the request to <code>localhost:8080</code> so we can access
+the application on <code>localhost:3000</code> and not get cross-origin requests</li>
+</ol>
+<p>Add the following <code>WebpackLauncher</code> to the project:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Profile</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;dev&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebpackLauncher</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>  WebpackRunner <span style="color:#57c7ff">frontRunner</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">new</span> <span style="color:#57c7ff">WebpackRunner</span><span style="color:#ff6ac1">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebpackRunner</span> <span style="color:#ff5c57">implements</span> InitializingBean <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> String WEBPACK_SERVER_PROPERTY <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;webpack-server-loaded&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">boolean</span> <span style="color:#57c7ff">isWindows</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">getProperty</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;os.name&#39;</span><span style="color:#ff6ac1">).</span><span style="color:#57c7ff">toLowerCase</span><span style="color:#ff6ac1">().</span><span style="color:#57c7ff">contains</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;windows&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">afterPropertiesSet</span><span style="color:#ff6ac1">()</span> <span style="color:#ff5c57">throws</span> Exception <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">if</span> <span style="color:#ff6ac1">(!</span>System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">getProperty</span><span style="color:#ff6ac1">(</span>WEBPACK_SERVER_PROPERTY<span style="color:#ff6ac1">))</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>        startWebpackDevServer<span style="color:#ff6ac1">()</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">startWebpackDevServer</span><span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>      String cmd <span style="color:#ff6ac1">=</span> isWindows<span style="color:#ff6ac1">()</span> <span style="color:#ff6ac1">?</span> <span style="color:#5af78e">&#39;cmd /c npm start&#39;</span> <span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#39;npm start&#39;</span>
+</span></span><span style="display:flex;"><span>      cmd<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">execute</span><span style="color:#ff6ac1">(</span><span style="color:#ff6ac1">null</span><span style="color:#ff6ac1">,</span> <span style="color:#ff6ac1">new</span> File<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;frontend&#39;</span><span style="color:#ff6ac1">)).</span><span style="color:#57c7ff">consumeProcessOutput</span><span style="color:#ff6ac1">(</span>System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">out</span><span style="color:#ff6ac1">,</span> System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">err</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">setProperty</span><span style="color:#ff6ac1">(</span>WEBPACK_SERVER_PROPERTY<span style="color:#ff6ac1">,</span> <span style="color:#5af78e">&#39;true&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span></code></pre></div><p>This will take care of the first task by launching <code>npm start</code> when our server starts.
+I used a system property to make sure the dev-tools will not reload the frontend
+when we make a change in the backend code.
+This class will be available when we start the application with the <code>dev</code>
+<a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html">profile</a></p>
+<p>We can make a simple proxy with webpack-dev-server.
+Change the <code>server.js</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> WebpackDevServer <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack-dev-server&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> config <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;./webpack.dev.config&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">new</span> WebpackDevServer(webpack(config), {
+</span></span><span style="display:flex;"><span>  publicPath<span style="color:#ff6ac1">:</span> config.output.publicPath,
+</span></span><span style="display:flex;"><span>  hot<span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">true</span>,
+</span></span><span style="display:flex;"><span>  historyApiFallback<span style="color:#ff6ac1">:</span> <span style="color:#ff6ac1">true</span>,
+</span></span><span style="display:flex;"><span>  proxy<span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;*&#34;</span><span style="color:#ff6ac1">:</span> <span style="color:#5af78e">&#34;http://localhost:8080&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}).listen(<span style="color:#ff9f43">3000</span>, <span style="color:#5af78e">&#39;localhost&#39;</span>, <span style="color:#ff5c57">function</span> (err, result) {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">if</span> (err) {
+</span></span><span style="display:flex;"><span>    console.log(err);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  console.log(<span style="color:#5af78e">&#39;Listening at localhost:3000&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>Launch your application with the <code>--spring.profiles.active=dev</code> flag.</p>
+<p>You should be able see the react hello world on <a href="http://localhost:3000">http://localhost:3000</a>. If you make some changes to it,
+it will automatically reload.</p>
+<p>See the old commit <a href="https://github.com/geowarin/boot-react/commit/af66c4b2f9798ad50f4e6be30ba5fb6c5f56f79f">commit</a></p>
+<p>And the new <a href="https://github.com/geowarin/boot-react/commit/2eb6460812c2f2022b49e04f8ed4034dda402c2c">commit</a></p>
+<h2 id="fetch-the-resource">Fetch the resource</h2>
+<p>We can check that we do not get cross-origin errors using <a href="https://github.com/mzabriskie/axios">axios</a>,
+a simple library to do http requests. It supports promises and automatically
+handles json.</p>
+<pre tabindex="0"><code>npm i -S axios
+</code></pre><p>Let&rsquo;s amend our <code>App.js</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React, { Component } from <span style="color:#5af78e">&#39;react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> axios from <span style="color:#5af78e">&#39;axios&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> App <span style="color:#ff6ac1">extends</span> Component {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  componentDidMount() {
+</span></span><span style="display:flex;"><span>    axios.get(<span style="color:#5af78e">&#39;/api/simple&#39;</span>)
+</span></span><span style="display:flex;"><span>      .then(res =&gt; console.log(res.data))
+</span></span><span style="display:flex;"><span>      .<span style="color:#ff6ac1">catch</span>(err =&gt; console.error(err))
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  render() {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> (
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">&lt;</span>h1<span style="color:#ff6ac1">&gt;</span>Hello, guys.<span style="color:#ff6ac1">&lt;</span><span style="color:#ff5c57">/h1&gt;</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/blob/079f0c8afcd8266355b77a094941c8cdbe1349fd/frontend/src/App.js">commit</a></p>
+<h2 id="better-optimization-of-the-javascript-assets">Better optimization of the javascript assets</h2>
+<p>We can further improve the compression of the javascript assets by separating our dev
+webpack configuration from our production configuration.</p>
+<p>In the production configuration, we can use the DefinePlugin to set the NODE_ENV
+variable to production. This will allow webpack to automatically remove all the
+code intended for development purposes in our libraries:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">new</span> webpack.DefinePlugin({
+</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;process.env&#34;</span><span style="color:#ff6ac1">:</span> {
+</span></span><span style="display:flex;"><span>    NODE_ENV<span style="color:#ff6ac1">:</span> JSON.stringify(<span style="color:#5af78e">&#34;production&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1">commit</a></p>
+<h2 id="feedback-needed">Feedback needed</h2>
+<p>Well, this works pretty well!</p>
+<p><img loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" alt="Hot hot reload"  title="Hot reload"  />
+</p>
+<p>What do you think? Care to comment and help me make something better?
+Your feedback is welcome!</p>
+<p>The project is available <a href="https://github.com/geowarin/boot-react">on github</a>.
+Pull requests and issues are gladly accepted.</p>
+]]></content:encoded></item></channel></rss>

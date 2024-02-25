@@ -1,1 +1,206 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>spring-data on Geowarin</title><link>https://geowarin.com/tags/spring-data/</link><description>Recent content in spring-data on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Jan 2013 15:25:11 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/spring-data/index.xml" rel="self" type="application/rss+xml"/><item><title>Using Spring Data JPA in a Java SE environment and run tests with dbUnit</title><link>https://geowarin.com/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/</link><pubDate>Mon, 21 Jan 2013 15:25:11 +0000</pubDate><guid>https://geowarin.com/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/</guid><description>Demonstration of how to set up spring data JPA in java SE and test with dbUnit</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>spring-data on Geowarin</title><link>https://geowarin.com/tags/spring-data/</link><description>Recent content in spring-data on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Jan 2013 15:25:11 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/spring-data/index.xml" rel="self" type="application/rss+xml"/><item><title>Using Spring Data JPA in a Java SE environment and run tests with dbUnit</title><link>https://geowarin.com/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/</link><pubDate>Mon, 21 Jan 2013 15:25:11 +0000</pubDate><guid>https://geowarin.com/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/</guid><description>Demonstration of how to set up spring data JPA in java SE and test with dbUnit</description><content:encoded><![CDATA[<p>This blog post follows my previous articles on using <a href="http://geowarin.wordpress.com/2013/01/20/using-hibernate-as-a-jpa-provider-in-a-java-se-environment-and-run-tests-with-dbunit/">hibernate as a standalone JPA provider</a> and how to use <a href="http://geowarin.wordpress.com/2013/01/20/using-spring-in-a-java-se-environment-and-implementing-the-chain-of-responsibility-pattern/">spring in a Java SE</a> environment.</p>
+<p>In this post, I will show you how to use <a href="http://geowarin.wordpress.com/2013/01/21/using-spring-data-jpa-in-a-java-se-environment-and-run-tests-with-dbunit/">Spring Data JPA</a>, a great project which improves your productivity by generating all CRUD operations for you. Then we will use <a href="http://springtestdbunit.github.com/spring-test-dbunit/">springtestdbunit</a> to run some very clean tests on our database with spring and <a href="http://www.dbunit.org/">dbUnit</a>.</p>
+<p>The code source of this example is available on github : <a href="https://github.com/geowarin/hibernate-examples/tree/master/standalone-data-jpa">https://github.com/geowarin/hibernate-examples/tree/master/standalone-data-jpa</a></p>
+<h2 id="what-is-spring-data-jpa">What is Spring Data JPA?</h2>
+<p>Are you tired of always implementing the findOne(long id), findAll(), save()&hellip; methods on your repositories? Having to come up with clever tricks to generate a generic DAO?</p>
+<p>Then give Spring Data JPA a try ! This project lets you implement a very simple interface for your repositories and takes care of all the rest, allowing you to focus on your real queries.</p>
+<h2 id="the-configuration">The configuration</h2>
+<p>The configuration we will set up here is pretty similar to the one we used in the <a href="http://geowarin.wordpress.com/2013/01/20/using-spring-in-a-java-se-environment-and-implementing-the-chain-of-responsibility-pattern/">spring standalone article.</a> We will just add a bunch of classes to make use of spring data jpa :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableJpaRepositories</span>(<span style="color:#5af78e">&#34;com.geowarin.standalonedatajpa.repository&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableTransactionManagement</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">StandaloneDataJpaConfig</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> DataSource <span style="color:#57c7ff">dataSource</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> EmbeddedDatabaseBuilder().<span style="color:#57c7ff">setType</span>(EmbeddedDatabaseType.<span style="color:#57c7ff">HSQL</span>)
+</span></span><span style="display:flex;"><span>				.<span style="color:#57c7ff">addScript</span>(<span style="color:#5af78e">&#34;classpath:sql/schema.sql&#34;</span>)
+</span></span><span style="display:flex;"><span>				.<span style="color:#57c7ff">addScript</span>(<span style="color:#5af78e">&#34;classpath:sql/import-users.sql&#34;</span>)
+</span></span><span style="display:flex;"><span>				.<span style="color:#57c7ff">build</span>();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> PlatformTransactionManager <span style="color:#57c7ff">transactionManager</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		JpaTransactionManager txManager <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> JpaTransactionManager();
+</span></span><span style="display:flex;"><span>		txManager.<span style="color:#57c7ff">setEntityManagerFactory</span>(entityManagerFactory());
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> txManager;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> HibernateExceptionTranslator <span style="color:#57c7ff">hibernateExceptionTranslator</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> HibernateExceptionTranslator();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> EntityManagerFactory <span style="color:#57c7ff">entityManagerFactory</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// will set the provider to &#39;org.hibernate.ejb.HibernatePersistence&#39;</span>
+</span></span><span style="display:flex;"><span>		HibernateJpaVendorAdapter vendorAdapter <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> HibernateJpaVendorAdapter();
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// will set hibernate.show_sql to &#39;true&#39;</span>
+</span></span><span style="display:flex;"><span>		vendorAdapter.<span style="color:#57c7ff">setShowSql</span>(<span style="color:#ff6ac1">true</span>);
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// if set to true, will set hibernate.hbm2ddl.auto to &#39;update&#39;</span>
+</span></span><span style="display:flex;"><span>		vendorAdapter.<span style="color:#57c7ff">setGenerateDdl</span>(<span style="color:#ff6ac1">false</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		LocalContainerEntityManagerFactoryBean factory <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> LocalContainerEntityManagerFactoryBean();
+</span></span><span style="display:flex;"><span>		factory.<span style="color:#57c7ff">setJpaVendorAdapter</span>(vendorAdapter);
+</span></span><span style="display:flex;"><span>		factory.<span style="color:#57c7ff">setPackagesToScan</span>(<span style="color:#5af78e">&#34;com.geowarin.standalonedatajpa.model&#34;</span>);
+</span></span><span style="display:flex;"><span>		factory.<span style="color:#57c7ff">setDataSource</span>(dataSource());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// This will trigger the creation of the entity manager factory</span>
+</span></span><span style="display:flex;"><span>		factory.<span style="color:#57c7ff">afterPropertiesSet</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> factory.<span style="color:#57c7ff">getObject</span>();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> MainBean <span style="color:#57c7ff">mainBean</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> MainBean();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>With this configuration, you won&rsquo;t even need a <em>persistence.xml</em> file ! Compared to our <a href="http://geowarin.wordpress.com/2013/01/20/using-hibernate-as-a-jpa-provider-in-a-java-se-environment-and-run-tests-with-dbunit/">previous example</a> however, one cannot make use of <em>hibernate.hbm2ddl.import_files</em> property to import SQL scripts with hibernate because <em>hibernate.hbm2ddl.auto</em> must be set to either <em>create</em> or <em>create-drop</em>.</p>
+<p>That&rsquo;s ok we will generate some very tiny scripts to set up the schema and the data in our database (and make our DBA happy, a thing that is never to be disregarded :))</p>
+<hr>
+<p><strong>Hint</strong> : If this is a real blocker for you, you could setGenrateDdl to false and maintain a simple <strong>hibernate.properties</strong> file like this one</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#57c7ff">hibernate.hbm2ddl.auto</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">create</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">hibernate.hbm2ddl.import_files</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">sql/import-users.sql</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">hibernate.format_sql</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">true</span>
+</span></span></code></pre></div><p>That&rsquo;s because hibernate will always look for a <a href="http://docs.jboss.org/hibernate/core/4.1/manual/en-US/html/ch03.html#configuration-optional-properties">hibernate.properties</a> file in the classpath to override you persistence properties.</p>
+<hr>
+<p>Note the use of <strong>@EnableJpaRepositories</strong> that will tell spring data in which packages our repositories can be found.</p>
+<p><strong>@EnableTransactionManagement</strong> is a replacement of the tag <code>&lt;tx:annotation-driven /&gt;</code>.</p>
+<p>We can set up the <a href="http://static.springsource.org/spring-framework/docs/3.2.0.RC1/api/org/springframework/orm/jpa/LocalContainerEntityManagerFactoryBean.html">LocalContainerEntityManagerFactoryBean </a>to use a package to scan our entities for us, no need to list them all.</p>
+<p>The rest is pretty straight forward I believe.</p>
+<p>Note that by default, spring data JPA will try to locate your <em>persistence.xml</em> so the two approaches are completely compatible, for this example however we will go for a full xml-less configuration.</p>
+<h2 id="one-entity-one-interface-and-we-are-ready">One entity, one interface and we are ready</h2>
+<p>We have one very simple entity :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Table</span>(name <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;users&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Entity</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">User</span> <span style="color:#ff5c57">implements</span> Serializable {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> <span style="color:#9aedfe">long</span> serialVersionUID <span style="color:#ff6ac1">=</span> 1L;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Id</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@GeneratedValue</span>(strategy<span style="color:#ff6ac1">=</span>GenerationType.<span style="color:#57c7ff">AUTO</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#9aedfe">long</span> id;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Column</span>(name <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;name&#34;</span>, nullable <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">false</span>, unique<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">true</span>, length<span style="color:#ff6ac1">=</span>50)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> String name;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#78787e">// getters and setters omitted</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now let&rsquo;s use spring data to generate a repository for us :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">interface</span> <span style="color:#f3f99d">UserRepository</span>  <span style="color:#ff5c57">extends</span> JpaRepository<span style="color:#ff6ac1">&lt;</span>User, Long<span style="color:#ff6ac1">&gt;</span> {
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Tadaa! Is that it? Yes, you can now use your repository in our <strong>MainBean</strong> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MainBean</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> UserRepository userRepository;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> Logger log <span style="color:#ff6ac1">=</span> LoggerFactory.<span style="color:#57c7ff">getLogger</span>(MainBean.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">start</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// Spring Data JPA CRUD operations are transactionnal by default !</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#transactions</span>
+</span></span><span style="display:flex;"><span>		User newUser <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> User();
+</span></span><span style="display:flex;"><span>		newUser.<span style="color:#57c7ff">setName</span>(<span style="color:#5af78e">&#34;inserted&#34;</span>);
+</span></span><span style="display:flex;"><span>		userRepository.<span style="color:#57c7ff">save</span>(newUser);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		List all <span style="color:#ff6ac1">=</span> userRepository.<span style="color:#57c7ff">findAll</span>();
+</span></span><span style="display:flex;"><span>		log.<span style="color:#57c7ff">info</span>(<span style="color:#5af78e">&#34;users=&#34;</span> <span style="color:#ff6ac1">+</span> all);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Pretty sweet. But that&rsquo;s not all. You now have three different ways of writing new queries with Spring data :</p>
+<ol>
+<li>
+<p>Use <a href="https://blogs.oracle.com/JPQL01/entry/named_query_in_java_persistence">named queries</a></p>
+</li>
+<li>
+<p><a href="http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#jpa.query-methods.at-query">Use the @Query annotation</a> to write your own JPQL queries</p>
+</li>
+<li>
+<p>Use the awesome <a href="http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#jpa.query-methods.query-creation">query creation by method name</a></p>
+</li>
+</ol>
+<p>Let&rsquo;s review the last two options (I don&rsquo;t really like named queries but have a look a the <a href="http://static.springsource.org/spring-data/jpa/docs/1.2.0.RELEASE/reference/html/#jpa.query-methods.named-queries">documentation</a> if you want)</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">interface</span> <span style="color:#f3f99d">UserRepository</span>  <span style="color:#ff5c57">extends</span> JpaRepository<span style="color:#ff6ac1">&lt;</span>User, Long<span style="color:#ff6ac1">&gt;</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#78787e">// Demonstrate query creation by method name</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#78787e">// http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#jpa.query-methods.query-creation</span>
+</span></span><span style="display:flex;"><span>	User <span style="color:#57c7ff">findByName</span>(String name);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#78787e">// Demonstrate the use of a simple JPQL query</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Query</span>(<span style="color:#5af78e">&#34;from User u where upper(u.name) = upper(:name)&#34;</span>)
+</span></span><span style="display:flex;"><span>	User <span style="color:#57c7ff">findByNameIgnoreCase</span>(<span style="color:#ff9f43">@Param</span>(<span style="color:#5af78e">&#34;name&#34;</span>) String name);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="ok-lets-test-it">Ok let&rsquo;s test it</h2>
+<p>Have a look at the unit test for our repository :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RunWith</span>(SpringJUnit4ClassRunner.<span style="color:#57c7ff">class</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ContextConfiguration</span>(classes <span style="color:#ff6ac1">=</span> { StandaloneDataJpaConfig.<span style="color:#57c7ff">class</span> })
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@TestExecutionListeners</span>({ DependencyInjectionTestExecutionListener.<span style="color:#57c7ff">class</span>,
+</span></span><span style="display:flex;"><span>	DbUnitTestExecutionListener.<span style="color:#57c7ff">class</span> })
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">UserRepositoryTest</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> UserRepository userRepository;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@DatabaseSetup</span>(<span style="color:#5af78e">&#34;userAdminData.xml&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">testFindAdmin</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		User admin <span style="color:#ff6ac1">=</span> userRepository.<span style="color:#57c7ff">findOne</span>(1L);
+</span></span><span style="display:flex;"><span>		Assert.<span style="color:#57c7ff">assertNotNull</span>(admin);
+</span></span><span style="display:flex;"><span>		Assert.<span style="color:#57c7ff">assertEquals</span>(<span style="color:#5af78e">&#34;admin&#34;</span>, admin.<span style="color:#57c7ff">getName</span>());
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@DatabaseSetup</span>(<span style="color:#5af78e">&#34;userAdminData.xml&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">testFindByName</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		User admin <span style="color:#ff6ac1">=</span> userRepository.<span style="color:#57c7ff">findByName</span>(<span style="color:#5af78e">&#34;admin&#34;</span>);
+</span></span><span style="display:flex;"><span>		Assert.<span style="color:#57c7ff">assertNotNull</span>(admin);
+</span></span><span style="display:flex;"><span>		Assert.<span style="color:#57c7ff">assertEquals</span>(<span style="color:#5af78e">&#34;admin&#34;</span>, admin.<span style="color:#57c7ff">getName</span>());
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@DatabaseSetup</span>(<span style="color:#5af78e">&#34;userAdminData.xml&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">testFindByNameIgnoreCase</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		User admin <span style="color:#ff6ac1">=</span> userRepository.<span style="color:#57c7ff">findByNameIgnoreCase</span>(<span style="color:#5af78e">&#34;AdMIn&#34;</span>);
+</span></span><span style="display:flex;"><span>		Assert.<span style="color:#57c7ff">assertNotNull</span>(admin);
+</span></span><span style="display:flex;"><span>		Assert.<span style="color:#57c7ff">assertEquals</span>(<span style="color:#5af78e">&#34;admin&#34;</span>, admin.<span style="color:#57c7ff">getName</span>());
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@DatabaseSetup</span>(<span style="color:#5af78e">&#34;userAdminData.xml&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@ExpectedDatabase</span>(<span style="color:#5af78e">&#34;afterInsert.xml&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">testInsertUser</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		User newUser <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> User();
+</span></span><span style="display:flex;"><span>		newUser.<span style="color:#57c7ff">setName</span>(<span style="color:#5af78e">&#34;inserted&#34;</span>);
+</span></span><span style="display:flex;"><span>		userRepository.<span style="color:#57c7ff">save</span>(newUser);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We use springtestdbunit to be able to use annotations to set up and verify the database state after each test. Here are our two datasets.</p>
+<p>userAdminData.xml :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#78787e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;dataset&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;users</span> <span style="color:#57c7ff">id=</span><span style="color:#5af78e">&#34;1&#34;</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;admin&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/dataset&gt;</span>
+</span></span></code></pre></div><p>afterInsert.xml :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#78787e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;dataset&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;users</span> <span style="color:#57c7ff">id=</span><span style="color:#5af78e">&#34;1&#34;</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;admin&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;users</span> <span style="color:#57c7ff">id=</span><span style="color:#5af78e">&#34;2&#34;</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;inserted&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/dataset&gt;</span>
+</span></span></code></pre></div><p>Using the <strong>@ExpectedDatabase</strong> annotation is really awesome, dbUnit will generate very informative messages if your test failed.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Spring Data JPA is really a good piece of software. We did not go into too much details but know that it will handle pagination, type-safe queries, is compatible with <a href="http://www.querydsl.com/">query-dsl</a> and much more.
+It is suitable for a Java SE environment which can come in handy if we want to run some quick tests on our database.</p>
+<p>Finally, springtestdbunit is a very nice-to-have feature which will make your repository unit tests a real breeze to write.</p>
+<p>Lastly, I will point out that making use of the <a href="http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#transactions">transational behaviour of spring data</a> CRUD operation is not really a good practice but we did it all the same for the sake of simplicity.
+A better approach would be to use <strong>@Service</strong> spring beans to encapsulate one or several operations.</p>
+]]></content:encoded></item></channel></rss>

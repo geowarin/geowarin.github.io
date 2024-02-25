@@ -1,1 +1,67 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>3D on Geowarin</title><link>https://geowarin.com/tags/3d/</link><description>Recent content in 3D on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 11 Sep 2021 18:42:59 +0200</lastBuildDate><atom:link href="https://geowarin.com/tags/3d/index.xml" rel="self" type="application/rss+xml"/><item><title>Thumbnails in Linux</title><link>https://geowarin.com/thumbnails-in-linux/</link><pubDate>Sat, 11 Sep 2021 18:42:59 +0200</pubDate><guid>https://geowarin.com/thumbnails-in-linux/</guid><description>Linux has a nice system to display thumbnails. Let&amp;rsquo;s try it to display GLTF files in thunar.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>3D on Geowarin</title><link>https://geowarin.com/tags/3d/</link><description>Recent content in 3D on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 11 Sep 2021 18:42:59 +0200</lastBuildDate><atom:link href="https://geowarin.com/tags/3d/index.xml" rel="self" type="application/rss+xml"/><item><title>Thumbnails in Linux</title><link>https://geowarin.com/thumbnails-in-linux/</link><pubDate>Sat, 11 Sep 2021 18:42:59 +0200</pubDate><guid>https://geowarin.com/thumbnails-in-linux/</guid><description>Linux has a nice system to display thumbnails. Let&amp;rsquo;s try it to display GLTF files in thunar.</description><content:encoded><![CDATA[<div class='admonition note'>
+    <span class="icon"></span>
+    <p><a href="https://github.com/f3d-app/f3d">f3d</a> is available in the AUR and automatically sets up file associations and
+thumbnailers for a lot of common 3D models. I suggest that you use that instead.</p>
+</div>
+
+<h2 id="mime-mapping">Mime mapping</h2>
+<p>In my distro, there were no mimetypes declared for gltf/glb files.</p>
+<p>So I added the following mapping in <code>~/.local/share/mime/packages/gltf.xml</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#78787e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;mime-info</span> <span style="color:#57c7ff">xmlns=</span><span style="color:#5af78e">&#39;http://www.freedesktop.org/standards/shared-mime-info&#39;</span><span style="color:#ff6ac1">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">&lt;mime-type</span> <span style="color:#57c7ff">type=</span><span style="color:#5af78e">&#34;model/gltf+json&#34;</span><span style="color:#ff6ac1">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;comment&gt;</span>GLTF model<span style="color:#ff6ac1">&lt;/comment&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;icon</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;model-stl&#34;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;glob</span> <span style="color:#57c7ff">pattern=</span><span style="color:#5af78e">&#34;*.gltf&#34;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">&lt;/mime-type&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;mime-type</span> <span style="color:#57c7ff">type=</span><span style="color:#5af78e">&#34;model/gltf.binary&#34;</span><span style="color:#ff6ac1">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;comment&gt;</span>GLTF binary model<span style="color:#ff6ac1">&lt;/comment&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;icon</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;model-stl&#34;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;glob</span> <span style="color:#57c7ff">pattern=</span><span style="color:#5af78e">&#34;*.glb&#34;</span><span style="color:#ff6ac1">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">&lt;/mime-type&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/mime-info&gt;</span>
+</span></span></code></pre></div><p>Let&rsquo;s update the mime database with <code>update-mime-database ~/.local/share/mime</code>.</p>
+<h2 id="gltf-viewer">Gltf viewer</h2>
+<p>I found a nice program, written in rust, to preview gltf files:
+<a href="https://github.com/bwasty/gltf-viewer">gltf-viewer</a></p>
+<p>Let&rsquo;s add a desktop entry for this in
+<code>/home/geo/.local/share/applications/gltf_viewer.desktop</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff6ac1">[Desktop Entry]</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">Name</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">GLTF Viewer</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">GenericName</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">3D Model viewer</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">Comment</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">3D Model viewer</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">Exec</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">/home/geo/bin/gltf-viewer</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">Terminal</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">Type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">Application</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">Icon</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">acreloaded</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">Categories</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">Graphics;3DGraphics;Viewer;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">MimeType</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">model/gltf+json;model/gltf.binary;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">NoDisplay</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">false</span>
+</span></span></code></pre></div><p>This will associate <code>gltf-viewer</code> with our glb/gltf files.
+The program should launch when clicking gltf files in the file manager.</p>
+<p>You might have to <code>update-desktop-database ~/.local/share/applications</code>
+for this to take effect.</p>
+<h2 id="thumbnails">Thumbnails</h2>
+<p><code>gltf-viewer</code> also has a feature to output a png image given a 3D model
+as input.</p>
+<p>Let&rsquo;s write a little script to use that. I&rsquo;ll put this in my path in <code>~/bin/gltf-thumbnailer</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span><span style="color:#ff5c57">input</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$1</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">output</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$2</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">size</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/home/geo/bin/gltf-viewer -s <span style="color:#5af78e">&#34;</span><span style="color:#ff5c57">$output</span><span style="color:#5af78e">&#34;</span> -w <span style="color:#5af78e">&#34;</span><span style="color:#ff5c57">$size</span><span style="color:#5af78e">&#34;</span> -h <span style="color:#5af78e">&#34;</span><span style="color:#ff5c57">$size</span><span style="color:#5af78e">&#34;</span> <span style="color:#5af78e">&#34;</span><span style="color:#ff5c57">$input</span><span style="color:#5af78e">&#34;</span>
+</span></span></code></pre></div><p>Now the final piece of the puzzle: creating a thumbnail entry in <code>/usr/share/thumbnailers/gltf.thumbnailer</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff6ac1">[Thumbnailer Entry]</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">TryExec</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">/home/geo/bin/gltf-thumbnailer</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">Exec</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">/home/geo/bin/gltf-thumbnailer %i %o %s</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">MimeType</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">model/gltf+json;model/gltf.binary;</span>
+</span></span></code></pre></div><p>Here is an example of the parameters you can pass to your program:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># %u %o %i %s
+</span></span><span style="display:flex;"><span># %u: url (ex: file:///home/geo/Models/gltf/bookB.gltf.glb)
+</span></span><span style="display:flex;"><span># %o: output thumbnail (ex: /tmp/tumbler-X0YBM90.png) 
+</span></span><span style="display:flex;"><span># %i: input file (ex: /home/geo/Models/gltf/bookB.gltf.glb)
+</span></span><span style="display:flex;"><span># %s: size (ex: 128)
+</span></span></code></pre></div><p>If you mess up, you can always remove the thumbnail cache:
+<code>rm -rf .cache/thumbnails/</code></p>
+]]></content:encoded></item></channel></rss>

@@ -1,1 +1,130 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>junit on Geowarin</title><link>https://geowarin.com/tags/junit/</link><description>Recent content in junit on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 06 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/junit/index.xml" rel="self" type="application/rss+xml"/><item><title>Integration tests with a Docker JUnit Rule</title><link>https://geowarin.com/integration-tests-with-a-docker-junit-rule/</link><pubDate>Wed, 06 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/integration-tests-with-a-docker-junit-rule/</guid><description>Docker can help you write better tests with a simple JUnit rule</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>junit on Geowarin</title><link>https://geowarin.com/tags/junit/</link><description>Recent content in junit on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 06 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/junit/index.xml" rel="self" type="application/rss+xml"/><item><title>Integration tests with a Docker JUnit Rule</title><link>https://geowarin.com/integration-tests-with-a-docker-junit-rule/</link><pubDate>Wed, 06 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/integration-tests-with-a-docker-junit-rule/</guid><description>Docker can help you write better tests with a simple JUnit rule</description><content:encoded><![CDATA[<p>When writing integration tests, you might have to run a third party server
+or middleware.
+Your tests should remain fast to run and you should be able to run them
+from your IDE.</p>
+<p>Docker seems a good choice for this task!</p>
+<p>I just published a <a href="https://github.com/geowarin/docker-junit-rule">small library</a> that contains a <a href="https://github.com/junit-team/junit/wiki/Rules">JUnit rule</a> allowing you
+to start Docker containers before your unit tests.</p>
+<p>If that sounds of interest to you, you should give it a try and tell me what
+you think!</p>
+<h2 id="junit-rules">JUnit rules</h2>
+<p>JUnit rules allow us to do some sort of <a href="https://en.wikipedia.org/wiki/Aspect-oriented_programming">AOP</a> applied to JUnit test.
+Within a rule you are given the handle of the test to run.</p>
+<p>You can decide what to do with it. Should we skip it? Should we run it?
+Should we wrap it in a try catch? Should we add some behavior before or after
+the test?</p>
+<p>You can use the <code>@Rule</code> annotation to run the rule before each test or the
+<code>@ClassRule</code> annotation to run it once in your test class.</p>
+<p>You can have has many rules as you need in your any of your tests.</p>
+<p>It is much more powerful than creating an abstract test class from which
+test will inherit.
+This is the application of the <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">composition over inheritance</a> principle.</p>
+<p>Here is an example of a JUnit rule:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> com.rabbitmq.client.ConnectionFactory;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> org.junit.ClassRule;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> org.junit.Test;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> rules.RabbitContainerRule;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RabbitIntegrationTest</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@ClassRule</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> RabbitContainerRule rabbitContainerRule <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> RabbitContainerRule();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">testConnectsToDocker</span>() <span style="color:#ff5c57">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        ConnectionFactory factory <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> ConnectionFactory();
+</span></span><span style="display:flex;"><span>        factory.<span style="color:#57c7ff">setHost</span>(rabbitContainerRule.<span style="color:#57c7ff">getDockerHost</span>());
+</span></span><span style="display:flex;"><span>        factory.<span style="color:#57c7ff">setPort</span>(rabbitContainerRule.<span style="color:#57c7ff">getRabbitServicePort</span>());
+</span></span><span style="display:flex;"><span>        factory.<span style="color:#57c7ff">newConnection</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="behind-the-scene">Behind the scene</h2>
+<p>Did you know that the Docker daemon is accessible via a <a href="https://docs.docker.com/engine/reference/api/docker_remote_api/">REST API</a>?
+In fact when you use the docker client, it sends HTTP requests to
+the daemon.</p>
+<p>That also means that we can create other docker clients in any programming language.
+In Java, Spotify has open-sourced a great <a href="https://github.com/spotify/docker-client">docker client</a>.</p>
+<p>We will use this library to create our JUnit rule.
+Here is a simplified version of what we will be doing:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DockerContainerRule</span> <span style="color:#ff5c57">extends</span> ExternalResource {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">DockerContainerRule</span>(String imageName, String<span style="color:#ff6ac1">[]</span> ports, String cmd) {
+</span></span><span style="display:flex;"><span>    dockerClient <span style="color:#ff6ac1">=</span> createDockerClient();
+</span></span><span style="display:flex;"><span>    ContainerConfig containerConfig <span style="color:#ff6ac1">=</span> createContainerConfig(imageName, ports, cmd);
+</span></span><span style="display:flex;"><span>    dockerClient.<span style="color:#57c7ff">pull</span>(imageName);
+</span></span><span style="display:flex;"><span>    container <span style="color:#ff6ac1">=</span> dockerClient.<span style="color:#57c7ff">createContainer</span>(containerConfig);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff5c57">protected</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">before</span>() <span style="color:#ff5c57">throws</span> Throwable {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">super</span>.<span style="color:#57c7ff">before</span>();
+</span></span><span style="display:flex;"><span>    dockerClient.<span style="color:#57c7ff">startContainer</span>(container.<span style="color:#57c7ff">id</span>());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff5c57">protected</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">after</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">super</span>.<span style="color:#57c7ff">after</span>();
+</span></span><span style="display:flex;"><span>    dockerClient.<span style="color:#57c7ff">killContainer</span>(container.<span style="color:#57c7ff">id</span>());
+</span></span><span style="display:flex;"><span>    dockerClient.<span style="color:#57c7ff">removeContainer</span>(container.<span style="color:#57c7ff">id</span>(), <span style="color:#ff6ac1">true</span>);
+</span></span><span style="display:flex;"><span>    dockerClient.<span style="color:#57c7ff">close</span>();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Simple, isn&rsquo;t it?
+You can check out the full code <a href="https://github.com/geowarin/docker-junit-rule/blob/master/src/main/java/com/github/geowarin/junit/DockerContainerRule.java">here</a></p>
+<p>This class will allow users to create their own rules, extending this one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RabbitContainerRule</span> <span style="color:#ff5c57">extends</span> DockerContainerRule {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> String RABBIT_CONTAINER_IMAGE_NAME <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;rabbitmq:management&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">RabbitContainerRule</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// List the ports to open on the container.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// They will automatically be bound to random unused ports on your host</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">super</span>(RABBIT_CONTAINER_IMAGE_NAME, <span style="color:#ff6ac1">new</span> String<span style="color:#ff6ac1">[]</span>{<span style="color:#5af78e">&#34;5672&#34;</span>, <span style="color:#5af78e">&#34;15672&#34;</span>});
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">before</span>() <span style="color:#ff5c57">throws</span> Throwable {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">super</span>.<span style="color:#57c7ff">before</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// wait for container to boot</span>
+</span></span><span style="display:flex;"><span>        waitForPort(getRabbitServicePort());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">int</span> <span style="color:#57c7ff">getRabbitServicePort</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> getHostPort(<span style="color:#5af78e">&#34;5672/tcp&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">int</span> <span style="color:#57c7ff">getRabbitManagementPort</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> getHostPort(<span style="color:#5af78e">&#34;15672/tcp&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="bonus">Bonus</h2>
+<p>There is an annoying thing with docker containers: you cannot tell if the
+process running inside is in a ready state and waiting for your to use
+it or if it is still booting.</p>
+<p>Most people use <a href="https://en.wikipedia.org/wiki/Netcat"><code>netcat</code></a> on a specific
+port to <a href="https://github.com/aanand/docker-wait">wait for a container</a>.</p>
+<p>In Java, we can do the same thing with good old sockets!</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">waitForPort</span>(<span style="color:#9aedfe">int</span> port, <span style="color:#9aedfe">long</span> timeoutInMillis) {
+</span></span><span style="display:flex;"><span>  SocketAddress address <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> InetSocketAddress(getDockerHost(), port);
+</span></span><span style="display:flex;"><span>  <span style="color:#9aedfe">long</span> totalWait <span style="color:#ff6ac1">=</span> 0;
+</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">while</span> (<span style="color:#ff6ac1">true</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">try</span> {
+</span></span><span style="display:flex;"><span>      SocketChannel.<span style="color:#57c7ff">open</span>(address);
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">return</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#ff6ac1">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">try</span> {
+</span></span><span style="display:flex;"><span>        Thread.<span style="color:#57c7ff">sleep</span>(100);
+</span></span><span style="display:flex;"><span>        totalWait <span style="color:#ff6ac1">+=</span> 100;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span> (totalWait <span style="color:#ff6ac1">&gt;</span> timeoutInMillis) {
+</span></span><span style="display:flex;"><span>          <span style="color:#ff6ac1">throw</span> <span style="color:#ff6ac1">new</span> IllegalStateException(<span style="color:#5af78e">&#34;Timeout while waiting for port &#34;</span> <span style="color:#ff6ac1">+</span> port);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      } <span style="color:#ff6ac1">catch</span> (InterruptedException ie) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">throw</span> <span style="color:#ff6ac1">new</span> IllegalStateException(ie);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>JUnit rules are a very cool way to improve the readability and the expressiveness of our tests.
+Check out the <a href="http://stefanbirkner.github.io/system-rules/">system rules</a> for
+a good example.</p>
+<p>Don&rsquo;t forget to give a try to the project, which is available <a href="https://github.com/geowarin/docker-junit-rule">on github</a> and give me your feedback.</p>
+]]></content:encoded></item></channel></rss>

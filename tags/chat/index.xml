@@ -1,1 +1,280 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>chat on Geowarin</title><link>https://geowarin.com/tags/chat/</link><description>Recent content in chat on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 28 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/chat/index.xml" rel="self" type="application/rss+xml"/><item><title>A simple chat with Spring Boot and RethinkDB</title><link>https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/</link><pubDate>Thu, 28 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/</guid><description>RethinkDB is a great database engine allowing you to receive live updates on your data. Let&amp;rsquo;s create a Spring Boot App and give it a try!</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>chat on Geowarin</title><link>https://geowarin.com/tags/chat/</link><description>Recent content in chat on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 28 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/chat/index.xml" rel="self" type="application/rss+xml"/><item><title>A simple chat with Spring Boot and RethinkDB</title><link>https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/</link><pubDate>Thu, 28 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/</guid><description>RethinkDB is a great database engine allowing you to receive live updates on your data. Let&amp;rsquo;s create a Spring Boot App and give it a try!</description><content:encoded><![CDATA[<p>The Java driver for <a href="https://www.rethinkdb.com/">RethinkDB</a> has recently
+<a href="https://rethinkdb.com/blog/official-java-driver/">been released</a> in beta.</p>
+<p>I created a little chat application with Spring Boot, you can see the result
+<a href="https://github.com/geowarin/boot-rethinkdb">on github</a>.</p>
+<p>There is a docker-compose file at the root of the project that you can
+use to run a RethinkDB instance instead of installing it directly on your machine.</p>
+<h2 id="why-rethinkdb">Why RethinkDB?</h2>
+<p>I already gave RethinkDB a try a few months ago and I was very impressed
+with its beautiful admin GUI, its clustering capabilities and its clever
+and intuitive API.</p>
+<p>But there is more! RethinkDB is a DB engine designed to push updates to the clients
+in real time.</p>
+<p>In the <a href="https://github.com/henryr/cap-faq">CAP theorem</a>, rethinkDB focuses on being
+Consistent in case of difficulties in the cluster.</p>
+<p>Relevant quote from the <a href="https://www.rethinkdb.com/docs/architecture/#cap-theorem">FAQ</a>:</p>
+<!-- raw HTML omitted -->
+<p>Once RethinkDB is started, you can connect on the beautiful admin GUI on port <code>8080</code>:</p>
+<p><img loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-admin.png" alt="The awesome GUI"  title="The RethinkDB admin GUI"  />
+</p>
+<h2 id="setting-up-the-project">Setting up the project</h2>
+<p>I created a Gradle project with the <code>web</code> and <code>websocket</code> Spring boot starters.
+I also added a couple of <a href="https://spring.io/blog/2014/01/03/utilizing-webjars-in-spring-boot">webjars</a>:
+<code>jquery</code> for ajax requests, sockjs and stomp to connect to Spring&rsquo;s websockets:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>dependencies <span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>    compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-starter-web&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>    compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-starter-websocket&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>    compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-devtools&#39;</span><span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    compile <span style="color:#5af78e">&#39;org.webjars:jquery:3.0.0-alpha1&#39;</span>
+</span></span><span style="display:flex;"><span>    compile <span style="color:#5af78e">&#39;org.webjars:sockjs-client:1.0.0&#39;</span>
+</span></span><span style="display:flex;"><span>    compile <span style="color:#5af78e">&#39;org.webjars:stomp-websocket:2.3.3&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    compile <span style="color:#5af78e">&#39;com.rethinkdb:rethinkdb-driver:2.2-b1-SNAPSHOT&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
+</span></span></code></pre></div><h2 id="getting-a-connection">Getting a connection</h2>
+<p>Every action we will perform on the database will require a <code>Connection</code>.
+We can create a small factory that we will later use in the code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RethinkDBConnectionFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> String host;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">RethinkDBConnectionFactory</span>(String host) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">host</span> <span style="color:#ff6ac1">=</span> host;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> Connection<span style="color:#ff6ac1">&lt;</span>ConnectionInstance<span style="color:#ff6ac1">&gt;</span> <span style="color:#57c7ff">createConnection</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">return</span> RethinkDB.<span style="color:#57c7ff">r</span>.<span style="color:#57c7ff">connection</span>().<span style="color:#57c7ff">hostname</span>(host).<span style="color:#57c7ff">connect</span>();
+</span></span><span style="display:flex;"><span>        } <span style="color:#ff6ac1">catch</span> (TimeoutException e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">throw</span> <span style="color:#ff6ac1">new</span> RuntimeException(e);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="initializing-the-db">Initializing the DB</h2>
+<p>For this little chat, we will need a database called <code>chat</code> and a table
+called <code>messages</code>.</p>
+<p>To avoid creating them by hand, we can create a Spring bean that will get called
+when the application starts:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DbInitializer</span> <span style="color:#ff5c57">implements</span> InitializingBean {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> RethinkDBConnectionFactory connectionFactory;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> ChatChangesListener chatChangesListener;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> RethinkDB r <span style="color:#ff6ac1">=</span> RethinkDB.<span style="color:#57c7ff">r</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">afterPropertiesSet</span>() <span style="color:#ff5c57">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        createDb();
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// we will see that later on</span>
+</span></span><span style="display:flex;"><span>        chatChangesListener.<span style="color:#57c7ff">pushChangesToWebSocket</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">createDb</span>() {
+</span></span><span style="display:flex;"><span>        Connection<span style="color:#ff6ac1">&lt;</span>ConnectionInstance<span style="color:#ff6ac1">&gt;</span> connection <span style="color:#ff6ac1">=</span> connectionFactory.<span style="color:#57c7ff">createConnection</span>();
+</span></span><span style="display:flex;"><span>        List<span style="color:#ff6ac1">&lt;</span>String<span style="color:#ff6ac1">&gt;</span> dbList <span style="color:#ff6ac1">=</span> r.<span style="color:#57c7ff">dbList</span>().<span style="color:#57c7ff">run</span>(connection);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span> (<span style="color:#ff6ac1">!</span>dbList.<span style="color:#57c7ff">contains</span>(<span style="color:#5af78e">&#34;chat&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            r.<span style="color:#57c7ff">dbCreate</span>(<span style="color:#5af78e">&#34;chat&#34;</span>).<span style="color:#57c7ff">run</span>(connection);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        List<span style="color:#ff6ac1">&lt;</span>String<span style="color:#ff6ac1">&gt;</span> tables <span style="color:#ff6ac1">=</span> r.<span style="color:#57c7ff">db</span>(<span style="color:#5af78e">&#34;chat&#34;</span>).<span style="color:#57c7ff">tableList</span>().<span style="color:#57c7ff">run</span>(connection);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span> (<span style="color:#ff6ac1">!</span>tables.<span style="color:#57c7ff">contains</span>(<span style="color:#5af78e">&#34;messages&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            r.<span style="color:#57c7ff">db</span>(<span style="color:#5af78e">&#34;chat&#34;</span>).<span style="color:#57c7ff">tableCreate</span>(<span style="color:#5af78e">&#34;messages&#34;</span>).<span style="color:#57c7ff">run</span>(connection);
+</span></span><span style="display:flex;"><span>            r.<span style="color:#57c7ff">db</span>(<span style="color:#5af78e">&#34;chat&#34;</span>).<span style="color:#57c7ff">table</span>(<span style="color:#5af78e">&#34;messages&#34;</span>).<span style="color:#57c7ff">indexCreate</span>(<span style="color:#5af78e">&#34;time&#34;</span>).<span style="color:#57c7ff">run</span>(connection);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Ignore the <code>pushChangesToWebSocket()</code> method call for now, we will see this in a minute.</p>
+<p>We can already get a feel for the RethinkDB API.
+It was originally designed for dynamically typed language so some things might
+be a little awkward for hardcore Java developers.</p>
+<p>For instance, the result of the operations can be of any type.
+RethinkDB will try to coerce the result according to the return type chosen, if possible.</p>
+<p>This is both good, because of the additional flexibility, and bad, because you
+cannot rely on autocomplete to know the return type of an operation.</p>
+<h2 id="the-chatcontroller">The ChatController</h2>
+<p>The chat controller will react to two things:</p>
+<ol>
+<li><code>GET</code>ting the last 20 messages from the DB</li>
+<li><code>POST</code>ing a new message</li>
+</ol>
+<p>Here is the code, which is kind of straight-forward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@RequestMapping</span>(<span style="color:#5af78e">&#34;/chat&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">ChatController</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> <span style="color:#ff5c57">final</span> Logger log <span style="color:#ff6ac1">=</span> LoggerFactory.<span style="color:#57c7ff">getLogger</span>(ChatController.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> RethinkDB r <span style="color:#ff6ac1">=</span> RethinkDB.<span style="color:#57c7ff">r</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> RethinkDBConnectionFactory connectionFactory;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span>(method <span style="color:#ff6ac1">=</span> RequestMethod.<span style="color:#57c7ff">POST</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> ChatMessage <span style="color:#57c7ff">postMessage</span>(<span style="color:#ff9f43">@RequestBody</span> ChatMessage chatMessage) {
+</span></span><span style="display:flex;"><span>        chatMessage.<span style="color:#57c7ff">setTime</span>(OffsetDateTime.<span style="color:#57c7ff">now</span>());
+</span></span><span style="display:flex;"><span>        Object run <span style="color:#ff6ac1">=</span> r.<span style="color:#57c7ff">db</span>(<span style="color:#5af78e">&#34;chat&#34;</span>).<span style="color:#57c7ff">table</span>(<span style="color:#5af78e">&#34;messages&#34;</span>).<span style="color:#57c7ff">insert</span>(chatMessage)
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">run</span>(connectionFactory.<span style="color:#57c7ff">createConnection</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        log.<span style="color:#57c7ff">info</span>(<span style="color:#5af78e">&#34;Insert {}&#34;</span>, run);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> chatMessage;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span>(method <span style="color:#ff6ac1">=</span> RequestMethod.<span style="color:#57c7ff">GET</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> List<span style="color:#ff6ac1">&lt;</span>ChatMessage<span style="color:#ff6ac1">&gt;</span> <span style="color:#57c7ff">getMessages</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#ff6ac1">&lt;</span>ChatMessage<span style="color:#ff6ac1">&gt;</span> messages <span style="color:#ff6ac1">=</span> r.<span style="color:#57c7ff">db</span>(<span style="color:#5af78e">&#34;chat&#34;</span>).<span style="color:#57c7ff">table</span>(<span style="color:#5af78e">&#34;messages&#34;</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">orderBy</span>().<span style="color:#57c7ff">optArg</span>(<span style="color:#5af78e">&#34;index&#34;</span>, r.<span style="color:#57c7ff">desc</span>(<span style="color:#5af78e">&#34;time&#34;</span>))
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">limit</span>(20)
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">orderBy</span>(<span style="color:#5af78e">&#34;time&#34;</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#57c7ff">run</span>(connectionFactory.<span style="color:#57c7ff">createConnection</span>(), ChatMessage.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> messages;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The cool thing is that the API clean and simple to understand.</p>
+<p>Some things are still a bit funny:</p>
+<ul>
+<li>The <code>optArg</code> after the orderBy is a bit cryptic</li>
+<li>I spent some time figuring out that your POJO class must not contain any id
+attribute for the auto-generation to work</li>
+</ul>
+<h2 id="setting-up-websockets">Setting up websockets</h2>
+<p>Now that we can read and write from the DB, we need to push the updates to
+the client in real time.</p>
+<p>We will use websockets over <a href="http://www.rabbitmq.com/blog/2011/09/13/sockjs-websocket-emulation/">SockJS</a> for that.
+The configuration for websockets is pretty classic:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableWebSocketMessageBroker</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebSocketConfig</span> <span style="color:#ff5c57">extends</span> AbstractWebSocketMessageBrokerConfigurer {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">configureMessageBroker</span>(MessageBrokerRegistry config) {
+</span></span><span style="display:flex;"><span>        config.<span style="color:#57c7ff">enableSimpleBroker</span>(<span style="color:#5af78e">&#34;/topic&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">registerStompEndpoints</span>(StompEndpointRegistry registry) {
+</span></span><span style="display:flex;"><span>        registry.<span style="color:#57c7ff">addEndpoint</span>(<span style="color:#5af78e">&#34;/chatWS&#34;</span>).<span style="color:#57c7ff">withSockJS</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>How to read that:</p>
+<ul>
+<li>Our clients will be able to connect to the <code>/chatWS</code> endpoint</li>
+<li>The clients will then have the possibility to listen to any topic whose url begins
+with <code>/topic</code> (i.e, <code>/topic/messages</code>) and get notified in real time</li>
+</ul>
+<h2 id="listening-to-the-updates">Listening to the updates</h2>
+<p>We will now listen to database updates in a thread and broadcast the changes
+to all the clients listening on the web socket.</p>
+<p>We use the <code>@Async</code> annotation, so Spring will take care of running the code in a thread
+for us:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">ChatChangesListener</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> <span style="color:#ff5c57">final</span> Logger log <span style="color:#ff6ac1">=</span> LoggerFactory.<span style="color:#57c7ff">getLogger</span>(ChatChangesListener.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> RethinkDB r <span style="color:#ff6ac1">=</span> RethinkDB.<span style="color:#57c7ff">r</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> RethinkDBConnectionFactory connectionFactory;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> SimpMessagingTemplate webSocket;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Async</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">pushChangesToWebSocket</span>() {
+</span></span><span style="display:flex;"><span>      Cursor<span style="color:#ff6ac1">&lt;</span>ChatMessage<span style="color:#ff6ac1">&gt;</span> cursor <span style="color:#ff6ac1">=</span> r.<span style="color:#57c7ff">db</span>(<span style="color:#5af78e">&#34;chat&#34;</span>).<span style="color:#57c7ff">table</span>(<span style="color:#5af78e">&#34;messages&#34;</span>).<span style="color:#57c7ff">changes</span>()
+</span></span><span style="display:flex;"><span>              .<span style="color:#57c7ff">getField</span>(<span style="color:#5af78e">&#34;new_val&#34;</span>)
+</span></span><span style="display:flex;"><span>              .<span style="color:#57c7ff">run</span>(connectionFactory.<span style="color:#57c7ff">createConnection</span>(), ChatMessage.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff6ac1">while</span> (cursor.<span style="color:#57c7ff">hasNext</span>()) {
+</span></span><span style="display:flex;"><span>          ChatMessage chatMessage <span style="color:#ff6ac1">=</span> cursor.<span style="color:#57c7ff">next</span>();
+</span></span><span style="display:flex;"><span>          log.<span style="color:#57c7ff">info</span>(<span style="color:#5af78e">&#34;New message: {}&#34;</span>, chatMessage.<span style="color:#57c7ff">message</span>);
+</span></span><span style="display:flex;"><span>          webSocket.<span style="color:#57c7ff">convertAndSend</span>(<span style="color:#5af78e">&#34;/topic/messages&#34;</span>, chatMessage);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>So what happens here? Each time a change happens in the database,
+we will get an update. This update will contain two fields: <code>old_val</code> and <code>new_val</code>.
+See <a href="https://www.rethinkdb.com/api/java/changes/">the documentation</a>.</p>
+<p>Since we are only interested in the new things, we will only retrieve the <code>new_val</code> field.</p>
+<p>Note that the second (optional) argument to the <code>run</code> method is a class.
+If present, RethinkDB will try to convert the data to this target class, just like
+we did in the <code>ChatController</code> above.</p>
+<p>Then, we simply broadcast the message to all the clients listening on <code>/topic/messages</code>.</p>
+<h2 id="the-client">The client</h2>
+<p>If you never used webjars before, they are simply jar packages containing frontend
+dependencies. With Spring Boot we can use them in our web pages directly.
+Below the <code>index.html</code> file of our application:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#78787e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">html</span> <span style="color:#57c7ff">lang</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;en&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">meta</span> <span style="color:#57c7ff">charset</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;UTF-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">title</span>&gt;Title&lt;/<span style="color:#ff6ac1">title</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;webjars/jquery/3.0.0-alpha1/jquery.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;webjars/sockjs-client/1.0.0/sockjs.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;webjars/stomp-websocket/2.3.3/stomp.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;js/main.js&#34;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">div</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;chat&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">div</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;messages&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">form</span> <span style="color:#57c7ff">onsubmit</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;sendMessage(); return false;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">label</span>&gt;
+</span></span><span style="display:flex;"><span>            Message:
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#ff6ac1">input</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;text&#34;</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;messageInput&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#ff6ac1">label</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">button</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;submit&#34;</span>&gt;Send&lt;/<span style="color:#ff6ac1">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">form</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">html</span>&gt;
+</span></span></code></pre></div><p>And the javascript:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> userName <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">window</span>.prompt(<span style="color:#5af78e">&#34;Enter your name&#34;</span>, <span style="color:#5af78e">&#34;some user&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">function</span> appendMessage(message) {
+</span></span><span style="display:flex;"><span>    $(<span style="color:#5af78e">&#39;#messages&#39;</span>).append($(<span style="color:#5af78e">&#39;&lt;div /&gt;&#39;</span>).text(message.from <span style="color:#ff6ac1">+</span> <span style="color:#5af78e">&#34;: &#34;</span> <span style="color:#ff6ac1">+</span> message.message))
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">function</span> getPreviousMessages() {
+</span></span><span style="display:flex;"><span>    $.get(<span style="color:#5af78e">&#39;/chat&#39;</span>).done(messages =&gt; messages.forEach(appendMessage));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">function</span> sendMessage() {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">var</span> $messageInput <span style="color:#ff6ac1">=</span> $(<span style="color:#5af78e">&#39;#messageInput&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">var</span> message <span style="color:#ff6ac1">=</span> {message<span style="color:#ff6ac1">:</span> $messageInput.val(), from<span style="color:#ff6ac1">:</span> userName};
+</span></span><span style="display:flex;"><span>    $messageInput.val(<span style="color:#5af78e">&#39;&#39;</span>);
+</span></span><span style="display:flex;"><span>    post(<span style="color:#5af78e">&#39;/chat&#39;</span>, message);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">function</span> onNewMessage(result) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">var</span> message <span style="color:#ff6ac1">=</span> JSON.parse(result.body);
+</span></span><span style="display:flex;"><span>    appendMessage(message);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">function</span> connectWebSocket() {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">var</span> socket <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> SockJS(<span style="color:#5af78e">&#39;/chatWS&#39;</span>);
+</span></span><span style="display:flex;"><span>    stompClient <span style="color:#ff6ac1">=</span> Stomp.over(socket);
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">//stompClient.debug = null;
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>    stompClient.connect({}, (frame) =&gt; {
+</span></span><span style="display:flex;"><span>        console.log(<span style="color:#5af78e">&#39;Connected: &#39;</span> <span style="color:#ff6ac1">+</span> frame);
+</span></span><span style="display:flex;"><span>        stompClient.subscribe(<span style="color:#5af78e">&#39;/topic/messages&#39;</span>, onNewMessage);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>getPreviousMessages();
+</span></span><span style="display:flex;"><span>connectWebSocket();
+</span></span></code></pre></div><p><img loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-hello.gif" alt="The chat with a bit of CSS"  title="Hello world!"  />
+</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>RethinkDB is an awesome database, especially because it lets you decouple the
+code that updates the database and the code that listens to the changes.</p>
+<p>The driver is brand new and still in beta but we can already salute the efforts
+of the developers for such an amazing work!</p>
+<p>As always, check out the project <a href="https://github.com/geowarin/boot-rethinkdb">on github</a>
+and tell me what you think!</p>
+]]></content:encoded></item></channel></rss>

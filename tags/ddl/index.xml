@@ -1,1 +1,160 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>DDL on Geowarin</title><link>https://geowarin.com/tags/ddl/</link><description>Recent content in DDL on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Jan 2013 23:44:07 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/ddl/index.xml" rel="self" type="application/rss+xml"/><item><title>Generate DDL with hibernate</title><link>https://geowarin.com/generate-ddl-with-hibernate/</link><pubDate>Mon, 21 Jan 2013 23:44:07 +0000</pubDate><guid>https://geowarin.com/generate-ddl-with-hibernate/</guid><description>How to generate SQL schemas with hibernate built-in classes</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>DDL on Geowarin</title><link>https://geowarin.com/tags/ddl/</link><description>Recent content in DDL on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Jan 2013 23:44:07 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/ddl/index.xml" rel="self" type="application/rss+xml"/><item><title>Generate DDL with hibernate</title><link>https://geowarin.com/generate-ddl-with-hibernate/</link><pubDate>Mon, 21 Jan 2013 23:44:07 +0000</pubDate><guid>https://geowarin.com/generate-ddl-with-hibernate/</guid><description>How to generate SQL schemas with hibernate built-in classes</description><content:encoded><![CDATA[<p>I don&rsquo;t know if it&rsquo;s a well known feature but there is a bunch of methods on hibernate <a href="http://docs.jboss.org/hibernate/orm/3.5/api/org/hibernate/cfg/Configuration.html">Configuration</a> class which will produce <a href="http://en.wikipedia.org/wiki/Data_definition_language">DDL</a> for your database according to the dialect in use.</p>
+<p>In this blog post we will see how to use those methods to generate a DDL script to set up our database and get rid of those annoying DBAs (just kidding, always review these scripts, they&rsquo;re not production ready).</p>
+<p>The source code of this article is available on github : <a href="https://github.com/geowarin/hibernate-examples/tree/master/generate-ddl-hibernate">https://github.com/geowarin/hibernate-examples/tree/master/generate-ddl-hibernate</a></p>
+<p>So the goal of this article is, given a dialect and a package to scan containing our entities, generate a DDL.</p>
+<p>With hibernate in the classpath, you can create a new configuration like this :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>hibernateConfiguration <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Configuration();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hibernateConfiguration.<span style="color:#57c7ff">addAnnotatedClass</span>(myEntity.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>hibernateConfiguration.<span style="color:#57c7ff">addAnnotatedClass</span>(mySecondEntity.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hibernateConfiguration.<span style="color:#57c7ff">setProperty</span>(AvailableSettings.<span style="color:#57c7ff">DIALECT</span>, dialect);
+</span></span></code></pre></div><p>That&rsquo;s cool but pretty boring.
+Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections project</a> to provide some package scanning.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">private</span> Configuration <span style="color:#57c7ff">createHibernateConfig</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	hibernateConfiguration <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Configuration();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">final</span> Reflections reflections <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Reflections(entityPackage);
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">for</span> (Class<span style="color:#ff6ac1">&lt;?&gt;</span> cl : reflections.<span style="color:#57c7ff">getTypesAnnotatedWith</span>(MappedSuperclass.<span style="color:#57c7ff">class</span>)) {
+</span></span><span style="display:flex;"><span>		hibernateConfiguration.<span style="color:#57c7ff">addAnnotatedClass</span>(cl);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">for</span> (Class<span style="color:#ff6ac1">&lt;?&gt;</span> cl : reflections.<span style="color:#57c7ff">getTypesAnnotatedWith</span>(Entity.<span style="color:#57c7ff">class</span>)) {
+</span></span><span style="display:flex;"><span>		hibernateConfiguration.<span style="color:#57c7ff">addAnnotatedClass</span>(cl);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	hibernateConfiguration.<span style="color:#57c7ff">setProperty</span>(AvailableSettings.<span style="color:#57c7ff">DIALECT</span>, dialect);
+</span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">return</span> hibernateConfiguration;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Then you can get your creation scripts lines like that :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#ff6ac1">[]</span> createSQL <span style="color:#ff6ac1">=</span> hibernateConfiguration.<span style="color:#57c7ff">generateSchemaCreationScript</span>(hibDialect);
+</span></span><span style="display:flex;"><span>String<span style="color:#ff6ac1">[]</span> dropSQL <span style="color:#ff6ac1">=</span> hibernateConfiguration.<span style="color:#57c7ff">generateDropSchemaScript</span>(hibDialect);
+</span></span></code></pre></div><p>For the create script, each line will contain either a database creation or a constraint.</p>
+<p>So here is the final result :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#78787e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * This class will create an hibernate {@link Configuration} with the given dialect and will scan provided
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * package for {@link MappedSuperclass} and {@link Entity}.
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * You can then use the export methods to generate your schema DDL.
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * @author Geoffroy Warin (https://github.com/geowarin)
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">HibernateExporter</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> Logger log <span style="color:#ff6ac1">=</span> LoggerFactory.<span style="color:#57c7ff">getLogger</span>(HibernateExporter.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> String dialect;
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> String entityPackage;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#9aedfe">boolean</span> generateCreateQueries <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">true</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#9aedfe">boolean</span> generateDropQueries <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> Configuration hibernateConfiguration;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#57c7ff">HibernateExporter</span>(String dialect, String entityPackage) {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">dialect</span> <span style="color:#ff6ac1">=</span> dialect;
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">entityPackage</span> <span style="color:#ff6ac1">=</span> entityPackage;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		hibernateConfiguration <span style="color:#ff6ac1">=</span> createHibernateConfig();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">export</span>(OutputStream out, <span style="color:#9aedfe">boolean</span> generateCreateQueries, <span style="color:#9aedfe">boolean</span> generateDropQueries) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		Dialect hibDialect <span style="color:#ff6ac1">=</span> Dialect.<span style="color:#57c7ff">getDialect</span>(hibernateConfiguration.<span style="color:#57c7ff">getProperties</span>());
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">try</span> (PrintWriter writer <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> PrintWriter(out)) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#ff6ac1">if</span> (generateCreateQueries) {
+</span></span><span style="display:flex;"><span>				String<span style="color:#ff6ac1">[]</span> createSQL <span style="color:#ff6ac1">=</span> hibernateConfiguration.<span style="color:#57c7ff">generateSchemaCreationScript</span>(hibDialect);
+</span></span><span style="display:flex;"><span>				write(writer, createSQL, FormatStyle.<span style="color:#57c7ff">DDL</span>.<span style="color:#57c7ff">getFormatter</span>());
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>			<span style="color:#ff6ac1">if</span> (generateDropQueries) {
+</span></span><span style="display:flex;"><span>				String<span style="color:#ff6ac1">[]</span> dropSQL <span style="color:#ff6ac1">=</span> hibernateConfiguration.<span style="color:#57c7ff">generateDropSchemaScript</span>(hibDialect);
+</span></span><span style="display:flex;"><span>				write(writer, dropSQL, FormatStyle.<span style="color:#57c7ff">DDL</span>.<span style="color:#57c7ff">getFormatter</span>());
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">export</span>(File exportFile) <span style="color:#ff5c57">throws</span> FileNotFoundException {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		export(<span style="color:#ff6ac1">new</span> FileOutputStream(exportFile), generateCreateQueries, generateDropQueries);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">exportToConsole</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		export(System.<span style="color:#57c7ff">out</span>, generateCreateQueries, generateDropQueries);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">write</span>(PrintWriter writer, String<span style="color:#ff6ac1">[]</span> lines, Formatter formatter) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">for</span> (String string : lines)
+</span></span><span style="display:flex;"><span>			writer.<span style="color:#57c7ff">println</span>(formatter.<span style="color:#57c7ff">format</span>(string) <span style="color:#ff6ac1">+</span> <span style="color:#5af78e">&#34;;&#34;</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> Configuration <span style="color:#57c7ff">createHibernateConfig</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		hibernateConfiguration <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Configuration();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff5c57">final</span> Reflections reflections <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Reflections(entityPackage);
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">for</span> (Class<span style="color:#ff6ac1">&lt;?&gt;</span> cl : reflections.<span style="color:#57c7ff">getTypesAnnotatedWith</span>(MappedSuperclass.<span style="color:#57c7ff">class</span>)) {
+</span></span><span style="display:flex;"><span>			hibernateConfiguration.<span style="color:#57c7ff">addAnnotatedClass</span>(cl);
+</span></span><span style="display:flex;"><span>			log.<span style="color:#57c7ff">info</span>(<span style="color:#5af78e">&#34;Mapped = &#34;</span> <span style="color:#ff6ac1">+</span> cl.<span style="color:#57c7ff">getName</span>());
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">for</span> (Class<span style="color:#ff6ac1">&lt;?&gt;</span> cl : reflections.<span style="color:#57c7ff">getTypesAnnotatedWith</span>(Entity.<span style="color:#57c7ff">class</span>)) {
+</span></span><span style="display:flex;"><span>			hibernateConfiguration.<span style="color:#57c7ff">addAnnotatedClass</span>(cl);
+</span></span><span style="display:flex;"><span>			log.<span style="color:#57c7ff">info</span>(<span style="color:#5af78e">&#34;Mapped = &#34;</span> <span style="color:#ff6ac1">+</span> cl.<span style="color:#57c7ff">getName</span>());
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		hibernateConfiguration.<span style="color:#57c7ff">setProperty</span>(AvailableSettings.<span style="color:#57c7ff">DIALECT</span>, dialect);
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> hibernateConfiguration;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">boolean</span> <span style="color:#57c7ff">isGenerateDropQueries</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> generateDropQueries;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">setGenerateDropQueries</span>(<span style="color:#9aedfe">boolean</span> generateDropQueries) {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">generateDropQueries</span> <span style="color:#ff6ac1">=</span> generateDropQueries;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> Configuration <span style="color:#57c7ff">getHibernateConfiguration</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> hibernateConfiguration;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">setHibernateConfiguration</span>(Configuration hibernateConfiguration) {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">hibernateConfiguration</span> <span style="color:#ff6ac1">=</span> hibernateConfiguration;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>And its usage :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">main</span>(String<span style="color:#ff6ac1">[]</span> args) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">//		HibernateExporter exporter = new HibernateExporter(&#34;org.hibernate.dialect.HSQLDialect&#34;, &#34;com.geowarin.model&#34;);</span>
+</span></span><span style="display:flex;"><span>	HibernateExporter exporter <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> HibernateExporter(<span style="color:#5af78e">&#34;org.hibernate.dialect.MySQL5Dialect&#34;</span>, <span style="color:#5af78e">&#34;com.geowarin.model&#34;</span>);
+</span></span><span style="display:flex;"><span>	exporter.<span style="color:#57c7ff">exportToConsole</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This will produce this kind of output :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span> <span style="color:#ff6ac1">create</span> <span style="color:#ff6ac1">table</span> groups (
+</span></span><span style="display:flex;"><span>        id <span style="color:#ff5c57">bigint</span> <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span> auto_increment,
+</span></span><span style="display:flex;"><span>        createdOn datetime,
+</span></span><span style="display:flex;"><span>        modifiedOn datetime,
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">version</span> <span style="color:#ff5c57">bigint</span> <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span>,
+</span></span><span style="display:flex;"><span>        name <span style="color:#ff5c57">varchar</span>(<span style="color:#ff9f43">50</span>) <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span>,
+</span></span><span style="display:flex;"><span>        user_id <span style="color:#ff5c57">bigint</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">primary</span> <span style="color:#ff6ac1">key</span> (id)
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">create</span> <span style="color:#ff6ac1">table</span> users (
+</span></span><span style="display:flex;"><span>        id <span style="color:#ff5c57">bigint</span> <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span> auto_increment,
+</span></span><span style="display:flex;"><span>        createdOn datetime,
+</span></span><span style="display:flex;"><span>        modifiedOn datetime,
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">version</span> <span style="color:#ff5c57">bigint</span> <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span>,
+</span></span><span style="display:flex;"><span>        email <span style="color:#ff5c57">varchar</span>(<span style="color:#ff9f43">255</span>) <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span>,
+</span></span><span style="display:flex;"><span>        password <span style="color:#ff5c57">varchar</span>(<span style="color:#ff9f43">80</span>) <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span>,
+</span></span><span style="display:flex;"><span>        user_name <span style="color:#ff5c57">varchar</span>(<span style="color:#ff9f43">50</span>) <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span> <span style="color:#ff6ac1">unique</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">primary</span> <span style="color:#ff6ac1">key</span> (id)
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">alter</span> <span style="color:#ff6ac1">table</span> groups
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">add</span> <span style="color:#ff6ac1">index</span> FKB63DD9D4CA46C100 (user_id),
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">add</span> <span style="color:#ff6ac1">constraint</span> FKB63DD9D4CA46C100
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">foreign</span> <span style="color:#ff6ac1">key</span> (user_id)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">references</span> users (id);
+</span></span></code></pre></div><p>As I said, it is not suitable for your production environment but it provides some starter DDL if you are the code first kind (and don&rsquo;t want to use hibernate-tools).</p>
+]]></content:encoded></item></channel></rss>

@@ -1,1 +1,85 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>modern on Geowarin</title><link>https://geowarin.com/tags/modern/</link><description>Recent content in modern on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 28 Dec 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/modern/index.xml" rel="self" type="application/rss+xml"/><item><title>The modern java developer</title><link>https://geowarin.com/the-modern-java-developer/</link><pubDate>Mon, 28 Dec 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/the-modern-java-developer/</guid><description>What to learn in 2016 to be a top notch Java dev?</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>modern on Geowarin</title><link>https://geowarin.com/tags/modern/</link><description>Recent content in modern on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 28 Dec 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/modern/index.xml" rel="self" type="application/rss+xml"/><item><title>The modern java developer</title><link>https://geowarin.com/the-modern-java-developer/</link><pubDate>Mon, 28 Dec 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/the-modern-java-developer/</guid><description>What to learn in 2016 to be a top notch Java dev?</description><content:encoded><![CDATA[<p>My dear colleague Fruzenshtein asked me what
+I think a modern Java developer should know or learn in 2016.</p>
+<p>This is a mix of techniques and tools I&rsquo;ve learned and found useful
+the past year and the one that I wish to learn in the coming year.</p>
+<h2 id="practices">Practices</h2>
+<p>Kent Beck once said he was &ldquo;just a good programmer with great habits&rdquo;.
+As professional developers, we should all strive to cultivate better habits.</p>
+<h3 id="tdd">TDD</h3>
+<p>Java developers are lucky to work in a very rich ecosystem with extremely good
+testing libraries.
+If you do not have the healthy habit of writing <a href="http://martinfowler.com/bliki/TestDrivenDevelopment.html">tests first</a>,
+you should at least make an effort to learn the tools that will help you craft quality software.</p>
+<p>In no particular order, here is a curated list of the frameworks and tools I use
+to write better tests:</p>
+<ul>
+<li><a href="http://spockframework.github.io/spock/docs/1.0/index.html">Spock</a></li>
+<li><a href="http://www.gebish.org/">Geb</a> / <a href="https://github.com/FluentLenium/FluentLenium">Fluentlenium</a></li>
+<li><a href="https://github.com/fakemongo/fongo">Fake Mongo</a></li>
+<li><a href="http://joel-costigliola.github.io/assertj/">AssertJ</a></li>
+<li><a href="http://dbunit.sourceforge.net/">DbUnit</a> / <a href="https://github.com/lordofthejars/nosql-unit">NoSqlUnit</a></li>
+<li><a href="http://junit.org/junit-lambda.html">Junit lambda</a></li>
+</ul>
+<p>I find that writing tests in groovy is particularly awesome, if you do not know groovy
+yet, give it a try this year!</p>
+<h3 id="modern-build-and-ci">Modern build and CI</h3>
+<p>Maven is great, fast and well integrated with IDEs.
+However, I have definitely switched to <a href="http://gradle.org/">gradle</a> for all
+my projects.</p>
+<p>Gradle is synonym of less boilerplate, custom tasks, polyglot and truly incremental
+builds.</p>
+<p>You should also look at a modern Continuous integration setup.
+I have been using
+<a href="https://docs.travis-ci.com/user/languages/java/">travis</a> for my open source
+projects.</p>
+<p>At work, I&rsquo;ve been very happy to use <a href="https://about.gitlab.com/">gitlab</a>. It
+has a very cool CI environment called <a href="https://about.gitlab.com/gitlab-ci/">gitlab CI</a>,
+which borrows a lot of concepts from travis.</p>
+<p>Better yet, deploying Gitlab with docker should take you <a href="http://www.damagehead.com/docker-gitlab-ci/">5 minutes!</a>.</p>
+<p>In the Continuous deployment world, <a href="http://techblog.netflix.com/2015/11/global-continuous-delivery-with.html">Spinnaker</a> looks
+very promising.</p>
+<h3 id="good-tools">Good tools</h3>
+<p>If your are stuck with svn do yourself a favor and learn git as soon as possible.</p>
+<p>Here are some resources I found useful while learning git:</p>
+<ul>
+<li><a href="https://try.github.io/">Learn git in 15 minutes</a></li>
+<li><a href="http://pcottle.github.io/learnGitBranching/">Learn git branching</a></li>
+</ul>
+<p>And of course, a <a href="https://www.jetbrains.com/idea/">great IDE</a> will change your life.</p>
+<h2 id="infrastructure-docker-and-cloud">Infrastructure: Docker and cloud</h2>
+<p>The past two years have been all about docker.
+For a good reason in my opinion!</p>
+<p>I&rsquo;ve had tons of fun and success using <a href="https://docs.docker.com/compose/">docker-compose</a>
+to set up development and QA environments.</p>
+<p>If you never deployed one of your pet projects to the cloud, it has never been easier.
+Give a try at pivotal Web Services, Heroku or Digital Ocean if you are running docker
+containers.</p>
+<p>If you are looking to deploy Spring applications at scale, be sure to take a look at <a href="http://cloud.spring.io/spring-cloud-netflix/">netflix OSS</a>.
+With great projects like Ribbon, Eureka and Hystrix, you&rsquo;ve got everything to
+run your own cloud!</p>
+<h2 id="web-and-js">Web and JS</h2>
+<p>Javascript has evolved a lot this year and you should definitely look at
+<a href="https://facebook.github.io/react/">React</a> or follow <a href="http://www.infoq.com/news/2015/10/angular-connect-keynote-summary">angular 2</a>&rsquo;s progress</p>
+<p>The main problem with those libraries is the setup of a good development environment.
+Webpack, JSPM or Browserify? How to properly setup hot reloading?
+How to design your build pipeline? Those question are still difficult to answer
+but I&rsquo;m confident 2016 will solve those problems.</p>
+<p>If you want to get started with Spring boot and react, have a look at my
+<a href="https://github.com/geowarin/boot-react">boot-react</a> project.</p>
+<h2 id="functional-programming">Functional programming</h2>
+<p>With lambdas in Java 8, I think the java community has begun to look more and
+more at the functional programming paradigms.</p>
+<p>Personally, my gateway to FP has been javascript.
+With react and redux borrowing a lot of concepts from the <a href="https://github.com/evancz/elm-architecture-tutorial/">elm architecture</a> to the
+excellent course I am taking called <a href="https://frontendmasters.com/courses/functional-javascript/">&ldquo;Hardcore functional programming in javascript&rdquo;</a>,
+it seems that this community has a lot of interest for FP.</p>
+<p>I will also have a look at <a href="http://livescript.net/">livescript</a>, an Haskell-like
+language that compiles to javascript.</p>
+<p>Naturally, I will also try to use those functional paradigms on
+the backend.
+I&rsquo;m not a big fan of Scala yet so I think I will look more closely at <a href="https://kotlinlang.org/">kotlin</a>, which is now in beta with top tier IDE support and <a href="https://kotlinlang.org/docs/tutorials/spring-boot-restful.html">compatible with spring</a></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>What do you think of this list? Would you add something?
+Do not forget to check out the <a href="http://fruzenshtein.com/successful-java-developer-2016">profile of successful Java developer in 2016
+</a> on Fruzenshtein&rsquo;s notes!</p>
+]]></content:encoded></item></channel></rss>

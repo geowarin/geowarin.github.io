@@ -1,1 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>eclipse on Geowarin</title><link>https://geowarin.com/categories/eclipse/</link><description>Recent content in eclipse on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 18 Jan 2013 04:20:19 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/eclipse/index.xml" rel="self" type="application/rss+xml"/><item><title>Tuning eclipse</title><link>https://geowarin.com/tuning-eclipse/</link><pubDate>Fri, 18 Jan 2013 04:20:19 +0000</pubDate><guid>https://geowarin.com/tuning-eclipse/</guid><description>Tips and tricks, useful plugins and tuning for the eclipse IDE</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>eclipse on Geowarin</title><link>https://geowarin.com/categories/eclipse/</link><description>Recent content in eclipse on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 18 Jan 2013 04:20:19 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/eclipse/index.xml" rel="self" type="application/rss+xml"/><item><title>Tuning eclipse</title><link>https://geowarin.com/tuning-eclipse/</link><pubDate>Fri, 18 Jan 2013 04:20:19 +0000</pubDate><guid>https://geowarin.com/tuning-eclipse/</guid><description>Tips and tricks, useful plugins and tuning for the eclipse IDE</description><content:encoded><![CDATA[<p>This is a compilation of resources I use to configure eclipse.</p>
+<h2 id="the-jvm-options">The Jvm options</h2>
+<p>Always a big headache, there is a good resource on <a href="http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/3275659#3275659">stack-overflow</a>.</p>
+<p>For JVM noobs, I recommend the <a href="http://avricot.com/blog/index.php?post/2010/05/03/Get-started-with-java-JVM-memory-(heap%2C-stack%2C-xss-xms-xmx-xmn...)">following reading</a>.</p>
+<p>If you are a JVM tuning maniac, you might also like <a href="http://blog.headius.com/2009/01/my-favorite-hotspot-jvm-flags.html">this post</a> and to <a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">read the man</a>.</p>
+<p>If you&rsquo;re interested, I am maintaining a gist with my up-to-date eclipse flags : <a href="https://gist.github.com/4562291">https://gist.github.com/4562291</a></p>
+<h2 id="must-have-plugins">Must-have plugins</h2>
+<p>If you don&rsquo;t know them already, you should check out these plugins :</p>
+<ul>
+<li><a href="http://marketplace.eclipse.org/content/easyshell">EasyShell</a>, which allows to open windows, terminal and copy path on any eclipse resource (and configure shortcuts for each of these actions - pretty awesome)</li>
+<li><a href="http://www.eclipse.org/m2e-wtp/">m2e</a> and <a href="http://www.eclipse.org/m2e-wtp/">m2e-wtp</a> are must-haves if you use maven to build JEE apps. I often install the <a href="http://mojo.codehaus.org/build-helper-maven-plugin/usage.html">build-helper</a> connector too.</li>
+<li><a href="http://marketplace.eclipse.org/content/grep-console#.UPjHgieqmEc">GrepConsole</a>, which lets you use simple regexp to color your console, fancy !</li>
+</ul>
+<h2 id="copy-workspace-settings">Copy workspace settings</h2>
+<p>If you want to have multiple workspaces sharing the same preferences check out <a href="http://eclipse.dzone.com/news/create-new-eclipse-workspace-w">this article</a>.</p>
+<h2 id="file-encoding-in-utf-8-please">File encoding in UTF-8 please</h2>
+<p>First thing is to go to General &gt; Workspace and select UTF-8 in &ldquo;Text File Encoding&rdquo;
+Second is General  &gt; Content Types &gt; Text. Then you can either type &ldquo;UTF-8&rdquo; for everything or at least for &ldquo;Java Properties file&rdquo;</p>
+<h2 id="bonus">Bonus</h2>
+<p>Et pour nos amis francophones, une <a href="http://blog.tensin.org/public/presentations/eclipse/">superbe présentation</a> sur la customisation d&rsquo;eclipse !</p>
+]]></content:encoded></item></channel></rss>

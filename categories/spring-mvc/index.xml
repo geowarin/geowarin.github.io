@@ -1,1 +1,268 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>spring-mvc on Geowarin</title><link>https://geowarin.com/categories/spring-mvc/</link><description>Recent content in spring-mvc on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 23 Jan 2013 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/spring-mvc/index.xml" rel="self" type="application/rss+xml"/><item><title>Complete example of a Spring MVC 3.2 project</title><link>https://geowarin.com/complete-example-of-a-spring-mvc-3.2-project/</link><pubDate>Wed, 23 Jan 2013 00:00:00 +0000</pubDate><guid>https://geowarin.com/complete-example-of-a-spring-mvc-3.2-project/</guid><description>Awesome spring mvc 3.2 starter with sitemesh, localization, UTF-8, boostrap and spring test mvc</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>spring-mvc on Geowarin</title><link>https://geowarin.com/categories/spring-mvc/</link><description>Recent content in spring-mvc on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 23 Jan 2013 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/spring-mvc/index.xml" rel="self" type="application/rss+xml"/><item><title>Complete example of a Spring MVC 3.2 project</title><link>https://geowarin.com/complete-example-of-a-spring-mvc-3.2-project/</link><pubDate>Wed, 23 Jan 2013 00:00:00 +0000</pubDate><guid>https://geowarin.com/complete-example-of-a-spring-mvc-3.2-project/</guid><description>Awesome spring mvc 3.2 starter with sitemesh, localization, UTF-8, boostrap and spring test mvc</description><content:encoded><![CDATA[<p>You want to get started with Spring MVC 3.2 with a complete XML-less configuration? Have a cool simple project with a lot of the nice-to-have features?</p>
+<ol>
+<li>A templating framework (we will use <a href="http://wiki.sitemesh.org/display/sitemesh/Home">SiteMesh</a> for this example - I think it is one of the simplest, most powerful frameworks out there)</li>
+<li>Localized and custom text and validation messages with reloadable bundles in development</li>
+<li>UTF-8 encoding filter for your user inputs</li>
+<li>Use the <a href="http://twitter.github.com/bootstrap/">twitter boostrap</a> for a responsive, slick design</li>
+<li>Unit tests of your controllers using <a href="https://github.com/SpringSource/spring-test-mvc">spring-test-mvc</a></li>
+<li>Be able to run it with embedded tomcat or jetty maven plugins?</li>
+</ol>
+<p>Then you can directly git clone this project : <a href="https://github.com/geowarin/spring-mvc-examples/tree/master/mvc-base">https://github.com/geowarin/spring-mvc-examples/tree/master/mvc-base</a></p>
+<p>This article will explain how this can be done with 5 classes and 1 jsp.</p>
+<h2 id="the-configuration-with-spring-32-and-servlet-30">The configuration with spring 3.2 and servlet 3.0</h2>
+<p>Since spring 3.1, it is possible to run spring MVC without a web.xml if you are in a servlet 3.0 environment. But spring 3.2 takes things a little bit further by providing a set of abstract classes to enable a <a href="http://static.springsource.org/spring-framework/docs/3.2.0.RELEASE/spring-framework-reference/html/mvc.html#mvc-container-config">very easy configuration</a>. Check this :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebInitializer</span> <span style="color:#ff5c57">extends</span> AbstractAnnotationConfigDispatcherServletInitializer {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">protected</span> Class<span style="color:#ff6ac1">&lt;?&gt;[]</span> getRootConfigClasses() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">null</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">protected</span> Class<span style="color:#ff6ac1">&lt;?&gt;[]</span> getServletConfigClasses() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> Class<span style="color:#ff6ac1">&lt;?&gt;[]</span> { WebConfig.<span style="color:#57c7ff">class</span> };
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">protected</span> String<span style="color:#ff6ac1">[]</span> <span style="color:#57c7ff">getServletMappings</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> String<span style="color:#ff6ac1">[]</span> { <span style="color:#5af78e">&#34;/&#34;</span> };
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">protected</span> Filter<span style="color:#ff6ac1">[]</span> <span style="color:#57c7ff">getServletFilters</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		CharacterEncodingFilter characterEncodingFilter <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> CharacterEncodingFilter();
+</span></span><span style="display:flex;"><span>		characterEncodingFilter.<span style="color:#57c7ff">setEncoding</span>(<span style="color:#5af78e">&#34;UTF-8&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> Filter<span style="color:#ff6ac1">[]</span> { characterEncodingFilter, <span style="color:#ff6ac1">new</span> SiteMeshFilter()};
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The filters are not mandatory, it just demonstrates how to add them to this configuration (site mesh requires a small xml file to point to a template - it won&rsquo;t be covered by this article but check out the <a href="http://wiki.sitemesh.org/display/sitemesh/Start+Using+SiteMesh+in+10+Minutes">documentation</a> or have a look at this project on <a href="https://github.com/geowarin/spring-mvc-examples/tree/master/mvc-base">github</a>).</p>
+<p>The UTF-8 filter will prevent encoding problems with your user inputs.</p>
+<p>Spring MVC also requires a <strong>WebConfig</strong> class. This is the minimal one :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableWebMvc</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ComponentScan</span>(basePackages <span style="color:#ff6ac1">=</span> { <span style="color:#5af78e">&#34;com.geowarin.mvc.base.controller&#34;</span> })
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebConfig</span> <span style="color:#ff5c57">extends</span> WebMvcConfigurerAdapter {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">addResourceHandlers</span>(ResourceHandlerRegistry registry) {
+</span></span><span style="display:flex;"><span>		registry.<span style="color:#57c7ff">addResourceHandler</span>(<span style="color:#5af78e">&#34;/resources/**&#34;</span>).<span style="color:#57c7ff">addResourceLocations</span>(<span style="color:#5af78e">&#34;/resources/&#34;</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> ViewResolver <span style="color:#57c7ff">viewResolver</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		InternalResourceViewResolver viewResolver <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> InternalResourceViewResolver();
+</span></span><span style="display:flex;"><span>		viewResolver.<span style="color:#57c7ff">setViewClass</span>(JstlView.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>		viewResolver.<span style="color:#57c7ff">setPrefix</span>(<span style="color:#5af78e">&#34;/WEB-INF/views&#34;</span>);
+</span></span><span style="display:flex;"><span>		viewResolver.<span style="color:#57c7ff">setSuffix</span>(<span style="color:#5af78e">&#34;.jsp&#34;</span>);
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> viewResolver;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The <strong>@ComponentScan</strong> annotation will indicate the package in which our controllers are found.
+The <strong>ViewResolver</strong> bean will indicate both where our views can be found and what their extension is.</p>
+<p>In this example for instance we will just have a simple view in <strong>/WEB-INF/views/home.jsp</strong>. The <strong>ResourceHandler</strong> indicates where our static resources can be found (css, js, images, etc.).</p>
+<p>Here is our controller :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">HomeController</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@RequestMapping</span>(value <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;/&#34;</span>, method <span style="color:#ff6ac1">=</span> RequestMethod.<span style="color:#57c7ff">GET</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> String <span style="color:#57c7ff">displayHome</span>(Model model) {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#5af78e">&#34;/home&#34;</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>At this point, you can write &ldquo;hello&rdquo; in your home.jsp, launch a tomcat and enjoy our 3 classes spring MVC hello world. No web.xml, nothing else.</p>
+<h2 id="interceptors-locales-messages">Interceptors, locales, messages</h2>
+<p>Let me just show you the full configuration for our project :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableWebMvc</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ComponentScan</span>(basePackages <span style="color:#ff6ac1">=</span> { <span style="color:#5af78e">&#34;com.geowarin.mvc.base.controller&#34;</span> })
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebConfig</span> <span style="color:#ff5c57">extends</span> WebMvcConfigurerAdapter {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">addResourceHandlers</span>(ResourceHandlerRegistry registry) {
+</span></span><span style="display:flex;"><span>		registry.<span style="color:#57c7ff">addResourceHandler</span>(<span style="color:#5af78e">&#34;/resources/**&#34;</span>).<span style="color:#57c7ff">addResourceLocations</span>(<span style="color:#5af78e">&#34;/resources/&#34;</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">addInterceptors</span>(InterceptorRegistry registry) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		LocaleChangeInterceptor localeChangeInterceptor <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> LocaleChangeInterceptor();
+</span></span><span style="display:flex;"><span>		localeChangeInterceptor.<span style="color:#57c7ff">setParamName</span>(<span style="color:#5af78e">&#34;lang&#34;</span>);
+</span></span><span style="display:flex;"><span>		registry.<span style="color:#57c7ff">addInterceptor</span>(localeChangeInterceptor);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> LocaleResolver <span style="color:#57c7ff">localeResolver</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		CookieLocaleResolver cookieLocaleResolver <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> CookieLocaleResolver();
+</span></span><span style="display:flex;"><span>		cookieLocaleResolver.<span style="color:#57c7ff">setDefaultLocale</span>(StringUtils.<span style="color:#57c7ff">parseLocaleString</span>(<span style="color:#5af78e">&#34;en&#34;</span>));
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> cookieLocaleResolver;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> ViewResolver <span style="color:#57c7ff">viewResolver</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		InternalResourceViewResolver viewResolver <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> InternalResourceViewResolver();
+</span></span><span style="display:flex;"><span>		viewResolver.<span style="color:#57c7ff">setViewClass</span>(JstlView.<span style="color:#57c7ff">class</span>);
+</span></span><span style="display:flex;"><span>		viewResolver.<span style="color:#57c7ff">setPrefix</span>(<span style="color:#5af78e">&#34;/WEB-INF/views&#34;</span>);
+</span></span><span style="display:flex;"><span>		viewResolver.<span style="color:#57c7ff">setSuffix</span>(<span style="color:#5af78e">&#34;.jsp&#34;</span>);
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> viewResolver;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> MessageSource <span style="color:#57c7ff">messageSource</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		ReloadableResourceBundleMessageSource messageSource <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> ReloadableResourceBundleMessageSource();
+</span></span><span style="display:flex;"><span>		messageSource.<span style="color:#57c7ff">setBasenames</span>(<span style="color:#5af78e">&#34;classpath:messages/messages&#34;</span>, <span style="color:#5af78e">&#34;classpath:messages/validation&#34;</span>);
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// if true, the key of the message will be displayed if the key is not</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// found, instead of throwing a NoSuchMessageException</span>
+</span></span><span style="display:flex;"><span>		messageSource.<span style="color:#57c7ff">setUseCodeAsDefaultMessage</span>(<span style="color:#ff6ac1">true</span>);
+</span></span><span style="display:flex;"><span>		messageSource.<span style="color:#57c7ff">setDefaultEncoding</span>(<span style="color:#5af78e">&#34;UTF-8&#34;</span>);
+</span></span><span style="display:flex;"><span>		<span style="color:#78787e">// # -1 : never reload, 0 always reload</span>
+</span></span><span style="display:flex;"><span>		messageSource.<span style="color:#57c7ff">setCacheSeconds</span>(0);
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> messageSource;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The <strong>localeInterceptor</strong> will provide a way to switch the language in any page just by passing the lang=&lsquo;en&rsquo;, lang=&lsquo;fr&rsquo;, and so on to your url.
+The <strong>localeResolver</strong> will work with a simple cookie to memorize the user preference (you don&rsquo;t want to pass the lang argument through your whole site, do you?).</p>
+<p>With the messageSource, you will get access to properties bundle usable in your web pages. Here it is configured to be developper friendly (always reload, no error).</p>
+<p>These bundled can be localized. You can have as many as you want :</p>
+<ul>
+<li><strong>messages_en.properties</strong> for english language text</li>
+<li><strong>message_fr.properties</strong> for french</li>
+<li><strong>message_cn.properties</strong>, etc.</li>
+</ul>
+<h2 id="a-form-a-dto-some-validation">A form, a DTO, some validation</h2>
+<p>Next we will show a very simple usage of a form to demonstrate the localized, custom validation messages.</p>
+<p>In your home.jsp, write this code :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">form:form</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;form&#34;</span> <span style="color:#57c7ff">method</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;post&#34;</span> <span style="color:#57c7ff">modelAttribute</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;formDTO&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#ff6ac1">form:input</span> <span style="color:#57c7ff">path</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;messageFromUser&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#ff6ac1">form:errors</span> <span style="color:#57c7ff">path</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;messageFromUser&#34;</span> <span style="color:#57c7ff">cssClass</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;errorMessage&#34;</span> <span style="color:#57c7ff">element</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;div&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#ff6ac1">c:if</span> <span style="color:#57c7ff">test</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;${not empty message}&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#ff6ac1">div</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;message&#34;</span> <span style="color:#57c7ff">class</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;alert alert-success&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>			&lt;<span style="color:#ff6ac1">spring:message</span> <span style="color:#57c7ff">code</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;message.youWrote&#34;</span> <span style="color:#57c7ff">arguments</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;${message}&#34;</span> <span style="color:#57c7ff">htmlEscape</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;true&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>		&lt;/<span style="color:#ff6ac1">div</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;/<span style="color:#ff6ac1">c:if</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#ff6ac1">button</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;submit&#34;</span> <span style="color:#57c7ff">class</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;btn&#34;</span>&gt;Submit&lt;/<span style="color:#ff6ac1">button</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">form:form</span>&gt;
+</span></span></code></pre></div><p>This will bind your form to a model attribute called <strong>formDTO</strong>, we will see it in the controller shortly. You could also provide an action attribute but we will just map the action to <strong>&quot;/&quot;</strong>, just like our jsp.</p>
+<p>Then the input will be bound to the <strong>messageFromUser</strong> attribute of the <strong>formDTO</strong>. You can also see the associated error message if validation fails.</p>
+<p>Lastly, if a success message is present in the request (the controller will place it), we will display it with a localized text taking an argument. We also want to escape the text given by the user to prevent XSS injection.</p>
+<p>The message bundle for this example would look like this :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#57c7ff">message.youWrote</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">You wrote : {0}</span>
+</span></span></code></pre></div><p>Our new controller :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">HomeController</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@RequestMapping</span>(value <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;/&#34;</span>, method <span style="color:#ff6ac1">=</span> RequestMethod.<span style="color:#57c7ff">GET</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> String <span style="color:#57c7ff">displayHome</span>(Model model) {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#5af78e">&#34;/home&#34;</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@ModelAttribute</span>(<span style="color:#5af78e">&#34;formDTO&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> FormDTO <span style="color:#57c7ff">createFormBean</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> FormDTO();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@RequestMapping</span>(value <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;/&#34;</span>, method<span style="color:#ff6ac1">=</span>RequestMethod.<span style="color:#57c7ff">POST</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> String <span style="color:#57c7ff">submitMessage</span>(<span style="color:#ff9f43">@Valid</span> FormDTO formDTO, BindingResult result,
+</span></span><span style="display:flex;"><span>					SessionStatus sessionStatus,
+</span></span><span style="display:flex;"><span>					RedirectAttributes redirectAttrs) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">if</span> (result.<span style="color:#57c7ff">hasErrors</span>()) {
+</span></span><span style="display:flex;"><span>			<span style="color:#ff6ac1">return</span> <span style="color:#5af78e">&#34;/home&#34;</span>;
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		String message <span style="color:#ff6ac1">=</span> formDTO.<span style="color:#57c7ff">toString</span>();
+</span></span><span style="display:flex;"><span>		sessionStatus.<span style="color:#57c7ff">setComplete</span>();
+</span></span><span style="display:flex;"><span>		redirectAttrs.<span style="color:#57c7ff">addFlashAttribute</span>(<span style="color:#5af78e">&#34;message&#34;</span>, message);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">return</span> <span style="color:#5af78e">&#34;redirect:/&#34;</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can see we expose our <strong>FormDTO</strong> to the Model.
+Then we process this action of posting on &ldquo;/&rdquo;. With spring MVC request mapping you can inject whatever is relevant to the context of your page.
+Here we will ask Spring MVC to give us the form posted with indication on its correctness as far as validation rules are concerned (we will see that below).</p>
+<p>We also want some other small things : access to redirect attributes to display a single time (flash) message, access to the session to dispose our form, etc.</p>
+<p>If the user input is correct, we will redirect him (yes with spring MVC you have some <a href="http://en.wikipedia.org/wiki/Post/Redirect/Get">PRG</a> for free) to the home. You can also use the instruction &lsquo;forward:url&rsquo;.</p>
+<p>I strongly advise you to check out <a href="http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/mvc.html">the documentation</a> to learn what can be injected in your controllers.</p>
+<p>Our <strong>FormDTO</strong> is a simple POJO, annotated with <a href="http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/mvc.html">hibernate-validator</a> annotation :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">FormDTO</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@NotEmpty</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> String messageFromUser;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#78787e">// Getters and setters omitted</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Hibernate validator provides a lot of useful annotations like @Min, @Max, @Email. You can even stack them or create your own rules.</p>
+<p>That&rsquo;s it ! To customize validation message, just write properties with the same name as the annotations :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#78787e"># This will override validation messages caused by @NotEmpty annotation</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">NotEmpty</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">This cannot be empty !</span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># This will override @NotEmpty validation messages with a path of messageFromUser</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">NotEmpty.messageFromUser</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">Don&#39;t you have anything to say?</span>
+</span></span></code></pre></div><h2 id="wait--how-do-we-test-a-controller">Wait ! How do we test a controller?</h2>
+<p>With spring mvc test ! Have a look :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff6ac1">import static</span> org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import static</span> org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import static</span> org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@RunWith</span>(SpringJUnit4ClassRunner.<span style="color:#57c7ff">class</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@WebAppConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ContextConfiguration</span>(classes <span style="color:#ff6ac1">=</span> WebConfig.<span style="color:#57c7ff">class</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">HomeControllerTest</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> WebApplicationContext wac;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> MockMvc mockMvc;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Before</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">setup</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">mockMvc</span> <span style="color:#ff6ac1">=</span> MockMvcBuilders.<span style="color:#57c7ff">webAppContextSetup</span>(<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">wac</span>).<span style="color:#57c7ff">build</span>();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">getHome</span>() <span style="color:#ff5c57">throws</span> Exception {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">mockMvc</span>.<span style="color:#57c7ff">perform</span>(get(<span style="color:#5af78e">&#34;/&#34;</span>))
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andDo</span>(print())
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(status().<span style="color:#57c7ff">isOk</span>())
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(forwardedUrl(<span style="color:#5af78e">&#34;/WEB-INF/views/home.jsp&#34;</span>));
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">postEmptyData</span>() <span style="color:#ff5c57">throws</span> Exception {
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">mockMvc</span>.<span style="color:#57c7ff">perform</span>(post(<span style="color:#5af78e">&#34;/&#34;</span>))
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andDo</span>(print())
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(status().<span style="color:#57c7ff">isOk</span>())
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(model().<span style="color:#57c7ff">attributeHasFieldErrors</span>(<span style="color:#5af78e">&#34;formDTO&#34;</span>, <span style="color:#5af78e">&#34;messageFromUser&#34;</span>))
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(forwardedUrl(<span style="color:#5af78e">&#34;/WEB-INF/views/home.jsp&#34;</span>));
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Test</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">postSomething</span>() <span style="color:#ff5c57">throws</span> Exception {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">mockMvc</span>.<span style="color:#57c7ff">perform</span>(post(<span style="color:#5af78e">&#34;/&#34;</span>).<span style="color:#57c7ff">param</span>(<span style="color:#5af78e">&#34;messageFromUser&#34;</span>, <span style="color:#5af78e">&#34;hello&#34;</span>))
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andDo</span>(print())
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(status().<span style="color:#57c7ff">isMovedTemporarily</span>()) <span style="color:#78787e">// 302 redirect</span>
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(model().<span style="color:#57c7ff">hasNoErrors</span>())
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(flash().<span style="color:#57c7ff">attributeExists</span>(<span style="color:#5af78e">&#34;message&#34;</span>))
+</span></span><span style="display:flex;"><span>			.<span style="color:#57c7ff">andExpect</span>(redirectedUrl(<span style="color:#5af78e">&#34;/&#34;</span>));
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I think the code is pretty understandable as it uses a syntax which is very close to natural language.
+But it is quite difficult to get it right the first time. You definitely have to check out <a href="http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/htmlsingle/#unit-testing-spring-mvc">the documentation</a>.</p>
+<h2 id="tomcat-and-jetty">Tomcat and jetty</h2>
+<p>To add them to your pom.xml, check out my <a href="http://geowarin.wordpress.com/2013/01/22/basic-configuration-for-jetty-and-tomcat-maven-plugins/">previous article</a> or download the <a href="https://github.com/geowarin/spring-mvc-examples/tree/master/mvc-base">github project</a> of this article which also provides a very handsome SiteMesh template featuring twitter bootstrap and responsive design.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Since version 3.2, Spring MVC is now very easy to configure and use. Spring mvc test, now integrated in the framework, is a really unique feature in terms of controller unit testing and is really worth a try.</p>
+<p>Its action based request mapping &lsquo;a la rest&rsquo; makes it both versatile, easy to integrate with ajax solutions and a very good replacement for the <a href="http://struts.apache.org/">old-timer</a>.</p>
+<p>It also provides easy XML, RSS, plain text or JSON publishing and can almost be used as a replacement for a rest framework !</p>
+<p>Of course, be sure to check the <a href="https://github.com/SpringSource/spring-mvc-showcase">spring-mvc-showcase</a>, a real goldmine.</p>
+]]></content:encoded></item></channel></rss>

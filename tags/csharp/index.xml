@@ -1,1 +1,97 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>CSharp on Geowarin</title><link>https://geowarin.com/tags/csharp/</link><description>Recent content in CSharp on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 05 Feb 2022 02:12:39 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/csharp/index.xml" rel="self" type="application/rss+xml"/><item><title>C# code style</title><link>https://geowarin.com/c-sharp-code-style/</link><pubDate>Sat, 05 Feb 2022 02:12:39 +0100</pubDate><guid>https://geowarin.com/c-sharp-code-style/</guid><description>Use editor config files to enforce your code style automatically!</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>CSharp on Geowarin</title><link>https://geowarin.com/tags/csharp/</link><description>Recent content in CSharp on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 05 Feb 2022 02:12:39 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/csharp/index.xml" rel="self" type="application/rss+xml"/><item><title>C# code style</title><link>https://geowarin.com/c-sharp-code-style/</link><pubDate>Sat, 05 Feb 2022 02:12:39 +0100</pubDate><guid>https://geowarin.com/c-sharp-code-style/</guid><description>Use editor config files to enforce your code style automatically!</description><content:encoded><![CDATA[<p>I&rsquo;ve begun coding in C# both as a gamedev hobbyist and at my new job.</p>
+<p>I have a java and javascript background, where we have tools to ensure a
+consistent code style between projects, like <a href="https://prettier.io/">prettier</a>.</p>
+<p>I was a bit surprised that most C# project do not seem to adhere to common, explicitly stated rules or,
+at least, did not seem to enforce any via tooling.</p>
+<p>Rider, my favorite editor, does not have a clear-cut convention to apply on all projects.
+Instead, it tries to automatically detect the current project&rsquo;s code style and adhere to it,
+which does not help.</p>
+<h2 id="existing-code-styles">Existing code styles</h2>
+<h3 id="microsoft">Microsoft</h3>
+<p>Microsoft has <a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines">some guidelines</a>,
+but I found them a bit lacking.</p>
+<p>Roslyn has <a href="https://github.com/dotnet/corefx/blob/master/Documentation/coding-guidelines/coding-style.md">a strict code style</a>.
+It is enforced via their <a href="https://github.com/dotnet/codeformatter">code formatter</a>.</p>
+<p>They also have an <a href="https://github.com/dotnet/roslyn/blob/main/.editorconfig">.editorconfig file</a>.</p>
+<h4 id="roslyn-code-styles-summary">Roslyn code style&rsquo;s summary:</h4>
+<ul>
+<li>4 spaces indentation</li>
+<li><code>_camelCase</code> for private fields</li>
+<li><code>readonly</code> where applicable</li>
+<li>use <code>var</code> only when usage is obvious</li>
+<li><code>PascalCase</code> for constant</li>
+<li>use braces for <code>if</code>/<code>else</code> blocks except when they all fit on a single line</li>
+<li>new lines before braces</li>
+</ul>
+<p>These rules are common in most C# projects I&rsquo;ve read.</p>
+<h3 id="google">Google</h3>
+<p>Google has a <a href="https://google.github.io/styleguide/csharp-style.html">different code style</a>, which
+tries to remove ambiguities from the official Microsoft guidelines.</p>
+<h4 id="google-code-styles-summary">Google code style&rsquo;s summary:</h4>
+<ul>
+<li>2 spaces indentation</li>
+<li><code>_camelCase</code> for every &ldquo;privatish&rdquo; field (<code>private</code>, <code>internal</code>, etc.)</li>
+<li><code>PascalCase</code> for everything <code>public</code></li>
+<li><code>I</code> prefix for interfaces</li>
+<li>use <code>var</code> only when usage is obvious</li>
+<li>Always use braces, even when optional</li>
+<li><strong>NO</strong> new lines before braces</li>
+</ul>
+<p>My personal preferences goes to google&rsquo;s because I like braces for clarity.</p>
+<p>As a java and javascript developer, new lines before braces trigger me a little 😀.</p>
+<p>And, perhaps more importantly, naming rules for <code>public</code> vs <code>private</code> stuff are not ambiguous
+and simple to follow.</p>
+<h2 id="tooling-via-editor-config">Tooling via editor config</h2>
+<p>Both Visual Studio and Rider support coding style via <a href="https://editorconfig.org/">editorconfig</a>:</p>
+<ul>
+<li><a href="https://www.jetbrains.com/help/rider/2021.3/Using_EditorConfig.html">Rider</a></li>
+<li><a href="https://docs.microsoft.com/en-us/visualstudio/ide/code-styles-and-code-cleanup?view=vs-2022">Visual Studio</a></li>
+</ul>
+<p>I stumbled upon a great <a href="https://jonjam.medium.com/c-code-style-using-editorconfig-9d38de65527d">medium article</a> by Jonathan Harrison
+that gave me a simple base to work on.</p>
+<p>In summary, it allows you to define styles:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_style.pascal_case_style.capitalization</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">pascal_case
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                    </span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_style.lower_camel_case_style.required_prefix</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">_</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_style.lower_camel_case_style.capitalization</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">camel_case</span>
+</span></span></code></pre></div><p>You can then use those styles in rules that have this form <code>&lt;kind&gt;.&lt;name&gt;.&lt;prop&gt;</code>, where the
+<code>&lt;name&gt;</code> is defined by you:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#78787e"># privatish fields and properties: _camelCase</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># define &#39;private_fields&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_symbols.private_fields.applicable_kinds</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">field</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_symbols.private_fields.applicable_accessibilities</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">private, protected, internal, protected_internal, private_protected</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># apply lower_camel_case_style to private fields</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_rule.private_rule.symbols</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">private_fields</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_rule.private_rule.style</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">lower_camel_case_style</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># Use PascalCase for public fields</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_symbols.public_fields.applicable_kinds</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">field</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_symbols.public_fields.applicable_accessibilities</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">public</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_rule.pascal_case_for_public_fields.symbols</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">public_fields</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_rule.pascal_case_for_public_fields.style</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">pascal_case_style</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">dotnet_naming_rule.pascal_case_for_public_fields.severity</span> <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">warning</span>
+</span></span></code></pre></div><p>See <a href="https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#net-style-rules">the documentation</a>.</p>
+<p>I created my personal editorconfig, trying to enforce google rules:</p>
+<p><a href="https://gist.github.com/geowarin/03a8133c10bc4f103dda3167f7502feb">https://gist.github.com/geowarin/03a8133c10bc4f103dda3167f7502feb</a></p>
+<p>It&rsquo;s probably not 100% correct, but I&rsquo;ll try to update it as I go.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Tooling is crucial to have a homogenous code style in your projects.</p>
+<p>I know that most C# devs will be horrified by my personal code style but this is
+irrelevant. What&rsquo;s important is to have a code style and be consistent.</p>
+<p>I now have an <code>.editorconfig</code> file that I can drop in my projects. It is applied automatically
+when I format my code.</p>
+<p>This is enough for my side projects, but there are other tools that might be interesting
+to look at in the future:</p>
+<ul>
+<li><a href="https://github.com/dotnet/format">dotnet format</a></li>
+<li><a href="https://github.com/belav/csharpier">CSharpier</a></li>
+</ul>
+<p>There also seems to be <a href="https://docs.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#enforcecodestyleinbuild">a way</a>
+to enforce code style in the dotnet build.</p>
+<p>C# aficionados, I&rsquo;m curious to hear your thoughts! Do you have a code style in your projects?
+Do you have tools to enforce it?</p>
+]]></content:encoded></item></channel></rss>

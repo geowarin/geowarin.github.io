@@ -1,1 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>webflux on Geowarin</title><link>https://geowarin.com/categories/webflux/</link><description>Recent content in webflux on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 20 Dec 2019 21:04:54 +0100</lastBuildDate><atom:link href="https://geowarin.com/categories/webflux/index.xml" rel="self" type="application/rss+xml"/><item><title>Debugging Webflux with IntelliJ</title><link>https://geowarin.com/debugging-webflux-with-intellij/</link><pubDate>Fri, 20 Dec 2019 21:04:54 +0100</pubDate><guid>https://geowarin.com/debugging-webflux-with-intellij/</guid><description>By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>webflux on Geowarin</title><link>https://geowarin.com/categories/webflux/</link><description>Recent content in webflux on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 20 Dec 2019 21:04:54 +0100</lastBuildDate><atom:link href="https://geowarin.com/categories/webflux/index.xml" rel="self" type="application/rss+xml"/><item><title>Debugging Webflux with IntelliJ</title><link>https://geowarin.com/debugging-webflux-with-intellij/</link><pubDate>Fri, 20 Dec 2019 21:04:54 +0100</pubDate><guid>https://geowarin.com/debugging-webflux-with-intellij/</guid><description>By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!</description><content:encoded><![CDATA[<p>By default, when you try to debug project reactor calls, you get something like this:</p>
+<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-20-webflux-no-debug.png" alt="No debug"  />
+</p>
+<p>But if you add this dependency :</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>testImplementation(<span style="color:#5af78e">&#34;io.projectreactor:reactor-tools&#34;</span>)
+</span></span></code></pre></div><p>And click on this little funnel:</p>
+<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-20-funnel.png" alt="Funnel"  />
+</p>
+<p>Also ensure that you have the reactor plugin and that its properly configured.</p>
+<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-22-webflux-config.png" alt="Plugin config"  />
+</p>
+<p>You get this:</p>
+<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-20-clean-stack.png" alt="Wow"  />
+</p>
+<p>Much better!</p>
+<p>Sources:</p>
+<ul>
+<li><a href="https://blog.jetbrains.com/idea/2019/10/whats-new-in-intellij-idea-2019-3-eap6-improved-reactor-support-and-a-huge-pack-of-fixes/">Intellij blog</a></li>
+</ul>
+]]></content:encoded></item></channel></rss>

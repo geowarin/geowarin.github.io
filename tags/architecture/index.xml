@@ -1,1 +1,191 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>architecture on Geowarin</title><link>https://geowarin.com/tags/architecture/</link><description>Recent content in architecture on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 25 Feb 2018 11:33:45 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>What I Did Wrong as a CTO</title><link>https://geowarin.com/what-i-did-wrong-as-a-cto/</link><pubDate>Sun, 25 Feb 2018 11:33:45 +0100</pubDate><guid>https://geowarin.com/what-i-did-wrong-as-a-cto/</guid><description>I spent one year as a CTO for a startup. Here are some technical decisions I came to regret and those that I would make again in my next project</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>architecture on Geowarin</title><link>https://geowarin.com/tags/architecture/</link><description>Recent content in architecture on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 25 Feb 2018 11:33:45 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>What I Did Wrong as a CTO</title><link>https://geowarin.com/what-i-did-wrong-as-a-cto/</link><pubDate>Sun, 25 Feb 2018 11:33:45 +0100</pubDate><guid>https://geowarin.com/what-i-did-wrong-as-a-cto/</guid><description>I spent one year as a CTO for a startup. Here are some technical decisions I came to regret and those that I would make again in my next project</description><content:encoded><![CDATA[<p>Being a CTO in a startup is much more than the technical side.</p>
+<p>However, the technical decisions you make early with software, especially in a timed-constraint environment like a startup,
+tend to stick with you for the rest of the project.</p>
+<p>In this article, I will be listing a few of the technical decisions I made.</p>
+<p>Some of them felt right at all time, some of them I hope not to make again.</p>
+<h1 id="the-stack">The stack</h1>
+<p>Our project was a SaaS management application. We wanted our users to have a great experience, to distinguish ourselves
+from the competition, and improve their productivity.</p>
+<p>We used Kotlin and Spring Boot on the backend, React and Typescript on the frontend.</p>
+<p>I&rsquo;m really comfortable with those technologies and that&rsquo;s why I chose them.</p>
+<p>Even if you&rsquo;re only using parts of our stack, I believe that some of the things I learned will be useful to you.</p>
+<h1 id="it-felt-right-would-do-again-in-my-next-project">It felt right (would do again in my next project)</h1>
+<h2 id="kotlin">Kotlin</h2>
+<p>Kotlin is a fantastic language. It takes inspirations from scala, groovy, ruby, keeps the best parts, and has a top notch
+IDE support.</p>
+<p>There were a few rough edges at the start of the project (IDE performance regressions, erratic behavior on language updates)
+but for the past few months I can say without reserve that Kotlin has been nothing but a joy to work with.</p>
+<p>Kotlin is Java, had it been designed in the past few years instead of having 20 years of legacy.
+Kotlin is Scala, had it been designed to be a productivity powerhouse instead of an academic language.</p>
+<p>It is pragmatic, elegant, and with very few footguns. It would be really painful for me to start a new project with
+Java instead of Kotlin.</p>
+<h2 id="postgres">Postgres</h2>
+<p>Postgres is an awesome database. Don&rsquo;t listen to the bells and whistle of NoSQL. I&rsquo;m completely sure that 90% of the
+web applications built in 2018 will not require advanced partitioning and clustering and will fit nicely in a relational
+database.</p>
+<p>If you&rsquo;re building a social network, it&rsquo;s different of course, but otherwise, just take the best relational database.
+Your team will probably be at-ease with SQL and you will have the peace of mind of a database schema.</p>
+<h2 id="jooq-and-flyway">JOOQ and Flyway</h2>
+<p><a href="https://www.jooq.org/">JooQ</a> is a java library which allows you to write type-safe SQL queries in Java.</p>
+<p><a href="https://flywaydb.org/">Flyway</a> is a very simple tool that handles your database migrations using simple SQL files
+(there is a bit more to it, but the concepts are very easy to grasp).</p>
+<p>Both are very well designed and it felt liberating to be in control of the SQL of the application.
+I came to realize how powerful SQL really is.
+All of a sudden it was a world with window functions, views, schemas, users, and more, that was open to us.</p>
+<p>I feel like I was never really in control of my schema when using JPA or other ORM tools in the past.</p>
+<h2 id="typescript-and-react">Typescript and React</h2>
+<p>For most of my career, I&rsquo;ve worked with type-safe languages. I am 100% certain that they make me more productive.
+I can refactor my code and I have tremendous tools that empower me.</p>
+<p>On the other hand, I have worked on a JS project without types for 2 years.
+It was a successful project with a lot of javascript and a great UX, but it was hard to crank up new features or
+change old code.</p>
+<p>I will never start a new project without typescript or flow. My heart tells me typescript is the right tool for me, but
+choosing any of the type-safe languages that compile to JS will make you more productive.</p>
+<p>The only downside with typescript is finding type definitions for some libraries. There are not always of the best quality
+and you might have to copy, paste, and modify some locally to get the job done.</p>
+<p>I tend to have a bias towards libraries written in typescript: they come with type definitions and often have a better design.</p>
+<p>React is a good library. I feel at ease with its API surface and I found that teaching React to newer developers is never
+too much of a burden.</p>
+<h2 id="using-a-paas">Using a PaaS</h2>
+<p>Don&rsquo;t waste time setting up docker containers and a Kubernetes cluster. You just started your project, it does not have
+to handle billions of requests. You just need to publish your project in one command without headaches.</p>
+<p>We used <a href="https://pivotal.io/platform">Pivotal Cloud Foundry</a> and we would type <code>cf push theApplication.jar</code> and be done
+with our deployment.</p>
+<h2 id="no-micro-services">No micro-services</h2>
+<p>A good old monolith is all you want for the exact same reasons as the above.</p>
+<p>Always strive for simplicity. You can create services later on when your startup is widely successful.</p>
+<p>Martin Fowler wrote a wonderful article called <a href="https://www.martinfowler.com/bliki/MonolithFirst.html">Monolith First</a>
+that I encourage you to read.</p>
+<h2 id="not-using-webpack">Not using webpack</h2>
+<p>I have a lot of respect for the folks maintaining webpack. It is a good tool with unprecedented possibilities.
+That being said, when I set up the project, and despite my two years of webpack experience, I always felt like I was
+struggling with legacy software, and weird edge cases.
+I had to use or write custom plugins just to overcome the shortcomings of the tool.</p>
+<p>Webpack is getting better day after day but, for the sake of the project, I took a look at the competition.</p>
+<p>For my JS build, I don&rsquo;t want fancy configuration and a ton of plugins.
+I want something like spring-boot, with good defaults, and I want it to be fast out-of-the-box.</p>
+<p>We used <a href="https://fuse-box.org/">fuse-box</a>, a very good bundler with an efficient cache.
+It is written in typescript and readily supports this language. Two decisive reasons for me.</p>
+<p>I never regretted trusting the fuse-box team, they&rsquo;re doing a awesome job and they really listen to their community.</p>
+<p>The other tool I am following closely is <a href="https://parceljs.org/">parcel</a>.
+It auto-detects the features you need and provide an all-around pleasurable developer experience with no configuration.
+And it&rsquo;s faster than Webpack.</p>
+<p>Parcel is still in its infancy and I expect a few rough edges in the next months but I would probably give it a shot for my
+next project.</p>
+<h1 id="it-felt-weird-would-probably-not-do-again">It felt weird (would probably not do again)</h1>
+<h2 id="mobx-and-mobx-state-tree">Mobx and mobx-state-tree</h2>
+<p>I love <a href="https://mobx.js.org/">mobx</a>. That&rsquo;s why I&rsquo;m a reluctant to list it in this category.</p>
+<p>It feels simple and powerful and it is written in typescript.</p>
+<p>Those were compelling reasons for the choice of this library when I started the project.</p>
+<p>I have been working with Redux intensively on a past project and I found it required a lot of design and tools (boilerplate)
+to get the simplest features working.</p>
+<p>On the other side of the spectrum, we have Mobx. You feel really strong when you design your first stores, because
+it just works.</p>
+<p>On the other hand, edge cases are rough. Some libraries like react-table would just not behave.</p>
+<p>After using it for a year, I can probably list a few rules of thumbs:</p>
+<ul>
+<li>Create wrappers using <code>&lt;Observer /&gt;</code> for libraries using <code>shouldComponentUpdate</code> aggressively, because they will mess up
+with the expectations of the developers</li>
+<li>Come up with strategies for serialization and deserialization early in the project with libraries like <a href="https://github.com/mobxjs/serializr">seriliazr</a>.</li>
+</ul>
+<p>But all of this has a cost in terms of code and mobx has a somewhat hidden learning curve that makes it difficult to grasp for junior
+developers.</p>
+<p>We also tried <a href="https://github.com/mobxjs/mobx-state-tree/">mobx-state-tree</a> and I love the ideas behind the library.
+It comes at a cost, though and this cost, at least for now, <a href="https://github.com/mobxjs/mobx-state-tree/issues/440">is performance</a>.</p>
+<p>All in all, choosing a state library for React is hard.</p>
+<p>Things to watch for in this area are <a href="https://github.com/mweststrate/immer">immer</a> and <a href="https://github.com/jamiebuilds/unstated">unstated</a>.</p>
+<p>I still do not have the definitive answer to the question of state management in a React application.
+Remember there are no silver bullets and be careful when you design your frontend architecture early on.</p>
+<h2 id="rest">REST</h2>
+<p>I have an idea of what a good rest API looks like.</p>
+<p>I think it involves a lot of design and bikeshedding.</p>
+<p>When a developer is in charge of a new feature, they always have a lot of choices to make:</p>
+<ul>
+<li>Should I add attributes to an existing REST resource? (overfetching)</li>
+<li>Should I add a new REST resource? (duplication)</li>
+<li>Should aggregate resources on the backend or the frontend? (inconsistency)</li>
+</ul>
+<p>And I did not even talk about HATEOAS or documentation.</p>
+<p>Creating a good REST API is definitely something you should strive for and take the time to get right, if your business
+model requires it.</p>
+<p>Otherwise, I would consider <a href="http://graphql.org/">GraphQL</a> very seriously.</p>
+<p>In our case, our model looked like a tree and not like small separated entities. That&rsquo;s also something to consider.</p>
+<p>I feel that thinking your API in terms of a cluster of objects comes more naturally to developers.
+It favors emergent design and it encourages your developers and your business to get together and figure out the
+<a href="https://www.martinfowler.com/bliki/DDD_Aggregate.html">aggregates</a> in your model.</p>
+<p>If you want to go down this road early on and not even bother writing a fully-fledged backend server, I would review
+<a href="https://github.com/graphile/postgraphile">postgraphile</a> and <a href="https://www.graph.cool">graphcool</a> as great starting points.</p>
+<h2 id="not-using-strict-true-with-typescript">Not using &ldquo;strict: true&rdquo; with typescript</h2>
+<p>Typescript is awesome, but you have to enable <a href="https://basarat.gitbooks.io/typescript/docs/options/strictNullChecks.html">strict null checks</a>
+to make the most of it.
+We started the project without strict checks and it was a significant endeavor to change it, so we never had the time
+to do it.</p>
+<p>Every time we got an &ldquo;X is undefined&rdquo; error in the frontend, I regretted not adding <code>strict: true</code> to the typescript
+configuration at the start of the project.</p>
+<h1 id="it-felt-wrong-would-never-do-again">It felt wrong (would never do again)</h1>
+<h2 id="using-an-in-memory-database-for-tests-and-development">Using an in memory database for tests and development</h2>
+<p>We used Postgres in production and H2 (an in-memory database) for development and tests.</p>
+<p>We had too many errors that we could only see after deploying the product to production.</p>
+<p>Fortunately, most of them were easy to fix.
+The errors we saw the most were differences in ordering and grouping between the two DBMS.</p>
+<p>Hence the rule: &ldquo;every SQL query shall have an ORDER BY clause&rdquo;.</p>
+<blockquote>
+<p>As Lukas Eder pointed out in the comments:
+If you don&rsquo;t need ordering, you should always avoid it, as ordering mostly incurs an O(N log N) operations
+(apart from those rather rare cases where you can pull the data directly from an index).</p>
+</blockquote>
+<p>You can probably overcome those inconsistencies by setting up a CI build where your tests run against Postgres.</p>
+<p>But more importantly, we were not able to take full advantage of features like
+<a href="https://blog.jooq.org/2013/11/03/probably-the-coolest-sql-feature-window-functions/">window functions</a> or
+<a href="https://www.compose.com/articles/is-postgresql-your-next-json-database/">JSON data types</a>, to name a few.</p>
+<p>The next time I&rsquo;m starting a project I will use the same DBMS in development and in production.</p>
+<p>I feel that having a little <code>docker-compose.yml</code> at the root of your project, loose a little time (1 second) at the
+start of the day to boot it, and having a slightly worst developer experience is well worth the investment.</p>
+<h2 id="server-side-rendering">Server-Side Rendering</h2>
+<p>When building a Single Page App, you depend on your javascript to create the HTML that the user will interact with.</p>
+<p>With Server-Side Rendering (SSR), you ask the server to run the javascript for the page that was requested, and then, send the resulting
+HTML directly to your clients.</p>
+<p>It is believed that your users will have a better experience with this technique, especially on lower-end devices that
+will struggle to process big javascript files.</p>
+<p>It is also believed that this wields better SEO results, as it easier for crawlers to parse HTML than to execute javascript.</p>
+<p>At the beginning of the project, I was sure I could take advantage of SSR.
+I had set up a few projects in JS that leveraged SSR in the past, and studied libraries like
+<a href="https://zeit.co/blog/next">nextjs</a> carefully.</p>
+<p>On the JVM, it is a bit less common, but I managed to pull something off using <a href="https://github.com/eclipsesource/J2V8/">J2V8</a>.</p>
+<p>The truth is SSR is a trade-off and I think most web applications don&rsquo;t need to invest time in server-rendered
+javascript.</p>
+<p>Besides, measuring the benefits of SSR is really tricky. You have to consider different metrics than the &ldquo;time to render&rdquo;.
+Take, for example, <a href="https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive">time to interactive</a>.</p>
+<p>It is a fascinating subject but it was foolish to spend time on this matter as SEO and slow processors were clearly
+not a priority for the business.</p>
+<p>Removing Server-Side Rendering was a good call, and reduced the overall complexity of the server code.</p>
+<p>That being said, there is room for a tool that would simplify SSR on the JVM. It would be a amazing side project if you&rsquo;re
+interested in the challenge.</p>
+<h2 id="service-layer">Service layer</h2>
+<p>Not spending enough time on the simplest aspect of the architecture was something I came to regret a few months into
+the project with multiple people working on the code.</p>
+<p>Make sure that every layer has clear boundaries and do not hesitate to split your project in small modules early on.</p>
+<p>For example, these modules can be a good starting point:</p>
+<ul>
+<li><code>model</code>: mapping with your database and helpers</li>
+<li><code>services</code>: fetching and updating your database, only exports higher-level functions like Graphql endpoints</li>
+<li><code>web-backend</code>: things that depend on HTTP libraries</li>
+<li><code>web-frontend</code>: JS stuff</li>
+</ul>
+<p>Modules are a great way to enforce architectural decisions.
+Moreover, you can only use the <code>internal</code> <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html">keyword</a>
+in Kotlin by splitting your code into modules.</p>
+<p>Later in the project, when you figure out cluster of domain objects that work together well, you should also split the service
+layer into smaller modules.</p>
+<p>Good examples might be the &ldquo;order module&rdquo;, the &ldquo;transaction module&rdquo;, or the &ldquo;security module&rdquo; depending on your domain.</p>
+<p>I like to thing of this approach as a stepping stone towards &ldquo;micro-services&rdquo;, without the complexity of deploying them
+as separate network entities.</p>
+<p>There is actually a continuum between an integrated system and a distributed system and you probably won&rsquo;t have to
+cross the line.</p>
+<p>For more insights, I recommend watching the <a href="https://speakerdeck.com/axelfontaine/majestic-modular-monoliths">Majestic Modular Monoliths</a>
+talk by Axel Fontaine.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Your time is precious, you don&rsquo;t want to be spending it unwisely or come to regret too many engineering decisions later.</p>
+<p>Only experience can make you aware of the tradeoffs you will make in the early stages of a product. I hope that
+mine will help you avoid some traps and make better choices when designing a greenfield project.</p>
+]]></content:encoded></item></channel></rss>

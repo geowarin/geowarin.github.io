@@ -1,1 +1,223 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>code-review on Geowarin</title><link>https://geowarin.com/tags/code-review/</link><description>Recent content in code-review on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 06 Mar 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/code-review/index.xml" rel="self" type="application/rss+xml"/><item><title>Understanding Spring Boot</title><link>https://geowarin.com/understanding-spring-boot/</link><pubDate>Fri, 06 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/understanding-spring-boot/</guid><description>Wonder how spring boot&amp;rsquo;s magic operates behind the scenes? You&amp;rsquo;ve come to the right place!</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>code-review on Geowarin</title><link>https://geowarin.com/tags/code-review/</link><description>Recent content in code-review on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 06 Mar 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/code-review/index.xml" rel="self" type="application/rss+xml"/><item><title>Understanding Spring Boot</title><link>https://geowarin.com/understanding-spring-boot/</link><pubDate>Fri, 06 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/understanding-spring-boot/</guid><description>Wonder how spring boot&amp;rsquo;s magic operates behind the scenes? You&amp;rsquo;ve come to the right place!</description><content:encoded><![CDATA[<p>Spring boot is an opinionated library that allows to create executable Spring applications with a convention over configuration approach.</p>
+<p>The magic behind this framework lies in the <code>@EnableAutoConfiguration</code> annotation,
+which will automatically load all the beans the application requires depending
+on what Spring Boot finds in the classpath.</p>
+<h2 id="the-enable-annotations">The <code>@Enable*</code> annotations</h2>
+<p>The <code>@Enable...</code> annotations are not new, they were first introduced in Spring 3 when the idea of replacing the XML files with java annotated classes is born.</p>
+<p>A lot of Spring users already know <code>@EnableTransactionManagement</code>, which will enable declarative transaction management,
+<code>@EnableWebMvc</code>, which enables Spring MVC, or <code>@EnableScheduling</code>, which will initialize a scheduler.</p>
+<p>These annotations are in fact a simple configuration import with the <code>@Import</code> annotation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Target</span>(ElementType.<span style="color:#57c7ff">TYPE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Retention</span>(RetentionPolicy.<span style="color:#57c7ff">RUNTIME</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Documented</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Import</span>({ EnableAutoConfigurationImportSelector.<span style="color:#57c7ff">class</span>,
+</span></span><span style="display:flex;"><span>        AutoConfigurationPackages.<span style="color:#57c7ff">Registrar</span>.<span style="color:#57c7ff">class</span> })
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff9f43">@interface</span> EnableAutoConfiguration {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e">     * Exclude specific auto-configuration classes such that they will never be applied.
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e">     */</span>
+</span></span><span style="display:flex;"><span>    Class<span style="color:#ff6ac1">&lt;?&gt;[]</span> exclude() <span style="color:#ff6ac1">default</span> {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The <code>EnableAutoConfigurationImportSelector</code> uses <code>SpringFactoriesLoader#loadFactoryNames</code> of Spring core.
+SpringFactoriesLoader will look for jars containing a file with the path <code>META-INF/spring.factories</code>.</p>
+<p>When it finds such a file, the <code>SpringFactoriesLoader</code> will look for the property named after our configuration file.
+In our case, <code>org.springframework.boot.autoconfigure.EnableAutoConfiguration</code>.</p>
+<p>Let&rsquo;s take a look at the <code>spring-boot-autoconfigure</code> jar, which indeed contains a <code>spring.factories</code> file copied below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#78787e"># Initializers</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">org.springframework.context.ApplicationContextInitializer</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># Auto Configure</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.aop.AopAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.MessageSourceAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.data.JpaRepositoriesAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.data.MongoRepositoriesAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.redis.RedisAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.jms.JmsTemplateAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.mobile.DeviceResolverAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.mongo.MongoTemplateAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.reactor.ReactorAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.security.FallbackWebSecurityAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.web.MultipartAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration,\
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration</span>
+</span></span></code></pre></div><p>In this file, we can see a list of the Spring Boot auto-configurations.
+Let&rsquo;s take a closer look at one of those configurations, <code>MongoAutoConfiguration</code> for instance:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ConditionalOnClass</span>(Mongo.<span style="color:#57c7ff">class</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableConfigurationProperties</span>(MongoProperties.<span style="color:#57c7ff">class</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MongoAutoConfiguration</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> MongoProperties properties;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> Mongo mongo;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@PreDestroy</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">close</span>() <span style="color:#ff5c57">throws</span> UnknownHostException {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span> (<span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">mongo</span> <span style="color:#ff6ac1">!=</span> <span style="color:#ff6ac1">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">mongo</span>.<span style="color:#57c7ff">close</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@ConditionalOnMissingBean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> Mongo <span style="color:#57c7ff">mongo</span>() <span style="color:#ff5c57">throws</span> UnknownHostException {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">mongo</span> <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">properties</span>.<span style="color:#57c7ff">createMongoClient</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">this</span>.<span style="color:#57c7ff">mongo</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This simple Spring configuration class declares typical beans needed to use mongoDb.</p>
+<p>This classes, like a lot of others in Spring Boot relies heavily on Spring annotations:</p>
+<ul>
+<li><code>@ConditionOnClass</code> activates a configuration only if one or several classes are present on the classpath</li>
+<li><code>@EnableConfigurationProperties</code> automatically maps a POJO to a set of properties in the Spring Boot configuration file
+(by default <code>application.properties</code>)</li>
+<li><code>@ConditionalOnMissingBean</code> enables a bean definition only if the bean wasn&rsquo;t previously defined</li>
+</ul>
+<p>You can also refine the order in which those configuration classes load with <code>@AutoConfigureBefore</code> et <code>@AutoConfigureAfter</code>.</p>
+<h2 id="properties-mapping">Properties Mapping</h2>
+<p>Let&rsquo;s look at <code>MongoProperties</code>, which is a classic example of Spring Boot properties mapping:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@ConfigurationProperties</span>(prefix <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;spring.data.mongodb&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MongoProperties</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> String host;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#9aedfe">int</span> port <span style="color:#ff6ac1">=</span> DBPort.<span style="color:#57c7ff">PORT</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> String uri <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;mongodb://localhost/test&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> String database;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">// ... getters/ setters omitted</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The <code>@ConfigurationProperties</code> will associate every properties with a particular prefix to the POJO.
+For instance, the property <code>spring.data.mongodb.port</code> will be mapped to the port attribute of this class.</p>
+<p>If you&rsquo;re a Spring Boot user, I strongly encourage you to use those capabilities to remove the boiler plate code
+associated with configuration properties.</p>
+<h2 id="the-conditional-annotations">The <code>@Conditional</code> annotations</h2>
+<p>The power of Spring Boot lies in one of Spring 4 new features: the <code>@Conditional</code> annotations,
+which will enable some configuration only if a specific condition is met.</p>
+<p>A sneak peek in the <code>org.springframework.boot.autoconfigure.condition</code> package in Spring Boot will give us an overview of what
+we can do with those annotations:</p>
+<ul>
+<li><code>@ConditionalOnBean</code></li>
+<li><code>@ConditionalOnClass</code></li>
+<li><code>@ConditionalOnExpression</code></li>
+<li><code>@ConditionalOnMissingBean</code></li>
+<li><code>@ConditionalOnMissingClass</code></li>
+<li><code>@ConditionalOnNotWebApplication</code></li>
+<li><code>@ConditionalOnResource</code></li>
+<li><code>@ConditionalOnWebApplication</code></li>
+</ul>
+<p>Let&rsquo;s take a closer look at <code>@ConditionalOnExpression</code>, which allows you to write a condition in the <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring Expression language</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Conditional</span>(OnExpressionCondition.<span style="color:#57c7ff">class</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Retention</span>(RetentionPolicy.<span style="color:#57c7ff">RUNTIME</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Target</span>({ ElementType.<span style="color:#57c7ff">TYPE</span>, ElementType.<span style="color:#57c7ff">METHOD</span> })
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff9f43">@interface</span> ConditionalOnExpression {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e">     * The SpEL expression to evaluate. Expression should return {@code true} if the
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e">     * condition passes or {@code false} if it fails.
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e">     */</span>
+</span></span><span style="display:flex;"><span>    String <span style="color:#57c7ff">value</span>() <span style="color:#ff6ac1">default</span> <span style="color:#5af78e">&#34;true&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In this class, we indeed make use of the <code>@Conditional</code> annotation. The condition is defined in the <code>OnExpressionCondition</code> class:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">OnExpressionCondition</span> <span style="color:#ff5c57">extends</span> SpringBootCondition {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> ConditionOutcome <span style="color:#57c7ff">getMatchOutcome</span>(ConditionContext context, AnnotatedTypeMetadata metadata) {
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// ...</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// we first get a handle on the EL context via the ConditionContext</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#9aedfe">boolean</span> result <span style="color:#ff6ac1">=</span> (Boolean) resolver.<span style="color:#57c7ff">evaluate</span>(expression, expressionContext);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// ...</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// here we create a message the user will see when debugging</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> ConditionOutcome(result, message.<span style="color:#57c7ff">toString</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In the end, the <code>@Conditional</code> are resolved to simple booleans, via the <code>ConditionOutcome.isMatch</code> method.</p>
+<h2 id="the-applicationcontextinitializers">The <code>ApplicationContextInitializer</code>s</h2>
+<p>The second possibility that the <code>spring.factories</code> file offers, is to define application initializers.
+They allow us to manipulate Spring&rsquo;s <code>applicationContext</code> before the application is loaded.</p>
+<p>In particular, they can create listeners on the context thanks to the <code>ConfigurableApplicationContext#addApplicationListener</code>
+method.</p>
+<p>Spring Boot does that in the <code>AutoConfigurationReportLoggingInitializer</code> which listens to system events, like context refresh or the application&rsquo;s failure to start.
+This will help create the auto-configuration report when you start your application
+in debug mode.</p>
+<p>You can start your application in debug mode with either the <code>-Ddebug</code> flag or add the property <code>debug=true</code> to <code>application.properties</code>.</p>
+<h2 id="debug-spring-boot-auto-configuration">Debug Spring Boot Auto-Configuration</h2>
+<p>The documentation gives us <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-troubleshoot-auto-configuration">some advice</a> to
+understand what happened during the auto-configuration.</p>
+<p>When launched in debug mode, Spring Boot will generate a report that looks like this one:</p>
+<pre tabindex="0"><code>Positive matches:
+-----------------
+
+   MessageSourceAutoConfiguration
+      - @ConditionalOnMissingBean (types: org.springframework.context.MessageSource; SearchStrategy: all) found no beans (OnBeanCondition)
+
+   JmxAutoConfiguration
+      - @ConditionalOnClass classes found: org.springframework.jmx.export.MBeanExporter (OnClassCondition)
+      - SpEL expression on org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration: ${spring.jmx.enabled:true} (OnExpressionCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.jmx.export.MBeanExporter; SearchStrategy: all) found no beans (OnBeanCondition)
+
+   DispatcherServletAutoConfiguration
+      - found web application StandardServletEnvironment (OnWebApplicationCondition)
+      - @ConditionalOnClass classes found: org.springframework.web.servlet.DispatcherServlet (OnClassCondition)
+
+
+Negative matches:
+-----------------
+
+   DataSourceAutoConfiguration
+      - required @ConditionalOnClass classes not found: org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType (OnClassCondition)
+
+   DataSourceTransactionManagerAutoConfiguration
+      - required @ConditionalOnClass classes not found: org.springframework.jdbc.core.JdbcTemplate,org.springframework.transaction.PlatformTransactionManager (OnClassCondition)
+
+   MongoAutoConfiguration
+      - required @ConditionalOnClass classes not found: com.mongodb.Mongo (OnClassCondition)
+
+   FallbackWebSecurityAutoConfiguration
+      - SpEL expression on org.springframework.boot.autoconfigure.security.FallbackWebSecurityAutoConfiguration: !${security.basic.enabled:true} (OnExpressionCondition)
+
+   SecurityAutoConfiguration
+      - required @ConditionalOnClass classes not found: org.springframework.security.authentication.AuthenticationManager (OnClassCondition)
+
+   EmbeddedServletContainerAutoConfiguration.EmbeddedJetty
+      - required @ConditionalOnClass classes not found: org.eclipse.jetty.server.Server,org.eclipse.jetty.util.Loader (OnClassCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#localeResolver
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.LocaleResolver; SearchStrategy: all) found no beans (OnBeanCondition)
+      - SpEL expression: &#39;${spring.mvc.locale:}&#39; != &#39;&#39; (OnExpressionCondition)
+
+   WebSocketAutoConfiguration
+      - required @ConditionalOnClass classes not found: org.springframework.web.socket.WebSocketHandler,org.apache.tomcat.websocket.server.WsSci (OnClassCondition)
+</code></pre><p>For each auto-configuration, we can see why it was initiated or why it failed.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Spring Boot&rsquo;s approach leverages the possibilities of Spring 4 and allows to create an auto-configured
+<a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application-executable-jar">executable jar</a>.</p>
+<p>Don&rsquo;t forget that, as <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-replacing-auto-configuration">the documentation states</a>, you can gradually replace the auto-configuration by declaring your own beans.</p>
+<p>What I love about Spring Boot is that it allows you to prototype an application very quickly but also to learn with its
+source. Auto-configurations are neat pieces of code that can teach you a thing or two about Spring.</p>
+<p>As Josh Long, developer advocate at Pivotal, said:</p>
+<!-- raw HTML omitted -->
+]]></content:encoded></item></channel></rss>

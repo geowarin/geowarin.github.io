@@ -1,1 +1,69 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>typescript on Geowarin</title><link>https://geowarin.com/tags/typescript/</link><description>Recent content in typescript on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 19 Dec 2021 16:44:00 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/typescript/index.xml" rel="self" type="application/rss+xml"/><item><title>Typescript refactorings</title><link>https://geowarin.com/typescript-refactorings/</link><pubDate>Sun, 19 Dec 2021 16:44:00 +0100</pubDate><guid>https://geowarin.com/typescript-refactorings/</guid><description>Essential React and Typescript refactorings</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>typescript on Geowarin</title><link>https://geowarin.com/tags/typescript/</link><description>Recent content in typescript on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 19 Dec 2021 16:44:00 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/typescript/index.xml" rel="self" type="application/rss+xml"/><item><title>Typescript refactorings</title><link>https://geowarin.com/typescript-refactorings/</link><pubDate>Sun, 19 Dec 2021 16:44:00 +0100</pubDate><guid>https://geowarin.com/typescript-refactorings/</guid><description>Essential React and Typescript refactorings</description><content:encoded><![CDATA[<p>If you are using React and Typescript, there is a lot that your editor can do to help you.</p>
+<p>Here are my favorite refactorings, I&rsquo;m using IntelliJ for the screencast, but most of this
+will be available in VSCode as well.</p>
+<h2 id="rename">Rename</h2>
+<p>If I had to take a single refactoring to a desert island, it would be the &ldquo;rename&rdquo; refactoring.</p>
+<p>With a typed language, you have no reasons not to use this.</p>
+<figure>
+    <img loading="lazy" src="images/rename.gif"
+         alt="Rename (Shift&#43;F6)"/> <figcaption>
+            <p>Rename (Shift+F6)</p>
+        </figcaption>
+</figure>
+
+<p>IntelliJ has smart renames and understand getter/setter paradigms.</p>
+<p>Compared to <code>Ctrl+R</code> or other manual replace actions, your editor will make sure that you correctly select
+the relevant variables/methods, as well as being a lot faster.</p>
+<h2 id="extract-component">Extract component</h2>
+<p>This refactoring is a real MVP. This enables a whole workflow for me: when I prototype, I lay down all the HTML
+until it looks right. Then I can extract subcomponents with a simple keybinding.</p>
+<figure>
+    <img loading="lazy" src="images/extract-component.gif"
+         alt="Extract component (no default keybinding)"/> <figcaption>
+            <p>Extract component (no default keybinding)</p>
+        </figcaption>
+</figure>
+
+<p>I have bound this refactoring to <code>Ctlr+Alt+Shift+M</code> because it resembles the extract method refactoring (<code>Ctlr+Alt+M</code>).</p>
+<p>You should definitely check out the <code>Extract method</code> refactoring, by the way 😀.</p>
+<h2 id="extract-variable">Extract variable</h2>
+<p>This will allow you to add meaningful names to your code in a heartbeat.</p>
+<figure>
+    <img loading="lazy" src="images/extract-var.gif"
+         alt="Extract variable (Ctrl&#43;Alt&#43;V)"/> <figcaption>
+            <p>Extract variable (Ctrl+Alt+V)</p>
+        </figcaption>
+</figure>
+
+<p>I should have checked the <code>const</code> checkbox here, to have a <code>const</code> variable generated,
+instead of a <code>let</code>. 🤦‍</p>
+<h2 id="extract-type">Extract type</h2>
+<p>The extract variable refactoring also works on types!</p>
+<figure>
+    <img loading="lazy" src="images/extract-type.gif"
+         alt="Extract type (Ctrl&#43;Alt&#43;V)"/> <figcaption>
+            <p>Extract type (Ctrl+Alt+V)</p>
+        </figcaption>
+</figure>
+
+<p>You can then use <code>Alt+Enter</code> to convert the type to an interface if you wish.</p>
+<h2 id="move">Move</h2>
+<p>I&rsquo;m nearly done with my refactoring here, I just need my menu to be in its own file.</p>
+<figure>
+    <img loading="lazy" src="images/move.gif"
+         alt="Move (F6)"/> <figcaption>
+            <p>Move (F6)</p>
+        </figcaption>
+</figure>
+
+<p>And voilà!</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Refactoring can dramatically increase your productivity by providing useful keybindings for complex code
+transformations.</p>
+<p>They also give you full confidence that the resulting code will be 100% valid.</p>
+<p>Finally, while I showed you examples on a small scale, you can probably imagine how much time will
+be saved on larger scale refactorings!</p>
+<p>Thanks to <a href="https://horsty.fr/">horsty</a> for encouraging me to write this article.
+You should check out his blog (in French). He&rsquo;s using the same blog template as I do, he is
+a man of taste. 😉</p>
+]]></content:encoded></item></channel></rss>
