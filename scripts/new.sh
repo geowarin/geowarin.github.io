@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-name=$@
+if [ "$#" -ne 0 ]; then
+    post_name="$@"
+else
+    post_name=$(zenity --entry --title="Blog Name" --text="Please enter the blog post name:")
+fi
 
-#zenity --title "Blog title" --entry --text "Blog title?"
-slug=$(echo "$@" | tr -s ' ' | tr ' A-Z' '-a-z' | tr -s '-' | tr -c '[:alnum:][:cntrl:].' '-')
+slug=$(echo "$post_name" | tr -s ' ' | tr ' A-Z' '-a-z' | tr -s '-' | tr -c '[:alnum:][:cntrl:].' '-')
 hugo new --kind post-bundle "post/$slug"
 idea "content/post/$slug/index.md"
