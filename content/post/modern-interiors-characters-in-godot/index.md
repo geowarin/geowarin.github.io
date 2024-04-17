@@ -47,8 +47,8 @@ First let's import all the PNGs in our Godot project.
 
 I have created a directory named `assets/characters` and this directory contains five
 subdirectories: `Accessories`, `Bodies`, `Eyes`, `Hairstyles` and `Outfits`.
-Each directory then contains the sprite sheets. I have chose 32x32 for my sprite dimensions (16x16 and 48x48 are also
-available, if you'd like another size more, you'll have some minor adjustments to make)
+Each directory then contains the sprite sheets. I have chosen 32x32 for my sprite dimensions (16x16 and 48x48 are also
+available, if you'd like another size more, you'll have minor adjustments to make)
 
 {{< figure src="images/character_files.png" caption="File system view" >}}
 
