@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Geowarin</title><link>https://geowarin.com/</link><description>Recent content on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 17 Nov 2022 12:56:42 +0100</lastBuildDate><atom:link href="https://geowarin.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Chapter 1 - Setting up a Spring web application in no time</title><link>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</link><pubDate>Sun, 01 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</guid><description>In the first chapter, you will learn how to bootstrap your application effectively and how to leverage spring boot to get started with spring MVC in a couple of minutes</description><content:encoded><![CDATA[<p>I just finished writing the first chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Geowarin</title><link>https://geowarin.com/</link><description>Recent content on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 17 Apr 2024 17:39:24 +0200</lastBuildDate><atom:link href="https://geowarin.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Chapter 1 - Setting up a Spring web application in no time</title><link>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</link><pubDate>Sun, 01 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</guid><description>In the first chapter, you will learn how to bootstrap your application effectively and how to leverage spring boot to get started with spring MVC in a couple of minutes</description><content:encoded><![CDATA[<p>I just finished writing the first chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>.
 That was a lot of fun. I enjoyed sharing the tips and tricks that I use when I bootstrap a Spring application.</p>
 <p>In this first chapter, you will learn how to get started with spring MVC in a snap.</p>
 <h2 id="know-thy-tools">Know thy tools</h2>
@@ -164,6 +164,231 @@ and prepare our application to handle thousands of requests without spending a s
 <p>It&rsquo;s a free Heroku instance so you might have to wait 30 seconds for it to go
 out of sleep.</p>
 <p>As always, I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!</p>
+]]></content:encoded></item><item><title>Setup Modern interiors characters in godot</title><link>https://geowarin.com/setup-modern-interiors-characters-in-godot/</link><pubDate>Wed, 17 Apr 2024 17:39:24 +0200</pubDate><guid>https://geowarin.com/setup-modern-interiors-characters-in-godot/</guid><description>Let&amp;rsquo;s make a little script to generate all the AnimatedSprite2Ds from LimeZu&amp;rsquo;s widely successful asset pack in Godot.</description><content:encoded><![CDATA[<p>If you don&rsquo;t know about <a href="https://limezu.itch.io/moderninteriors">Modern Interiors</a>,
+you are missing out on a very successful high quality pixel art bundle (and it&rsquo;s very cheap too!).</p>
+<p>It comes with hundreds of sprite sheets to make characters composed of:</p>
+<ul>
+<li>A body</li>
+<li>Eyes</li>
+<li>Hair</li>
+<li>An outfit</li>
+<li>An accessory</li>
+</ul>
+<p>Each sprite sheet is laid out exactly the same way, each sprite has the same dimensions and each sprite frame represents
+the same part of the same animation.</p>
+<figure>
+    <img loading="lazy" src="images/sprite_sheet.png"
+         alt="One of the sprite sheets"/> <figcaption>
+            <p>One of the sprite sheets</p>
+        </figcaption>
+</figure>
+
+<p>This means that if you set up five <code>AnimatedSprite2D</code>s on top of each other, in the right order, you will get the
+character you want.</p>
+<figure>
+    <img loading="lazy" src="images/scene.png"
+         alt="The character scene is composed of 5 AnimatedSprite2D"/> <figcaption>
+            <p>The character scene is composed of 5 AnimatedSprite2D</p>
+        </figcaption>
+</figure>
+
+<p>The problem is that we will have to manually set up each animation, in 4 directions for hundreds of sprites!</p>
+<figure>
+    <img loading="lazy" src="images/animations.png"
+         alt="The animations in the SpriteFrames window"/> <figcaption>
+            <p>The animations in the SpriteFrames window</p>
+        </figcaption>
+</figure>
+
+<p>This is tedious but what if we automated the process?
+If you try to set up an <code>AnimatedSprite2D</code>, you will see that it uses <code>SpriteFrames</code> as a source for its animation,
+which is a Godot resource.</p>
+<p>So if we had a <code>SpriteFrames</code> for each sprite sheet, all we would have to do is select the one we want for each part of
+our character.</p>
+<figure>
+    <img loading="lazy" src="images/select_body.png"
+         alt="We can select a sprite frame for our body"/> <figcaption>
+            <p>We can select a sprite frame for our body</p>
+        </figcaption>
+</figure>
+
+<p>First let&rsquo;s import all the PNGs in our Godot project.</p>
+<p>I have created a directory named <code>assets/characters</code> and this directory contains five
+subdirectories: <code>Accessories</code>, <code>Bodies</code>, <code>Eyes</code>, <code>Hairstyles</code> and <code>Outfits</code>.
+Each directory then contains the sprite sheets. I have chose 32x32 for my sprite dimensions (16x16 and 48x48 are also
+available, if you&rsquo;d like another size more, you&rsquo;ll have some minor adjustments to make)</p>
+<figure>
+    <img loading="lazy" src="images/character_files.png"
+         alt="File system view"/> <figcaption>
+            <p>File system view</p>
+        </figcaption>
+</figure>
+
+<p>In my case, the 32x32 sprite sheet is composed of 77 rows and 20 lines of 32x64 sprites.
+The sprite at index 0 is always the character looking right, the sprite at index 1 is looking up and the sprites from
+index 57 to 62 compose the walking right animation, for example.</p>
+<p>So all we have to do is:</p>
+<ul>
+<li>create a dictionary containing all the animations and their respective indexes.</li>
+<li>iterate on all the sprites sheets on disk</li>
+<li>for each sprite sheet, create a <code>SpriteFrames</code> based on its image and add each animation with its corresponding image
+atlas</li>
+</ul>
+<figure>
+    <img loading="lazy" src="images/sprite_sheet.png"
+         alt="The sprite sheet again ;)"/> <figcaption>
+            <p>The sprite sheet again ;)</p>
+        </figcaption>
+</figure>
+
+<p>Let&rsquo;s create an <a href="https://docs.godotengine.org/en/stable/classes/class_editorscript.html">EditorScript</a>.</p>
+<p>The code is pretty straight forward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript" data-lang="gdscript"><span style="display:flex;"><span><span style="color:#ff9f43">@tool</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">extends</span> <span style="color:#f3f99d">EditorScript</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># get the possible extensions of the ImageTexture resource (png, svg, etc)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> exts <span style="color:#ff6ac1">:=</span> <span style="color:#f3f99d">ResourceSaver</span><span style="color:#ff6ac1">.</span><span style="color:#57c7ff">get_recognized_extensions</span>(<span style="color:#f3f99d">ImageTexture</span><span style="color:#ff6ac1">.</span><span style="color:#57c7ff">new</span>())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">func</span> <span style="color:#57c7ff">_run</span>() <span style="color:#ff6ac1">-&gt;</span> <span style="color:#9aedfe">void</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#57c7ff">generate_for_dir</span>(<span style="color:#5af78e">&#34;res://assets/characters/Bodies/&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#57c7ff">generate_for_dir</span>(<span style="color:#5af78e">&#34;res://assets/characters/Eyes/&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#57c7ff">generate_for_dir</span>(<span style="color:#5af78e">&#34;res://assets/characters/Hairstyles/&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#57c7ff">generate_for_dir</span>(<span style="color:#5af78e">&#34;res://assets/characters/Outfits/&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#57c7ff">generate_for_dir</span>(<span style="color:#5af78e">&#34;res://assets/characters/Accessories/&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e"># for each file in the directory, if it&#39;s indeed a Texture2D, generate sprite frames</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">func</span> <span style="color:#57c7ff">generate_for_dir</span>(path: <span style="color:#f3f99d">String</span>) <span style="color:#ff6ac1">-&gt;</span> <span style="color:#9aedfe">void</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">var</span> dir <span style="color:#ff6ac1">:=</span> <span style="color:#f3f99d">DirAccess</span><span style="color:#ff6ac1">.</span><span style="color:#57c7ff">open</span>(path)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> dir:
+</span></span><span style="display:flex;"><span>        dir<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">list_dir_begin</span>()
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">var</span> file_name <span style="color:#ff6ac1">=</span> dir<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">get_next</span>()
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">while</span> file_name <span style="color:#ff6ac1">!=</span> <span style="color:#5af78e">&#34;&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> <span style="color:#ff6ac1">!</span>dir<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">current_is_dir</span>() <span style="color:#ff6ac1">&amp;&amp;</span> exts<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">has</span>(file_name<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">get_extension</span>()):
+</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">var</span> res <span style="color:#ff6ac1">:=</span> <span style="color:#f3f99d">ResourceLoader</span><span style="color:#ff6ac1">.</span><span style="color:#ff5c57">load</span>(path<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">path_join</span>(file_name))
+</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">if</span> res <span style="color:#ff6ac1">is</span> <span style="color:#f3f99d">Texture2D</span>:
+</span></span><span style="display:flex;"><span>                    <span style="color:#57c7ff">generate_sprite_frames</span>(res)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            file_name <span style="color:#ff6ac1">=</span> dir<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">get_next</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;An error occurred when trying to access </span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#34;</span> <span style="color:#ff6ac1">%</span> path)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">const</span> anims <span style="color:#ff6ac1">:=</span> {
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;static_right&#34;</span>: [<span style="color:#ff9f43">0</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;static_up&#34;</span>: [<span style="color:#ff9f43">1</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;static_left&#34;</span>: [<span style="color:#ff9f43">2</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;static_down&#34;</span>: [<span style="color:#ff9f43">3</span>],
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;idle_right&#34;</span>: [<span style="color:#ff9f43">57</span>, <span style="color:#ff9f43">58</span>, <span style="color:#ff9f43">59</span>, <span style="color:#ff9f43">60</span>, <span style="color:#ff9f43">61</span>, <span style="color:#ff9f43">62</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;idle_up&#34;</span>: [<span style="color:#ff9f43">63</span>, <span style="color:#ff9f43">64</span>, <span style="color:#ff9f43">65</span>, <span style="color:#ff9f43">66</span>, <span style="color:#ff9f43">67</span>, <span style="color:#ff9f43">68</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;idle_left&#34;</span>: [<span style="color:#ff9f43">69</span>, <span style="color:#ff9f43">70</span>, <span style="color:#ff9f43">71</span>, <span style="color:#ff9f43">72</span>, <span style="color:#ff9f43">73</span>, <span style="color:#ff9f43">74</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;idle_down&#34;</span>: [<span style="color:#ff9f43">75</span>, <span style="color:#ff9f43">76</span>, <span style="color:#ff9f43">77</span>, <span style="color:#ff9f43">78</span>, <span style="color:#ff9f43">79</span>, <span style="color:#ff9f43">80</span>],
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;walk_right&#34;</span>: [<span style="color:#ff9f43">114</span>, <span style="color:#ff9f43">115</span>, <span style="color:#ff9f43">116</span>, <span style="color:#ff9f43">117</span>, <span style="color:#ff9f43">118</span>, <span style="color:#ff9f43">119</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;walk_up&#34;</span>: [<span style="color:#ff9f43">120</span>, <span style="color:#ff9f43">121</span>, <span style="color:#ff9f43">122</span>, <span style="color:#ff9f43">123</span>, <span style="color:#ff9f43">124</span>, <span style="color:#ff9f43">125</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;walk_left&#34;</span>: [<span style="color:#ff9f43">126</span>, <span style="color:#ff9f43">127</span>, <span style="color:#ff9f43">128</span>, <span style="color:#ff9f43">129</span>, <span style="color:#ff9f43">130</span>, <span style="color:#ff9f43">131</span>],
+</span></span><span style="display:flex;"><span>                   <span style="color:#5af78e">&#34;walk_down&#34;</span>: [<span style="color:#ff9f43">132</span>, <span style="color:#ff9f43">133</span>, <span style="color:#ff9f43">134</span>, <span style="color:#ff9f43">135</span>, <span style="color:#ff9f43">136</span>, <span style="color:#ff9f43">137</span>],
+</span></span><span style="display:flex;"><span>               }
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">const</span> horiz <span style="color:#ff6ac1">:=</span> <span style="color:#ff9f43">57</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">const</span> size  <span style="color:#ff6ac1">:=</span> <span style="color:#f3f99d">Vector2</span>(<span style="color:#ff9f43">32</span>, <span style="color:#ff9f43">64</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">func</span> <span style="color:#57c7ff">generate_sprite_frames</span>(texture: <span style="color:#f3f99d">Texture2D</span>) <span style="color:#ff6ac1">-&gt;</span> <span style="color:#9aedfe">void</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;texture </span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#34;</span> <span style="color:#ff6ac1">%</span> texture<span style="color:#ff6ac1">.</span>resource_path)
+</span></span><span style="display:flex;"><span>    <span style="color:#78787e">#var horiz := floori(texture.get_size().x / size.x)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">var</span> resource_path <span style="color:#ff6ac1">:=</span> texture<span style="color:#ff6ac1">.</span>resource_path
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">var</span> frames <span style="color:#ff6ac1">:=</span> <span style="color:#f3f99d">SpriteFrames</span><span style="color:#ff6ac1">.</span><span style="color:#57c7ff">new</span>()
+</span></span><span style="display:flex;"><span>    frames<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">remove_animation</span>(<span style="color:#5af78e">&#34;default&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">for</span> anim_name <span style="color:#ff6ac1">in</span> anims:
+</span></span><span style="display:flex;"><span>        frames<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">add_animation</span>(anim_name)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff5c57">var</span> frame_indexes: <span style="color:#f3f99d">Array</span> <span style="color:#ff6ac1">=</span> anims[anim_name]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> i <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">range</span>(frame_indexes<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">size</span>()):
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">var</span> index: <span style="color:#9aedfe">int</span> <span style="color:#ff6ac1">=</span>  frame_indexes[i]
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">var</span> atlas      <span style="color:#ff6ac1">:=</span> <span style="color:#f3f99d">AtlasTexture</span><span style="color:#ff6ac1">.</span><span style="color:#57c7ff">new</span>()
+</span></span><span style="display:flex;"><span>            atlas<span style="color:#ff6ac1">.</span>atlas <span style="color:#ff6ac1">=</span> texture
+</span></span><span style="display:flex;"><span>            <span style="color:#ff5c57">var</span> pos        <span style="color:#ff6ac1">:=</span> <span style="color:#f3f99d">Vector2</span>(size<span style="color:#ff6ac1">.</span>x <span style="color:#ff6ac1">*</span> (index <span style="color:#ff6ac1">%</span> horiz), size<span style="color:#ff6ac1">.</span>y <span style="color:#ff6ac1">*</span> (index <span style="color:#ff6ac1">/</span> horiz))
+</span></span><span style="display:flex;"><span>            atlas<span style="color:#ff6ac1">.</span>region <span style="color:#ff6ac1">=</span> <span style="color:#f3f99d">Rect2</span>(pos, size)
+</span></span><span style="display:flex;"><span>            frames<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">add_frame</span>(anim_name, atlas, <span style="color:#ff9f43">1.0</span>, i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">var</span> file_name <span style="color:#ff6ac1">:=</span> resource_path<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">get_file</span>()<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">trim_suffix</span>(<span style="color:#5af78e">&#34;.&#34;</span> <span style="color:#ff6ac1">+</span> resource_path<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">get_extension</span>())
+</span></span><span style="display:flex;"><span>    <span style="color:#f3f99d">ResourceSaver</span><span style="color:#ff6ac1">.</span><span style="color:#57c7ff">save</span>(frames, resource_path<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">get_base_dir</span>()<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">path_join</span>(file_name <span style="color:#ff6ac1">+</span> <span style="color:#5af78e">&#34;.tres&#34;</span>))
+</span></span></code></pre></div><p>The part with AtlasTexture is not very well documented, I had to look up
+the <a href="https://github.com/godotengine/godot/blob/6dd4a687972fbb53e53aba008cc4fbea2c87d6af/editor/plugins/sprite_frames_editor_plugin.cpp#L297-L300">engine source code</a>
+to understand it. And I encourage you to do the same!</p>
+<p>Generally, the C++ source code is very close to its equivalent in GDScript!</p>
+<p>Execute the script (<code>File &gt; Run</code> or <code>Ctrl+Shift+X</code>), it might hang the editor for a short while (it has a lot of work to
+do!).</p>
+<p>Then, you will have a <code>SpriteFrames</code> resources generated for each sprite sheet.</p>
+<figure>
+    <img loading="lazy" src="images/result.png"
+         alt="We have generated a SpriteFrames resource for each PNG"/> <figcaption>
+            <p>We have generated a SpriteFrames resource for each PNG</p>
+        </figcaption>
+</figure>
+
+<p>Now drop it in a <code>AnimatedSprite2D</code> and you are ready to roll :)</p>
+<p>I have made little test scene in which a character is randomly generated every time you press <code>R</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript" data-lang="gdscript"><span style="display:flex;"><span><span style="color:#ff5c57">extends</span> <span style="color:#f3f99d">CharacterBody2D</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@export</span> <span style="color:#ff5c57">var</span> bodies: <span style="color:#f3f99d">Array</span>[<span style="color:#f3f99d">SpriteFrames</span>] <span style="color:#ff6ac1">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@export</span> <span style="color:#ff5c57">var</span> eyes: <span style="color:#f3f99d">Array</span>[<span style="color:#f3f99d">SpriteFrames</span>] <span style="color:#ff6ac1">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@export</span> <span style="color:#ff5c57">var</span> outfits: <span style="color:#f3f99d">Array</span>[<span style="color:#f3f99d">SpriteFrames</span>] <span style="color:#ff6ac1">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@export</span> <span style="color:#ff5c57">var</span> hairs: <span style="color:#f3f99d">Array</span>[<span style="color:#f3f99d">SpriteFrames</span>] <span style="color:#ff6ac1">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#ff9f43">@export</span> <span style="color:#ff5c57">var</span> accessories: <span style="color:#f3f99d">Array</span>[<span style="color:#f3f99d">SpriteFrames</span>] <span style="color:#ff6ac1">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">func</span> <span style="color:#57c7ff">_ready</span>() <span style="color:#ff6ac1">-&gt;</span> <span style="color:#9aedfe">void</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#57c7ff">play_all</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">func</span> <span style="color:#57c7ff">_unhandled_input</span>(event: <span style="color:#f3f99d">InputEvent</span>) <span style="color:#ff6ac1">-&gt;</span> <span style="color:#9aedfe">void</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> event <span style="color:#ff6ac1">is</span> <span style="color:#f3f99d">InputEventKey</span> <span style="color:#ff6ac1">&amp;&amp;</span> event<span style="color:#ff6ac1">.</span>keycode <span style="color:#ff6ac1">==</span> KEY_R <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff6ac1">!</span>event<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">is_pressed</span>():
+</span></span><span style="display:flex;"><span>        <span style="color:#57c7ff">randomize_char</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">func</span> <span style="color:#57c7ff">randomize_char</span>() <span style="color:#ff6ac1">-&gt;</span> <span style="color:#9aedfe">void</span>:
+</span></span><span style="display:flex;"><span>    $Body<span style="color:#ff6ac1">.</span>sprite_frames <span style="color:#ff6ac1">=</span> bodies<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">pick_random</span>()
+</span></span><span style="display:flex;"><span>    $Eyes<span style="color:#ff6ac1">.</span>sprite_frames <span style="color:#ff6ac1">=</span> eyes<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">pick_random</span>()
+</span></span><span style="display:flex;"><span>    $Hair<span style="color:#ff6ac1">.</span>sprite_frames <span style="color:#ff6ac1">=</span> hairs<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">pick_random</span>()
+</span></span><span style="display:flex;"><span>    $Outfit<span style="color:#ff6ac1">.</span>sprite_frames <span style="color:#ff6ac1">=</span> outfits<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">pick_random</span>()
+</span></span><span style="display:flex;"><span>    $Accessory<span style="color:#ff6ac1">.</span>sprite_frames <span style="color:#ff6ac1">=</span> accessories<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">pick_random</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#57c7ff">play_all</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">func</span> <span style="color:#57c7ff">play_all</span>() <span style="color:#ff6ac1">-&gt;</span> <span style="color:#9aedfe">void</span>:
+</span></span><span style="display:flex;"><span>    $Body<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">stop</span>()
+</span></span><span style="display:flex;"><span>    $Eyes<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">stop</span>()
+</span></span><span style="display:flex;"><span>    $Hair<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">stop</span>()
+</span></span><span style="display:flex;"><span>    $Outfit<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">stop</span>()
+</span></span><span style="display:flex;"><span>    $Accessory<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">stop</span>()
+</span></span><span style="display:flex;"><span>    $Body<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">play</span>(<span style="color:#5af78e">&#34;idle_down&#34;</span>)
+</span></span><span style="display:flex;"><span>    $Eyes<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">play</span>(<span style="color:#5af78e">&#34;idle_down&#34;</span>)
+</span></span><span style="display:flex;"><span>    $Hair<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">play</span>(<span style="color:#5af78e">&#34;idle_down&#34;</span>)
+</span></span><span style="display:flex;"><span>    $Outfit<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">play</span>(<span style="color:#5af78e">&#34;idle_down&#34;</span>)
+</span></span><span style="display:flex;"><span>    $Accessory<span style="color:#ff6ac1">.</span><span style="color:#57c7ff">play</span>(<span style="color:#5af78e">&#34;idle_down&#34;</span>)
+</span></span></code></pre></div><p>To set it up, you will have to drag and drop your different sprites frames you have generated to set up the <code>@export</code>
+variables.</p>
+<figure>
+    <img loading="lazy" src="images/test_scene.png"
+         alt="Drag and drop all the sprite frames in this scene to test our character generator"/> <figcaption>
+            <p>Drag and drop all the sprite frames in this scene to test our character generator</p>
+        </figcaption>
+</figure>
+
+<p>Here is the result:</p>
+<video controls autoplay loop width="100%">
+    <source src="./images/tada.webm" type="video/webm" />
+    <p>
+        Your browser doesn't support HTML video. Here is a
+        <a href="./images/tada.webm" download="myVideo.mp4">link to the video</a> instead.
+    </p>
+</video>
+
 ]]></content:encoded></item><item><title>Writing naive code</title><link>https://geowarin.com/writing-naive-code/</link><pubDate>Thu, 17 Nov 2022 12:56:42 +0100</pubDate><guid>https://geowarin.com/writing-naive-code/</guid><description>Is writing naive code the best way to write code?</description><content:encoded><![CDATA[<p>I stumbled on this article on reddit:</p>
 <p><a href="https://libreddit.spike.codes/r/programming/comments/ywwxrd/no_architecture_is_better_than_bad_architecture/">No architecture is better than bad architecture - r/programming</a></p>
 <p>The article explains three things:</p>
