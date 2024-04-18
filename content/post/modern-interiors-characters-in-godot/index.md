@@ -52,7 +52,7 @@ available, if you'd like another size more, you'll have minor adjustments to mak
 
 {{< figure src="images/character_files.png" caption="File system view" >}}
 
-In my case, the 32x32 sprite sheet is composed of 77 rows and 20 lines of 32x64 sprites.
+In my case, the 32x32 sprite sheet is composed of 57 columns and 20 lines of 32x64 sprites.
 The sprite at index 0 is always the character looking right, the sprite at index 1 is looking up and the sprites from
 index 57 to 62 compose the walking right animation, for example.
 
