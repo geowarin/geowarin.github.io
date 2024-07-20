@@ -23,16 +23,16 @@ It comes with hundreds of sprite sheets to make characters composed of:
 Each sprite sheet is laid out exactly the same way, each sprite has the same dimensions and each sprite frame represents
 the same part of the same animation.
 
-{{< figure src="images/sprite_sheet.png" caption="One of the sprite sheets" >}}
+{{< figure src="./images/sprite_sheet.png" caption="One of the sprite sheets" >}}
 
 This means that if you set up five `AnimatedSprite2D`s on top of each other, in the right order, you will get the
 character you want.
 
-{{< figure src="images/scene.png" caption="The character scene is composed of 5 AnimatedSprite2D" >}}
+{{< figure src="./images/scene.png" caption="The character scene is composed of 5 AnimatedSprite2D" >}}
 
 The problem is that we will have to manually set up each animation, in 4 directions for hundreds of sprites!
 
-{{< figure src="images/animations.png" caption="The animations in the SpriteFrames window" >}}
+{{< figure src="./images/animations.png" caption="The animations in the SpriteFrames window" >}}
 
 This is tedious but what if we automated the process?
 If you try to set up an `AnimatedSprite2D`, you will see that it uses `SpriteFrames` as a source for its animation,
@@ -41,7 +41,7 @@ which is a Godot resource.
 So if we had a `SpriteFrames` for each sprite sheet, all we would have to do is select the one we want for each part of
 our character.
 
-{{< figure src="images/select_body.png" caption="We can select a sprite frame for our body" >}}
+{{< figure src="./images/select_body.png" caption="We can select a sprite frame for our body" >}}
 
 First let's import all the PNGs in our Godot project.
 
@@ -50,7 +50,7 @@ subdirectories: `Accessories`, `Bodies`, `Eyes`, `Hairstyles` and `Outfits`.
 Each directory then contains the sprite sheets. I have chosen 32x32 for my sprite dimensions (16x16 and 48x48 are also
 available, if you'd like another size more, you'll have minor adjustments to make)
 
-{{< figure src="images/character_files.png" caption="File system view" >}}
+{{< figure src="./images/character_files.png" caption="File system view" >}}
 
 In my case, the 32x32 sprite sheet is composed of 57 columns and 20 lines of 32x64 sprites.
 The sprite at index 0 is always the character looking right, the sprite at index 1 is looking up and the sprites from
@@ -63,7 +63,7 @@ So all we have to do is:
 - for each sprite sheet, create a `SpriteFrames` based on its image and add each animation with its corresponding image
   atlas
 
-{{< figure src="images/sprite_sheet.png" caption="The sprite sheet again ;)" >}}
+{{< figure src="./images/sprite_sheet.png" caption="The sprite sheet again ;)" >}}
 
 Let's create an [EditorScript](https://docs.godotengine.org/en/stable/classes/class_editorscript.html).
 
@@ -157,7 +157,7 @@ do!).
 
 Then, you will have a `SpriteFrames` resources generated for each sprite sheet.
 
-{{< figure src="images/result.png" caption="We have generated a SpriteFrames resource for each PNG" >}}
+{{< figure src="./images/result.png" caption="We have generated a SpriteFrames resource for each PNG" >}}
 
 Now drop it in a `AnimatedSprite2D` and you are ready to roll :)
 
@@ -207,7 +207,7 @@ func play_all() -> void:
 To set it up, you will have to drag and drop your different sprites frames you have generated to set up the `@export`
 variables.
 
-{{< figure src="images/test_scene.png" caption="Drag and drop all the sprite frames in this scene to test our character generator" >}}
+{{< figure src="./images/test_scene.png" caption="Drag and drop all the sprite frames in this scene to test our character generator" >}}
 
 Here is the result:
 
