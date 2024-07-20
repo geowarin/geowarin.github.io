@@ -177,7 +177,7 @@ you are missing out on a very successful high quality pixel art bundle (and it&r
 <p>Each sprite sheet is laid out exactly the same way, each sprite has the same dimensions and each sprite frame represents
 the same part of the same animation.</p>
 <figure>
-    <img loading="lazy" src="images/sprite_sheet.png"
+    <img loading="lazy" src="./images/sprite_sheet.png"
          alt="One of the sprite sheets"/> <figcaption>
             <p>One of the sprite sheets</p>
         </figcaption>
@@ -186,7 +186,7 @@ the same part of the same animation.</p>
 <p>This means that if you set up five <code>AnimatedSprite2D</code>s on top of each other, in the right order, you will get the
 character you want.</p>
 <figure>
-    <img loading="lazy" src="images/scene.png"
+    <img loading="lazy" src="./images/scene.png"
          alt="The character scene is composed of 5 AnimatedSprite2D"/> <figcaption>
             <p>The character scene is composed of 5 AnimatedSprite2D</p>
         </figcaption>
@@ -194,7 +194,7 @@ character you want.</p>
 
 <p>The problem is that we will have to manually set up each animation, in 4 directions for hundreds of sprites!</p>
 <figure>
-    <img loading="lazy" src="images/animations.png"
+    <img loading="lazy" src="./images/animations.png"
          alt="The animations in the SpriteFrames window"/> <figcaption>
             <p>The animations in the SpriteFrames window</p>
         </figcaption>
@@ -206,7 +206,7 @@ which is a Godot resource.</p>
 <p>So if we had a <code>SpriteFrames</code> for each sprite sheet, all we would have to do is select the one we want for each part of
 our character.</p>
 <figure>
-    <img loading="lazy" src="images/select_body.png"
+    <img loading="lazy" src="./images/select_body.png"
          alt="We can select a sprite frame for our body"/> <figcaption>
             <p>We can select a sprite frame for our body</p>
         </figcaption>
@@ -218,7 +218,7 @@ subdirectories: <code>Accessories</code>, <code>Bodies</code>, <code>Eyes</code>
 Each directory then contains the sprite sheets. I have chosen 32x32 for my sprite dimensions (16x16 and 48x48 are also
 available, if you&rsquo;d like another size more, you&rsquo;ll have minor adjustments to make)</p>
 <figure>
-    <img loading="lazy" src="images/character_files.png"
+    <img loading="lazy" src="./images/character_files.png"
          alt="File system view"/> <figcaption>
             <p>File system view</p>
         </figcaption>
@@ -235,7 +235,7 @@ index 57 to 62 compose the walking right animation, for example.</p>
 atlas</li>
 </ul>
 <figure>
-    <img loading="lazy" src="images/sprite_sheet.png"
+    <img loading="lazy" src="./images/sprite_sheet.png"
          alt="The sprite sheet again ;)"/> <figcaption>
             <p>The sprite sheet again ;)</p>
         </figcaption>
@@ -325,7 +325,7 @@ to understand it. And I encourage you to do the same!</p>
 do!).</p>
 <p>Then, you will have a <code>SpriteFrames</code> resources generated for each sprite sheet.</p>
 <figure>
-    <img loading="lazy" src="images/result.png"
+    <img loading="lazy" src="./images/result.png"
          alt="We have generated a SpriteFrames resource for each PNG"/> <figcaption>
             <p>We have generated a SpriteFrames resource for each PNG</p>
         </figcaption>
@@ -374,7 +374,7 @@ do!).</p>
 </span></span></code></pre></div><p>To set it up, you will have to drag and drop your different sprites frames you have generated to set up the <code>@export</code>
 variables.</p>
 <figure>
-    <img loading="lazy" src="images/test_scene.png"
+    <img loading="lazy" src="./images/test_scene.png"
          alt="Drag and drop all the sprite frames in this scene to test our character generator"/> <figcaption>
             <p>Drag and drop all the sprite frames in this scene to test our character generator</p>
         </figcaption>
