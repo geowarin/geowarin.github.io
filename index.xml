@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Geowarin</title><link>https://geowarin.com/</link><description>Recent content on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 17 Apr 2024 17:39:24 +0200</lastBuildDate><atom:link href="https://geowarin.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Chapter 1 - Setting up a Spring web application in no time</title><link>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</link><pubDate>Sun, 01 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</guid><description>In the first chapter, you will learn how to bootstrap your application effectively and how to leverage spring boot to get started with spring MVC in a couple of minutes</description><content:encoded><![CDATA[<p>I just finished writing the first chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Geowarin</title><link>https://geowarin.com/</link><description>Recent content on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Wed, 17 Apr 2024 17:39:24 +0200</lastBuildDate><atom:link href="https://geowarin.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Chapter 1 - Setting up a Spring web application in no time</title><link>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</link><pubDate>Sun, 01 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-1-setting-up-a-spring-web-application-in-no-time.html</guid><description>In the first chapter, you will learn how to bootstrap your application effectively and how to leverage spring boot to get started with spring MVC in a couple of minutes</description><content:encoded><![CDATA[<p>I just finished writing the first chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>.
 That was a lot of fun. I enjoyed sharing the tips and tricks that I use when I bootstrap a Spring application.</p>
 <p>In this first chapter, you will learn how to get started with spring MVC in a snap.</p>
 <h2 id="know-thy-tools">Know thy tools</h2>
@@ -30,10 +30,8 @@ We will also be discussing good practices, the basis of Domain Driven Design and
 MVC application.</p>
 <p>In 5 minutes, I will walk you through the process of registering your application on twitter and we will be designing a little but beautiful
 tweet search engine using <a href="http://projects.spring.io/spring-social-twitter/">Spring Social Twitter</a>:</p>
-<p><img loading="lazy" src="/assets/images/book/chap2-1.png" alt="Search"  title="Search field"  />
-</p>
-<p><img loading="lazy" src="/assets/images/book/chap2-2.png" alt="Results"  title="Results"  />
-</p>
+<p><img alt="Search" loading="lazy" src="/assets/images/book/chap2-1.png" title="Search field"></p>
+<p><img alt="Results" loading="lazy" src="/assets/images/book/chap2-2.png" title="Results"></p>
 <p>This will give us the opportunity to discuss the navigation in a web application, java 8 streams system, the <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring Expression Language</a>,
 material design, web jars and much more!</p>
 <p>At the end of the chapter you will have laid the foundations of the web application that we will deploy on the cloud later and that will make you rich and famous!</p>
@@ -41,8 +39,7 @@ material design, web jars and much more!</p>
 ]]></content:encoded></item><item><title>Chapter 3 - Handling forms and complex URL mapping</title><link>https://geowarin.com/book/chapter-3-handling-forms-and-complex-url-mapping.html</link><pubDate>Fri, 27 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-3-handling-forms-and-complex-url-mapping.html</guid><description>In this chapter, we will create a beautiful profile form with server and client side validation</description><content:encoded><![CDATA[<p>The third chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a> is about the cornerstone of web application: forms.
 Oh boy, what a chapter.</p>
 <p>In this epic piece of literature, we will create a complete profile form like this one:</p>
-<p><img loading="lazy" src="/assets/images/book/chap3-1.png" alt="A beautiful profile form"  title="Profile form"  />
-</p>
+<p><img alt="A beautiful profile form" loading="lazy" src="/assets/images/book/chap3-1.png" title="Profile form"></p>
 <p>We will discuss forms, validation, conversion and formatting.</p>
 <p>See the birth date field up there? That&rsquo;s a <code>java.time.LocalDate</code>.
 Do you wonder how to make it work with Spring MVC?</p>
@@ -55,14 +52,12 @@ That&rsquo;s because we will allow searches on multiple keywords with <a href="h
 <p>Sounds good? I hope it does and can&rsquo;t wait for the moment when you will be able to get your hands on the book!</p>
 ]]></content:encoded></item><item><title>Chapter 4 - File Upload and Error Handling</title><link>https://geowarin.com/book/chapter-4-file-upload-error-handling.html</link><pubDate>Fri, 27 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-4-file-upload-error-handling.html</guid><description>In this chapter, we will implement file upload and see how to handle errors in Spring MVC</description><content:encoded><![CDATA[<p>In the fourth chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>
 We will allow the user to upload his profile picture.</p>
-<p><img loading="lazy" src="/assets/images/book/chap3-1.png" alt="Woah, such file upload!"  title="File upload"  />
-</p>
+<p><img alt="Woah, such file upload!" loading="lazy" src="/assets/images/book/chap3-1.png" title="File upload"></p>
 <p>The file upload component implies handling errors at two levels:
 I/O exceptions at the controller level and multipart exception (a file too big, for instance) at the container level.</p>
 <p>If your curious about this part take a look at this <a href="http://stackoverflow.com/questions/29363705/handling-multipartexception-with-spring-boot-and-display-error-page">stackoverflow question</a>.</p>
 <p>This will give us the opportunity to discuss error handling in Spring MVC and Spring boot.</p>
-<p><img loading="lazy" src="/assets/images/book/chap4-3.png" alt="A beautiful 404 page"  title="Not found"  />
-</p>
+<p><img alt="A beautiful 404 page" loading="lazy" src="/assets/images/book/chap4-3.png" title="Not found"></p>
 <p>Can&rsquo;t wait to hear what you think about this chapter!</p>
 ]]></content:encoded></item><item><title>Chapter 5 - Crafting a RESTful application</title><link>https://geowarin.com/book/chapter-5-crafting-a-restful-application.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-5-crafting-a-restful-application.html</guid><description>In this chapter, we will have a look a the principles of RESTful API and learn how to craft one using Spring MVC</description><content:encoded><![CDATA[<p>In this chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>, we’ll tackle main principles of a RESTful architecture. We’ll learn how to convert data to JSON and handle different media types in the application.</p>
 <p>We will use the JSR-310 (Java DateTime) spec from the get-go and see how
@@ -71,8 +66,7 @@ to handle them properly in your MVC application.</p>
 <p>We will see how REST works in theory: HTTP codes and verbs, API versioning, HATEOAS, etc.</p>
 <p>Then, we will design an API that uses both JSON and XML to do a twitter search
 and manage users.</p>
-<p><img loading="lazy" src="/assets/images/book/chap4-1.png" alt="API"  title="API"  />
-</p>
+<p><img alt="API" loading="lazy" src="/assets/images/book/chap4-1.png" title="API"></p>
 <h2 id="tooling">Tooling</h2>
 <p>I will also show you some useful tools to debug REST API.
 My favorite one is a little command line tool called <a href="http://httpie.org/">httpie</a>.</p>
@@ -81,7 +75,7 @@ error pages.</p>
 <p>We will also see how to set up Jackson serialization using mixins and Java 8 dates.</p>
 <h2 id="documentation">Documentation</h2>
 <p>We will use <a href="http://swagger.io/">swagger</a> to document our API.</p>
-<!-- raw HTML omitted -->
+<p><img alt="Swagger" loading="lazy" src="/assets/images/book/chap4-2.png" title="Swagger"></p>
 <p>I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!</p>
 ]]></content:encoded></item><item><title>Chapter 6 - Securing your application</title><link>https://geowarin.com/book/chapter-6-securing-your-application.html</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/book/chapter-6-securing-your-application.html</guid><description>In this chapter, we’ll learn how to secure our web application and also how to cope with the security challenges of modern, distributed web applications.</description><content:encoded><![CDATA[<p>In this chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>, we’ll learn how to secure our web application and also how to cope with the security challenges of modern, distributed web applications.</p>
 <p>This is a parts chapter:</p>
@@ -94,17 +88,17 @@ the basic authentication for the REST API</li>
 using a distributed session mechanism</li>
 <li>Last, we will configure Tomcat to use secured connection through SSL</li>
 </ol>
-<!-- raw HTML omitted -->
+<p><img alt="BasicAuth" loading="lazy" src="/assets/images/book/chap6-1.png" title="Basic Auth"></p>
 <h2 id="safe-and-sound">Safe and sound</h2>
 <p>At the end of this chapter you will be a security expert.
 We will protect our REST API with basic auth, which is secure as well as easy
 to interact with.</p>
 <p>We will also design a gorgeous login page for our web application:</p>
-<!-- raw HTML omitted -->
+<p><img alt="Login" loading="lazy" src="/assets/images/book/chap6-2.png" title="Login page"></p>
 <h2 id="going-social">Going social</h2>
 <p>My favorite part in this chapter is when we use <a href="http://projects.spring.io/spring-social/">Spring Social</a> to allow users to log-in using
 their twitter account!</p>
-<!-- raw HTML omitted -->
+<p><img alt="TwitterLogin" loading="lazy" src="/assets/images/book/chap6-3.png" title="Twitter login"></p>
 <h2 id="infinite-scaling">Infinite scaling</h2>
 <p>We will use <a href="http://projects.spring.io/spring-session/">Spring Session</a>
 to put our users&rsquo; sessions into <a href="http://redis.io/">Redis</a> with little configuration.</p>
@@ -119,7 +113,7 @@ handful of unit tests.</p>
 <p>Chapter 5 is by far my favorite chapter of <a href="/mastering-spring-mvc4.html">Mastering Spring MVC 4</a>!</p>
 <p>In this uplifting piece of literature, you will learn more about testing best
 practices: TDD, the pyramid of tests, unit tests and end-to-end tests.</p>
-<!-- raw HTML omitted -->
+<p><img alt="RedGreen" loading="lazy" src="/assets/images/book/chap5-1.png" title="Red green refactor"></p>
 <p>We will see the difference behind mocking and stubbing and use mockito and
 the power of Spring&rsquo;s IOC to study both options.</p>
 <p>With <code>spring-mvc-test</code> we will create unit test for our web controllers as well
@@ -153,8 +147,7 @@ where we use Java 8 <code>CompletableFuture</code>s to create a multithreaded ap
 <p>We will see how to deploy our application on two popular PaaS: Cloud Foundry and
 Heroku.</p>
 <p>A big thank you to Wayne Lund at Pivotal who wrote the <a href="https://run.pivotal.io/">Pivotal Web Services</a> part!</p>
-<p><img loading="lazy" src="/assets/images/book/chap8-1.png" alt="Our login page on Heroku!"  title="Login page"  />
-</p>
+<p><img alt="Our login page on Heroku!" loading="lazy" src="/assets/images/book/chap8-1.png" title="Login page"></p>
 <h2 id="know-your-options">Know your options</h2>
 <p>We will have a look at the different PaaS providers, then I will guide you through the steps of deploying your application on Cloud Foundry and Heroku.</p>
 <p>We will use Redis to distribute our sessions as well as our application cache
@@ -970,8 +963,7 @@ The advantage is that we have only one web server and everything is on the same 
 </span></span></code></pre></div><p>Navigating on <code>locahost:8080</code> you will see that the react application is able to call web services because they
 both run on the same host.</p>
 <p>This configuration might have some occasional problems with HMR not fully reloaded so it&rsquo;s not my favourite.</p>
-<p><img loading="lazy" src="/assets/images/articles/2019-12-23-javascript-framework-with-spring-backend/hmr-errors.png" alt="Oups"  />
-</p>
+<p><img alt="Oups" loading="lazy" src="/assets/images/articles/2019-12-23-javascript-framework-with-spring-backend/hmr-errors.png"></p>
 <p>However, by generating the result of the frontend build in <code>src/main/resources/static</code> we both have a very simple
 way to distribute the full web application, as well as a dev environment that is very similar to the production environment.</p>
 <p>Pros:</p>
@@ -1078,12 +1070,10 @@ reach developer nirvana.</p>
 .idea/*
 !.idea/runConfigurations
 </code></pre><p>Here is a compound run configuration. It&rsquo;s awesome. It launches multiple run configurations at once.</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-22-run-config.png" alt="Run configuration"  />
-</p>
+<p><img alt="Run configuration" loading="lazy" src="/assets/images/articles/2019/2019-12-22-run-config.png"></p>
 <p>Then you want to check the <strong>Share throught VCS</strong> checkbox on the top right corner, this will add an xml file to the
 <code>.idea/runConfigurations</code> file that you can commit and push.</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-22-share-config.png" alt="Xml configuration file"  />
-</p>
+<p><img alt="Xml configuration file" loading="lazy" src="/assets/images/articles/2019/2019-12-22-share-config.png"></p>
 ]]></content:encoded></item><item><title>Reverse proxy on docker-compose with CORS and SSL</title><link>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</link><pubDate>Sat, 21 Dec 2019 00:24:53 +0100</pubDate><guid>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</guid><description>How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.</description><content:encoded><![CDATA[<h1 id="the-problem">The problem</h1>
 <p><a href="https://github.com/electerious/Ackee">Ackee</a> is a neat self-hosted analytics solution for simple needs (e.g. a blog).
 On the repo, the authors give instructions to run the tool, a node application, via docker-compose.</p>
@@ -1247,8 +1237,7 @@ ssl_certificate_key self-signed.key;
 </span></span><span style="display:flex;"><span>      - ./data:/data/db
 </span></span></code></pre></div><p>Note the <code>depends_on</code> line which will make the Ackee container available inside the docker network on http://ackee.</p>
 <p>With that, we have a node application running behind nginx with HTTPS and CORS enabled!</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-21-success.png" alt="It works"  />
-</p>
+<p><img alt="It works" loading="lazy" src="/assets/images/articles/2019/2019-12-21-success.png"></p>
 <p>Resources:</p>
 <ul>
 <li><a href="https://github.com/geowarin/docker-compose-nginx">Github repository</a></li>
@@ -1257,19 +1246,15 @@ ssl_certificate_key self-signed.key;
 <li><a href="https://github.com/Busindre/How-to-Add-trusted-root-certificates">How-to: Adding trusted root certificates</a></li>
 </ul>
 ]]></content:encoded></item><item><title>Debugging Webflux with IntelliJ</title><link>https://geowarin.com/debugging-webflux-with-intellij/</link><pubDate>Fri, 20 Dec 2019 21:04:54 +0100</pubDate><guid>https://geowarin.com/debugging-webflux-with-intellij/</guid><description>By default, it very difficult to read reactor stack traces. Make your life easier with this little tip!</description><content:encoded><![CDATA[<p>By default, when you try to debug project reactor calls, you get something like this:</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-20-webflux-no-debug.png" alt="No debug"  />
-</p>
+<p><img alt="No debug" loading="lazy" src="/assets/images/articles/2019/2019-12-20-webflux-no-debug.png"></p>
 <p>But if you add this dependency :</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>testImplementation(<span style="color:#5af78e">&#34;io.projectreactor:reactor-tools&#34;</span>)
 </span></span></code></pre></div><p>And click on this little funnel:</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-20-funnel.png" alt="Funnel"  />
-</p>
+<p><img alt="Funnel" loading="lazy" src="/assets/images/articles/2019/2019-12-20-funnel.png"></p>
 <p>Also ensure that you have the reactor plugin and that its properly configured.</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-22-webflux-config.png" alt="Plugin config"  />
-</p>
+<p><img alt="Plugin config" loading="lazy" src="/assets/images/articles/2019/2019-12-22-webflux-config.png"></p>
 <p>You get this:</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-20-clean-stack.png" alt="Wow"  />
-</p>
+<p><img alt="Wow" loading="lazy" src="/assets/images/articles/2019/2019-12-20-clean-stack.png"></p>
 <p>Much better!</p>
 <p>Sources:</p>
 <ul>
@@ -1477,7 +1462,7 @@ provide the solutions for the remaining problems.</p>
 to connect Redux to your API.</p>
 <p>Yesterday, I decided to see what <a href="http://shasta.tools/">Shasta</a> had in store for
 us. I have to say that I was more than happy with what I saw!</p>
-<p>Check out my demo project <a href="https://github.com/geowarin/shasta-preview">on github</a>.</p>
+<p>Check out my demo project <a href="https://github.com/geowarin/shasta-preview">on GitHub</a>.</p>
 <h2 id="what-is-shasta">What is Shasta?</h2>
 <p>Shasta is the latest project of <a href="https://github.com/contra">@Contra (Eric Schoffstall)</a>,
 previously known for Gulp.</p>
@@ -1505,7 +1490,7 @@ It is very similar to Redux&rsquo;s store but it adds the notion of plugins.</p>
 <p>To get started quickly, I created a project [using nwb]({% post_url 2016-02-18-react-freshness %}).</p>
 <p>Here is what the project looks like after setting up Shasta with the router and
 Tahoe:</p>
-<!-- raw HTML omitted -->
+<p><img loading="lazy" src="/assets/images/articles/2016-04-shasta-layout.png"></p>
 <p>Let&rsquo;s dig into the core package.</p>
 <p><code>store.js</code> allows you to reference the store as a singleton. This is also where
 you register the plugins you use:</p>
@@ -1896,12 +1881,10 @@ via Twitter from a rich Javascript client (React).</p>
 <h2 id="setting-up-your-app-on-twitter">Setting up your app on Twitter</h2>
 <p>Before coding anything, you will need to create a new Twitter application
 in <a href="https://apps.twitter.com/">your twitter apps page</a>.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-twitter-app.png" alt="Creating a Twitter app"  title="Creating a Twitter app"  />
-</p>
+<p><img alt="Creating a Twitter app" loading="lazy" src="/assets/images/articles/2016-02-twitter-app.png" title="Creating a Twitter app"></p>
 <p>Then go to the &ldquo;Keys and access tokens&rdquo; tab and note your API key and API secret
 ids.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-twitter-app-keys.png" alt="Twitter app keys"  title="Twitter app keys"  />
-</p>
+<p><img alt="Twitter app keys" loading="lazy" src="/assets/images/articles/2016-02-twitter-app-keys.png" title="Twitter app keys"></p>
 <h2 id="creating-a-spring-boot-app">Creating a Spring Boot app</h2>
 <p>Use the <a href="http://start.spring.io">Spring initializer</a> to create a new Spring Boot
 application. You will need the following dependencies:</p>
@@ -1933,8 +1916,7 @@ flow instead.</p>
 a controller that will decide what to do during the sign-up process (you will receive a
 request on the <code>/signup</code> URL by default).</p>
 <p>Here is an overview of the authentication flow in Spring Social:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-social-flow.png" alt="Spring Social flow"  title="Spring Social flow"  />
-</p>
+<p><img alt="Spring Social flow" loading="lazy" src="/assets/images/articles/2016-02-social-flow.png" title="Spring Social flow"></p>
 <ul>
 <li>Your application produces a POST request to <code>/signin/{providerId}</code></li>
 <li>The <code>ProviderSigninController</code> then redirects the user to the identification provider&rsquo;s sign-in screen</li>
@@ -2177,8 +2159,7 @@ that Spring Social will take the first <code>SocialConfigurer</code> that declar
 <p>Ours come before the <code>SocialConfigurer</code>s auto-configured by Spring Boot but
 if you are wary of this implementation, consider disabling Spring boot auto-configuration.</p>
 <p>We can use the h2 console Spring boot auto-configured for us to check the database.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-social-db.png" alt="The data in our database"  title="The data in our database"  />
-</p>
+<p><img alt="The data in our database" loading="lazy" src="/assets/images/articles/2016-02-social-db.png" title="The data in our database"></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Social login with Spring is a bit tricky but definitely worth the investment!</p>
 <p>Spring Boot provides default configuration for LinkedIn and Facebook as well
@@ -2210,8 +2191,7 @@ using Jackson.</p>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Simple, right? What could possibly go wrong?</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-localDate.png" alt="Oh boy what am I going to do with that?"  title="Bad date time"  />
-</p>
+<p><img alt="Oh boy what am I going to do with that?" loading="lazy" src="/assets/images/articles/2016-02-localDate.png" title="Bad date time"></p>
 <p>Well, it&rsquo;s probably not what you expected.
 This output is not going to be easy to use in your client application.</p>
 <p>More importantly, are you going to send this kind of format to your server
@@ -2275,10 +2255,11 @@ in real time.</p>
 <p>In the <a href="https://github.com/henryr/cap-faq">CAP theorem</a>, rethinkDB focuses on being
 Consistent in case of difficulties in the cluster.</p>
 <p>Relevant quote from the <a href="https://www.rethinkdb.com/docs/architecture/#cap-theorem">FAQ</a>:</p>
-<!-- raw HTML omitted -->
+<blockquote>
+<p>Authoritative systems such as RethinkDB and MongoDB choose to maintain data consistency. Building applications on top of authoritative primary systems is much simpler because all of the issues associated with data inconsistency do not arise. In exchange, these applications will occasionally experience availability issues.</p>
+</blockquote>
 <p>Once RethinkDB is started, you can connect on the beautiful admin GUI on port <code>8080</code>:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-admin.png" alt="The awesome GUI"  title="The RethinkDB admin GUI"  />
-</p>
+<p><img alt="The awesome GUI" loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-admin.png" title="The RethinkDB admin GUI"></p>
 <h2 id="setting-up-the-project">Setting up the project</h2>
 <p>I created a Gradle project with the <code>web</code> and <code>websocket</code> Spring boot starters.
 I also added a couple of <a href="https://spring.io/blog/2014/01/03/utilizing-webjars-in-spring-boot">webjars</a>:
@@ -2530,8 +2511,7 @@ Below the <code>index.html</code> file of our application:</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>getPreviousMessages();
 </span></span><span style="display:flex;"><span>connectWebSocket();
-</span></span></code></pre></div><p><img loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-hello.gif" alt="The chat with a bit of CSS"  title="Hello world!"  />
-</p>
+</span></span></code></pre></div><p><img alt="The chat with a bit of CSS" loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-hello.gif" title="Hello world!"></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>RethinkDB is an awesome database, especially because it lets you decouple the
 code that updates the database and the code that listens to the changes.</p>
@@ -2692,8 +2672,7 @@ Groovy code contained in <code>src/main/groovy</code> and <code>src/test/groovy<
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
 </span></span></code></pre></div><p>Here is what it looks like in IntelliJ:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-01-spock.png" alt="Spock test results"  title="Spock results"  />
-</p>
+<p><img alt="Spock test results" loading="lazy" src="/assets/images/articles/2016-01-spock.png" title="Spock results"></p>
 <p>You can also verify that it works with maven by typing:</p>
 <pre tabindex="0"><code>mvn test
 </code></pre><p>You would get this result:</p>
@@ -2903,8 +2882,7 @@ Your app can either send its logs directly to Logstash/Fluentd as we will see in
 or write them to a file that Logstash will regularly process.</p>
 <p><a href="https://www.elastic.co/products/elasticsearch">Elastic Search</a> is used to store and process a large amount of logs.</p>
 <p>We can then use <a href="https://www.elastic.co/products/kibana">Kibana</a> as a dashboard to analyze them:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-01-kibana.png" alt="Kibana"  title="Kibana"  />
-</p>
+<p><img alt="Kibana" loading="lazy" src="/assets/images/articles/2016-01-kibana.png" title="Kibana"></p>
 <p>Instead of Logstash, we will use <a href="http://www.fluentd.org/">Fluentd</a>, an alternative log collector which is really
 easy to set up.</p>
 <h2 id="docker-compose-to-run-your-efk">Docker compose to run your EFK</h2>
@@ -3328,7 +3306,8 @@ to automatically generate the index.html page.</p>
 we need to tweak the default html template.</p>
 <p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
 It will serve as a template to generate our <code>index.html</code> file:</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4e6089bc670d753f2453.js"></script>
+
 <p>As you can see, it contains a div with the id <code>root</code>.</p>
 <p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
 <p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
@@ -3503,8 +3482,7 @@ code intended for development purposes in our libraries:</p>
 </span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1">commit</a></p>
 <h2 id="feedback-needed">Feedback needed</h2>
 <p>Well, this works pretty well!</p>
-<p><img loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" alt="Hot hot reload"  title="Hot reload"  />
-</p>
+<p><img alt="Hot hot reload" loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" title="Hot reload"></p>
 <p>What do you think? Care to comment and help me make something better?
 Your feedback is welcome!</p>
 <p>The project is available <a href="https://github.com/geowarin/boot-react">on github</a>.
@@ -4128,7 +4106,10 @@ Negative matches:
 <p>What I love about Spring Boot is that it allows you to prototype an application very quickly but also to learn with its
 source. Auto-configurations are neat pieces of code that can teach you a thing or two about Spring.</p>
 <p>As Josh Long, developer advocate at Pivotal, said:</p>
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/springcentral?ref_src=twsrc%5Etfw">@springcentral</a> <a href="https://twitter.com/david_syer?ref_src=twsrc%5Etfw">@david_syer</a> that&#39;s really the point of <a href="https://twitter.com/springboot?ref_src=twsrc%5Etfw">@springboot</a> imho. Boot lets you pair-program w/ the Spring team <a href="http://t.co/WNUJfxOwoY">http://t.co/WNUJfxOwoY</a></p>&mdash; Josh Long (@starbuxman) <a href="https://twitter.com/starbuxman/status/458266170861158401?ref_src=twsrc%5Etfw">April 21, 2014</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 ]]></content:encoded></item><item><title>Review of Learning Spring Boot</title><link>https://geowarin.com/review-of-learning-spring-boot/</link><pubDate>Thu, 19 Feb 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/review-of-learning-spring-boot/</guid><description>Review of the book Learning Spring Boot by Greg L. Turnquist</description><content:encoded><![CDATA[<p>Today, I&rsquo;ll be reviewing the first book ever written on Spring Boot, <a href="https://www.packtpub.com/application-development/learning-spring-boot">Learning Spring Boot</a>, by Greg L. Turnquist.
 Packt Publishing, the editor, contacted me to review it during its writing but I&rsquo;ll remain as unbiased as possible.</p>
 <p>It&rsquo;s a good book, well worth reading if you want to learn how spring boot works but more globally, it will
@@ -4332,7 +4313,7 @@ the returned result to JSON.</p>
 <h2 id="testing">Testing</h2>
 <p>Real programmers do tests. We want to test our controller right? There is a framework for that: <a href="https://jersey.java.net/documentation/latest/test-framework.html">jersey-test</a>.</p>
 <p><em>The Problem?</em> it does not (yet) support annotated configuration.</p>
-<!-- raw HTML omitted -->
+<p><del>I&rsquo;m providing a little hack of my own to override the <code>SpringComponentProvider</code> class of <em>jersey-spring3</em> and allow this configuration. See the class on github. It is important to place it in the same package as the original one.</del></p>
 <p><em>Update</em> : I submitted a <a href="https://github.com/jersey/jersey/pull/59">pull request</a> which has been accepted by Jersey. I updated the project to use the 2.6 snapshot release of jersey which includes the modified <code>SpringComponentProvider</code>.</p>
 <p>Now the test :</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResourceTest</span> <span style="color:#ff5c57">extends</span> JerseyTest {
@@ -4373,7 +4354,8 @@ the returned result to JSON.</p>
 ]]></content:encoded></item><item><title>Fun with xpath</title><link>https://geowarin.com/fun-with-xpath/</link><pubDate>Thu, 30 Jan 2014 00:00:00 +0000</pubDate><guid>https://geowarin.com/fun-with-xpath/</guid><description>How to select nodes with xPath and keep the file structure of the original document in java with dom4j</description><content:encoded><![CDATA[<p>I had fun today at work when I had to design a program that allows users to select nodes with xPath but keep the same hierarchical structure as the original xml file.</p>
 <p>The result with tests is available <a href="https://github.com/geowarin/xpath-dom4j">on github</a>.</p>
 <p>For instance, the following xPath <code>/persons/person[@age &gt; 18]/project[@language = 'java']</code>, would select the lines highlighted in the file below :</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/8720930.js"></script>
+
 <p>Normal xPath result would be a list of nodes like that</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;project</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#39;dom4j&#39;</span> <span style="color:#57c7ff">language=</span><span style="color:#5af78e">&#39;java&#39;</span><span style="color:#ff6ac1">/&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;project</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#39;dom4j&#39;</span> <span style="color:#57c7ff">language=</span><span style="color:#5af78e">&#39;java&#39;</span><span style="color:#ff6ac1">/&gt;</span>
@@ -4747,10 +4729,12 @@ But it is quite difficult to get it right the first time. You definitely have to
 ]]></content:encoded></item><item><title>Basic configuration for Jetty and tomcat maven plugins</title><link>https://geowarin.com/basic-configuration-for-jetty-and-tomcat-maven-plugins/</link><pubDate>Tue, 22 Jan 2013 04:07:49 +0000</pubDate><guid>https://geowarin.com/basic-configuration-for-jetty-and-tomcat-maven-plugins/</guid><description>Cheatsheet for jetty and tomcat maven plugins</description><content:encoded><![CDATA[<p>This is a quick memento on how to set up <a href="http://tomcat.apache.org/maven-plugin-2.0/">tomcat7-maven-plugin</a> and <a href="http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin">jetty-maven plugin</a> (current version is 8).</p>
 <p>It is interesting to note both of these servers are servlet 3.0 compatible.</p>
 <p>Setting up Jetty :</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4591942.js"></script>
+
 <p>Now your can run <code>mvn jetty:run</code></p>
 <p>To set up tomcat-7 plugin, you will have to add either the plugin to the pluginManagement section of your pom (more portable) - see below - or adding the pluginGroup to your settings.xml.</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4591960.js"></script>
+
 <p>Now your can run <code>mvn tomcat7:run</code></p>
 <p>pluginGroup :</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;pluginGroups&gt;</span>
@@ -5152,7 +5136,8 @@ A better approach would be to use <strong>@Service</strong> spring beans to enca
 </ol>
 <p>Injection with <strong>@Value</strong> property is a very interesting alternative to the use of spring&rsquo;s Environment as it provides natural type inference.</p>
 <p>For some people, the use of java configuration can be confusing because one cannot see at first glance where the config is located. What I usually do is keeping my configuration in a separate source folder. This can be achieved with maven and its build-helper plugin :</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4581500.js"></script>
+
 <p>This approach is compatible with eclipse if you have m2e installed. In that case when you import a project using this plugin, eclipse will prompt you for the install of the build-helper connector.</p>
 <h2 id="our-application-entry-point--the-mainbean">Our application entry point : the MainBean</h2>
 <p>Here is the code of our <strong>MainBean</strong> :</p>
@@ -5298,7 +5283,8 @@ Finally, let&rsquo;s note it is possible to inject all components or services im
 ]]></content:encoded></item><item><title>Using Hibernate as a JPA provider in a Java SE environment and run tests with dbUnit</title><link>https://geowarin.com/using-hibernate-as-a-jpa-provider-in-a-java-se-environment-and-run-tests-with-dbunit/</link><pubDate>Sun, 20 Jan 2013 16:28:23 +0000</pubDate><guid>https://geowarin.com/using-hibernate-as-a-jpa-provider-in-a-java-se-environment-and-run-tests-with-dbunit/</guid><description>Demonstration of how to set up hibernate in a java SE application and test with dbUnit</description><content:encoded><![CDATA[<p>Sometimes it can be useful to use JPA in a minimal environment to test your model or just if you&rsquo;re curious of how things work in your DAO layer behind the scenes. In this blog post, we will create a simple project then see how you can use <a href="http://www.dbunit.org/">dbUnit </a>to run some unit tests on your database.</p>
 <p>The source code of this blog post is available on my github : <a href="https://github.com/geowarin/hibernate-examples/tree/master/hibernate-jpa-standalone-dbunit">https://github.com/geowarin/hibernate-examples/tree/master/hibernate-jpa-standalone-dbunit</a></p>
 <p>First thing is to create a persistence.xml file in your resources. Default location is under META-INF/persistence.xml. Here is a snippet using an embedded <a href="http://hsqldb.org/">hsqldb</a>.</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4579330.js"></script>
+
 <p>javax.persistence.jdbc.driver, url, user and password are standard JPA properties. The driver tells jdbc how to connect to your databse. Hsqldb must be in your classpath to find the corresponding driver. You could also init hsqdb to write to a file or use a different protocol, see the <a href="http://hsqldb.org/doc/2.0/guide/dbproperties-chapt.html">documentation </a>for more information.</p>
 <p>The properties prefixed with hibernate are vendor-specific properties :</p>
 <ul>
@@ -5346,7 +5332,8 @@ Finally, let&rsquo;s note it is possible to inject all components or services im
 <h2 id="using-dbunit">Using dbUnit</h2>
 <p>DbUnit is a database testing framework which allows you to load data and verify the correctness of your DAO layer using datasets.</p>
 <p>Datasets are simple xml files which represent a database state. Here is an sample dataset :</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4579565.js"></script>
+
 <p>We can use dbUnit in our simple project, we just have to deal with a little bit of boilerplate code. Here is the abstract class that my test will extend.</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#78787e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * Abstract unit test case class.

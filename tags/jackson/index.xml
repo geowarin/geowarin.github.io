@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>jackson on Geowarin</title><link>https://geowarin.com/tags/jackson/</link><description>Recent content in jackson on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 02 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/jackson/index.xml" rel="self" type="application/rss+xml"/><item><title>Correctly handle JSR-310 (java 8) dates with Jackson</title><link>https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/</link><pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/</guid><description>The DateTime API in Java 8 is awesome but default Jackson serialization is not. Let&amp;rsquo;s fix that!</description><content:encoded><![CDATA[<p>If you are starting a Spring Boot project today, chances are that you want to use
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Jackson on Geowarin</title><link>https://geowarin.com/tags/jackson/</link><description>Recent content in Jackson on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Tue, 02 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/jackson/index.xml" rel="self" type="application/rss+xml"/><item><title>Correctly handle JSR-310 (java 8) dates with Jackson</title><link>https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/</link><pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/</guid><description>The DateTime API in Java 8 is awesome but default Jackson serialization is not. Let&amp;rsquo;s fix that!</description><content:encoded><![CDATA[<p>If you are starting a Spring Boot project today, chances are that you want to use
 Java 8.</p>
 <p>One of the most awesome features in Java 8 is the <a href="http://www.mscharhag.com/java/java-8-date-time-api">Date and Time API</a>, also known as JSR-310.</p>
 <p>By default, Jackson will treat the new dates as normal objects and serialize all the
@@ -23,8 +23,7 @@ using Jackson.</p>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Simple, right? What could possibly go wrong?</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-localDate.png" alt="Oh boy what am I going to do with that?"  title="Bad date time"  />
-</p>
+<p><img alt="Oh boy what am I going to do with that?" loading="lazy" src="/assets/images/articles/2016-02-localDate.png" title="Bad date time"></p>
 <p>Well, it&rsquo;s probably not what you expected.
 This output is not going to be easy to use in your client application.</p>
 <p>More importantly, are you going to send this kind of format to your server

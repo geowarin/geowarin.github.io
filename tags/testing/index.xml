@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>testing on Geowarin</title><link>https://geowarin.com/tags/testing/</link><description>Recent content in testing on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 18 Feb 2022 12:50:57 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/testing/index.xml" rel="self" type="application/rss+xml"/><item><title>What is a good unit test?</title><link>https://geowarin.com/what-is-a-good-unit-test/</link><pubDate>Fri, 18 Feb 2022 12:50:57 +0100</pubDate><guid>https://geowarin.com/what-is-a-good-unit-test/</guid><description>What constitutes good unit test might be a little more involved than you think. Let&amp;rsquo;s reflect on the practice to make sure that we test our applications as efficiently as possible.</description><content:encoded><![CDATA[<p>At my current job, during interviews, we like to ask this seemingly innocent question:
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Testing on Geowarin</title><link>https://geowarin.com/tags/testing/</link><description>Recent content in Testing on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Fri, 18 Feb 2022 12:50:57 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/testing/index.xml" rel="self" type="application/rss+xml"/><item><title>What is a good unit test?</title><link>https://geowarin.com/what-is-a-good-unit-test/</link><pubDate>Fri, 18 Feb 2022 12:50:57 +0100</pubDate><guid>https://geowarin.com/what-is-a-good-unit-test/</guid><description>What constitutes good unit test might be a little more involved than you think. Let&amp;rsquo;s reflect on the practice to make sure that we test our applications as efficiently as possible.</description><content:encoded><![CDATA[<p>At my current job, during interviews, we like to ask this seemingly innocent question:
 &ldquo;What is a good unit test?&rdquo;.</p>
 <p>It turns out that it is a tricky questions. Let&rsquo;s try to reflect on the practice of testing to make sure that
 we write our tests as efficiently as possible.</p>
@@ -303,8 +303,7 @@ Groovy code contained in <code>src/main/groovy</code> and <code>src/test/groovy<
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
 </span></span></code></pre></div><p>Here is what it looks like in IntelliJ:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-01-spock.png" alt="Spock test results"  title="Spock results"  />
-</p>
+<p><img alt="Spock test results" loading="lazy" src="/assets/images/articles/2016-01-spock.png" title="Spock results"></p>
 <p>You can also verify that it works with maven by typing:</p>
 <pre tabindex="0"><code>mvn test
 </code></pre><p>You would get this result:</p>

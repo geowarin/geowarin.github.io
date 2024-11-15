@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>spring-boot on Geowarin</title><link>https://geowarin.com/tags/spring-boot/</link><description>Recent content in spring-boot on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 02 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/spring-boot/index.xml" rel="self" type="application/rss+xml"/><item><title>Correctly handle JSR-310 (java 8) dates with Jackson</title><link>https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/</link><pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/</guid><description>The DateTime API in Java 8 is awesome but default Jackson serialization is not. Let&amp;rsquo;s fix that!</description><content:encoded><![CDATA[<p>If you are starting a Spring Boot project today, chances are that you want to use
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Spring-Boot on Geowarin</title><link>https://geowarin.com/tags/spring-boot/</link><description>Recent content in Spring-Boot on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Tue, 02 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/spring-boot/index.xml" rel="self" type="application/rss+xml"/><item><title>Correctly handle JSR-310 (java 8) dates with Jackson</title><link>https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/</link><pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/correctly-handle-jsr-310-java-8-dates-with-jackson/</guid><description>The DateTime API in Java 8 is awesome but default Jackson serialization is not. Let&amp;rsquo;s fix that!</description><content:encoded><![CDATA[<p>If you are starting a Spring Boot project today, chances are that you want to use
 Java 8.</p>
 <p>One of the most awesome features in Java 8 is the <a href="http://www.mscharhag.com/java/java-8-date-time-api">Date and Time API</a>, also known as JSR-310.</p>
 <p>By default, Jackson will treat the new dates as normal objects and serialize all the
@@ -23,8 +23,7 @@ using Jackson.</p>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Simple, right? What could possibly go wrong?</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-localDate.png" alt="Oh boy what am I going to do with that?"  title="Bad date time"  />
-</p>
+<p><img alt="Oh boy what am I going to do with that?" loading="lazy" src="/assets/images/articles/2016-02-localDate.png" title="Bad date time"></p>
 <p>Well, it&rsquo;s probably not what you expected.
 This output is not going to be easy to use in your client application.</p>
 <p>More importantly, are you going to send this kind of format to your server
@@ -331,7 +330,8 @@ to automatically generate the index.html page.</p>
 we need to tweak the default html template.</p>
 <p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
 It will serve as a template to generate our <code>index.html</code> file:</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4e6089bc670d753f2453.js"></script>
+
 <p>As you can see, it contains a div with the id <code>root</code>.</p>
 <p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
 <p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
@@ -506,8 +506,7 @@ code intended for development purposes in our libraries:</p>
 </span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1">commit</a></p>
 <h2 id="feedback-needed">Feedback needed</h2>
 <p>Well, this works pretty well!</p>
-<p><img loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" alt="Hot hot reload"  title="Hot reload"  />
-</p>
+<p><img alt="Hot hot reload" loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" title="Hot reload"></p>
 <p>What do you think? Care to comment and help me make something better?
 Your feedback is welcome!</p>
 <p>The project is available <a href="https://github.com/geowarin/boot-react">on github</a>.
@@ -733,7 +732,10 @@ Negative matches:
 <p>What I love about Spring Boot is that it allows you to prototype an application very quickly but also to learn with its
 source. Auto-configurations are neat pieces of code that can teach you a thing or two about Spring.</p>
 <p>As Josh Long, developer advocate at Pivotal, said:</p>
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/springcentral?ref_src=twsrc%5Etfw">@springcentral</a> <a href="https://twitter.com/david_syer?ref_src=twsrc%5Etfw">@david_syer</a> that&#39;s really the point of <a href="https://twitter.com/springboot?ref_src=twsrc%5Etfw">@springboot</a> imho. Boot lets you pair-program w/ the Spring team <a href="http://t.co/WNUJfxOwoY">http://t.co/WNUJfxOwoY</a></p>&mdash; Josh Long (@starbuxman) <a href="https://twitter.com/starbuxman/status/458266170861158401?ref_src=twsrc%5Etfw">April 21, 2014</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 ]]></content:encoded></item><item><title>Review of Learning Spring Boot</title><link>https://geowarin.com/review-of-learning-spring-boot/</link><pubDate>Thu, 19 Feb 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/review-of-learning-spring-boot/</guid><description>Review of the book Learning Spring Boot by Greg L. Turnquist</description><content:encoded><![CDATA[<p>Today, I&rsquo;ll be reviewing the first book ever written on Spring Boot, <a href="https://www.packtpub.com/application-development/learning-spring-boot">Learning Spring Boot</a>, by Greg L. Turnquist.
 Packt Publishing, the editor, contacted me to review it during its writing but I&rsquo;ll remain as unbiased as possible.</p>
 <p>It&rsquo;s a good book, well worth reading if you want to learn how spring boot works but more globally, it will
@@ -915,7 +917,7 @@ the returned result to JSON.</p>
 <h2 id="testing">Testing</h2>
 <p>Real programmers do tests. We want to test our controller right? There is a framework for that: <a href="https://jersey.java.net/documentation/latest/test-framework.html">jersey-test</a>.</p>
 <p><em>The Problem?</em> it does not (yet) support annotated configuration.</p>
-<!-- raw HTML omitted -->
+<p><del>I&rsquo;m providing a little hack of my own to override the <code>SpringComponentProvider</code> class of <em>jersey-spring3</em> and allow this configuration. See the class on github. It is important to place it in the same package as the original one.</del></p>
 <p><em>Update</em> : I submitted a <a href="https://github.com/jersey/jersey/pull/59">pull request</a> which has been accepted by Jersey. I updated the project to use the 2.6 snapshot release of jersey which includes the modified <code>SpringComponentProvider</code>.</p>
 <p>Now the test :</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResourceTest</span> <span style="color:#ff5c57">extends</span> JerseyTest {

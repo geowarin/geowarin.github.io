@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>spring on Geowarin</title><link>https://geowarin.com/categories/spring/</link><description>Recent content in spring on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 23 Dec 2019 01:20:59 +0100</lastBuildDate><atom:link href="https://geowarin.com/categories/spring/index.xml" rel="self" type="application/rss+xml"/><item><title>Run your frontend alongside spring boot</title><link>https://geowarin.com/run-your-frontend-alongside-spring-boot/</link><pubDate>Mon, 23 Dec 2019 01:20:59 +0100</pubDate><guid>https://geowarin.com/run-your-frontend-alongside-spring-boot/</guid><description>Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.</description><content:encoded><![CDATA[<p>Assumptions:</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Spring on Geowarin</title><link>https://geowarin.com/categories/spring/</link><description>Recent content in Spring on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Mon, 23 Dec 2019 01:20:59 +0100</lastBuildDate><atom:link href="https://geowarin.com/categories/spring/index.xml" rel="self" type="application/rss+xml"/><item><title>Run your frontend alongside spring boot</title><link>https://geowarin.com/run-your-frontend-alongside-spring-boot/</link><pubDate>Mon, 23 Dec 2019 01:20:59 +0100</pubDate><guid>https://geowarin.com/run-your-frontend-alongside-spring-boot/</guid><description>Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.</description><content:encoded><![CDATA[<p>Assumptions:</p>
 <ul>
 <li>Your backend serves the API (REST, graphQL)</li>
 <li>You build your javascript with a separate bundler (parcel, webpack)</li>
@@ -67,8 +67,7 @@ The advantage is that we have only one web server and everything is on the same 
 </span></span></code></pre></div><p>Navigating on <code>locahost:8080</code> you will see that the react application is able to call web services because they
 both run on the same host.</p>
 <p>This configuration might have some occasional problems with HMR not fully reloaded so it&rsquo;s not my favourite.</p>
-<p><img loading="lazy" src="/assets/images/articles/2019-12-23-javascript-framework-with-spring-backend/hmr-errors.png" alt="Oups"  />
-</p>
+<p><img alt="Oups" loading="lazy" src="/assets/images/articles/2019-12-23-javascript-framework-with-spring-backend/hmr-errors.png"></p>
 <p>However, by generating the result of the frontend build in <code>src/main/resources/static</code> we both have a very simple
 way to distribute the full web application, as well as a dev environment that is very similar to the production environment.</p>
 <p>Pros:</p>
@@ -180,12 +179,10 @@ via Twitter from a rich Javascript client (React).</p>
 <h2 id="setting-up-your-app-on-twitter">Setting up your app on Twitter</h2>
 <p>Before coding anything, you will need to create a new Twitter application
 in <a href="https://apps.twitter.com/">your twitter apps page</a>.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-twitter-app.png" alt="Creating a Twitter app"  title="Creating a Twitter app"  />
-</p>
+<p><img alt="Creating a Twitter app" loading="lazy" src="/assets/images/articles/2016-02-twitter-app.png" title="Creating a Twitter app"></p>
 <p>Then go to the &ldquo;Keys and access tokens&rdquo; tab and note your API key and API secret
 ids.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-twitter-app-keys.png" alt="Twitter app keys"  title="Twitter app keys"  />
-</p>
+<p><img alt="Twitter app keys" loading="lazy" src="/assets/images/articles/2016-02-twitter-app-keys.png" title="Twitter app keys"></p>
 <h2 id="creating-a-spring-boot-app">Creating a Spring Boot app</h2>
 <p>Use the <a href="http://start.spring.io">Spring initializer</a> to create a new Spring Boot
 application. You will need the following dependencies:</p>
@@ -217,8 +214,7 @@ flow instead.</p>
 a controller that will decide what to do during the sign-up process (you will receive a
 request on the <code>/signup</code> URL by default).</p>
 <p>Here is an overview of the authentication flow in Spring Social:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-social-flow.png" alt="Spring Social flow"  title="Spring Social flow"  />
-</p>
+<p><img alt="Spring Social flow" loading="lazy" src="/assets/images/articles/2016-02-social-flow.png" title="Spring Social flow"></p>
 <ul>
 <li>Your application produces a POST request to <code>/signin/{providerId}</code></li>
 <li>The <code>ProviderSigninController</code> then redirects the user to the identification provider&rsquo;s sign-in screen</li>
@@ -461,8 +457,7 @@ that Spring Social will take the first <code>SocialConfigurer</code> that declar
 <p>Ours come before the <code>SocialConfigurer</code>s auto-configured by Spring Boot but
 if you are wary of this implementation, consider disabling Spring boot auto-configuration.</p>
 <p>We can use the h2 console Spring boot auto-configured for us to check the database.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-social-db.png" alt="The data in our database"  title="The data in our database"  />
-</p>
+<p><img alt="The data in our database" loading="lazy" src="/assets/images/articles/2016-02-social-db.png" title="The data in our database"></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Social login with Spring is a bit tricky but definitely worth the investment!</p>
 <p>Spring Boot provides default configuration for LinkedIn and Facebook as well
@@ -583,7 +578,8 @@ to automatically generate the index.html page.</p>
 we need to tweak the default html template.</p>
 <p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
 It will serve as a template to generate our <code>index.html</code> file:</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4e6089bc670d753f2453.js"></script>
+
 <p>As you can see, it contains a div with the id <code>root</code>.</p>
 <p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
 <p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
@@ -758,8 +754,7 @@ code intended for development purposes in our libraries:</p>
 </span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1">commit</a></p>
 <h2 id="feedback-needed">Feedback needed</h2>
 <p>Well, this works pretty well!</p>
-<p><img loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" alt="Hot hot reload"  title="Hot reload"  />
-</p>
+<p><img alt="Hot hot reload" loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" title="Hot reload"></p>
 <p>What do you think? Care to comment and help me make something better?
 Your feedback is welcome!</p>
 <p>The project is available <a href="https://github.com/geowarin/boot-react">on github</a>.
@@ -1271,7 +1266,10 @@ Negative matches:
 <p>What I love about Spring Boot is that it allows you to prototype an application very quickly but also to learn with its
 source. Auto-configurations are neat pieces of code that can teach you a thing or two about Spring.</p>
 <p>As Josh Long, developer advocate at Pivotal, said:</p>
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/springcentral?ref_src=twsrc%5Etfw">@springcentral</a> <a href="https://twitter.com/david_syer?ref_src=twsrc%5Etfw">@david_syer</a> that&#39;s really the point of <a href="https://twitter.com/springboot?ref_src=twsrc%5Etfw">@springboot</a> imho. Boot lets you pair-program w/ the Spring team <a href="http://t.co/WNUJfxOwoY">http://t.co/WNUJfxOwoY</a></p>&mdash; Josh Long (@starbuxman) <a href="https://twitter.com/starbuxman/status/458266170861158401?ref_src=twsrc%5Etfw">April 21, 2014</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 ]]></content:encoded></item><item><title>A simple Spring Boot and Jersey Application</title><link>https://geowarin.com/a-simple-spring-boot-and-jersey-application/</link><pubDate>Fri, 31 Jan 2014 00:00:00 +0000</pubDate><guid>https://geowarin.com/a-simple-spring-boot-and-jersey-application/</guid><description>How to setup a simple spring-boot and jersey application</description><content:encoded><![CDATA[<p>Spring boot RC1 <a href="https://spring.io/blog/2014/01/22/spring-boot-1-0-0-rc1-released">is available</a>.</p>
 <p><em>Update</em> : <a href="https://spring.io/blog/2014/02/12/spring-boot-1-0-0-rc2-released">RC3 released</a> I updated the project.</p>
 <p>It takes spring development and fast prototyping to a whole new level by taking care of all the dependencies for you, auto-detecting your configuration, providing an executable jar (great for deploying in the cloud), and much more.</p>
@@ -1408,7 +1406,7 @@ the returned result to JSON.</p>
 <h2 id="testing">Testing</h2>
 <p>Real programmers do tests. We want to test our controller right? There is a framework for that: <a href="https://jersey.java.net/documentation/latest/test-framework.html">jersey-test</a>.</p>
 <p><em>The Problem?</em> it does not (yet) support annotated configuration.</p>
-<!-- raw HTML omitted -->
+<p><del>I&rsquo;m providing a little hack of my own to override the <code>SpringComponentProvider</code> class of <em>jersey-spring3</em> and allow this configuration. See the class on github. It is important to place it in the same package as the original one.</del></p>
 <p><em>Update</em> : I submitted a <a href="https://github.com/jersey/jersey/pull/59">pull request</a> which has been accepted by Jersey. I updated the project to use the 2.6 snapshot release of jersey which includes the modified <code>SpringComponentProvider</code>.</p>
 <p>Now the test :</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResourceTest</span> <span style="color:#ff5c57">extends</span> JerseyTest {
@@ -1743,7 +1741,8 @@ But it is quite difficult to get it right the first time. You definitely have to
 </ol>
 <p>Injection with <strong>@Value</strong> property is a very interesting alternative to the use of spring&rsquo;s Environment as it provides natural type inference.</p>
 <p>For some people, the use of java configuration can be confusing because one cannot see at first glance where the config is located. What I usually do is keeping my configuration in a separate source folder. This can be achieved with maven and its build-helper plugin :</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4581500.js"></script>
+
 <p>This approach is compatible with eclipse if you have m2e installed. In that case when you import a project using this plugin, eclipse will prompt you for the install of the build-helper connector.</p>
 <h2 id="our-application-entry-point--the-mainbean">Our application entry point : the MainBean</h2>
 <p>Here is the code of our <strong>MainBean</strong> :</p>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>git on Geowarin</title><link>https://geowarin.com/tags/git/</link><description>Recent content in git on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 22 Dec 2019 01:47:32 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Share IntelliJ run configurations with git</title><link>https://geowarin.com/share-intellij-run-configurations-with-git/</link><pubDate>Sun, 22 Dec 2019 01:47:32 +0100</pubDate><guid>https://geowarin.com/share-intellij-run-configurations-with-git/</guid><description>Isn&amp;rsquo;t it great when you checkout a project and have everything at hand to run it?</description><content:encoded><![CDATA[<p>This is a short note on how to share your intelliJ run configurations with git.</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Git on Geowarin</title><link>https://geowarin.com/tags/git/</link><description>Recent content in Git on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Sun, 22 Dec 2019 01:47:32 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Share IntelliJ run configurations with git</title><link>https://geowarin.com/share-intellij-run-configurations-with-git/</link><pubDate>Sun, 22 Dec 2019 01:47:32 +0100</pubDate><guid>https://geowarin.com/share-intellij-run-configurations-with-git/</guid><description>Isn&amp;rsquo;t it great when you checkout a project and have everything at hand to run it?</description><content:encoded><![CDATA[<p>This is a short note on how to share your intelliJ run configurations with git.</p>
 <p>First your <code>.gitignore</code> must whitelist the <code>.idea/runConfigurations</code> folder but not the rest of the <code>.idea</code> folder.</p>
 <p>You probably don&rsquo;t want to commit the entire folder because it can contain personal settings and plugin configurations.</p>
 <pre tabindex="0"><code class="language-gitignore" data-lang="gitignore">!.idea
@@ -6,10 +6,8 @@
 .idea/*
 !.idea/runConfigurations
 </code></pre><p>Here is a compound run configuration. It&rsquo;s awesome. It launches multiple run configurations at once.</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-22-run-config.png" alt="Run configuration"  />
-</p>
+<p><img alt="Run configuration" loading="lazy" src="/assets/images/articles/2019/2019-12-22-run-config.png"></p>
 <p>Then you want to check the <strong>Share throught VCS</strong> checkbox on the top right corner, this will add an xml file to the
 <code>.idea/runConfigurations</code> file that you can commit and push.</p>
-<p><img loading="lazy" src="/assets/images/articles/2019/2019-12-22-share-config.png" alt="Xml configuration file"  />
-</p>
+<p><img alt="Xml configuration file" loading="lazy" src="/assets/images/articles/2019/2019-12-22-share-config.png"></p>
 ]]></content:encoded></item></channel></rss>

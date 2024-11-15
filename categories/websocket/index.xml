@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>websocket on Geowarin</title><link>https://geowarin.com/categories/websocket/</link><description>Recent content in websocket on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 28 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/websocket/index.xml" rel="self" type="application/rss+xml"/><item><title>A simple chat with Spring Boot and RethinkDB</title><link>https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/</link><pubDate>Thu, 28 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/</guid><description>RethinkDB is a great database engine allowing you to receive live updates on your data. Let&amp;rsquo;s create a Spring Boot App and give it a try!</description><content:encoded><![CDATA[<p>The Java driver for <a href="https://www.rethinkdb.com/">RethinkDB</a> has recently
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Websocket on Geowarin</title><link>https://geowarin.com/categories/websocket/</link><description>Recent content in Websocket on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Thu, 28 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/websocket/index.xml" rel="self" type="application/rss+xml"/><item><title>A simple chat with Spring Boot and RethinkDB</title><link>https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/</link><pubDate>Thu, 28 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/a-simple-chat-with-spring-boot-and-rethinkdb/</guid><description>RethinkDB is a great database engine allowing you to receive live updates on your data. Let&amp;rsquo;s create a Spring Boot App and give it a try!</description><content:encoded><![CDATA[<p>The Java driver for <a href="https://www.rethinkdb.com/">RethinkDB</a> has recently
 <a href="https://rethinkdb.com/blog/official-java-driver/">been released</a> in beta.</p>
 <p>I created a little chat application with Spring Boot, you can see the result
 <a href="https://github.com/geowarin/boot-rethinkdb">on github</a>.</p>
@@ -13,10 +13,11 @@ in real time.</p>
 <p>In the <a href="https://github.com/henryr/cap-faq">CAP theorem</a>, rethinkDB focuses on being
 Consistent in case of difficulties in the cluster.</p>
 <p>Relevant quote from the <a href="https://www.rethinkdb.com/docs/architecture/#cap-theorem">FAQ</a>:</p>
-<!-- raw HTML omitted -->
+<blockquote>
+<p>Authoritative systems such as RethinkDB and MongoDB choose to maintain data consistency. Building applications on top of authoritative primary systems is much simpler because all of the issues associated with data inconsistency do not arise. In exchange, these applications will occasionally experience availability issues.</p>
+</blockquote>
 <p>Once RethinkDB is started, you can connect on the beautiful admin GUI on port <code>8080</code>:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-admin.png" alt="The awesome GUI"  title="The RethinkDB admin GUI"  />
-</p>
+<p><img alt="The awesome GUI" loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-admin.png" title="The RethinkDB admin GUI"></p>
 <h2 id="setting-up-the-project">Setting up the project</h2>
 <p>I created a Gradle project with the <code>web</code> and <code>websocket</code> Spring boot starters.
 I also added a couple of <a href="https://spring.io/blog/2014/01/03/utilizing-webjars-in-spring-boot">webjars</a>:
@@ -268,8 +269,7 @@ Below the <code>index.html</code> file of our application:</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>getPreviousMessages();
 </span></span><span style="display:flex;"><span>connectWebSocket();
-</span></span></code></pre></div><p><img loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-hello.gif" alt="The chat with a bit of CSS"  title="Hello world!"  />
-</p>
+</span></span></code></pre></div><p><img alt="The chat with a bit of CSS" loading="lazy" src="/assets/images/articles/2016-01-rethinkDB-hello.gif" title="Hello world!"></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>RethinkDB is an awesome database, especially because it lets you decouple the
 code that updates the database and the code that listens to the changes.</p>

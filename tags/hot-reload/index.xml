@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>hot-reload on Geowarin</title><link>https://geowarin.com/tags/hot-reload/</link><description>Recent content in hot-reload on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 05 Aug 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/hot-reload/index.xml" rel="self" type="application/rss+xml"/><item><title>Spring Boot and React hot loader</title><link>https://geowarin.com/spring-boot-and-react-hot-loader/</link><pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/spring-boot-and-react-hot-loader/</guid><description>The perfect setup for Spring boot and React hot loader</description><content:encoded><![CDATA[<p>When I develop web applications, I love using React.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hot-Reload on Geowarin</title><link>https://geowarin.com/tags/hot-reload/</link><description>Recent content in Hot-Reload on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Wed, 05 Aug 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/hot-reload/index.xml" rel="self" type="application/rss+xml"/><item><title>Spring Boot and React hot loader</title><link>https://geowarin.com/spring-boot-and-react-hot-loader/</link><pubDate>Wed, 05 Aug 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/spring-boot-and-react-hot-loader/</guid><description>The perfect setup for Spring boot and React hot loader</description><content:encoded><![CDATA[<p>When I develop web applications, I love using React.
 I&rsquo;m also a Spring and groovy addict.</p>
 <p>Those two stacks make me more productive.
 Can we have the best of both worlds?</p>
@@ -112,7 +112,8 @@ to automatically generate the index.html page.</p>
 we need to tweak the default html template.</p>
 <p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
 It will serve as a template to generate our <code>index.html</code> file:</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4e6089bc670d753f2453.js"></script>
+
 <p>As you can see, it contains a div with the id <code>root</code>.</p>
 <p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
 <p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
@@ -287,8 +288,7 @@ code intended for development purposes in our libraries:</p>
 </span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1">commit</a></p>
 <h2 id="feedback-needed">Feedback needed</h2>
 <p>Well, this works pretty well!</p>
-<p><img loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" alt="Hot hot reload"  title="Hot reload"  />
-</p>
+<p><img alt="Hot hot reload" loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" title="Hot reload"></p>
 <p>What do you think? Care to comment and help me make something better?
 Your feedback is welcome!</p>
 <p>The project is available <a href="https://github.com/geowarin/boot-react">on github</a>.

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>testing on Geowarin</title><link>https://geowarin.com/categories/testing/</link><description>Recent content in testing on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/testing/index.xml" rel="self" type="application/rss+xml"/><item><title>Test your Java application with Groovy</title><link>https://geowarin.com/test-your-java-application-with-groovy/</link><pubDate>Wed, 20 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/test-your-java-application-with-groovy/</guid><description>You can write better tests for your Java application with Spock, Groovy and very little configuration</description><content:encoded><![CDATA[<p>I think Groovy is a wonderful language.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Testing on Geowarin</title><link>https://geowarin.com/categories/testing/</link><description>Recent content in Testing on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/categories/testing/index.xml" rel="self" type="application/rss+xml"/><item><title>Test your Java application with Groovy</title><link>https://geowarin.com/test-your-java-application-with-groovy/</link><pubDate>Wed, 20 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/test-your-java-application-with-groovy/</guid><description>You can write better tests for your Java application with Spock, Groovy and very little configuration</description><content:encoded><![CDATA[<p>I think Groovy is a wonderful language.
 However, I would not advise a complete rewrite of your project in Groovy!</p>
 <p>We can however use Groovy to test our Java code.</p>
 <p>I&rsquo;m actually a big fan of this approach.
@@ -151,8 +151,7 @@ Groovy code contained in <code>src/main/groovy</code> and <code>src/test/groovy<
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
 </span></span></code></pre></div><p>Here is what it looks like in IntelliJ:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-01-spock.png" alt="Spock test results"  title="Spock results"  />
-</p>
+<p><img alt="Spock test results" loading="lazy" src="/assets/images/articles/2016-01-spock.png" title="Spock results"></p>
 <p>You can also verify that it works with maven by typing:</p>
 <pre tabindex="0"><code>mvn test
 </code></pre><p>You would get this result:</p>

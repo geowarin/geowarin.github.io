@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>social on Geowarin</title><link>https://geowarin.com/tags/social/</link><description>Recent content in social on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 12 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/social/index.xml" rel="self" type="application/rss+xml"/><item><title>Social login with Spring</title><link>https://geowarin.com/social-login-with-spring/</link><pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/social-login-with-spring/</guid><description>Log-in with your social account in your Spring application</description><content:encoded><![CDATA[<p>Nowadays, it&rsquo;s getting rare and even a bit annoying when a service rolls up its own
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Social on Geowarin</title><link>https://geowarin.com/tags/social/</link><description>Recent content in Social on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Fri, 12 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/social/index.xml" rel="self" type="application/rss+xml"/><item><title>Social login with Spring</title><link>https://geowarin.com/social-login-with-spring/</link><pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/social-login-with-spring/</guid><description>Log-in with your social account in your Spring application</description><content:encoded><![CDATA[<p>Nowadays, it&rsquo;s getting rare and even a bit annoying when a service rolls up its own
 authentication mechanism instead of relying on a OAuth sign-on with our social
 networks.</p>
 <p>Login via social networks means fewer passwords to remember, and stronger guarantees
@@ -11,12 +11,10 @@ via Twitter from a rich Javascript client (React).</p>
 <h2 id="setting-up-your-app-on-twitter">Setting up your app on Twitter</h2>
 <p>Before coding anything, you will need to create a new Twitter application
 in <a href="https://apps.twitter.com/">your twitter apps page</a>.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-twitter-app.png" alt="Creating a Twitter app"  title="Creating a Twitter app"  />
-</p>
+<p><img alt="Creating a Twitter app" loading="lazy" src="/assets/images/articles/2016-02-twitter-app.png" title="Creating a Twitter app"></p>
 <p>Then go to the &ldquo;Keys and access tokens&rdquo; tab and note your API key and API secret
 ids.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-twitter-app-keys.png" alt="Twitter app keys"  title="Twitter app keys"  />
-</p>
+<p><img alt="Twitter app keys" loading="lazy" src="/assets/images/articles/2016-02-twitter-app-keys.png" title="Twitter app keys"></p>
 <h2 id="creating-a-spring-boot-app">Creating a Spring Boot app</h2>
 <p>Use the <a href="http://start.spring.io">Spring initializer</a> to create a new Spring Boot
 application. You will need the following dependencies:</p>
@@ -48,8 +46,7 @@ flow instead.</p>
 a controller that will decide what to do during the sign-up process (you will receive a
 request on the <code>/signup</code> URL by default).</p>
 <p>Here is an overview of the authentication flow in Spring Social:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-social-flow.png" alt="Spring Social flow"  title="Spring Social flow"  />
-</p>
+<p><img alt="Spring Social flow" loading="lazy" src="/assets/images/articles/2016-02-social-flow.png" title="Spring Social flow"></p>
 <ul>
 <li>Your application produces a POST request to <code>/signin/{providerId}</code></li>
 <li>The <code>ProviderSigninController</code> then redirects the user to the identification provider&rsquo;s sign-in screen</li>
@@ -292,8 +289,7 @@ that Spring Social will take the first <code>SocialConfigurer</code> that declar
 <p>Ours come before the <code>SocialConfigurer</code>s auto-configured by Spring Boot but
 if you are wary of this implementation, consider disabling Spring boot auto-configuration.</p>
 <p>We can use the h2 console Spring boot auto-configured for us to check the database.</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-02-social-db.png" alt="The data in our database"  title="The data in our database"  />
-</p>
+<p><img alt="The data in our database" loading="lazy" src="/assets/images/articles/2016-02-social-db.png" title="The data in our database"></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Social login with Spring is a bit tricky but definitely worth the investment!</p>
 <p>Spring Boot provides default configuration for LinkedIn and Facebook as well

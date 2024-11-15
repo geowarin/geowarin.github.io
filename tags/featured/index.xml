@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>featured on Geowarin</title><link>https://geowarin.com/tags/featured/</link><description>Recent content in featured on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/featured/index.xml" rel="self" type="application/rss+xml"/><item><title>Test your Java application with Groovy</title><link>https://geowarin.com/test-your-java-application-with-groovy/</link><pubDate>Wed, 20 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/test-your-java-application-with-groovy/</guid><description>You can write better tests for your Java application with Spock, Groovy and very little configuration</description><content:encoded><![CDATA[<p>I think Groovy is a wonderful language.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Featured on Geowarin</title><link>https://geowarin.com/tags/featured/</link><description>Recent content in Featured on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/featured/index.xml" rel="self" type="application/rss+xml"/><item><title>Test your Java application with Groovy</title><link>https://geowarin.com/test-your-java-application-with-groovy/</link><pubDate>Wed, 20 Jan 2016 00:00:00 +0000</pubDate><guid>https://geowarin.com/test-your-java-application-with-groovy/</guid><description>You can write better tests for your Java application with Spock, Groovy and very little configuration</description><content:encoded><![CDATA[<p>I think Groovy is a wonderful language.
 However, I would not advise a complete rewrite of your project in Groovy!</p>
 <p>We can however use Groovy to test our Java code.</p>
 <p>I&rsquo;m actually a big fan of this approach.
@@ -151,8 +151,7 @@ Groovy code contained in <code>src/main/groovy</code> and <code>src/test/groovy<
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
 </span></span></code></pre></div><p>Here is what it looks like in IntelliJ:</p>
-<p><img loading="lazy" src="/assets/images/articles/2016-01-spock.png" alt="Spock test results"  title="Spock results"  />
-</p>
+<p><img alt="Spock test results" loading="lazy" src="/assets/images/articles/2016-01-spock.png" title="Spock results"></p>
 <p>You can also verify that it works with maven by typing:</p>
 <pre tabindex="0"><code>mvn test
 </code></pre><p>You would get this result:</p>
@@ -444,7 +443,8 @@ to automatically generate the index.html page.</p>
 we need to tweak the default html template.</p>
 <p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
 It will serve as a template to generate our <code>index.html</code> file:</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4e6089bc670d753f2453.js"></script>
+
 <p>As you can see, it contains a div with the id <code>root</code>.</p>
 <p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
 <p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
@@ -619,8 +619,7 @@ code intended for development purposes in our libraries:</p>
 </span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1">commit</a></p>
 <h2 id="feedback-needed">Feedback needed</h2>
 <p>Well, this works pretty well!</p>
-<p><img loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" alt="Hot hot reload"  title="Hot reload"  />
-</p>
+<p><img alt="Hot hot reload" loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" title="Hot reload"></p>
 <p>What do you think? Care to comment and help me make something better?
 Your feedback is welcome!</p>
 <p>The project is available <a href="https://github.com/geowarin/boot-react">on github</a>.
@@ -1244,7 +1243,10 @@ Negative matches:
 <p>What I love about Spring Boot is that it allows you to prototype an application very quickly but also to learn with its
 source. Auto-configurations are neat pieces of code that can teach you a thing or two about Spring.</p>
 <p>As Josh Long, developer advocate at Pivotal, said:</p>
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/springcentral?ref_src=twsrc%5Etfw">@springcentral</a> <a href="https://twitter.com/david_syer?ref_src=twsrc%5Etfw">@david_syer</a> that&#39;s really the point of <a href="https://twitter.com/springboot?ref_src=twsrc%5Etfw">@springboot</a> imho. Boot lets you pair-program w/ the Spring team <a href="http://t.co/WNUJfxOwoY">http://t.co/WNUJfxOwoY</a></p>&mdash; Josh Long (@starbuxman) <a href="https://twitter.com/starbuxman/status/458266170861158401?ref_src=twsrc%5Etfw">April 21, 2014</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 ]]></content:encoded></item><item><title>Complete example of a Spring MVC 3.2 project</title><link>https://geowarin.com/complete-example-of-a-spring-mvc-3.2-project/</link><pubDate>Wed, 23 Jan 2013 00:00:00 +0000</pubDate><guid>https://geowarin.com/complete-example-of-a-spring-mvc-3.2-project/</guid><description>Awesome spring mvc 3.2 starter with sitemesh, localization, UTF-8, boostrap and spring test mvc</description><content:encoded><![CDATA[<p>You want to get started with Spring MVC 3.2 with a complete XML-less configuration? Have a cool simple project with a lot of the nice-to-have features?</p>
 <ol>
 <li>A templating framework (we will use <a href="http://wiki.sitemesh.org/display/sitemesh/Home">SiteMesh</a> for this example - I think it is one of the simplest, most powerful frameworks out there)</li>

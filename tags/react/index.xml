@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>react on Geowarin</title><link>https://geowarin.com/tags/react/</link><description>Recent content in react on Geowarin</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 19 Dec 2021 16:44:00 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/react/index.xml" rel="self" type="application/rss+xml"/><item><title>Typescript refactorings</title><link>https://geowarin.com/typescript-refactorings/</link><pubDate>Sun, 19 Dec 2021 16:44:00 +0100</pubDate><guid>https://geowarin.com/typescript-refactorings/</guid><description>Essential React and Typescript refactorings</description><content:encoded><![CDATA[<p>If you are using React and Typescript, there is a lot that your editor can do to help you.</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>React on Geowarin</title><link>https://geowarin.com/tags/react/</link><description>Recent content in React on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Sun, 19 Dec 2021 16:44:00 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/react/index.xml" rel="self" type="application/rss+xml"/><item><title>Typescript refactorings</title><link>https://geowarin.com/typescript-refactorings/</link><pubDate>Sun, 19 Dec 2021 16:44:00 +0100</pubDate><guid>https://geowarin.com/typescript-refactorings/</guid><description>Essential React and Typescript refactorings</description><content:encoded><![CDATA[<p>If you are using React and Typescript, there is a lot that your editor can do to help you.</p>
 <p>Here are my favorite refactorings, I&rsquo;m using IntelliJ for the screencast, but most of this
 will be available in VSCode as well.</p>
 <h2 id="rename">Rename</h2>
@@ -268,7 +268,7 @@ provide the solutions for the remaining problems.</p>
 to connect Redux to your API.</p>
 <p>Yesterday, I decided to see what <a href="http://shasta.tools/">Shasta</a> had in store for
 us. I have to say that I was more than happy with what I saw!</p>
-<p>Check out my demo project <a href="https://github.com/geowarin/shasta-preview">on github</a>.</p>
+<p>Check out my demo project <a href="https://github.com/geowarin/shasta-preview">on GitHub</a>.</p>
 <h2 id="what-is-shasta">What is Shasta?</h2>
 <p>Shasta is the latest project of <a href="https://github.com/contra">@Contra (Eric Schoffstall)</a>,
 previously known for Gulp.</p>
@@ -296,7 +296,7 @@ It is very similar to Redux&rsquo;s store but it adds the notion of plugins.</p>
 <p>To get started quickly, I created a project [using nwb]({% post_url 2016-02-18-react-freshness %}).</p>
 <p>Here is what the project looks like after setting up Shasta with the router and
 Tahoe:</p>
-<!-- raw HTML omitted -->
+<p><img loading="lazy" src="/assets/images/articles/2016-04-shasta-layout.png"></p>
 <p>Let&rsquo;s dig into the core package.</p>
 <p><code>store.js</code> allows you to reference the store as a singleton. This is also where
 you register the plugins you use:</p>
@@ -788,7 +788,8 @@ to automatically generate the index.html page.</p>
 we need to tweak the default html template.</p>
 <p>I created a file called <code>index-template.html</code> in a newly created <code>assets</code> directory.
 It will serve as a template to generate our <code>index.html</code> file:</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<script src="https://gist.github.com/geowarin/4e6089bc670d753f2453.js"></script>
+
 <p>As you can see, it contains a div with the id <code>root</code>.</p>
 <p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
 <p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
@@ -963,8 +964,7 @@ code intended for development purposes in our libraries:</p>
 </span></span></code></pre></div><p>See the <a href="https://github.com/geowarin/boot-react/commit/a095ebca7672d2f12bb559e37e01784984a6abc1">commit</a></p>
 <h2 id="feedback-needed">Feedback needed</h2>
 <p>Well, this works pretty well!</p>
-<p><img loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" alt="Hot hot reload"  title="Hot reload"  />
-</p>
+<p><img alt="Hot hot reload" loading="lazy" src="/assets/images/articles/2015-08-hot-reload.gif" title="Hot reload"></p>
 <p>What do you think? Care to comment and help me make something better?
 Your feedback is welcome!</p>
 <p>The project is available <a href="https://github.com/geowarin/boot-react">on github</a>.
