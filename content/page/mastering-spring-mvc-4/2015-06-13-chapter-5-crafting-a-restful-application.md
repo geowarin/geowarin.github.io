@@ -41,8 +41,6 @@ We will also see how to set up Jackson serialization using mixins and Java 8 dat
 
 We will use [swagger](http://swagger.io/) to document our API.
 
-<center>
 ![Swagger](/assets/images/book/chap4-2.png "Swagger")
-</center>
 
 I hope you will find the content of this chapter interesting, let me know your thoughts in the comments!

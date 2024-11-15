@@ -34,9 +34,8 @@ In the [CAP theorem](https://github.com/henryr/cap-faq), rethinkDB focuses on be
 Consistent in case of difficulties in the cluster.
 
 Relevant quote from the [FAQ](https://www.rethinkdb.com/docs/architecture/#cap-theorem):
-<blockquote>
-Authoritative systems such as RethinkDB and MongoDB choose to maintain data consistency. Building applications on top of authoritative primary systems is much simpler because all of the issues associated with data inconsistency do not arise. In exchange, these applications will occasionally experience availability issues.
-</blockquote>
+
+> Authoritative systems such as RethinkDB and MongoDB choose to maintain data consistency. Building applications on top of authoritative primary systems is much simpler because all of the issues associated with data inconsistency do not arise. In exchange, these applications will occasionally experience availability issues.
 
 Once RethinkDB is started, you can connect on the beautiful admin GUI on port `8080`:
 

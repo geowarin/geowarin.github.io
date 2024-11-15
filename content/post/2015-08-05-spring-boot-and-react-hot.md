@@ -187,7 +187,7 @@ we need to tweak the default html template.
 I created a file called `index-template.html` in a newly created `assets` directory.
 It will serve as a template to generate our `index.html` file:
 
-<code data-gist-id="4e6089bc670d753f2453" data-gist-highlight-line="14"></code>
+{{< gist geowarin 4e6089bc670d753f2453" data-gist-highlight-line="14 >}}
 
 As you can see, it contains a div with the id `root`.
 

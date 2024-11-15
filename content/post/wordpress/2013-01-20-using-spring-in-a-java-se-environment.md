@@ -59,7 +59,7 @@ Injection with **@Value** property is a very interesting alternative to the use 
 
 For some people, the use of java configuration can be confusing because one cannot see at first glance where the config is located. What I usually do is keeping my configuration in a separate source folder. This can be achieved with maven and its build-helper plugin :
 
-<code data-gist-id="4581500"></code>
+{{< gist geowarin 4581500 >}}
 
 This approach is compatible with eclipse if you have m2e installed. In that case when you import a project using this plugin, eclipse will prompt you for the install of the build-helper connector.
 

@@ -2,9 +2,8 @@
 title: Mastering spring MVC 4
 url: /mastering-spring-mvc-4
 ---
-<a href="https://www.packtpub.com/application-development/mastering-spring-mvc-4">
-    <img style="float: right" src="/assets/images/thumbnails/book/thumb.jpg" />
-</a>
+
+[![https://www.packtpub.com/application-development/mastering-spring-mvc-4](/assets/images/thumbnails/book/thumb.jpg)](https://www.packtpub.com/application-development/mastering-spring-mvc-4)
 
 Hello, dear visitor! I think I have an idea of what you want...
   
@@ -18,8 +17,8 @@ You also want to deploy it in the cloud and for it to be fully tested with
 both unit and end-to-end tests.
 
 What a coincidence! I just wrote the book
-<a href="https://www.packtpub.com/application-development/mastering-spring-mvc-4">you are looking for</a>!
+[you are looking for](https://www.packtpub.com/application-development/mastering-spring-mvc-4)!
 
 If you want to have a look at what you will be building,
-its source code is available <a href="https://github.com/Mastering-Spring-MVC-4">on github</a>
-and it is deployed <a href="http://masterspringmvc.herokuapp.com/">on heroku</a>
+its source code is available [on GitHub](https://github.com/Mastering-Spring-MVC-4)
+and it is deployed [on heroku](http://masterspringmvc.herokuapp.com/)

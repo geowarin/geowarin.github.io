@@ -23,9 +23,7 @@ Chapter 5 is by far my favorite chapter of [Mastering Spring MVC 4](/mastering-s
 In this uplifting piece of literature, you will learn more about testing best
 practices: TDD, the pyramid of tests, unit tests and end-to-end tests.
 
-<center>
 ![RedGreen](/assets/images/book/chap5-1.png "Red green refactor")
-</center>
 
 We will see the difference behind mocking and stubbing and use mockito and
 the power of Spring's IOC to study both options.

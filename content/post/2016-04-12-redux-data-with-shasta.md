@@ -29,7 +29,7 @@ to connect Redux to your API.
 Yesterday, I decided to see what [Shasta](http://shasta.tools/) had in store for
 us. I have to say that I was more than happy with what I saw!
 
-Check out my demo project [on github](https://github.com/geowarin/shasta-preview).
+Check out my demo project [on GitHub](https://github.com/geowarin/shasta-preview).
 
 ## What is Shasta?
 
@@ -76,7 +76,7 @@ To get started quickly, I created a project [using nwb]({% post_url 2016-02-18-r
 Here is what the project looks like after setting up Shasta with the router and
 Tahoe:
 
-<img src="/assets/images/articles/2016-04-shasta-layout.png" width="280" >
+![](/assets/images/articles/2016-04-shasta-layout.png)
 
 Let's dig into the core package.
 

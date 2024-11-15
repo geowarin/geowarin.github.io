@@ -210,9 +210,7 @@ Real programmers do tests. We want to test our controller right? There is a fram
 
 *The Problem?* it does not (yet) support annotated configuration.
 
-<del>
-I'm providing a little hack of my own to override the `SpringComponentProvider` class of _jersey-spring3_ and allow this configuration. See the class on github. It is important to place it in the same package as the original one.
-</del>
+~~I'm providing a little hack of my own to override the `SpringComponentProvider` class of _jersey-spring3_ and allow this configuration. See the class on github. It is important to place it in the same package as the original one.~~
 
 
 _Update_ : I submitted a [pull request](https://github.com/jersey/jersey/pull/59) which has been accepted by Jersey. I updated the project to use the 2.6 snapshot release of jersey which includes the modified `SpringComponentProvider`.

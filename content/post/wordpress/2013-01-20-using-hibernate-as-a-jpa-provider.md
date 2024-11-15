@@ -22,7 +22,7 @@ The source code of this blog post is available on my github : https://github.com
 
 First thing is to create a persistence.xml file in your resources. Default location is under META-INF/persistence.xml. Here is a snippet using an embedded [hsqldb](http://hsqldb.org/).
 
-<code data-gist-id="4579330"></code>
+{{< gist geowarin 4579330 >}}
 
 javax.persistence.jdbc.driver, url, user and password are standard JPA properties. The driver tells jdbc how to connect to your databse. Hsqldb must be in your classpath to find the corresponding driver. You could also init hsqdb to write to a file or use a different protocol, see the [documentation ](http://hsqldb.org/doc/2.0/guide/dbproperties-chapt.html)for more information.
 
@@ -94,7 +94,7 @@ DbUnit is a database testing framework which allows you to load data and verify 
 
 Datasets are simple xml files which represent a database state. Here is an sample dataset :
 
-<code data-gist-id="4579565"></code>
+{{< gist geowarin 4579565 >}}
 
 We can use dbUnit in our simple project, we just have to deal with a little bit of boilerplate code. Here is the abstract class that my test will extend.
 

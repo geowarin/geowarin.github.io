@@ -293,4 +293,4 @@ source. Auto-configurations are neat pieces of code that can teach you a thing o
 
 As Josh Long, developer advocate at Pivotal, said:
 
-<blockquote>Boot lets you pair-program w/ the [Spring team](http://spring.io/team)</blockquote>[(Link to the tweet)](https://twitter.com/starbuxman/status/458266170861158401)
+{{< twitter user="starbuxman" id="458266170861158401" >}}

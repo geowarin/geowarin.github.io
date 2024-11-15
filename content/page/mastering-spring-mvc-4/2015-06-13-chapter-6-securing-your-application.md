@@ -25,9 +25,7 @@ the basic authentication for the REST API
 using a distributed session mechanism
 5. Last, we will configure Tomcat to use secured connection through SSL
 
-<center>
 ![BasicAuth](/assets/images/book/chap6-1.png "Basic Auth")
-</center>
 
 ## Safe and sound
 
@@ -37,18 +35,14 @@ to interact with.
 
 We will also design a gorgeous login page for our web application:
 
-<center>
 ![Login](/assets/images/book/chap6-2.png "Login page")
-</center>
 
 ## Going social
 
 My favorite part in this chapter is when we use [Spring Social](http://projects.spring.io/spring-social/) to allow users to log-in using
 their twitter account!
 
-<center>
 ![TwitterLogin](/assets/images/book/chap6-3.png "Twitter login")
-</center>
 
 ## Infinite scaling
 

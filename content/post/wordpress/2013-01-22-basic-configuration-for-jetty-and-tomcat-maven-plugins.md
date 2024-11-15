@@ -20,13 +20,13 @@ It is interesting to note both of these servers are servlet 3.0 compatible.
 
 Setting up Jetty :
 
-<code data-gist-id="4591942"></code>
+{{< gist geowarin 4591942 >}}
 
 Now your can run `mvn jetty:run`
 
 To set up tomcat-7 plugin, you will have to add either the plugin to the pluginManagement section of your pom (more portable) - see below - or adding the pluginGroup to your settings.xml.
 
-<code data-gist-id="4591960"></code>
+{{< gist geowarin 4591960 >}}
 
 Now your can run `mvn tomcat7:run`
 

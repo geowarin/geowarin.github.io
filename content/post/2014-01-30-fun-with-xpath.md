@@ -19,7 +19,7 @@ The result with tests is available [on github](https://github.com/geowarin/xpath
 
 For instance, the following xPath `/persons/person[@age > 18]/project[@language = 'java']`, would select the lines highlighted in the file below :
 
-<code data-gist-id="8720930" data-gist-highlight-line="3,8"></code>
+{{< gist geowarin 8720930 >}}
 
 Normal xPath result would be a list of nodes like that
 
