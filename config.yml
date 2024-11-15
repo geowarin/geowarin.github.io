@@ -47,8 +47,8 @@ params:
     Content: Another web developer's blog
 
   socialIcons:
-    - name: twitter
-      url: "https://twitter.com/geowarin"
+    - name: bluesky
+      url: "https://bsky.app/profile/geowarin.bsky.social"
     - name: stackoverflow
       url: "https://stackoverflow.com/geowarin"
     - name: github
