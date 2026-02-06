@@ -1,0 +1,11 @@
+a.footnote-ref::before {
+    content: '[';
+}
+
+a.footnote-ref::after {
+    content: ']';
+}
+
+.footnotes li:target {
+    background-color: var(--tertiary);
+}

@@ -30,6 +30,10 @@
     }
 
     document.addEventListener("keydown", (e) => {
+        if (overlay.style.display === "none") {
+            return;
+        }
+        
         if (e.key === 'Escape') {
             closeOverlay();
         } else if (e.key === 'ArrowRight') {
@@ -44,5 +48,14 @@
         }
     })
     document.querySelector("#img-overlay .close").addEventListener("click", closeOverlay);
+</script>
+
+<script>
+    const footnotes = document.querySelectorAll('.footnote-ref');
+
+    for (const footnote of footnotes) {
+        const note = new URL(footnote.href).hash.slice(1);
+        footnote.title = document.getElementById(note)?.textContent.trim().replaceAll('↩︎', '');
+    }
 </script>
 
