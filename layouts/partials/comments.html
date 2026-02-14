@@ -1,24 +1,14 @@
 <section class="comments">
     <script>
-        function loadComments() {
-            const theme = document.body.classList.contains('dark') ? 'photon-dark' : 'github-light';
-            let s = document.createElement('script');
-            s.src = 'https://utteranc.es/client.js';
-            s.setAttribute('repo', 'geowarin/geowarin.github.io');
-            s.setAttribute('issue-term', 'title');
-            s.setAttribute('theme', theme);
-            s.setAttribute('crossorigin', 'anonymous');
-            s.setAttribute('async', '');
-            document.querySelector('section.comments').innerHTML = '';
-            document.querySelector('section.comments').appendChild(s);
-        }
-
-        const mutationObserver = new MutationObserver(mutationsList => {
-            if (mutationsList.some(mutation => mutation.attributeName === 'class')) {
-                loadComments();
-            }
-        });
-        mutationObserver.observe(document.body, { attributes: true });
-        loadComments();
+        const theme = document.documentElement.dataset.theme === 'light' ? 'github-light' : 'photon-dark';
+        let s = document.createElement('script');
+        s.src = 'https://utteranc.es/client.js';
+        s.setAttribute('repo', 'geowarin/geowarin.github.io');
+        s.setAttribute('issue-term', 'title');
+        s.setAttribute('theme', theme);
+        s.setAttribute('crossorigin', 'anonymous');
+        s.setAttribute('async', '');
+        document.querySelector('section.comments').innerHTML = '';
+        document.querySelector('section.comments').appendChild(s);
     </script>
 </section>
