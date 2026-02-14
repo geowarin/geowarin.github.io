@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hibernate on Geowarin</title><link>https://geowarin.com/tags/hibernate/</link><description>Recent content in Hibernate on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Mon, 21 Jan 2013 23:44:07 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/hibernate/index.xml" rel="self" type="application/rss+xml"/><item><title>Generate DDL with hibernate</title><link>https://geowarin.com/generate-ddl-with-hibernate/</link><pubDate>Mon, 21 Jan 2013 23:44:07 +0000</pubDate><guid>https://geowarin.com/generate-ddl-with-hibernate/</guid><description>How to generate SQL schemas with hibernate built-in classes</description><content:encoded><![CDATA[<p>I don&rsquo;t know if it&rsquo;s a well known feature but there is a bunch of methods on hibernate <a href="http://docs.jboss.org/hibernate/orm/3.5/api/org/hibernate/cfg/Configuration.html">Configuration</a> class which will produce <a href="http://en.wikipedia.org/wiki/Data_definition_language">DDL</a> for your database according to the dialect in use.</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hibernate on Geowarin</title><link>https://geowarin.com/tags/hibernate/</link><description>Recent content in Hibernate on Geowarin</description><generator>Hugo -- 0.155.0</generator><language>en</language><lastBuildDate>Mon, 21 Jan 2013 23:44:07 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/hibernate/index.xml" rel="self" type="application/rss+xml"/><item><title>Generate DDL with hibernate</title><link>https://geowarin.com/generate-ddl-with-hibernate/</link><pubDate>Mon, 21 Jan 2013 23:44:07 +0000</pubDate><guid>https://geowarin.com/generate-ddl-with-hibernate/</guid><description>How to generate SQL schemas with hibernate built-in classes</description><content:encoded><![CDATA[<p>I don&rsquo;t know if it&rsquo;s a well known feature but there is a bunch of methods on hibernate <a href="http://docs.jboss.org/hibernate/orm/3.5/api/org/hibernate/cfg/Configuration.html">Configuration</a> class which will produce <a href="http://en.wikipedia.org/wiki/Data_definition_language">DDL</a> for your database according to the dialect in use.</p>
 <p>In this blog post we will see how to use those methods to generate a DDL script to set up our database and get rid of those annoying DBAs (just kidding, always review these scripts, they&rsquo;re not production ready).</p>
 <p>The source code of this article is available on github : <a href="https://github.com/geowarin/hibernate-examples/tree/master/generate-ddl-hibernate">https://github.com/geowarin/hibernate-examples/tree/master/generate-ddl-hibernate</a></p>
 <p>So the goal of this article is, given a dialect and a package to scan containing our entities, generate a DDL.</p>
 <p>With hibernate in the classpath, you can create a new configuration like this :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>hibernateConfiguration <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Configuration();
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>hibernateConfiguration <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Configuration();
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>hibernateConfiguration.<span style="color:#57c7ff">addAnnotatedClass</span>(myEntity.<span style="color:#57c7ff">class</span>);
 </span></span><span style="display:flex;"><span>hibernateConfiguration.<span style="color:#57c7ff">addAnnotatedClass</span>(mySecondEntity.<span style="color:#57c7ff">class</span>);
@@ -11,7 +11,7 @@
 </span></span><span style="display:flex;"><span>hibernateConfiguration.<span style="color:#57c7ff">setProperty</span>(AvailableSettings.<span style="color:#57c7ff">DIALECT</span>, dialect);
 </span></span></code></pre></div><p>That&rsquo;s cool but pretty boring.
 Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections project</a> to provide some package scanning.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">private</span> Configuration <span style="color:#57c7ff">createHibernateConfig</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">private</span> Configuration <span style="color:#57c7ff">createHibernateConfig</span>() {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	hibernateConfiguration <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> Configuration();
 </span></span><span style="display:flex;"><span>
@@ -26,11 +26,11 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 </span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">return</span> hibernateConfiguration;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Then you can get your creation scripts lines like that :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#ff6ac1">[]</span> createSQL <span style="color:#ff6ac1">=</span> hibernateConfiguration.<span style="color:#57c7ff">generateSchemaCreationScript</span>(hibDialect);
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#ff6ac1">[]</span> createSQL <span style="color:#ff6ac1">=</span> hibernateConfiguration.<span style="color:#57c7ff">generateSchemaCreationScript</span>(hibDialect);
 </span></span><span style="display:flex;"><span>String<span style="color:#ff6ac1">[]</span> dropSQL <span style="color:#ff6ac1">=</span> hibernateConfiguration.<span style="color:#57c7ff">generateDropSchemaScript</span>(hibDialect);
 </span></span></code></pre></div><p>For the create script, each line will contain either a database creation or a constraint.</p>
 <p>So here is the final result :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#78787e">/**
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#78787e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * This class will create an hibernate {@link Configuration} with the given dialect and will scan provided
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * package for {@link MappedSuperclass} and {@link Entity}.
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * You can then use the export methods to generate your schema DDL.
@@ -123,14 +123,14 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>And its usage :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">main</span>(String<span style="color:#ff6ac1">[]</span> args) {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">main</span>(String<span style="color:#ff6ac1">[]</span> args) {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#78787e">//		HibernateExporter exporter = new HibernateExporter(&#34;org.hibernate.dialect.HSQLDialect&#34;, &#34;com.geowarin.model&#34;);</span>
 </span></span><span style="display:flex;"><span>	HibernateExporter exporter <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> HibernateExporter(<span style="color:#5af78e">&#34;org.hibernate.dialect.MySQL5Dialect&#34;</span>, <span style="color:#5af78e">&#34;com.geowarin.model&#34;</span>);
 </span></span><span style="display:flex;"><span>	exporter.<span style="color:#57c7ff">exportToConsole</span>();
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>This will produce this kind of output :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span> <span style="color:#ff6ac1">create</span> <span style="color:#ff6ac1">table</span> groups (
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span> <span style="color:#ff6ac1">create</span> <span style="color:#ff6ac1">table</span> groups (
 </span></span><span style="display:flex;"><span>        id <span style="color:#ff5c57">bigint</span> <span style="color:#ff6ac1">not</span> <span style="color:#ff6ac1">null</span> auto_increment,
 </span></span><span style="display:flex;"><span>        createdOn datetime,
 </span></span><span style="display:flex;"><span>        modifiedOn datetime,
@@ -165,7 +165,7 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 <p>Then give Spring Data JPA a try ! This project lets you implement a very simple interface for your repositories and takes care of all the rest, allowing you to focus on your real queries.</p>
 <h2 id="the-configuration">The configuration</h2>
 <p>The configuration we will set up here is pretty similar to the one we used in the <a href="http://geowarin.wordpress.com/2013/01/20/using-spring-in-a-java-se-environment-and-implementing-the-chain-of-responsibility-pattern/">spring standalone article.</a> We will just add a bunch of classes to make use of spring data jpa :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableJpaRepositories</span>(<span style="color:#5af78e">&#34;com.geowarin.standalonedatajpa.repository&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableTransactionManagement</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">StandaloneDataJpaConfig</span> {
@@ -221,7 +221,7 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 <p>That&rsquo;s ok we will generate some very tiny scripts to set up the schema and the data in our database (and make our DBA happy, a thing that is never to be disregarded :))</p>
 <hr>
 <p><strong>Hint</strong> : If this is a real blocker for you, you could setGenrateDdl to false and maintain a simple <strong>hibernate.properties</strong> file like this one</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#57c7ff">hibernate.hbm2ddl.auto</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">create</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#57c7ff">hibernate.hbm2ddl.auto</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">create</span>
 </span></span><span style="display:flex;"><span><span style="color:#57c7ff">hibernate.hbm2ddl.import_files</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">sql/import-users.sql</span>
 </span></span><span style="display:flex;"><span><span style="color:#57c7ff">hibernate.format_sql</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">true</span>
 </span></span></code></pre></div><p>That&rsquo;s because hibernate will always look for a <a href="http://docs.jboss.org/hibernate/core/4.1/manual/en-US/html/ch03.html#configuration-optional-properties">hibernate.properties</a> file in the classpath to override you persistence properties.</p>
@@ -233,7 +233,7 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 <p>Note that by default, spring data JPA will try to locate your <em>persistence.xml</em> so the two approaches are completely compatible, for this example however we will go for a full xml-less configuration.</p>
 <h2 id="one-entity-one-interface-and-we-are-ready">One entity, one interface and we are ready</h2>
 <p>We have one very simple entity :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Table</span>(name <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;users&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Table</span>(name <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;users&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Entity</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">User</span> <span style="color:#ff5c57">implements</span> Serializable {
 </span></span><span style="display:flex;"><span>
@@ -249,10 +249,10 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 </span></span><span style="display:flex;"><span>	<span style="color:#78787e">// getters and setters omitted</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Now let&rsquo;s use spring data to generate a repository for us :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">interface</span> <span style="color:#f3f99d">UserRepository</span>  <span style="color:#ff5c57">extends</span> JpaRepository<span style="color:#ff6ac1">&lt;</span>User, Long<span style="color:#ff6ac1">&gt;</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">interface</span> <span style="color:#f3f99d">UserRepository</span>  <span style="color:#ff5c57">extends</span> JpaRepository<span style="color:#ff6ac1">&lt;</span>User, Long<span style="color:#ff6ac1">&gt;</span> {
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Tadaa! Is that it? Yes, you can now use your repository in our <strong>MainBean</strong> :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MainBean</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MainBean</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Autowired</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> UserRepository userRepository;
@@ -284,7 +284,7 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 </li>
 </ol>
 <p>Let&rsquo;s review the last two options (I don&rsquo;t really like named queries but have a look a the <a href="http://static.springsource.org/spring-data/jpa/docs/1.2.0.RELEASE/reference/html/#jpa.query-methods.named-queries">documentation</a> if you want)</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">interface</span> <span style="color:#f3f99d">UserRepository</span>  <span style="color:#ff5c57">extends</span> JpaRepository<span style="color:#ff6ac1">&lt;</span>User, Long<span style="color:#ff6ac1">&gt;</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">interface</span> <span style="color:#f3f99d">UserRepository</span>  <span style="color:#ff5c57">extends</span> JpaRepository<span style="color:#ff6ac1">&lt;</span>User, Long<span style="color:#ff6ac1">&gt;</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#78787e">// Demonstrate query creation by method name</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#78787e">// http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#jpa.query-methods.query-creation</span>
@@ -296,7 +296,7 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="ok-lets-test-it">Ok let&rsquo;s test it</h2>
 <p>Have a look at the unit test for our repository :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RunWith</span>(SpringJUnit4ClassRunner.<span style="color:#57c7ff">class</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RunWith</span>(SpringJUnit4ClassRunner.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ContextConfiguration</span>(classes <span style="color:#ff6ac1">=</span> { StandaloneDataJpaConfig.<span style="color:#57c7ff">class</span> })
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@TestExecutionListeners</span>({ DependencyInjectionTestExecutionListener.<span style="color:#57c7ff">class</span>,
 </span></span><span style="display:flex;"><span>	DbUnitTestExecutionListener.<span style="color:#57c7ff">class</span> })
@@ -345,12 +345,12 @@ Cooler is to use the <a href="http://code.google.com/p/reflections/">reflections
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We use springtestdbunit to be able to use annotations to set up and verify the database state after each test. Here are our two datasets.</p>
 <p>userAdminData.xml :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#78787e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#78787e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;dataset&gt;</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;users</span> <span style="color:#57c7ff">id=</span><span style="color:#5af78e">&#34;1&#34;</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;admin&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;/dataset&gt;</span>
 </span></span></code></pre></div><p>afterInsert.xml :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#78787e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#78787e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;dataset&gt;</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;users</span> <span style="color:#57c7ff">id=</span><span style="color:#5af78e">&#34;1&#34;</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;admin&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff6ac1">&lt;users</span> <span style="color:#57c7ff">id=</span><span style="color:#5af78e">&#34;2&#34;</span> <span style="color:#57c7ff">name=</span><span style="color:#5af78e">&#34;inserted&#34;</span> <span style="color:#ff6ac1">/&gt;</span>
@@ -377,7 +377,7 @@ A better approach would be to use <strong>@Service</strong> spring beans to enca
 </ul>
 <p>More information is available in the <a href="http://docs.jboss.org/hibernate/core/4.1/manual/en-US/html/ch03.html#configuration-optional-properties">hibernate documentation</a>.</p>
 <p>Then, we will create a simple entity :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Table</span>(name <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;users&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Table</span>(name <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;users&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Entity</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">User</span> <span style="color:#ff5c57">implements</span> Serializable {
 </span></span><span style="display:flex;"><span>
@@ -394,10 +394,10 @@ A better approach would be to use <strong>@Service</strong> spring beans to enca
 </span></span></code></pre></div><p>Notice the <a href="http://docs.oracle.com/javaee/5/api/javax/persistence/Table.html">@Table</a> annotation that we use to specify the name of the table we are going to store our users in. This is useful information for our SQL scripts for example. For table naming, you should consider having simple conventions. Here, I just use lower case name of the entity and add an s to my table.</p>
 <p>Same thing can be said about the <a href="http://docs.oracle.com/javaee/5/api/javax/persistence/Column.html">@Column</a> annotation.</p>
 <p>Now let&rsquo;s review our init script, import-users.sql :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#ff6ac1">INSERT</span> <span style="color:#ff6ac1">INTO</span> users(id, name) <span style="color:#ff6ac1">VALUES</span>(<span style="color:#ff9f43">1</span>, <span style="color:#5af78e">&#39;admin&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#ff6ac1">INSERT</span> <span style="color:#ff6ac1">INTO</span> users(id, name) <span style="color:#ff6ac1">VALUES</span>(<span style="color:#ff9f43">1</span>, <span style="color:#5af78e">&#39;admin&#39;</span>);
 </span></span></code></pre></div><p>Pretty straight forward. You just have to figure out the correct syntax from your annotations.</p>
 <p>Last is the instantiation and use of the <a href="http://docs.oracle.com/javaee/6/api/javax/persistence/EntityManager.html">entity manager</a> :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">App</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">App</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> Logger log <span style="color:#ff6ac1">=</span> LoggerFactory.<span style="color:#57c7ff">getLogger</span>(App.<span style="color:#57c7ff">class</span>);
 </span></span><span style="display:flex;"><span>
@@ -417,7 +417,7 @@ A better approach would be to use <strong>@Service</strong> spring beans to enca
 <script src="https://gist.github.com/geowarin/4579565.js"></script>
 
 <p>We can use dbUnit in our simple project, we just have to deal with a little bit of boilerplate code. Here is the abstract class that my test will extend.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#78787e">/**
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#78787e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * Abstract unit test case class.
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * This will load the test-data.xml dataset before each test case and will clean the database before each test
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> *
@@ -467,7 +467,7 @@ A better approach would be to use <strong>@Service</strong> spring beans to enca
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>And an example of usage :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AppTest</span> <span style="color:#ff5c57">extends</span> AbstractDbUnitJpaTest {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AppTest</span> <span style="color:#ff5c57">extends</span> AbstractDbUnitJpaTest {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Test</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">testFind</span>() {

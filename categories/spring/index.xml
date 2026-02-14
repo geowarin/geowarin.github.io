@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Spring on Geowarin</title><link>https://geowarin.com/categories/spring/</link><description>Recent content in Spring on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Mon, 23 Dec 2019 01:20:59 +0100</lastBuildDate><atom:link href="https://geowarin.com/categories/spring/index.xml" rel="self" type="application/rss+xml"/><item><title>Run your frontend alongside spring boot</title><link>https://geowarin.com/run-your-frontend-alongside-spring-boot/</link><pubDate>Mon, 23 Dec 2019 01:20:59 +0100</pubDate><guid>https://geowarin.com/run-your-frontend-alongside-spring-boot/</guid><description>Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.</description><content:encoded><![CDATA[<p>Assumptions:</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Spring on Geowarin</title><link>https://geowarin.com/categories/spring/</link><description>Recent content in Spring on Geowarin</description><generator>Hugo -- 0.155.0</generator><language>en</language><lastBuildDate>Mon, 23 Dec 2019 01:20:59 +0100</lastBuildDate><atom:link href="https://geowarin.com/categories/spring/index.xml" rel="self" type="application/rss+xml"/><item><title>Run your frontend alongside spring boot</title><link>https://geowarin.com/run-your-frontend-alongside-spring-boot/</link><pubDate>Mon, 23 Dec 2019 01:20:59 +0100</pubDate><guid>https://geowarin.com/run-your-frontend-alongside-spring-boot/</guid><description>Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.</description><content:encoded><![CDATA[<p>Assumptions:</p>
 <ul>
 <li>Your backend serves the API (REST, graphQL)</li>
 <li>You build your javascript with a separate bundler (parcel, webpack)</li>
@@ -10,7 +10,7 @@
 <h2 id="1-cors">1. CORS</h2>
 <p>The most obvious solution is to set up the backend to allow <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">Cross-Origin Resource Sharing</a> (CORS)
 with the frontend, which runs on the development web server.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ConditionalOnProperty</span>(name = [<span style="color:#5af78e">&#34;com.geowarin.cors.allowedOrigin&#34;</span>])
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">fun</span> <span style="color:#57c7ff">corsFilter</span>(corsProperties: CorsProperties): CorsWebFilter {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">val</span> source = UrlBasedCorsConfigurationSource().apply {
@@ -38,7 +38,7 @@ CORS from that origin.</p>
 <h2 id="2-embed-javascript-into-the-backend">2. Embed javascript into the backend</h2>
 <p>Another solution is to embed the frontend resources directly inside the spring server, as static resources.
 The advantage is that we have only one web server and everything is on the same host.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">val</span> acceptsHtmlOnly: RequestPredicate = RequestPredicate { request <span style="color:#ff6ac1">-&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">val</span> acceptsHtmlOnly: RequestPredicate = RequestPredicate { request <span style="color:#ff6ac1">-&gt;</span>
 </span></span><span style="display:flex;"><span>  request.headers().accept().contains(<span style="color:#f3f99d">MediaType</span>.TEXT_HTML) <span style="color:#ff6ac1">&amp;&amp;</span>
 </span></span><span style="display:flex;"><span>      !request.headers().accept().contains(<span style="color:#f3f99d">MediaType</span>.ALL)
 </span></span><span style="display:flex;"><span>}
@@ -83,7 +83,7 @@ way to distribute the full web application, as well as a dev environment that is
 </ul>
 <h2 id="3-javascript-proxy">3. Javascript proxy</h2>
 <p>You might do the opposite, run an express web server which includes your bundler and proxies requests to <code>localhost:8080</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> Bundler <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;parcel&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> Bundler <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;parcel&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> express <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;express&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> proxy <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;http-proxy-middleware&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> history <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;connect-history-api-fallback&#39;</span>);
@@ -117,7 +117,7 @@ same host as the backend.</p>
 <h2 id="4-reverse-proxy">4. Reverse proxy</h2>
 <p>We can run a third web server that routes both to our frontend and backend.
 This is simple enough thanks to <code>docker-compose</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff6ac1">version</span>: <span style="color:#5af78e">&#34;3&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff6ac1">version</span>: <span style="color:#5af78e">&#34;3&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">services</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">nginx</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">image</span>: nginx:latest
@@ -186,7 +186,7 @@ ids.</p>
 <h2 id="creating-a-spring-boot-app">Creating a Spring Boot app</h2>
 <p>Use the <a href="http://start.spring.io">Spring initializer</a> to create a new Spring Boot
 application. You will need the following dependencies:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>dependencies <span style="color:#ff6ac1">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>dependencies <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-devtools&#39;</span><span style="color:#ff6ac1">)</span>
 </span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-starter-security&#39;</span><span style="color:#ff6ac1">)</span>
 </span></span><span style="display:flex;"><span>	compile<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;org.springframework.boot:spring-boot-starter-social-twitter&#39;</span><span style="color:#ff6ac1">)</span>
@@ -196,7 +196,7 @@ application. You will need the following dependencies:</p>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
 </span></span></code></pre></div><p>Please copy your <code>appId</code> and <code>appSecret</code> in the <code>application.properties</code> file and
 configure a few things:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#57c7ff">spring.social.twitter.appId</span><span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&lt;Consumer Key&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#57c7ff">spring.social.twitter.appId</span><span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&lt;Consumer Key&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#57c7ff">spring.social.twitter.appSecret</span><span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&lt;Consumer Secret&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#78787e"># Disable auto views, we are making an API</span>
 </span></span><span style="display:flex;"><span><span style="color:#57c7ff">spring.social.auto-connection-views</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">false</span>
@@ -237,7 +237,7 @@ reboots.</li>
 configuration.
 It will make sure that users using our REST api are authenticated but will let calls
 to <code>/api/session</code>, our authentication end point, go through:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Order</span>(SecurityProperties.<span style="color:#57c7ff">ACCESS_OVERRIDE_ORDER</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SecurityConfiguration</span> <span style="color:#ff5c57">extends</span> WebSecurityConfigurerAdapter {
 </span></span><span style="display:flex;"><span>
@@ -260,7 +260,7 @@ to <code>/api/session</code>, our authentication end point, go through:</p>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>The authentication end point is very simple. It provides a way to <code>GET</code> the
 current session and to <code>DELETE</code> it to logout:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@RequestMapping</span>(<span style="color:#5af78e">&#34;/api/session&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AuthenticationResource</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
@@ -279,7 +279,7 @@ current session and to <code>DELETE</code> it to logout:</p>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="sign-in">Sign-in</h2>
 <p>To handle the sign-in, we need to provide a <code>SignInAdapter</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SocialConfiguration</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Bean</span>
@@ -292,7 +292,7 @@ current session and to <code>DELETE</code> it to logout:</p>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We can create a simple <code>authenticate</code> method that will take a Social <code>Connection</code>
 and authenticate the user using Spring Security&rsquo;s context:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AuthUtil</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AuthUtil</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> Logger log <span style="color:#ff6ac1">=</span> LoggerFactory.<span style="color:#57c7ff">getLogger</span>(AuthUtil.<span style="color:#57c7ff">class</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">authenticate</span>(Connection<span style="color:#ff6ac1">&lt;?&gt;</span> connection) {
@@ -307,7 +307,7 @@ and authenticate the user using Spring Security&rsquo;s context:</p>
 object.</p>
 <h2 id="sign-up">Sign-up</h2>
 <p>Here is a simple implementation of a signup controller:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SignupController</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> ProviderSignInUtils signInUtils;
 </span></span><span style="display:flex;"><span>
@@ -352,7 +352,7 @@ send a <code>DELETE /api/session</code> request.</li>
 <p>It is a bit slower because it lets the browser do the compilation but it&rsquo;s
 perfect for prototyping.</p>
 <p>Here is the client code:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> LoginForm <span style="color:#ff6ac1">=</span> () =&gt; (
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> LoginForm <span style="color:#ff6ac1">=</span> () =&gt; (
 </span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">form</span> <span style="color:#57c7ff">action</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;/signin/twitter&#34;</span> <span style="color:#57c7ff">method</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;post&#34;</span>&gt;
 </span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">h1</span>&gt;Please login&lt;/<span style="color:#ff6ac1">h1</span>&gt;
 </span></span><span style="display:flex;"><span>        &lt;<span style="color:#ff6ac1">button</span> <span style="color:#57c7ff">type</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;submit&#34;</span>&gt;Login&lt;/<span style="color:#ff6ac1">button</span>&gt;
@@ -409,7 +409,7 @@ to make sure we send the cookies along with the requests.</p>
 Take a look <a href="http://docs.spring.io/spring-social/docs/current/reference/htmlsingle/#section_jdbcConnectionFactory">the documentation</a>
 to know more about the table in which it will store users&rsquo; connections data.</p>
 <p>We can initialize the database with the script contained in Spring Social&rsquo;s jar:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DbInitializer</span> <span style="color:#ff5c57">implements</span> InitializingBean {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> DataSource dataSource;
@@ -434,7 +434,7 @@ to know more about the table in which it will store users&rsquo; connections dat
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Now, we need to create a <code>SocialAdapater</code> that will use Spring Social&rsquo;s
 <code>JdbcUsersConnectionRepository</code> as a user repository:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DatabaseSocialConfigurer</span> <span style="color:#ff5c57">extends</span> SocialConfigurerAdapter {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DatabaseSocialConfigurer</span> <span style="color:#ff5c57">extends</span> SocialConfigurerAdapter {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> DataSource dataSource;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">DatabaseSocialConfigurer</span>(DataSource dataSource) {
@@ -515,7 +515,7 @@ and gradle.</p>
 <p>Great so now we have tomcat embedded, hot reloading and supernatural groovy
 strength. The usual.</p>
 <p>We will create a simple REST resource that we would like our frontend to consume:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SimpleResource</span> <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;/api/simple&#39;</span><span style="color:#ff6ac1">)</span>
@@ -531,7 +531,7 @@ content:</p>
 <pre tabindex="0"><code>include &#39;frontend&#39;
 </code></pre><p>Now, create a <code>frontend</code> directory under the project root and add a build.gradle
 file in it:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>plugins <span style="color:#ff6ac1">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>plugins <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>    id <span style="color:#5af78e">&#34;com.moowork.node&#34;</span> version <span style="color:#5af78e">&#34;0.10&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
 </span></span><span style="display:flex;"><span>
@@ -583,7 +583,7 @@ It will serve as a template to generate our <code>index.html</code> file:</p>
 <p>As you can see, it contains a div with the id <code>root</code>.</p>
 <p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
 <p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> path <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;path&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> path <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;path&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> HtmlWebpackPlugin <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;html-webpack-plugin&#39;</span>);
 </span></span><span style="display:flex;"><span>
@@ -636,7 +636,7 @@ web application in the <code>dist</code> directory.</p>
 <p>The last step is to include this <code>dist</code> directory in our application&rsquo;s jar as
 static assets.
 Add the following task to our main gradle build:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>jar <span style="color:#ff6ac1">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>jar <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>  from<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;frontend/dist&#39;</span><span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>    into <span style="color:#5af78e">&#39;static&#39;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">}</span>
@@ -656,7 +656,7 @@ see the React hello world on <code>localhost:8080</code></p>
 the application on <code>localhost:3000</code> and not get cross-origin requests</li>
 </ol>
 <p>Add the following <code>WebpackLauncher</code> to the project:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Profile</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;dev&#39;</span><span style="color:#ff6ac1">)</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebpackLauncher</span> <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>
@@ -693,7 +693,7 @@ This class will be available when we start the application with the <code>dev</c
 <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html">profile</a></p>
 <p>We can make a simple proxy with webpack-dev-server.
 Change the <code>server.js</code> file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> WebpackDevServer <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack-dev-server&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> config <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;./webpack.dev.config&#39;</span>);
 </span></span><span style="display:flex;"><span>
@@ -722,7 +722,7 @@ a simple library to do http requests. It supports promises and automatically
 handles json.</p>
 <pre tabindex="0"><code>npm i -S axios
 </code></pre><p>Let&rsquo;s amend our <code>App.js</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React, { Component } from <span style="color:#5af78e">&#39;react&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React, { Component } from <span style="color:#5af78e">&#39;react&#39;</span>;
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> axios from <span style="color:#5af78e">&#39;axios&#39;</span>;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> App <span style="color:#ff6ac1">extends</span> Component {
@@ -746,7 +746,7 @@ webpack configuration from our production configuration.</p>
 <p>In the production configuration, we can use the DefinePlugin to set the NODE_ENV
 variable to production. This will allow webpack to automatically remove all the
 code intended for development purposes in our libraries:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">new</span> webpack.DefinePlugin({
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">new</span> webpack.DefinePlugin({
 </span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;process.env&#34;</span><span style="color:#ff6ac1">:</span> {
 </span></span><span style="display:flex;"><span>    NODE_ENV<span style="color:#ff6ac1">:</span> JSON.stringify(<span style="color:#5af78e">&#34;production&#34;</span>)
 </span></span><span style="display:flex;"><span>  }
@@ -781,7 +781,7 @@ We will implement the <code>ExecutorService</code> and use type covariance to re
 <p>The following code has been greatly inspired by this <a href="http://binkley.blogspot.fr/2014/12/completablefuture-and-executorservice.html">blog post</a>. Many thanks to Brian Oxley!</p>
 <p>So the first thing we need to do is to create a decorator for an executor service
 and delegate every method to that service:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">static</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DelegatingExecutorService</span> <span style="color:#ff5c57">implements</span> ExecutorService {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">static</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DelegatingExecutorService</span> <span style="color:#ff5c57">implements</span> ExecutorService {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> ExecutorService delegate;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">DelegatingExecutorService</span>(ExecutorService executorService) {
@@ -800,7 +800,7 @@ and delegate every method to that service:</p>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We can create an interface that will extends <code>ExecutorService</code> and return
 <code>CompletableFuture</code>s instead of <code>Future</code>s:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#78787e">/**
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#78787e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * DelegatingCompletableExecutorService {@code ExecutorService} to covariantly return {@code
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> * CompletableFuture} in place of {@code Future}.
 </span></span></span><span style="display:flex;"><span><span style="color:#78787e"> */</span>
@@ -824,7 +824,7 @@ and delegate every method to that service:</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span> CompletableFuture<span style="color:#ff6ac1">&lt;?&gt;</span> submit(Runnable task);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We can then implement this new interface using our decorator as a base:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">static</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DelegatingCompletableExecutorService</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">static</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DelegatingCompletableExecutorService</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">extends</span> DelegatingExecutorService
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">implements</span> CompletableExecutorService {
 </span></span><span style="display:flex;"><span>
@@ -855,14 +855,14 @@ and delegate every method to that service:</p>
 </span></span><span style="display:flex;"><span>     }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We also need to create an utility method to create a <code>CompletableExecutorService</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> CompletableExecutorService <span style="color:#57c7ff">completable</span>(ExecutorService delegate) {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> CompletableExecutorService <span style="color:#57c7ff">completable</span>(ExecutorService delegate) {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> <span style="color:#ff6ac1">new</span> DelegatingCompletableExecutorService(delegate);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>See <a href="https://gist.github.com/geowarin/bc40acd46791aa114c30">this gist</a> for the final result.</p>
 <h2 id="creating-an-async-service">Creating an async service</h2>
 <p>To enable asynchronous methods in Spring, you will need this kind of configuration
 class:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableAsync</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SpringAsyncConfig</span> <span style="color:#ff5c57">implements</span> AsyncConfigurer {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> <span style="color:#ff5c57">final</span> Log logger <span style="color:#ff6ac1">=</span> LogFactory.<span style="color:#57c7ff">getLog</span>(getClass());
@@ -880,7 +880,7 @@ class:</p>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>As you can see, we can specify which executor will handle our <code>@Async</code> methods.</p>
 <p>We can now return <code>CompletableFuture</code>s from our services!</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Service</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Service</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AsyncService</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> String<span style="color:#ff6ac1">[]</span> greetings <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> String<span style="color:#ff6ac1">[]</span>{
@@ -903,7 +903,7 @@ class:</p>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Here is the <code>AsyncUtil</code> class in case you are wondering what&rsquo;s going on:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AsyncUtil</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">AsyncUtil</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">randomSleep</span>(<span style="color:#9aedfe">int</span> duration, TimeUnit timeUnit) {
 </span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">try</span> {
 </span></span><span style="display:flex;"><span>            timeUnit.<span style="color:#57c7ff">sleep</span>(ThreadLocalRandom.<span style="color:#57c7ff">current</span>().<span style="color:#57c7ff">nextInt</span>(duration));
@@ -918,7 +918,7 @@ class:</p>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Our service will say hello in a random language within 3 seconds of time.
 How do we handle the result?</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">Runner</span> <span style="color:#ff5c57">implements</span> CommandLineRunner {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">Runner</span> <span style="color:#ff5c57">implements</span> CommandLineRunner {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Autowired</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> AsyncService asyncService;
@@ -956,7 +956,7 @@ async-3 - saluton
 <p>An interesting question with future is how to set a timeout and cancel them
 if they run late.</p>
 <p>My solution is to create another executor like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">static</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">TimeOutExecutorService</span> <span style="color:#ff5c57">extends</span> CompletableExecutors.<span style="color:#57c7ff">DelegatingCompletableExecutorService</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">static</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">TimeOutExecutorService</span> <span style="color:#ff5c57">extends</span> CompletableExecutors.<span style="color:#57c7ff">DelegatingCompletableExecutorService</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> Duration timeout;
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> ScheduledExecutorService schedulerExecutor;
 </span></span><span style="display:flex;"><span>
@@ -989,13 +989,13 @@ if they run late.</p>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>This implementation was inspired by <a href="http://stackoverflow.com/questions/23575067/timeout-with-default-value-in-java-8-completablefuture/24457111#24457111">a discussion</a> on stackoverflow.</p>
 <p>We can now create a new executor as a Spring bean:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>(name <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;timed&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>(name <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;timed&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> Executor <span style="color:#57c7ff">timeoutExecutor</span>() {
 </span></span><span style="display:flex;"><span>    ThreadFactory threadFactory <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> ThreadFactoryBuilder().<span style="color:#57c7ff">setNameFormat</span>(<span style="color:#5af78e">&#34;timed-%d&#34;</span>).<span style="color:#57c7ff">build</span>();
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> TimedCompletables.<span style="color:#57c7ff">timed</span>(Executors.<span style="color:#57c7ff">newFixedThreadPool</span>(10, threadFactory), Duration.<span style="color:#57c7ff">ofSeconds</span>(2));
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>An use it like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Async</span>(<span style="color:#5af78e">&#34;timed&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Async</span>(<span style="color:#5af78e">&#34;timed&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> CompletableFuture<span style="color:#ff6ac1">&lt;</span>String<span style="color:#ff6ac1">&gt;</span> <span style="color:#57c7ff">asyncTimeoutGreeting</span>() {
 </span></span><span style="display:flex;"><span>    AsyncUtil.<span style="color:#57c7ff">randomSleep</span>(3000, TimeUnit.<span style="color:#57c7ff">MILLISECONDS</span>);
 </span></span><span style="display:flex;"><span>    String result <span style="color:#ff6ac1">=</span> AsyncUtil.<span style="color:#57c7ff">getThreadName</span>() <span style="color:#ff6ac1">+</span> <span style="color:#5af78e">&#34; - &#34;</span> <span style="color:#ff6ac1">+</span> random(greetings);
@@ -1015,7 +1015,7 @@ Timeout after PT2S
 </code></pre><h2 id="profiling-threads-with-aop">Profiling threads with AOP</h2>
 <p>Let&rsquo;s add a dependency to <code>spring-boot-starter-aop</code> to automatically profile the
 execution of our async methods:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Aspect</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Aspect</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">ServiceProfiler</span> {
 </span></span><span style="display:flex;"><span>
@@ -1054,7 +1054,7 @@ on what Spring Boot finds in the classpath.</p>
 <p>A lot of Spring users already know <code>@EnableTransactionManagement</code>, which will enable declarative transaction management,
 <code>@EnableWebMvc</code>, which enables Spring MVC, or <code>@EnableScheduling</code>, which will initialize a scheduler.</p>
 <p>These annotations are in fact a simple configuration import with the <code>@Import</code> annotation.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Target</span>(ElementType.<span style="color:#57c7ff">TYPE</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Target</span>(ElementType.<span style="color:#57c7ff">TYPE</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Retention</span>(RetentionPolicy.<span style="color:#57c7ff">RUNTIME</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Documented</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Import</span>({ EnableAutoConfigurationImportSelector.<span style="color:#57c7ff">class</span>,
@@ -1072,7 +1072,7 @@ SpringFactoriesLoader will look for jars containing a file with the path <code>M
 <p>When it finds such a file, the <code>SpringFactoriesLoader</code> will look for the property named after our configuration file.
 In our case, <code>org.springframework.boot.autoconfigure.EnableAutoConfiguration</code>.</p>
 <p>Let&rsquo;s take a look at the <code>spring-boot-autoconfigure</code> jar, which indeed contains a <code>spring.factories</code> file copied below:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#78787e"># Initializers</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#78787e"># Initializers</span>
 </span></span><span style="display:flex;"><span><span style="color:#57c7ff">org.springframework.context.ApplicationContextInitializer</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">\
 </span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer</span>
 </span></span><span style="display:flex;"><span>
@@ -1107,7 +1107,7 @@ In our case, <code>org.springframework.boot.autoconfigure.EnableAutoConfiguratio
 </span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration</span>
 </span></span></code></pre></div><p>In this file, we can see a list of the Spring Boot auto-configurations.
 Let&rsquo;s take a closer look at one of those configurations, <code>MongoAutoConfiguration</code> for instance:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ConditionalOnClass</span>(Mongo.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableConfigurationProperties</span>(MongoProperties.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MongoAutoConfiguration</span> {
@@ -1143,7 +1143,7 @@ Let&rsquo;s take a closer look at one of those configurations, <code>MongoAutoCo
 <p>You can also refine the order in which those configuration classes load with <code>@AutoConfigureBefore</code> et <code>@AutoConfigureAfter</code>.</p>
 <h2 id="properties-mapping">Properties Mapping</h2>
 <p>Let&rsquo;s look at <code>MongoProperties</code>, which is a classic example of Spring Boot properties mapping:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@ConfigurationProperties</span>(prefix <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;spring.data.mongodb&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@ConfigurationProperties</span>(prefix <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;spring.data.mongodb&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MongoProperties</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> String host;
@@ -1173,7 +1173,7 @@ we can do with those annotations:</p>
 <li><code>@ConditionalOnWebApplication</code></li>
 </ul>
 <p>Let&rsquo;s take a closer look at <code>@ConditionalOnExpression</code>, which allows you to write a condition in the <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring Expression language</a>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Conditional</span>(OnExpressionCondition.<span style="color:#57c7ff">class</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Conditional</span>(OnExpressionCondition.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Retention</span>(RetentionPolicy.<span style="color:#57c7ff">RUNTIME</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Target</span>({ ElementType.<span style="color:#57c7ff">TYPE</span>, ElementType.<span style="color:#57c7ff">METHOD</span> })
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff9f43">@interface</span> ConditionalOnExpression {
@@ -1186,7 +1186,7 @@ we can do with those annotations:</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>In this class, we indeed make use of the <code>@Conditional</code> annotation. The condition is defined in the <code>OnExpressionCondition</code> class:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">OnExpressionCondition</span> <span style="color:#ff5c57">extends</span> SpringBootCondition {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">OnExpressionCondition</span> <span style="color:#ff5c57">extends</span> SpringBootCondition {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> ConditionOutcome <span style="color:#57c7ff">getMatchOutcome</span>(ConditionContext context, AnnotatedTypeMetadata metadata) {
@@ -1266,7 +1266,7 @@ Negative matches:
 <p>What I love about Spring Boot is that it allows you to prototype an application very quickly but also to learn with its
 source. Auto-configurations are neat pieces of code that can teach you a thing or two about Spring.</p>
 <p>As Josh Long, developer advocate at Pivotal, said:</p>
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/springcentral?ref_src=twsrc%5Etfw">@springcentral</a> <a href="https://twitter.com/david_syer?ref_src=twsrc%5Etfw">@david_syer</a> that&#39;s really the point of <a href="https://twitter.com/springboot?ref_src=twsrc%5Etfw">@springboot</a> imho. Boot lets you pair-program w/ the Spring team <a href="http://t.co/WNUJfxOwoY">http://t.co/WNUJfxOwoY</a></p>&mdash; Josh Long (@starbuxman) <a href="https://twitter.com/starbuxman/status/458266170861158401?ref_src=twsrc%5Etfw">April 21, 2014</a></blockquote>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/springcentral?ref_src=twsrc%5Etfw">@springcentral</a> @david_syer that&#39;s really the point of <a href="https://twitter.com/springboot?ref_src=twsrc%5Etfw">@springboot</a> imho. Boot lets you pair-program w/ the Spring team <a href="http://t.co/WNUJfxOwoY">http://t.co/WNUJfxOwoY</a></p>&mdash; Josh Long (@starbuxman) <a href="https://twitter.com/starbuxman/status/458266170861158401?ref_src=twsrc%5Etfw">April 21, 2014</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
@@ -1277,7 +1277,7 @@ source. Auto-configurations are neat pieces of code that can teach you a thing o
 <p>Of course, the source code is available <a href="https://github.com/geowarin/springboot-jersey">on my github</a>.</p>
 <h2 id="setting-up-spring-boot">Setting up spring-boot</h2>
 <p><a href="http://projects.spring.io/spring-boot/">Spring boot</a> aims towards simplicity and convention over configuration. First step is to include the necessary configuration in your pom.xml :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;parent&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;parent&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;artifactId&gt;</span>spring-boot-starter-parent<span style="color:#ff6ac1">&lt;/artifactId&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;version&gt;</span>1.0.0.RC3<span style="color:#ff6ac1">&lt;/version&gt;</span>
@@ -1301,7 +1301,7 @@ source. Auto-configurations are neat pieces of code that can teach you a thing o
 </span></span></code></pre></div><p>One of the good ideas of spring boot is to provide all the &lsquo;boilerplate&rsquo; configuration for you by letting you inherit their parent configuration.</p>
 <p>Then, you&rsquo;ll select a starter, in this case, we are going to develop a web application, so starter-web is fine.</p>
 <p>Now, we&rsquo;ll create a main function for our application :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@EnableAutoConfiguration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@EnableAutoConfiguration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">Application</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#ff5c57">static</span> <span style="color:#9aedfe">void</span> <span style="color:#57c7ff">main</span>(String<span style="color:#ff6ac1">[]</span> args) <span style="color:#ff5c57">throws</span> Exception {
@@ -1315,7 +1315,7 @@ With this configuration, you can run the main function and you&rsquo;ll see your
 <p>Awesome.</p>
 <h2 id="runnable-jar">Runnable jar</h2>
 <p>Spring boot allows you to package your application as a runnable jar. Include the following in your <code>pom.xml</code> :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;build&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff6ac1">&lt;build&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">&lt;plugins&gt;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">&lt;plugin&gt;</span>
 </span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#ff6ac1">&lt;/groupId&gt;</span>
@@ -1337,7 +1337,7 @@ Just <code>java -jar</code> it to launch an embedded Tomcat containing your weba
 <p>It basically allows you to inject spring beans in your jersey controllers.</p>
 <p>To complete our configuration we&rsquo;ll add the jersey servlet to our application together with a small class to configure it.</p>
 <p>In the Application :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> ServletRegistrationBean <span style="color:#57c7ff">jerseyServlet</span>() {
 </span></span><span style="display:flex;"><span>    ServletRegistrationBean registration <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">new</span> ServletRegistrationBean(<span style="color:#ff6ac1">new</span> ServletContainer(), <span style="color:#5af78e">&#34;/rest/*&#34;</span>);
 </span></span><span style="display:flex;"><span>    <span style="color:#78787e">// our rest resources will be available in the path /rest/*</span>
@@ -1346,7 +1346,7 @@ Just <code>java -jar</code> it to launch an embedded Tomcat containing your weba
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We also need to add the <code>@ComponentScan</code> annotation to find our spring services and components (including jersey)</p>
 <p>Next, we&rsquo;ll create the JerseyConfig class :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">JerseyConfig</span> <span style="color:#ff5c57">extends</span> ResourceConfig {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">JerseyConfig</span> <span style="color:#ff5c57">extends</span> ResourceConfig {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> <span style="color:#57c7ff">JerseyConfig</span>() {
 </span></span><span style="display:flex;"><span>        register(RequestContextFilter.<span style="color:#57c7ff">class</span>);
@@ -1356,7 +1356,7 @@ Just <code>java -jar</code> it to launch an embedded Tomcat containing your weba
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Here we are providing the package(s) in which our rest resources are.</p>
 <p>Speaking about our rest resources, we&rsquo;ll create a simple one :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Path</span>(<span style="color:#5af78e">&#34;/&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Path</span>(<span style="color:#5af78e">&#34;/&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResource</span> {
 </span></span><span style="display:flex;"><span>
@@ -1371,7 +1371,7 @@ Just <code>java -jar</code> it to launch an embedded Tomcat containing your weba
 <p>In the <a href="https://github.com/geowarin/springboot-jersey">complete example</a>, I show you how to generate JSON from a domain class.</p>
 <p>Basically all you have to do is provide classes with the <code>@XmlRootElement</code> annotation, add the getters and setters for the properties you want serialized and don&rsquo;t forget to provide a default constructor (see <a href="https://github.com/geowarin/springboot-jersey/blob/master/src/main/java/com/geowarin/domain/Message.java">here</a>).</p>
 <p>To show that dependency injection works, we&rsquo;ll add a simple service :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Singleton</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Singleton</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Service</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MessageService</span> {
 </span></span><span style="display:flex;"><span>    List<span style="color:#ff6ac1">&lt;</span>Message<span style="color:#ff6ac1">&gt;</span> messages <span style="color:#ff6ac1">=</span> Collections.<span style="color:#57c7ff">synchronizedList</span>(<span style="color:#ff6ac1">new</span> ArrayList<span style="color:#ff6ac1">&lt;</span>Message<span style="color:#ff6ac1">&gt;</span>());
@@ -1387,7 +1387,7 @@ Just <code>java -jar</code> it to launch an embedded Tomcat containing your weba
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We can now autowire it to our Jersey controller!</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Path</span>(<span style="color:#5af78e">&#34;/&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Path</span>(<span style="color:#5af78e">&#34;/&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResource</span> {
 </span></span><span style="display:flex;"><span>
@@ -1409,7 +1409,7 @@ the returned result to JSON.</p>
 <p><del>I&rsquo;m providing a little hack of my own to override the <code>SpringComponentProvider</code> class of <em>jersey-spring3</em> and allow this configuration. See the class on github. It is important to place it in the same package as the original one.</del></p>
 <p><em>Update</em> : I submitted a <a href="https://github.com/jersey/jersey/pull/59">pull request</a> which has been accepted by Jersey. I updated the project to use the 2.6 snapshot release of jersey which includes the modified <code>SpringComponentProvider</code>.</p>
 <p>Now the test :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResourceTest</span> <span style="color:#ff5c57">extends</span> JerseyTest {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">RestResourceTest</span> <span style="color:#ff5c57">extends</span> JerseyTest {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">protected</span> Application <span style="color:#57c7ff">configure</span>() {
@@ -1437,7 +1437,7 @@ the returned result to JSON.</p>
 </span></span></code></pre></div><p>Jersey Test will automatically select a provider from your classpath, in the example I&rsquo;m using the in memory provider which I believe to be the fastest but you can also use <a href="https://grizzly.java.net/">grizzly</a> and others instead.</p>
 <p>I&rsquo;m using <a href="https://github.com/skyscreamer/JSONassert">JSONassert</a> to test json results.</p>
 <p>In the example, we are providing a simple, lighter <code>TestConfig</code> :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ComponentScan</span>(basePackageClasses <span style="color:#ff6ac1">=</span> RestResource.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">TestConfig</span> {
 </span></span><span style="display:flex;"><span>}
@@ -1457,7 +1457,7 @@ the returned result to JSON.</p>
 <p>This article will explain how this can be done with 5 classes and 1 jsp.</p>
 <h2 id="the-configuration-with-spring-32-and-servlet-30">The configuration with spring 3.2 and servlet 3.0</h2>
 <p>Since spring 3.1, it is possible to run spring MVC without a web.xml if you are in a servlet 3.0 environment. But spring 3.2 takes things a little bit further by providing a set of abstract classes to enable a <a href="http://static.springsource.org/spring-framework/docs/3.2.0.RELEASE/spring-framework-reference/html/mvc.html#mvc-container-config">very easy configuration</a>. Check this :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebInitializer</span> <span style="color:#ff5c57">extends</span> AbstractAnnotationConfigDispatcherServletInitializer {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebInitializer</span> <span style="color:#ff5c57">extends</span> AbstractAnnotationConfigDispatcherServletInitializer {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Override</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">protected</span> Class<span style="color:#ff6ac1">&lt;?&gt;[]</span> getRootConfigClasses() {
@@ -1486,7 +1486,7 @@ the returned result to JSON.</p>
 </span></span></code></pre></div><p>The filters are not mandatory, it just demonstrates how to add them to this configuration (site mesh requires a small xml file to point to a template - it won&rsquo;t be covered by this article but check out the <a href="http://wiki.sitemesh.org/display/sitemesh/Start+Using+SiteMesh+in+10+Minutes">documentation</a> or have a look at this project on <a href="https://github.com/geowarin/spring-mvc-examples/tree/master/mvc-base">github</a>).</p>
 <p>The UTF-8 filter will prevent encoding problems with your user inputs.</p>
 <p>Spring MVC also requires a <strong>WebConfig</strong> class. This is the minimal one :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableWebMvc</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ComponentScan</span>(basePackages <span style="color:#ff6ac1">=</span> { <span style="color:#5af78e">&#34;com.geowarin.mvc.base.controller&#34;</span> })
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebConfig</span> <span style="color:#ff5c57">extends</span> WebMvcConfigurerAdapter {
@@ -1510,7 +1510,7 @@ the returned result to JSON.</p>
 The <strong>ViewResolver</strong> bean will indicate both where our views can be found and what their extension is.</p>
 <p>In this example for instance we will just have a simple view in <strong>/WEB-INF/views/home.jsp</strong>. The <strong>ResourceHandler</strong> indicates where our static resources can be found (css, js, images, etc.).</p>
 <p>Here is our controller :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">HomeController</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@RequestMapping</span>(value <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;/&#34;</span>, method <span style="color:#ff6ac1">=</span> RequestMethod.<span style="color:#57c7ff">GET</span>)
@@ -1521,7 +1521,7 @@ The <strong>ViewResolver</strong> bean will indicate both where our views can be
 </span></span></code></pre></div><p>At this point, you can write &ldquo;hello&rdquo; in your home.jsp, launch a tomcat and enjoy our 3 classes spring MVC hello world. No web.xml, nothing else.</p>
 <h2 id="interceptors-locales-messages">Interceptors, locales, messages</h2>
 <p>Let me just show you the full configuration for our project :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableWebMvc</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ComponentScan</span>(basePackages <span style="color:#ff6ac1">=</span> { <span style="color:#5af78e">&#34;com.geowarin.mvc.base.controller&#34;</span> })
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebConfig</span> <span style="color:#ff5c57">extends</span> WebMvcConfigurerAdapter {
@@ -1583,7 +1583,7 @@ The <strong>localeResolver</strong> will work with a simple cookie to memorize t
 <h2 id="a-form-a-dto-some-validation">A form, a DTO, some validation</h2>
 <p>Next we will show a very simple usage of a form to demonstrate the localized, custom validation messages.</p>
 <p>In your home.jsp, write this code :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">form:form</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;form&#34;</span> <span style="color:#57c7ff">method</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;post&#34;</span> <span style="color:#57c7ff">modelAttribute</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;formDTO&#34;</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">form:form</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;form&#34;</span> <span style="color:#57c7ff">method</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;post&#34;</span> <span style="color:#57c7ff">modelAttribute</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;formDTO&#34;</span>&gt;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	&lt;<span style="color:#ff6ac1">form:input</span> <span style="color:#57c7ff">path</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;messageFromUser&#34;</span> /&gt;
 </span></span><span style="display:flex;"><span>
@@ -1602,9 +1602,9 @@ The <strong>localeResolver</strong> will work with a simple cookie to memorize t
 <p>Then the input will be bound to the <strong>messageFromUser</strong> attribute of the <strong>formDTO</strong>. You can also see the associated error message if validation fails.</p>
 <p>Lastly, if a success message is present in the request (the controller will place it), we will display it with a localized text taking an argument. We also want to escape the text given by the user to prevent XSS injection.</p>
 <p>The message bundle for this example would look like this :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#57c7ff">message.youWrote</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">You wrote : {0}</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#57c7ff">message.youWrote</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">You wrote : {0}</span>
 </span></span></code></pre></div><p>Our new controller :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Controller</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">HomeController</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@RequestMapping</span>(value <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;/&#34;</span>, method <span style="color:#ff6ac1">=</span> RequestMethod.<span style="color:#57c7ff">GET</span>)
@@ -1639,7 +1639,7 @@ Here we will ask Spring MVC to give us the form posted with indication on its co
 <p>If the user input is correct, we will redirect him (yes with spring MVC you have some <a href="http://en.wikipedia.org/wiki/Post/Redirect/Get">PRG</a> for free) to the home. You can also use the instruction &lsquo;forward:url&rsquo;.</p>
 <p>I strongly advise you to check out <a href="http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/mvc.html">the documentation</a> to learn what can be injected in your controllers.</p>
 <p>Our <strong>FormDTO</strong> is a simple POJO, annotated with <a href="http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/mvc.html">hibernate-validator</a> annotation :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">FormDTO</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@NotEmpty</span>
@@ -1649,13 +1649,13 @@ Here we will ask Spring MVC to give us the form posted with indication on its co
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Hibernate validator provides a lot of useful annotations like @Min, @Max, @Email. You can even stack them or create your own rules.</p>
 <p>That&rsquo;s it ! To customize validation message, just write properties with the same name as the annotations :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#78787e"># This will override validation messages caused by @NotEmpty annotation</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#78787e"># This will override validation messages caused by @NotEmpty annotation</span>
 </span></span><span style="display:flex;"><span><span style="color:#57c7ff">NotEmpty</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">This cannot be empty !</span>
 </span></span><span style="display:flex;"><span><span style="color:#78787e"># This will override @NotEmpty validation messages with a path of messageFromUser</span>
 </span></span><span style="display:flex;"><span><span style="color:#57c7ff">NotEmpty.messageFromUser</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">Don&#39;t you have anything to say?</span>
 </span></span></code></pre></div><h2 id="wait--how-do-we-test-a-controller">Wait ! How do we test a controller?</h2>
 <p>With spring mvc test ! Have a look :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff6ac1">import static</span> org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff6ac1">import static</span> org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import static</span> org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import static</span> org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 </span></span><span style="display:flex;"><span>
@@ -1716,7 +1716,7 @@ But it is quite difficult to get it right the first time. You definitely have to
 <p>The source code of this application is available on my github : <a href="https://github.com/geowarin/spring-examples/tree/master/spring-standalone-chain">https://github.com/geowarin/spring-examples/tree/master/spring-standalone-chain</a></p>
 <h2 id="java-configuration">Java configuration</h2>
 <p>Starting from spring 3.0, it is possible to get rid of any XML configuration by providing a pure Java configuration. This is done by annotating your configuration classes with the <strong>@Configuration</strong> annotation and annotating your beans with <strong>@Bean</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ComponentScan</span>(basePackages <span style="color:#ff6ac1">=</span> {<span style="color:#5af78e">&#34;com.geowarin.spring.service&#34;</span>, <span style="color:#5af78e">&#34;com.geowarin.spring.component&#34;</span>})
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@PropertySource</span>(value <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;classpath:chain.properties&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SpringStandalonChainConfig</span> {
@@ -1746,7 +1746,7 @@ But it is quite difficult to get it right the first time. You definitely have to
 <p>This approach is compatible with eclipse if you have m2e installed. In that case when you import a project using this plugin, eclipse will prompt you for the install of the build-helper connector.</p>
 <h2 id="our-application-entry-point--the-mainbean">Our application entry point : the MainBean</h2>
 <p>Here is the code of our <strong>MainBean</strong> :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MainBean</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MainBean</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Autowired</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff9f43">@Qualifier</span>(<span style="color:#5af78e">&#34;doChain&#34;</span>)
@@ -1769,11 +1769,11 @@ But it is quite difficult to get it right the first time. You definitely have to
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We are injecting our service into the bean with a custom qualifier which will enable us to provide several implementations of our service if we need it.</p>
 <p>Note that the <strong>@Value</strong> annotation, our properties will automatically be casted to booleans, which is pretty cool. Here is our chain.properties file :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chain.compatibleWithFirst<span style="color:#ff6ac1">=</span><span style="color:#ff5c57">false</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chain.compatibleWithFirst<span style="color:#ff6ac1">=</span><span style="color:#ff5c57">false</span>
 </span></span><span style="display:flex;"><span>chain.compatibleWithSecond<span style="color:#ff6ac1">=</span><span style="color:#ff5c57">true</span>
 </span></span></code></pre></div><h2 id="the-chain--two-components-and-a-service">The Chain : Two components and a service</h2>
 <p>The <strong>ChainContext</strong> class is a simple pojo we pass to our service to be handled by the chain of responsibility and enable us to test if our service successfully handled our case :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">ChainContext</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">ChainContext</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> <span style="color:#9aedfe">boolean</span> compatibleWithFirstElement;
 </span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#ff5c57">final</span> <span style="color:#9aedfe">boolean</span> compatibleWithSecondElement;
@@ -1789,12 +1789,12 @@ But it is quite difficult to get it right the first time. You definitely have to
 </span></span><span style="display:flex;"><span>	<span style="color:#78787e">// Getters and setters ommited</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p><strong>ChainElement</strong> is a simple interface which will be implemented by two components : <strong>FirstChainElement</strong> and <strong>SecondChainElement</strong>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">interface</span> <span style="color:#f3f99d">ChainElement</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">interface</span> <span style="color:#f3f99d">ChainElement</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">public</span> <span style="color:#9aedfe">boolean</span> <span style="color:#57c7ff">doChain</span>(ChainContext context);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Here is the first element, the second one is essentially the same thing :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Component</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Order</span>(1)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">FirstChainElement</span> <span style="color:#ff5c57">implements</span> ChainElement {
 </span></span><span style="display:flex;"><span>
@@ -1814,7 +1814,7 @@ But it is quite difficult to get it right the first time. You definitely have to
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>The thing to note here is the use of the spring annotation <a href="http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/core/annotation/Order.html">@Order</a> which will enable us to sort our list using spring&rsquo;s <a href="http://static.springsource.org/spring/docs/3.0.x/api/org/springframework/core/annotation/AnnotationAwareOrderComparator.html">AnnotationAwareOrderComparator</a>. Neat :)</p>
 <p>And now the service :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Service</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Service</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Qualifier</span>(<span style="color:#5af78e">&#34;doChain&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">DoChainService</span> <span style="color:#ff5c57">implements</span> ChainService {
 </span></span><span style="display:flex;"><span>
@@ -1838,7 +1838,7 @@ But it is quite difficult to get it right the first time. You definitely have to
 </span></span></code></pre></div><p>Note that we use the same qualifier as our <strong>MainBean</strong> here. The main trick in this article is the usage of <strong>@Autowired</strong> to inject all the components implementing the <strong>ChainElement</strong> interface into a List.</p>
 <h2 id="the-application-main-and-tests">The application main and tests</h2>
 <p>That&rsquo;s it ! Now you can run your project with this main class :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SpringStandaloneChainApp</span> {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SpringStandaloneChainApp</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">private</span> <span style="color:#ff5c57">static</span> <span style="color:#ff5c57">final</span> String CONFIG_PACKAGE <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;com.geowarin.spring.config&#34;</span>;
 </span></span><span style="display:flex;"><span>
@@ -1855,7 +1855,7 @@ But it is quite difficult to get it right the first time. You definitely have to
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>And unit test the service with spring-test like that :</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RunWith</span>(SpringJUnit4ClassRunner.<span style="color:#57c7ff">class</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@RunWith</span>(SpringJUnit4ClassRunner.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ContextConfiguration</span>(classes <span style="color:#ff6ac1">=</span> { SpringStandalonChainConfig.<span style="color:#57c7ff">class</span> })
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">ChainServiceTest</span> <span style="color:#ff5c57">extends</span> TestCase {
 </span></span><span style="display:flex;"><span>

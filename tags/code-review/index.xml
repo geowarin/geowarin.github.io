@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Code-Review on Geowarin</title><link>https://geowarin.com/tags/code-review/</link><description>Recent content in Code-Review on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Fri, 06 Mar 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/code-review/index.xml" rel="self" type="application/rss+xml"/><item><title>Understanding Spring Boot</title><link>https://geowarin.com/understanding-spring-boot/</link><pubDate>Fri, 06 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/understanding-spring-boot/</guid><description>Wonder how spring boot&amp;rsquo;s magic operates behind the scenes? You&amp;rsquo;ve come to the right place!</description><content:encoded><![CDATA[<p>Spring boot is an opinionated library that allows to create executable Spring applications with a convention over configuration approach.</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Code-Review on Geowarin</title><link>https://geowarin.com/tags/code-review/</link><description>Recent content in Code-Review on Geowarin</description><generator>Hugo -- 0.155.0</generator><language>en</language><lastBuildDate>Fri, 06 Mar 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://geowarin.com/tags/code-review/index.xml" rel="self" type="application/rss+xml"/><item><title>Understanding Spring Boot</title><link>https://geowarin.com/understanding-spring-boot/</link><pubDate>Fri, 06 Mar 2015 00:00:00 +0000</pubDate><guid>https://geowarin.com/understanding-spring-boot/</guid><description>Wonder how spring boot&amp;rsquo;s magic operates behind the scenes? You&amp;rsquo;ve come to the right place!</description><content:encoded><![CDATA[<p>Spring boot is an opinionated library that allows to create executable Spring applications with a convention over configuration approach.</p>
 <p>The magic behind this framework lies in the <code>@EnableAutoConfiguration</code> annotation,
 which will automatically load all the beans the application requires depending
 on what Spring Boot finds in the classpath.</p>
@@ -7,7 +7,7 @@ on what Spring Boot finds in the classpath.</p>
 <p>A lot of Spring users already know <code>@EnableTransactionManagement</code>, which will enable declarative transaction management,
 <code>@EnableWebMvc</code>, which enables Spring MVC, or <code>@EnableScheduling</code>, which will initialize a scheduler.</p>
 <p>These annotations are in fact a simple configuration import with the <code>@Import</code> annotation.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Target</span>(ElementType.<span style="color:#57c7ff">TYPE</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Target</span>(ElementType.<span style="color:#57c7ff">TYPE</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Retention</span>(RetentionPolicy.<span style="color:#57c7ff">RUNTIME</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Documented</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Import</span>({ EnableAutoConfigurationImportSelector.<span style="color:#57c7ff">class</span>,
@@ -25,7 +25,7 @@ SpringFactoriesLoader will look for jars containing a file with the path <code>M
 <p>When it finds such a file, the <code>SpringFactoriesLoader</code> will look for the property named after our configuration file.
 In our case, <code>org.springframework.boot.autoconfigure.EnableAutoConfiguration</code>.</p>
 <p>Let&rsquo;s take a look at the <code>spring-boot-autoconfigure</code> jar, which indeed contains a <code>spring.factories</code> file copied below:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#78787e"># Initializers</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#78787e"># Initializers</span>
 </span></span><span style="display:flex;"><span><span style="color:#57c7ff">org.springframework.context.ApplicationContextInitializer</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">\
 </span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer</span>
 </span></span><span style="display:flex;"><span>
@@ -60,7 +60,7 @@ In our case, <code>org.springframework.boot.autoconfigure.EnableAutoConfiguratio
 </span></span></span><span style="display:flex;"><span><span style="color:#5af78e">org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration</span>
 </span></span></code></pre></div><p>In this file, we can see a list of the Spring Boot auto-configurations.
 Let&rsquo;s take a closer look at one of those configurations, <code>MongoAutoConfiguration</code> for instance:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ConditionalOnClass</span>(Mongo.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@EnableConfigurationProperties</span>(MongoProperties.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MongoAutoConfiguration</span> {
@@ -96,7 +96,7 @@ Let&rsquo;s take a closer look at one of those configurations, <code>MongoAutoCo
 <p>You can also refine the order in which those configuration classes load with <code>@AutoConfigureBefore</code> et <code>@AutoConfigureAfter</code>.</p>
 <h2 id="properties-mapping">Properties Mapping</h2>
 <p>Let&rsquo;s look at <code>MongoProperties</code>, which is a classic example of Spring Boot properties mapping:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@ConfigurationProperties</span>(prefix <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;spring.data.mongodb&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@ConfigurationProperties</span>(prefix <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;spring.data.mongodb&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">MongoProperties</span> {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">private</span> String host;
@@ -126,7 +126,7 @@ we can do with those annotations:</p>
 <li><code>@ConditionalOnWebApplication</code></li>
 </ul>
 <p>Let&rsquo;s take a closer look at <code>@ConditionalOnExpression</code>, which allows you to write a condition in the <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring Expression language</a>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Conditional</span>(OnExpressionCondition.<span style="color:#57c7ff">class</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff9f43">@Conditional</span>(OnExpressionCondition.<span style="color:#57c7ff">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Retention</span>(RetentionPolicy.<span style="color:#57c7ff">RUNTIME</span>)
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Target</span>({ ElementType.<span style="color:#57c7ff">TYPE</span>, ElementType.<span style="color:#57c7ff">METHOD</span> })
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff9f43">@interface</span> ConditionalOnExpression {
@@ -139,7 +139,7 @@ we can do with those annotations:</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>In this class, we indeed make use of the <code>@Conditional</code> annotation. The condition is defined in the <code>OnExpressionCondition</code> class:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">OnExpressionCondition</span> <span style="color:#ff5c57">extends</span> SpringBootCondition {
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff5c57">public</span> <span style="color:#ff5c57">class</span> <span style="color:#f3f99d">OnExpressionCondition</span> <span style="color:#ff5c57">extends</span> SpringBootCondition {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@Override</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">public</span> ConditionOutcome <span style="color:#57c7ff">getMatchOutcome</span>(ConditionContext context, AnnotatedTypeMetadata metadata) {
@@ -219,7 +219,7 @@ Negative matches:
 <p>What I love about Spring Boot is that it allows you to prototype an application very quickly but also to learn with its
 source. Auto-configurations are neat pieces of code that can teach you a thing or two about Spring.</p>
 <p>As Josh Long, developer advocate at Pivotal, said:</p>
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/springcentral?ref_src=twsrc%5Etfw">@springcentral</a> <a href="https://twitter.com/david_syer?ref_src=twsrc%5Etfw">@david_syer</a> that&#39;s really the point of <a href="https://twitter.com/springboot?ref_src=twsrc%5Etfw">@springboot</a> imho. Boot lets you pair-program w/ the Spring team <a href="http://t.co/WNUJfxOwoY">http://t.co/WNUJfxOwoY</a></p>&mdash; Josh Long (@starbuxman) <a href="https://twitter.com/starbuxman/status/458266170861158401?ref_src=twsrc%5Etfw">April 21, 2014</a></blockquote>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/springcentral?ref_src=twsrc%5Etfw">@springcentral</a> @david_syer that&#39;s really the point of <a href="https://twitter.com/springboot?ref_src=twsrc%5Etfw">@springboot</a> imho. Boot lets you pair-program w/ the Spring team <a href="http://t.co/WNUJfxOwoY">http://t.co/WNUJfxOwoY</a></p>&mdash; Josh Long (@starbuxman) <a href="https://twitter.com/starbuxman/status/458266170861158401?ref_src=twsrc%5Etfw">April 21, 2014</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 

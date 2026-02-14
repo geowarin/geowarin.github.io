@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Nginx on Geowarin</title><link>https://geowarin.com/tags/nginx/</link><description>Recent content in Nginx on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Sat, 21 Dec 2019 00:24:53 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/nginx/index.xml" rel="self" type="application/rss+xml"/><item><title>Reverse proxy on docker-compose with CORS and SSL</title><link>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</link><pubDate>Sat, 21 Dec 2019 00:24:53 +0100</pubDate><guid>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</guid><description>How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.</description><content:encoded><![CDATA[<h1 id="the-problem">The problem</h1>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Nginx on Geowarin</title><link>https://geowarin.com/tags/nginx/</link><description>Recent content in Nginx on Geowarin</description><generator>Hugo -- 0.155.0</generator><language>en</language><lastBuildDate>Sat, 21 Dec 2019 00:24:53 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/nginx/index.xml" rel="self" type="application/rss+xml"/><item><title>Reverse proxy on docker-compose with CORS and SSL</title><link>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</link><pubDate>Sat, 21 Dec 2019 00:24:53 +0100</pubDate><guid>https://geowarin.com/reverse-proxy-on-docker-compose-with-cors-and-ssl/</guid><description>How to set up a reverse-proxy with CORS and SSL, with docker-compose and a self-signed certificate.</description><content:encoded><![CDATA[<h1 id="the-problem">The problem</h1>
 <p><a href="https://github.com/electerious/Ackee">Ackee</a> is a neat self-hosted analytics solution for simple needs (e.g. a blog).
 On the repo, the authors give instructions to run the tool, a node application, via docker-compose.</p>
 <p>On the other hand, the website whose analytics will be tracked needs to include a script that will look like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">async</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;https://unpkg.com/ackee-tracker@3.2.2/dist/ackee-tracker.min.js&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">script</span> <span style="color:#57c7ff">async</span> <span style="color:#57c7ff">src</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;https://unpkg.com/ackee-tracker@3.2.2/dist/ackee-tracker.min.js&#34;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#57c7ff">data-ackee-server</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;https://ackee.com&#34;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#57c7ff">data-ackee-domain-id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;67bfa855-7569-4d29-a0a3-a2f4ceae2ea3&#34;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#57c7ff">data-ackee-opts</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#39;{ &#34;ignoreLocalhost&#34;: false }&#39;</span>&gt;&lt;/<span style="color:#ff6ac1">script</span>&gt;
@@ -37,27 +37,27 @@ It will also add it to the macOS trust store.</p>
 <p>This will work immediately with Chrome.
 Firefox has its own store and you will have to manually add the certificate upon the first connection.</p>
 <p>For other platforms, <a href="https://github.com/Busindre/How-to-Add-trusted-root-certificates">see here</a>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#78787e">#!/usr/bin/env bash
-</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#78787e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>mkdir -p nginx
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>rm -f nginx/dhparam.pem nginx/self-signed.crt nginx/self-signed.key
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#78787e"># create a ssl certificate</span>
 </span></span><span style="display:flex;"><span>sudo openssl req <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -x509 -nodes -days <span style="color:#ff9f43">365</span> -newkey rsa:2048 <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -subj <span style="color:#5af78e">&#34;/CN=localhost&#34;</span> <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -config nginx/openssl.cnf <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -keyout nginx/self-signed.key <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -out nginx/self-signed.crt
+</span></span></span><span style="display:flex;"><span> -x509 -nodes -days <span style="color:#ff9f43">365</span> -newkey rsa:2048 <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span> -subj <span style="color:#5af78e">&#34;/CN=localhost&#34;</span> <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span> -config nginx/openssl.cnf <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span> -keyout nginx/self-signed.key <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span> -out nginx/self-signed.crt
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#78787e"># create a Diffie-Hellman key pair</span>
 </span></span><span style="display:flex;"><span>sudo openssl dhparam -out nginx/dhparam.pem <span style="color:#ff9f43">128</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#78787e"># add certificate to the trusted root store</span>
 </span></span><span style="display:flex;"><span>sudo security add-trusted-cert <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -d -r trustRoot <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e"></span> -k /Library/Keychains/System.keychain nginx/self-signed.crt
+</span></span></span><span style="display:flex;"><span> -d -r trustRoot <span style="color:#5af78e">\
+</span></span></span><span style="display:flex;"><span> -k /Library/Keychains/System.keychain nginx/self-signed.crt
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#78787e"># to remove</span>
 </span></span><span style="display:flex;"><span>
@@ -130,7 +130,7 @@ ssl_dhparam dhparam.pem;
 ssl_certificate_key self-signed.key;
 </code></pre><h2 id="docker-compose">docker-compose</h2>
 <p><strong>docker-compose.yml</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff6ac1">version</span>: <span style="color:#5af78e">&#34;3&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff6ac1">version</span>: <span style="color:#5af78e">&#34;3&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">services</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">nginx</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">image</span>: nginx:latest

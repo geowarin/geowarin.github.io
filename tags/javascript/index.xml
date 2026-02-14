@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Javascript on Geowarin</title><link>https://geowarin.com/tags/javascript/</link><description>Recent content in Javascript on Geowarin</description><generator>Hugo -- 0.138.0</generator><language>en</language><lastBuildDate>Mon, 23 Dec 2019 01:20:59 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/javascript/index.xml" rel="self" type="application/rss+xml"/><item><title>Run your frontend alongside spring boot</title><link>https://geowarin.com/run-your-frontend-alongside-spring-boot/</link><pubDate>Mon, 23 Dec 2019 01:20:59 +0100</pubDate><guid>https://geowarin.com/run-your-frontend-alongside-spring-boot/</guid><description>Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.</description><content:encoded><![CDATA[<p>Assumptions:</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Javascript on Geowarin</title><link>https://geowarin.com/tags/javascript/</link><description>Recent content in Javascript on Geowarin</description><generator>Hugo -- 0.155.0</generator><language>en</language><lastBuildDate>Mon, 23 Dec 2019 01:20:59 +0100</lastBuildDate><atom:link href="https://geowarin.com/tags/javascript/index.xml" rel="self" type="application/rss+xml"/><item><title>Run your frontend alongside spring boot</title><link>https://geowarin.com/run-your-frontend-alongside-spring-boot/</link><pubDate>Mon, 23 Dec 2019 01:20:59 +0100</pubDate><guid>https://geowarin.com/run-your-frontend-alongside-spring-boot/</guid><description>Running a javascript application alongside your spring boot backend can be bit of a conundrum. Here are several ways to tackle this problem.</description><content:encoded><![CDATA[<p>Assumptions:</p>
 <ul>
 <li>Your backend serves the API (REST, graphQL)</li>
 <li>You build your javascript with a separate bundler (parcel, webpack)</li>
@@ -10,7 +10,7 @@
 <h2 id="1-cors">1. CORS</h2>
 <p>The most obvious solution is to set up the backend to allow <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">Cross-Origin Resource Sharing</a> (CORS)
 with the frontend, which runs on the development web server.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff9f43">@Bean</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@ConditionalOnProperty</span>(name = [<span style="color:#5af78e">&#34;com.geowarin.cors.allowedOrigin&#34;</span>])
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">fun</span> <span style="color:#57c7ff">corsFilter</span>(corsProperties: CorsProperties): CorsWebFilter {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">val</span> source = UrlBasedCorsConfigurationSource().apply {
@@ -38,7 +38,7 @@ CORS from that origin.</p>
 <h2 id="2-embed-javascript-into-the-backend">2. Embed javascript into the backend</h2>
 <p>Another solution is to embed the frontend resources directly inside the spring server, as static resources.
 The advantage is that we have only one web server and everything is on the same host.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">val</span> acceptsHtmlOnly: RequestPredicate = RequestPredicate { request <span style="color:#ff6ac1">-&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">val</span> acceptsHtmlOnly: RequestPredicate = RequestPredicate { request <span style="color:#ff6ac1">-&gt;</span>
 </span></span><span style="display:flex;"><span>  request.headers().accept().contains(<span style="color:#f3f99d">MediaType</span>.TEXT_HTML) <span style="color:#ff6ac1">&amp;&amp;</span>
 </span></span><span style="display:flex;"><span>      !request.headers().accept().contains(<span style="color:#f3f99d">MediaType</span>.ALL)
 </span></span><span style="display:flex;"><span>}
@@ -83,7 +83,7 @@ way to distribute the full web application, as well as a dev environment that is
 </ul>
 <h2 id="3-javascript-proxy">3. Javascript proxy</h2>
 <p>You might do the opposite, run an express web server which includes your bundler and proxies requests to <code>localhost:8080</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> Bundler <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;parcel&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> Bundler <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;parcel&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> express <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;express&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> proxy <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;http-proxy-middleware&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">const</span> history <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;connect-history-api-fallback&#39;</span>);
@@ -117,7 +117,7 @@ same host as the backend.</p>
 <h2 id="4-reverse-proxy">4. Reverse proxy</h2>
 <p>We can run a third web server that routes both to our frontend and backend.
 This is simple enough thanks to <code>docker-compose</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff6ac1">version</span>: <span style="color:#5af78e">&#34;3&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff6ac1">version</span>: <span style="color:#5af78e">&#34;3&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">services</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">nginx</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">image</span>: nginx:latest
@@ -217,7 +217,7 @@ and gradle.</p>
 <p>Great so now we have tomcat embedded, hot reloading and supernatural groovy
 strength. The usual.</p>
 <p>We will create a simple REST resource that we would like our frontend to consume:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@RestController</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">SimpleResource</span> <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff9f43">@RequestMapping</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;/api/simple&#39;</span><span style="color:#ff6ac1">)</span>
@@ -233,7 +233,7 @@ content:</p>
 <pre tabindex="0"><code>include &#39;frontend&#39;
 </code></pre><p>Now, create a <code>frontend</code> directory under the project root and add a build.gradle
 file in it:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>plugins <span style="color:#ff6ac1">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>plugins <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>    id <span style="color:#5af78e">&#34;com.moowork.node&#34;</span> version <span style="color:#5af78e">&#34;0.10&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span>
 </span></span><span style="display:flex;"><span>
@@ -285,7 +285,7 @@ It will serve as a template to generate our <code>index.html</code> file:</p>
 <p>As you can see, it contains a div with the id <code>root</code>.</p>
 <p>Let&rsquo;s tweak the dev server a little bit to <a href="http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server">combine it with another server</a>.</p>
 <p>Let&rsquo;s change <code>webpack.config.js</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> path <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;path&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> path <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;path&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> HtmlWebpackPlugin <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;html-webpack-plugin&#39;</span>);
 </span></span><span style="display:flex;"><span>
@@ -338,7 +338,7 @@ web application in the <code>dist</code> directory.</p>
 <p>The last step is to include this <code>dist</code> directory in our application&rsquo;s jar as
 static assets.
 Add the following task to our main gradle build:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>jar <span style="color:#ff6ac1">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>jar <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>  from<span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;frontend/dist&#39;</span><span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>    into <span style="color:#5af78e">&#39;static&#39;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">}</span>
@@ -358,7 +358,7 @@ see the React hello world on <code>localhost:8080</code></p>
 the application on <code>localhost:3000</code> and not get cross-origin requests</li>
 </ol>
 <p>Add the following <code>WebpackLauncher</code> to the project:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#ff9f43">@Configuration</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff9f43">@Profile</span><span style="color:#ff6ac1">(</span><span style="color:#5af78e">&#39;dev&#39;</span><span style="color:#ff6ac1">)</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">class</span> <span style="color:#f3f99d">WebpackLauncher</span> <span style="color:#ff6ac1">{</span>
 </span></span><span style="display:flex;"><span>
@@ -395,7 +395,7 @@ This class will be available when we start the application with the <code>dev</c
 <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html">profile</a></p>
 <p>We can make a simple proxy with webpack-dev-server.
 Change the <code>server.js</code> file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff5c57">var</span> webpack <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> WebpackDevServer <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;webpack-dev-server&#39;</span>);
 </span></span><span style="display:flex;"><span><span style="color:#ff5c57">var</span> config <span style="color:#ff6ac1">=</span> require(<span style="color:#5af78e">&#39;./webpack.dev.config&#39;</span>);
 </span></span><span style="display:flex;"><span>
@@ -424,7 +424,7 @@ a simple library to do http requests. It supports promises and automatically
 handles json.</p>
 <pre tabindex="0"><code>npm i -S axios
 </code></pre><p>Let&rsquo;s amend our <code>App.js</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React, { Component } from <span style="color:#5af78e">&#39;react&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> React, { Component } from <span style="color:#5af78e">&#39;react&#39;</span>;
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> axios from <span style="color:#5af78e">&#39;axios&#39;</span>;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ff6ac1">export</span> <span style="color:#ff6ac1">default</span> <span style="color:#ff6ac1">class</span> App <span style="color:#ff6ac1">extends</span> Component {
@@ -448,7 +448,7 @@ webpack configuration from our production configuration.</p>
 <p>In the production configuration, we can use the DefinePlugin to set the NODE_ENV
 variable to production. This will allow webpack to automatically remove all the
 code intended for development purposes in our libraries:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">new</span> webpack.DefinePlugin({
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#ff6ac1">new</span> webpack.DefinePlugin({
 </span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;process.env&#34;</span><span style="color:#ff6ac1">:</span> {
 </span></span><span style="display:flex;"><span>    NODE_ENV<span style="color:#ff6ac1">:</span> JSON.stringify(<span style="color:#5af78e">&#34;production&#34;</span>)
 </span></span><span style="display:flex;"><span>  }
